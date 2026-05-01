@@ -920,7 +920,7 @@ function speakWord(e){
   e.stopPropagation();
   const word=document.getElementById('wordEn').textContent;
   if(!word||word==='—')return;
-  speechSynthesis.cancel();
+  if(typeof speechSynthesis==="undefined")return; speechSynthesis.cancel();
   const utter=new SpeechSynthesisUtterance(word);utter.lang='en-US';utter.rate=0.9;
   const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
   if(v)utter.voice=v;
@@ -937,12 +937,10 @@ function renderQuiz(){
   makePips('quizMasteryPips',mastery,false);
   document.getElementById('quizWordEn').textContent=q.w;
   document.getElementById('quizWordPh').textContent=q.ph||'';
-  const qex=document.getElementById('quizWordEx');
   const qexArea=document.getElementById('quizExArea');
-  if(q.ex){qex.textContent=q.ex;qexArea.style.display='';}
-  else{qexArea.style.display='none';}
-  const qexJp=document.getElementById('quizWordExJp');
-  if(qexJp) qexJp.textContent=q.exJp||'';
+  const qex=document.getElementById('quizWordEx');
+  if(q.ex&&qex){qex.textContent=q.ex;if(qexArea)qexArea.style.display='';}
+  else if(qexArea){qexArea.style.display='none';}
   const total=sessionDeck.length;
   document.getElementById('quizProgFill').style.width=`${Math.round(quizCurrent/total*100)}%`;
   document.getElementById('quizProgLabel').textContent=`${quizCurrent+1} / ${total}`;
@@ -1055,7 +1053,7 @@ function showTab(tab,btn){
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
 updateDash();
 </script>
 </body>
