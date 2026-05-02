@@ -250,7 +250,7 @@ body::before{
   padding:2px 10px;font-size:10px;font-weight:900;color:var(--ink);
   margin-bottom:5px;
 }
-.ex-text{font-size:12px;color:var(--ink-mid);line-height:1.6;font-weight:600;}
+.ex-text{font-size:16px;color:var(--ink-mid);line-height:1.6;font-weight:600;}
 
 /* 背面 */
 .word-jp{font-size:26px;font-weight:900;color:var(--white);margin-bottom:10px;font-family:'Zen Maru Gothic',sans-serif;}
@@ -258,9 +258,9 @@ body::before{
   width:100%;border:1.5px dashed rgba(255,255,255,0.4);
   border-radius:10px;padding:8px 12px;
 }
-.ex-text-back{font-size:12px;color:rgba(255,255,255,0.85);line-height:1.6;font-weight:600;}
-.ex-jp{font-size:11px;color:var(--ink-lt);margin-top:3px;font-style:italic;}
-.ex-jp-back{font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px;font-style:italic;}
+.ex-text-back{font-size:16px;color:rgba(255,255,255,0.85);line-height:1.6;font-weight:600;}
+.ex-jp{font-size:15px;color:var(--ink-lt);margin-top:3px;font-style:italic;}
+.ex-jp-back{font-size:15px;color:rgba(255,255,255,0.55);margin-top:3px;font-style:italic;}
 .mastery-label{font-size:10px;color:rgba(255,255,255,0.65);margin-top:8px;font-weight:800;}
 
 /* ピップ */
@@ -554,18 +554,15 @@ body::before{
           <div class="word-en" id="wordEn">—</div>
           <div class="word-ph" id="wordPh"></div>
           <div class="ex-area-front" id="exAreaFront">
-            <div class="ex-label">例文</div>
-            <div class="ex-text" id="wordEx"></div>
+                <div class="ex-text" id="wordEx"></div>
             <div class="ex-jp" id="wordExJp" style="display:none"></div>
           </div>
-          <div class="tap-hint">タップして答えを見る</div>
         </div>
         <!-- 背面 -->
         <div class="fc-face fc-back">
           <div class="pip-row" id="masteryPipsBack"></div>
           <div class="word-jp" id="wordJp">—</div>
           <div class="ex-area-back" id="exAreaBack">
-            <div class="ex-label" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.4);color:white;">例文</div>
             <div class="ex-text-back" id="wordExBack"></div>
             <div class="ex-jp-back" id="wordExJpBack"></div>
           </div>
@@ -606,7 +603,6 @@ body::before{
       <div class="word-en" id="quizWordEn">—</div>
       <div class="word-ph" id="quizWordPh"></div>
       <div class="ex-area-front" id="quizExArea" style="margin-top:10px;display:none;">
-        <div class="ex-label">例文</div>
         <div class="ex-text" id="quizWordEx"></div>
         <div class="ex-jp" id="quizWordExJp"></div>
       </div>
