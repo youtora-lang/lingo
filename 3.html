@@ -1868,18 +1868,24 @@ function calcDailyGoal(prog){const s=loadSettings();if(s.dailyGoal)return parseI
 function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0;const check=new Date();check.setHours(0,0,0,0);const dates=new Set(h.map(e=>e.date));while(true){const ds=localDayStart(check);if(dates.has(ds)){streak++;check.setDate(check.getDate()-1);}else break;if(streak>365)break;}return streak;}
 function buildSessionDeck(prog){
   const goal=calcDailyGoal(prog);
-  // 例文あり優先・ステータス順でソート
-  const hasEx=w=>!!w.ex;
-  const nw_ex=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'&&hasEx(w)));
-  const nw_no=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'&&!hasEx(w)));
-  const lw_ex=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='learning'&&hasEx(w)));
-  const lw_no=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='learning'&&!hasEx(w)));
+  const lw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='learning'));
+  const nw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'));
   const mw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='master'));
-  // 学習中(例文あり)→学習中(なし)→未学習(例文あり)→未学習(なし)の順
-  let deck=[...lw_ex,...lw_no,...nw_ex,...nw_no].slice(0,Math.ceil(goal*0.85));
-  if(deck.length<goal)deck.push(...mw.slice(0,goal-deck.length));
+  const nLearning=Math.round(goal*0.5);
+  const nNew=Math.round(goal*0.4);
+  const nMaster=goal-nLearning-nNew;
+  let deck=[
+    ...lw.slice(0,nLearning),
+    ...nw.slice(0,nNew),
+    ...mw.slice(0,nMaster),
+  ];
+  if(deck.length<goal){
+    const used=new Set(deck.map(w=>w.id));
+    const rest=shuffle(WORDS.filter(w=>!used.has(w.id)));
+    deck.push(...rest.slice(0,goal-deck.length));
+  }
   if(deck.length===0)deck=shuffle([...WORDS]).slice(0,goal);
-  return deck.slice(0,goal);
+  return shuffle(deck).slice(0,goal);
 }
 
 function updateDash(){
@@ -2028,7 +2034,10 @@ function selectQuizAnswer(btn,isCorrect,q){
   if(!isCorrect){document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===q.jp)b.classList.add('correct');});}
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
-  setTimeout(()=>{quizCurrent++;if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}else renderQuiz();},400);
+  setTimeout(()=>{
+    document.querySelectorAll('.quiz-choice').forEach(b=>{b.classList.remove('correct','wrong');});
+    setTimeout(()=>{quizCurrent++;if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}else renderQuiz();},50);
+  },500);
 }
 
 function speakQuizWord(){
