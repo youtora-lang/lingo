@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="https://youtora-lang.github.io/lingo/apple-touch-icon.png">
+<link rel="icon" href="https://youtora-lang.github.io/lingo/favicon.ico">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="lingo">
+<title>lingo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #fdf0e0;
+  --bg-deep:    #f5dfc0;
+  --card:       #ffffff;
+  --card-flip:  #e8822a;
+  --card-flip-deep: #c86818;
+  --border:     #3a2010;
+  --gold:       #4a8a3a;
+  --gold-lt:    #6aaa4a;
+  --gold-pale:  #c8e8b0;
+  --gold-bg:    #e8f5d8;
+  --ink:        #2a1808;
+  --ink-mid:    #6a4020;
+  --ink-lt:     #a08060;
+  --white:      #ffffff;
+  --correct:    #4a8a3a;
+  --correct-pale:#d8f0c8;
+  --wrong:      #d94a3a;
+  --wrong-pale: #fde0d8;
+  --star-color: rgba(255,200,100,0.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:'Nunito','Zen Maru Gothic',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+/* 背景の星飾り */
+body::before{
+  content:'✦ ✧ ✦ ✧ ✦ ✧';
+  position:fixed;top:8px;left:0;right:0;
+  text-align:center;font-size:10px;
+  color:var(--star-color);letter-spacing:20px;
+  pointer-events:none;z-index:0;
+}
+
+/* ══ SCREEN ══ */
+.screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;}
+
+/* ══ NAV ══ */
+.nav{
+  display:flex;background:var(--card);
+  border-bottom:1.5px solid var(--border);
+  position:sticky;top:0;z-index:10;
+}
+.nav-btn{
+  flex:1;padding:10px 4px 8px;
+  border:none;background:none;
+  font-family:inherit;font-size:10px;font-weight:800;
+  color:var(--ink-lt);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.nav-btn.active{color:var(--card-flip);}
+.nav-icon{
+  font-size:20px;width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-btn.active .nav-icon{background:var(--bg);}
+
+/* ══ DASHBOARD ══ */
+.dash-body{padding:16px;overflow-y:auto;flex:1;}
+
+/* タイトルバッジ */
+.page-badge{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;margin-bottom:16px;
+}
+.badge-pill{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:99px;padding:6px 20px;
+  font-size:13px;font-weight:900;color:var(--ink);
+  letter-spacing:0.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--gold-lt);}
+
+/* カウントダウン */
+.countdown-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:20px;padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+  position:relative;overflow:hidden;
+}
+.countdown-card::after{
+  content:'🍎';position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:40px;opacity:0.12;
+}
+.countdown-days{
+  font-size:52px;font-weight:900;color:var(--card-flip);line-height:1;
+  font-family:'Nunito',sans-serif;
+}
+.countdown-label{font-size:11px;color:var(--ink-mid);margin-top:2px;font-weight:800;}
+.countdown-right{text-align:right;}
+.countdown-exam{font-size:13px;font-weight:900;color:var(--ink);}
+.countdown-sub{font-size:10px;color:var(--ink-lt);margin-top:3px;font-weight:700;}
+
+/* スタッツ */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.stat-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:13px 14px;
+}
+.stat-label{font-size:10px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+.stat-val{font-size:28px;font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
+.stat-unit{font-size:11px;color:var(--ink-lt);margin-top:3px;font-weight:700;}
+.stat-card.hl{background:var(--bg);border-color:var(--card-flip);}
+.stat-card.hl .stat-val{color:var(--card-flip);}
+.stat-card.hl-gold{background:var(--gold-bg);border-color:var(--gold);}
+.stat-card.hl-gold .stat-val{color:var(--gold);}
+
+/* セクションカード */
+.section-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:18px;padding:16px;margin-bottom:12px;
+}
+.section-title{
+  font-size:11px;font-weight:900;color:var(--ink-mid);
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;
+}
+.prog-row{margin-bottom:10px;}
+.prog-header{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:5px;}
+.prog-key{color:var(--ink-mid);}
+.prog-num{color:var(--ink-lt);}
+.prog-bar{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;border:1.5px solid var(--bg-deep);}
+.prog-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+.fill-master{background:var(--correct);}
+.fill-learning{background:var(--gold-lt);}
+.fill-new{background:var(--ink-lt);}
+
+.pace-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1.5px dashed var(--bg-deep);font-size:13px;
+}
+.pace-row:last-child{border-bottom:none;}
+.pace-key{color:var(--ink-mid);font-weight:700;}
+.pace-val{font-weight:900;color:var(--ink);}
+.pace-val.ok{color:var(--correct);}
+.pace-val.warn{color:var(--wrong);}
+
+/* モード選択 */
+.mode-row{display:flex;gap:10px;margin-bottom:10px;}
+.mode-btn{
+  flex:1;padding:11px 8px;
+  border:1.5px solid var(--border);background:var(--card);
+  border-radius:14px;font-family:inherit;font-size:12px;font-weight:800;
+  color:var(--ink-mid);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.15s;
+}
+.mode-btn .mode-icon{font-size:22px;}
+.mode-btn.selected{
+  border-color:var(--card-flip);background:var(--bg);
+  color:var(--card-flip);
+}
+
+/* スタートボタン */
+.start-btn{
+  width:100%;padding:16px;
+  background:var(--gold-lt);color:var(--ink);
+  border:1.5px solid var(--border);border-radius:16px;
+  font-family:inherit;font-size:16px;font-weight:900;
+  cursor:pointer;transition:all 0.15s;
+}
+.start-btn:active{transform:translateY(2px);}
+.start-btn.done{background:var(--correct);color:white;}
+
+/* ══ FC HEADER ══ */
+.fc-header{
+  background:var(--card);border-bottom:1.5px solid var(--border);
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.fc-title{font-size:13px;font-weight:900;color:var(--ink);letter-spacing:0.05em;}
+.fc-close{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--border);background:var(--bg);
+  font-size:13px;cursor:pointer;color:var(--ink-mid);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;
+}
+
+.prog-wrap{
+  padding:10px 16px 8px;background:var(--card);
+  border-bottom:1.5px solid var(--bg-deep);
+}
+.prog-bar-thin{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:var(--card-flip);border-radius:99px;transition:width 0.4s ease;}
+.prog-nums{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-lt);font-weight:800;margin-top:4px;}
+
+/* ══ CARD AREA ══ */
+.card-area{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:16px 16px 24px;
+}
+
+/* フラッシュカード */
+.flashcard{width:100%;max-width:360px;perspective:1000px;margin-bottom:16px;cursor:pointer;}
+.flashcard-inner{
+  position:relative;width:100%;height:230px;
+  transform-style:preserve-3d;
+  transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.flashcard-inner.flipped{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border:1.5px solid var(--border);border-radius:22px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;
+}
+.fc-front{background:var(--card);}
+.fc-back{transform:rotateY(180deg);background:var(--card-flip);}
+
+/* 前面 */
+.gold-tag{
+  display:inline-block;background:var(--gold-lt);
+  border:2px solid var(--border);border-radius:99px;
+  padding:3px 14px;font-size:11px;font-weight:900;
+  color:var(--ink);margin-bottom:12px;
+}
+.word-en{font-size:32px;font-weight:900;color:var(--ink);margin-bottom:6px;font-family:'Nunito',sans-serif;}
+.word-ph{font-size:12px;color:var(--ink-lt);margin-bottom:10px;font-weight:700;}
+.tap-hint{font-size:11px;color:var(--ink-lt);font-weight:700;margin-top:8px;}
+
+
+
+
+
+/* 背面 */
+.word-jp{font-size:26px;font-weight:900;color:var(--white);margin-bottom:10px;font-family:'Zen Maru Gothic',sans-serif;}
+
+
+
+
+.mastery-label{font-size:10px;color:rgba(255,255,255,0.65);margin-top:8px;font-weight:800;}
+
+/* ピップ */
+.pip-row{display:flex;gap:5px;margin-bottom:10px;}
+.pip{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.4);}
+.pip.filled{background:var(--gold-lt);border-color:var(--gold);}
+.pip-front{background:var(--bg);border-color:var(--bg-deep);}
+.pip-front.filled{background:var(--gold-lt);border-color:var(--gold);}
+
+/* スピークボタン */
+.speak-btn{
+  position:absolute;top:10px;right:10px;
+  width:34px;height:34px;border-radius:50%;
+  border:2px solid var(--bg-deep);background:var(--bg);
+  font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-mid);transition:all 0.2s;
+}
+.speak-btn.speaking{background:var(--card-flip);color:white;border-color:var(--card-flip);}
+
+/* アクションボタン */
+.flip-btn{
+  width:100%;max-width:360px;padding:14px;
+  background:var(--card);color:var(--ink);
+  border:1.5px solid var(--border);border-radius:14px;
+  font-family:inherit;font-size:15px;font-weight:900;
+  cursor:pointer;margin-bottom:12px;transition:all 0.15s;
+}
+.flip-btn:active{transform:translateY(2px);}
+.flip-btn.hidden{display:none;}
+
+.action-row{
+  display:flex;gap:12px;width:100%;max-width:360px;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.action-row.show{opacity:1;pointer-events:all;}
+.action-btn{
+  flex:1;padding:14px 8px;border:1.5px solid var(--border);
+  border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.action-btn:active{transform:scale(0.95);}
+.btn-ok{background:var(--gold-lt);color:var(--ink);}
+.btn-ng{background:var(--card);color:var(--ink-mid);}
+.btn-label{font-size:10px;font-weight:800;}
+
+.counter-row{display:flex;gap:16px;margin-top:14px;justify-content:center;}
+.counter{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:900;color:var(--ink-mid);}
+.c-dot{width:9px;height:9px;border-radius:50%;}
+.c-ok{background:var(--correct);}
+.c-ng{background:var(--wrong);}
+
+/* ══ 4択クイズ ══ */
+.quiz-question{
+  width:100%;max-width:360px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:22px;
+  padding:22px 20px 18px;text-align:center;margin-bottom:14px;
+}
+.quiz-choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;}
+.quiz-choice{
+  width:100%;padding:13px 16px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;font-family:inherit;font-size:14px;font-weight:800;
+  color:var(--ink);cursor:pointer;transition:all 0.15s;text-align:left;
+  display:flex;align-items:center;gap:10px;
+}
+.quiz-choice:hover:not(:disabled){
+  border-color:var(--card-flip);background:var(--bg);
+  transform:translateY(-1px);
+}
+.quiz-choice.correct{border-color:var(--correct);background:var(--correct-pale);color:var(--correct);}
+.quiz-choice.wrong{border-color:var(--wrong);background:var(--wrong-pale);color:var(--wrong);}
+.quiz-choice:disabled{cursor:default;transform:none;}
+.quiz-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--bg-deep);
+  font-size:11px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:var(--ink-mid);
+}
+.correct .quiz-num{background:var(--correct);color:white;border-color:var(--correct);}
+.wrong .quiz-num{background:var(--wrong);color:white;border-color:var(--wrong);}
+
+/* ══ セッション結果 ══ */
+.sess-result{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;overflow-y:auto;}
+.sess-emoji{font-size:56px;margin-bottom:10px;text-align:center;}
+.sess-title{font-size:22px;font-weight:900;color:var(--ink);text-align:center;margin-bottom:6px;}
+.sess-score{font-size:48px;font-weight:900;color:var(--card-flip);text-align:center;font-family:'Nunito',sans-serif;}
+.sess-score span{font-size:18px;color:var(--ink-lt);font-weight:700;}
+.sess-sub{font-size:14px;color:var(--ink-mid);text-align:center;line-height:1.7;margin-bottom:24px;max-width:320px;font-weight:700;}
+
+.missed-box{width:100%;max-width:400px;margin-bottom:16px;}
+.missed-section-title{font-size:11px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.missed-item{
+  background:var(--card);border:2px solid var(--border);
+  border-radius:12px;padding:10px 14px;
+  display:flex;align-items:center;gap:12px;margin-bottom:7px;
+}
+.missed-en{font-size:15px;font-weight:900;color:var(--ink);min-width:110px;}
+.missed-jp{font-size:13px;color:var(--ink-mid);font-weight:700;}
+
+.copy-btn{
+  width:100%;max-width:400px;padding:13px;
+  background:var(--bg);color:var(--card-flip);
+  border:1.5px solid var(--card-flip);border-radius:14px;
+  font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:10px;
+  transition:all 0.15s;
+}
+.copy-btn:active{transform:translateY(2px);}
+
+.sess-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px;}
+.s-btn{
+  padding:14px;border-radius:14px;font-family:inherit;
+  font-size:15px;font-weight:900;cursor:pointer;border:1.5px solid var(--border);
+  transition:all 0.15s;
+}
+.s-btn:active{transform:translateY(2px);}
+.s-btn-retry{background:var(--card);color:var(--ink-mid);}
+.s-btn-dash{background:var(--gold-lt);color:var(--ink);}
+
+/* ══ 単語一覧 ══ */
+.wl-body{padding:14px;overflow-y:auto;flex:1;}
+.wl-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.wl-filter{
+  padding:5px 12px;border-radius:99px;border:2px solid var(--border);
+  background:var(--card);font-family:inherit;font-size:12px;font-weight:900;
+  color:var(--ink-mid);cursor:pointer;
+}
+.wl-filter.active{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
+
+.word-item{
+  background:var(--card);border:2px solid var(--border);
+  border-radius:12px;padding:11px 14px;margin-bottom:7px;
+  display:flex;align-items:center;gap:12px;
+}
+.wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.wi-master{background:var(--correct);}
+.wi-learning{background:var(--gold-lt);}
+.wi-new{background:var(--ink-lt);}
+.wi-body{flex:1;}
+.wi-en{font-size:15px;font-weight:900;color:var(--ink);}
+.wi-jp{font-size:12px;color:var(--ink-mid);margin-top:2px;font-weight:700;}
+.wi-meta{font-size:11px;color:var(--ink-lt);text-align:right;font-weight:800;}
+.wi-ex{font-size:11px;color:var(--ink-lt);margin-top:4px;font-style:italic;line-height:1.5;}
+
+/* ══ 設定 ══ */
+.set-body{padding:16px;overflow-y:auto;flex:1;}
+.set-section-title{font-size:11px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.set-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:14px;margin-bottom:16px;
+}
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1.5px dashed var(--bg-deep);
+}
+.set-row:last-child{border-bottom:none;}
+.set-label{font-size:14px;font-weight:800;color:var(--ink);}
+.set-sub{font-size:11px;color:var(--ink-lt);margin-top:2px;font-weight:700;}
+.set-input{
+  padding:6px 10px;border:2px solid var(--border);border-radius:8px;
+  font-family:inherit;font-size:14px;color:var(--ink);background:var(--bg);
+  width:130px;text-align:right;font-weight:800;
+}
+.reset-btn{
+  width:100%;padding:13px;background:none;border:1.5px solid var(--wrong);
+  border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;
+  color:var(--wrong);cursor:pointer;
+}
+
+/* ══ TOAST ══ */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:white;font-size:13px;font-weight:900;
+  padding:10px 20px;border-radius:99px;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="dashScreen" class="screen active">
+  <div class="nav">
+    <button class="nav-btn active" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="dash-body">
+    <div class="page-badge">
+      <span class="badge-dot"></span>
+      <div class="badge-pill">lingo</div>
+      <span class="badge-dot"></span>
+    </div>
+
+    <div class="countdown-card">
+      <div>
+        <div class="countdown-days" id="countdownDays">—</div>
+        <div class="countdown-label">日後に試験 📝</div>
+      </div>
+      <div class="countdown-right">
+        <div class="countdown-exam">英検 3級</div>
+        <div class="countdown-sub" id="countdownSub">2026年10月4日</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card hl">
+        <div class="stat-label">TODAY'S GOAL</div>
+        <div class="stat-val" id="todayGoal">—</div>
+        <div class="stat-unit">語 / 日</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TOTAL WORDS</div>
+        <div class="stat-val" id="totalWords">1561</div>
+        <div class="stat-unit">語収録</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">MASTERED 🟢</div>
+        <div class="stat-val" id="masteredCount">0</div>
+        <div class="stat-unit">語 定着済み</div>
+      </div>
+      <div class="stat-card hl-gold">
+        <div class="stat-label">STREAK 🔥</div>
+        <div class="stat-val" id="streakCount">0</div>
+        <div class="stat-unit">日連続</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">全体進捗</div>
+      <div class="prog-row">
+        <div class="prog-header"><span class="prog-key">🟢 定着済み</span><span class="prog-num" id="progMasterNum">0 / 1561</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-master" id="progMasterFill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-row" style="margin-top:10px">
+        <div class="prog-header"><span class="prog-key">🟡 学習中</span><span class="prog-num" id="progLearningNum">0 / 1561</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-learning" id="progLearningFill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-row" style="margin-top:10px">
+        <div class="prog-header"><span class="prog-key">⚪ 未学習</span><span class="prog-num" id="progNewNum">1561 / 1561</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-new" id="progNewFill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">学習ペース</div>
+      <div class="pace-row"><span class="pace-key">今日の学習</span><span class="pace-val" id="planToday">—</span></div>
+      <div class="pace-row"><span class="pace-key">このペースで完走</span><span class="pace-val" id="planOnTrack">—</span></div>
+      <div class="pace-row"><span class="pace-key">累計セッション</span><span class="pace-val" id="planSessions">—</span></div>
+    </div>
+
+    <div class="mode-row">
+      <button class="mode-btn selected" id="modeFlash" onclick="selectMode('flash',this)">
+        <span class="mode-icon">📇</span>フラッシュ
+      </button>
+      <button class="mode-btn" id="modeQuiz" onclick="selectMode('quiz',this)">
+        <span class="mode-icon">🔤</span>4択クイズ
+      </button>
+    </div>
+    <button class="start-btn" id="startSessionBtn" onclick="startSession()">今日のセッションを始める →</button>
+  </div>
+</div>
+
+<!-- ══ FLASHCARD ══ -->
+<div id="fcScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="fcTitle">• FLASH CARDS •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="fcProgFill" style="width:0%"></div></div>
+    <div class="prog-nums">
+      <span id="fcProgLabel">1 / 20</span>
+      <span id="fcProgRemain">残り 20枚</span>
+    </div>
+  </div>
+  <div class="card-area">
+    <div class="flashcard" onclick="flipCard()">
+      <div class="flashcard-inner" id="cardInner">
+        <!-- 前面 -->
+        <div class="fc-face fc-front">
+          <button class="speak-btn" id="speakBtn" onclick="speakWord(event)">🔊</button>
+          <div class="gold-tag" id="fcTag">英語 → 日本語</div>
+          <div class="pip-row" id="masteryPips"></div>
+          <div class="word-en" id="wordEn">—</div>
+          <div class="word-ph" id="wordPh"></div>
+          <div class="tap-hint">タップして答えを見る</div>
+        </div>
+        <!-- 背面 -->
+        <div class="fc-face fc-back">
+          <div class="pip-row" id="masteryPipsBack"></div>
+          <div class="word-jp" id="wordJp">—</div>
+
+          <div class="mastery-label" id="masteryLabel"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="flip-btn" id="flipBtn" onclick="flipCard()">タップして答えを見る</button>
+    <div class="action-row" id="actionRow">
+      <button class="action-btn btn-ng" onclick="judge(false)">😅 もう少し<span class="btn-label">もう一度</span></button>
+      <button class="action-btn btn-ok" onclick="judge(true)">✓ 覚えてた！<span class="btn-label">わかった</span></button>
+    </div>
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="fcOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="fcNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4択クイズ ══ -->
+<div id="quizScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="quizTitle">• QUIZ •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="quizProgFill" style="width:0%"></div></div>
+    <div class="prog-nums">
+      <span id="quizProgLabel">1 / 20</span>
+      <span id="quizProgRemain">残り 20問</span>
+    </div>
+  </div>
+  <div class="card-area">
+    <div class="quiz-question">
+      <div class="gold-tag">英語 → 日本語</div>
+      <div class="pip-row" id="quizMasteryPips" style="justify-content:center;margin-top:8px;"></div>
+      <div class="word-en" id="quizWordEn">—</div>
+      <div class="word-ph" id="quizWordPh"></div>
+      <div class="ex-area-front" id="quizExArea" style="margin-top:10px;display:none;">
+        <div class="ex-label">例文</div>
+        <div class="ex-text" id="quizWordEx"></div>
+        <div class="ex-jp" id="quizWordExJp"></div>
+      </div>
+      <button class="speak-btn" style="position:static;margin:8px auto 0;" onclick="speakQuizWord()">🔊</button>
+    </div>
+    <div class="quiz-choices" id="quizChoices"></div>
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="quizOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="quizNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ セッション結果 ══ -->
+<div id="sessResultScreen" class="screen">
+  <div class="sess-result">
+    <div class="sess-emoji" id="sessEmoji">🎉</div>
+    <div class="sess-title" id="sessTitle"></div>
+    <div class="sess-score"><span id="sessScoreNum">0</span><span> / <span id="sessScoreTot">0</span></span></div>
+    <div class="sess-sub" id="sessSub"></div>
+    <div class="missed-box" id="missedBox">
+      <div class="missed-section-title">📌 要復習の単語</div>
+      <div id="missedList"></div>
+    </div>
+    <button class="copy-btn" onclick="copyResult()">📋 結果をClaudeに貼り付け用コピー</button>
+    <div class="sess-btns">
+      <button class="s-btn s-btn-retry" id="retryBtn" onclick="retryMissed()">✕ の単語だけもう一度</button>
+      <button class="s-btn s-btn-dash" onclick="goToDash()">ダッシュボードへ戻る</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 単語一覧 ══ -->
+<div id="wordlistScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn active" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="wl-body">
+    <div class="wl-filters">
+      <button class="wl-filter active" data-filter="all" onclick="filterWords(this)">すべて</button>
+      <button class="wl-filter" data-filter="master" onclick="filterWords(this)">🟢 定着済み</button>
+      <button class="wl-filter" data-filter="learning" onclick="filterWords(this)">🟡 学習中</button>
+      <button class="wl-filter" data-filter="new" onclick="filterWords(this)">⚪ 未学習</button>
+    </div>
+    <div id="wordListItems"></div>
+  </div>
+</div>
+
+<!-- ══ 設定 ══ -->
+<div id="settingsScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn active" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="set-body">
+    <div class="set-section-title" style="margin-bottom:10px">試験・学習設定</div>
+    <div class="set-card">
+      <div class="set-row">
+        <div><div class="set-label">試験日</div><div class="set-sub">英検の受験予定日</div></div>
+        <input class="set-input" type="date" id="examDateInput" onchange="saveSetting('examDate',this.value);updateDash()">
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">1日の目標語数</div><div class="set-sub">自動計算の上書き</div></div>
+        <input class="set-input" type="number" id="dailyGoalInput" min="5" max="50" placeholder="自動" onchange="saveSetting('dailyGoal',this.value)">
+      </div>
+    </div>
+    <div class="set-section-title" style="margin-bottom:10px">リセット</div>
+    <div class="set-card">
+      <button class="reset-btn" onclick="confirmReset()">⚠️ 全学習データをリセット</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WORDS = [
+{id:'famous_0',w:'famous',jp:'有名な',num:0},
+{id:'weekend_1',w:'weekend',jp:'週末',num:1},
+{id:'soon_2',w:'soon',jp:'すぐに',num:2},
+{id:'still_3',w:'still',jp:'まだ',num:3},
+{id:'popular_4',w:'popular',jp:'人気の',num:4},
+{id:'practice_5',w:'practice',jp:'練習する',num:5},
+{id:'during_6',w:'during',jp:'〜の間',num:6},
+{id:'enjoy_7',w:'enjoy',jp:'楽しむ',num:7},
+{id:'favorite_8',w:'favorite',jp:'お気に入りの',num:8},
+{id:'sell_9',w:'sell',jp:'売る',num:9},
+{id:'bring_10',w:'bring',jp:'持ってくる',num:10},
+{id:'expensive_11',w:'expensive',jp:'高価な',num:11},
+{id:'join_12',w:'join',jp:'参加する',num:12},
+{id:'so_13',w:'so',jp:'とても',num:13},
+{id:'leave_14',w:'leave',jp:'去る・残す',num:14},
+{id:'enough_15',w:'enough',jp:'十分な',num:15},
+{id:'happen_16',w:'happen',jp:'起こる',num:16},
+{id:'different_17',w:'different',jp:'違った',num:17},
+{id:'invite_18',w:'invite',jp:'招待する',num:18},
+{id:'how_about_19',w:'how about',jp:'はどうですか',num:19},
+{id:'plan_20',w:'plan',jp:'計画する',num:20},
+{id:'ask_21',w:'ask',jp:'たずねる',num:21},
+{id:'until_22',w:'until',jp:'まで',num:22},
+{id:'almost_23',w:'almost',jp:'ほとんど',num:23},
+{id:'sick_24',w:'sick',jp:'病気の',num:24},
+{id:'excited_25',w:'excited',jp:'興奮した',num:25},
+{id:'science_26',w:'science',jp:'科学',num:26},
+{id:'library_27',w:'library',jp:'図書館',num:27},
+{id:'visit_28',w:'visit',jp:'訪問する',num:28},
+{id:'cheap_29',w:'cheap',jp:'安い',num:29},
+{id:'then_30',w:'then',jp:'そのとき',num:30},
+{id:'show_31',w:'show',jp:'見せる',num:31},
+{id:'instead_32',w:'instead',jp:'そのかわりに',num:32},
+{id:'what_about_33',w:'what about',jp:'〜はどうですか',num:33},
+{id:'garden_34',w:'garden',jp:'庭',num:34},
+{id:'look_for_35',w:'look for',jp:'探す',num:35},
+{id:'meet_36',w:'meet',jp:'会う',num:36},
+{id:'because_of_37',w:'because of',jp:'〜が理由で',num:37},
+{id:'by_38',w:'by',jp:'のそばに・によって',num:38},
+{id:'stay_39',w:'stay',jp:'滞在する',num:39},
+{id:'hope_40',w:'hope',jp:'望む',num:40},
+{id:'delicious_41',w:'delicious',jp:'おいしい',num:41},
+{id:'together_42',w:'together',jp:'一緒に',num:42},
+{id:'decide_43',w:'decide',jp:'決心する',num:43},
+{id:'later_44',w:'later',jp:'後に',num:44},
+{id:'festival_45',w:'festival',jp:'祭り',num:45},
+{id:'vacation_46',w:'vacation',jp:'休暇',num:46},
+{id:'own_47',w:'own',jp:'自分の',num:47},
+{id:'noon_48',w:'noon',jp:'正午',num:48},
+{id:'important_49',w:'important',jp:'重要な',num:49},
+{id:'remember_50',w:'remember',jp:'思い出す',num:50},
+{id:'nervous_51',w:'nervous',jp:'緊張した',num:51},
+{id:'look_52',w:'look',jp:'見る',num:52},
+{id:'weather_53',w:'weather',jp:'天気',num:53},
+{id:'in_front_of_54',w:'in front of',jp:'の前に',num:54},
+{id:'have_to_55',w:'have to',jp:'〜しなければならない',num:55},
+{id:'grow_56',w:'grow',jp:'育てる',num:56},
+{id:'carry_57',w:'carry',jp:'運ぶ',num:57},
+{id:'heavy_58',w:'heavy',jp:'重い',num:58},
+{id:'need_to_59',w:'need to',jp:'〜する必要がある',num:59},
+{id:'a_lot_of_60',w:'a lot of',jp:'たくさんの',num:60},
+{id:'sure_61',w:'sure',jp:'確信して',num:61},
+{id:'arrive_62',w:'arrive',jp:'到着する',num:62},
+{id:'over_there_63',w:'over there',jp:'あそこに',num:63},
+{id:'borrow_64',w:'borrow',jp:'借りる',num:64},
+{id:'place_65',w:'place',jp:'場所',num:65},
+{id:'break_66',w:'break',jp:'壊れる・破る',num:66},
+{id:'June_67',w:'June',jp:'6月',num:67},
+{id:'usually_68',w:'usually',jp:'普通は',num:68},
+{id:'win_69',w:'win',jp:'勝つ',num:69},
+{id:'healthy_70',w:'healthy',jp:'健康な',num:70},
+{id:'sign_71',w:'sign',jp:'標識',num:71},
+{id:'one_day_72',w:'one day',jp:'ある日',num:72},
+{id:'maybe_73',w:'maybe',jp:'たぶん',num:73},
+{id:'how_often_74',w:'how often',jp:'どのくらいの頻度',num:74},
+{id:'hurt_75',w:'hurt',jp:'傷つける',num:75},
+{id:'dictionary_76',w:'dictionary',jp:'辞書',num:76},
+{id:'put_77',w:'put',jp:'置く',num:77},
+{id:'try_on_78',w:'try on',jp:'試着する',num:78},
+{id:'difficult_79',w:'difficult',jp:'難しい',num:79},
+{id:'be_interested_in_80',w:'be interested in',jp:'興味がある',num:80},
+{id:'when_81',w:'when',jp:'〜するとき',num:81},
+{id:'beside_82',w:'beside',jp:'横に',num:82},
+{id:'strong_83',w:'strong',jp:'強い',num:83},
+{id:'believe_84',w:'believe',jp:'信じる',num:84},
+{id:'sad_85',w:'sad',jp:'悲しい',num:85},
+{id:'should_86',w:'should',jp:'〜すべきである',num:86},
+{id:'clock_87',w:'clock',jp:'時計',num:87},
+{id:'million_88',w:'million',jp:'100万',num:88},
+{id:'bright_89',w:'bright',jp:'明るい',num:89},
+{id:'again_90',w:'again',jp:'再び・また',num:90},
+{id:'hear_91',w:'hear',jp:'聞く',num:91},
+{id:'look_forward_to_92',w:'look forward to',jp:'〜を楽しみにする',num:92},
+{id:'cook_93',w:'cook',jp:'料理する',num:93},
+{id:'drive_94',w:'drive',jp:'運転する',num:94},
+{id:'face_95',w:'face',jp:'顔',num:95},
+{id:'get_96',w:'get',jp:'得る',num:96},
+{id:'find_97',w:'find',jp:'見つける',num:97},
+{id:'lake_98',w:'lake',jp:'湖',num:98},
+{id:'really_99',w:'really',jp:'本当に',num:99},
+{id:'sometimes_100',w:'sometimes',jp:'時々',num:100},
+{id:'exciting_101',w:'exciting',jp:'興奮させる',num:101},
+{id:'write_102',w:'write',jp:'書く',num:102},
+{id:'make_103',w:'make',jp:'作る',num:103},
+{id:'tall_104',w:'tall',jp:'高い',num:104},
+{id:'guess_105',w:'guess',jp:'推測する',num:105},
+{id:'between_A_and_B_106',w:'between A and B',jp:'AとBの間',num:106},
+{id:'July_107',w:'July',jp:'7月',num:107},
+{id:'information_108',w:'information',jp:'情報',num:108},
+{id:'pay_109',w:'pay',jp:'支払う',num:109},
+{id:'season_110',w:'season',jp:'季節',num:110},
+{id:'already_111',w:'already',jp:'すでに・もう',num:111},
+{id:'sold_out_112',w:'sold out',jp:'売り切れ',num:112},
+{id:'take_care_of_113',w:'take care of',jp:'の面倒を見る',num:113},
+{id:'March_114',w:'March',jp:'3月',num:114},
+{id:'wear_115',w:'wear',jp:'着る',num:115},
+{id:'university_116',w:'university',jp:'大学',num:116},
+{id:'math_117',w:'math',jp:'数学',num:117},
+{id:'people_118',w:'people',jp:'人々',num:118},
+{id:'lots_of_119',w:'lots of',jp:'たくさんの',num:119},
+{id:'care_120',w:'care',jp:'注意する・世話する',num:120},
+{id:'invent_121',w:'invent',jp:'発明する',num:121},
+{id:'large_122',w:'large',jp:'大きい・広い',num:122},
+{id:'get_married_123',w:'get married',jp:'結婚する',num:123},
+{id:'city_hall_124',w:'city hall',jp:'市庁舎',num:124},
+{id:'bank_125',w:'bank',jp:'銀行',num:125},
+{id:'prize_126',w:'prize',jp:'賞',num:126},
+{id:'save_127',w:'save',jp:'節約する',num:127},
+{id:'on_weekends_128',w:'on weekends',jp:'週末に',num:128},
+{id:'clothes_129',w:'clothes',jp:'服',num:129},
+{id:'museum_130',w:'museum',jp:'博物館',num:130},
+{id:'be_born_131',w:'be born',jp:'生まれる',num:131},
+{id:'choose_132',w:'choose',jp:'選ぶ',num:132},
+{id:'cousin_133',w:'cousin',jp:'いとこ',num:133},
+{id:'everywhere_134',w:'everywhere',jp:'どこでも',num:134},
+{id:'plant_135',w:'plant',jp:'植物',num:135},
+{id:'try_136',w:'try',jp:'試す',num:136},
+{id:'if_137',w:'if',jp:'もし〜なら',num:137},
+{id:'another_138',w:'another',jp:'もう一つの',num:138},
+{id:'take_part_in_139',w:'take part in',jp:'参加する',num:139},
+{id:'meaning_140',w:'meaning',jp:'意味',num:140},
+{id:'hit_141',w:'hit',jp:'打つ',num:141},
+{id:'angry_142',w:'angry',jp:'怒った',num:142},
+{id:'map_143',w:'map',jp:'地図',num:143},
+{id:'be_proud_of_144',w:'be proud of',jp:'誇りに思う',num:144},
+{id:'dirty_145',w:'dirty',jp:'汚い',num:145},
+{id:'each_other_146',w:'each other',jp:'お互いに',num:146},
+{id:'promise_147',w:'promise',jp:'約束',num:147},
+{id:'problem_148',w:'problem',jp:'問題',num:148},
+{id:'who_149',w:'who',jp:'誰',num:149},
+{id:'what_150',w:'what',jp:'何',num:150},
+{id:'how_151',w:'how',jp:'どのぐらい',num:151},
+{id:'customer_152',w:'customer',jp:'顧客',num:152},
+{id:'once_153',w:'once',jp:'かつて',num:153},
+{id:'twice_154',w:'twice',jp:'2回',num:154},
+{id:'salt_155',w:'salt',jp:'塩',num:155},
+{id:'hurry_up_156',w:'hurry up',jp:'急ぐ',num:156},
+{id:'notice_157',w:'notice',jp:'気づく',num:157},
+{id:'collect_158',w:'collect',jp:'集める',num:158},
+{id:'accident_159',w:'accident',jp:'事故',num:159},
+{id:'more_than_160',w:'more than',jp:'より多い',num:160},
+{id:'cost_161',w:'cost',jp:'費用',num:161},
+{id:'star_162',w:'star',jp:'星・スター',num:162},
+{id:'keep_163',w:'keep',jp:'保つ',num:163},
+{id:'late_164',w:'late',jp:'遅い',num:164},
+{id:'cold_165',w:'cold',jp:'冷たい',num:165},
+{id:'food_166',w:'food',jp:'食べ物',num:166},
+{id:'order_167',w:'order',jp:'注文する',num:167},
+{id:'clean_168',w:'clean',jp:'きれいな',num:168},
+{id:'right_away_169',w:'right away',jp:'直ちに・すぐに',num:169},
+{id:'trip_170',w:'trip',jp:'旅行',num:170},
+{id:'far_from_171',w:'far from',jp:'〜から遠い',num:171},
+{id:'zoo_172',w:'zoo',jp:'動物園',num:172},
+{id:'wash_173',w:'wash',jp:'洗う',num:173},
+{id:'pick_up_174',w:'pick up',jp:'拾う',num:174},
+{id:'fun_175',w:'fun',jp:'楽しみ',num:175},
+{id:'grandfather_176',w:'grandfather',jp:'祖父',num:176},
+{id:'travel_177',w:'travel',jp:'旅行',num:177},
+{id:'other_178',w:'other',jp:'ほかの',num:178},
+{id:'attention_179',w:'attention',jp:'注意',num:179},
+{id:'husband_180',w:'husband',jp:'夫',num:180},
+{id:'international_181',w:'international',jp:'国際的な',num:181},
+{id:'interesting_182',w:'interesting',jp:'面白い',num:182},
+{id:'often_183',w:'often',jp:'しばしば・よく',num:183},
+{id:'boring_184',w:'boring',jp:'つまらない',num:184},
+{id:'glad_185',w:'glad',jp:'うれしい',num:185},
+{id:'below_186',w:'below',jp:'下に',num:186},
+{id:'turn_187',w:'turn',jp:'曲がる・回る',num:187},
+{id:'wide_188',w:'wide',jp:'幅の広い',num:188},
+{id:'loud_189',w:'loud',jp:'騒がしい',num:189},
+{id:'amazing_190',w:'amazing',jp:'驚くべき',num:190},
+{id:'price_191',w:'price',jp:'値段',num:191},
+{id:'each_192',w:'each',jp:'おのおのの',num:192},
+{id:'talk_about_193',w:'talk about',jp:'について話す',num:193},
+{id:'right_194',w:'right',jp:'右に',num:194},
+{id:'anyway_195',w:'anyway',jp:'ともかく',num:195},
+{id:'worry_196',w:'worry',jp:'心配させる',num:196},
+{id:'hard_197',w:'hard',jp:'一生懸命に',num:197},
+{id:'award_198',w:'award',jp:'賞',num:198},
+{id:'ocean_199',w:'ocean',jp:'大洋・海',num:199},
+{id:'draw_200',w:'draw',jp:'描く',num:200},
+{id:'luck_201',w:'luck',jp:'運',num:201},
+{id:'bakery_202',w:'bakery',jp:'パン屋',num:202},
+{id:'busy_203',w:'busy',jp:'忙しい',num:203},
+{id:'tonight_204',w:'tonight',jp:'今夜は',num:204},
+{id:'cloudy_205',w:'cloudy',jp:'曇った',num:205},
+{id:'wrong_206',w:'wrong',jp:'間違った',num:206},
+{id:'think_207',w:'think',jp:'考える',num:207},
+{id:'subject_208',w:'subject',jp:'科目・題目',num:208},
+{id:'become_209',w:'become',jp:'〜になる',num:209},
+{id:'enter_210',w:'enter',jp:'入る',num:210},
+{id:'imagine_211',w:'imagine',jp:'想像する',num:211},
+{id:'without_212',w:'without',jp:'〜なしに',num:212},
+{id:'through_213',w:'through',jp:'通り抜けて',num:213},
+{id:'since_214',w:'since',jp:'〜以来',num:214},
+{id:'horizon_215',w:'horizon',jp:'地平線・水平線',num:215},
+{id:'turn_on_216',w:'turn on',jp:'点ける',num:216},
+{id:'turn_off_217',w:'turn off',jp:'消す',num:217},
+{id:'buy_218',w:'buy',jp:'買う',num:218},
+{id:'celebrate_219',w:'celebrate',jp:'祝う',num:219},
+{id:'be_afraid_of_220',w:'be afraid of',jp:'を恐れる',num:220},
+{id:'rule_221',w:'rule',jp:'支配・統治',num:221},
+{id:'get_off_222',w:'get off',jp:'降りる',num:222},
+{id:'wallet_223',w:'wallet',jp:'財布',num:223},
+{id:'run_away_224',w:'run away',jp:'逃げ去る',num:224},
+{id:'ride_225',w:'ride',jp:'乗る',num:225},
+{id:'in_the_future_226',w:'in the future',jp:'将来に',num:226},
+{id:'scientist_227',w:'scientist',jp:'科学者',num:227},
+{id:'rainy_228',w:'rainy',jp:'雨降りの',num:228},
+{id:'rise_229',w:'rise',jp:'昇る',num:229},
+{id:'steal_230',w:'steal',jp:'盗む',num:230},
+{id:'mirror_231',w:'mirror',jp:'鏡',num:231},
+{id:'stay_with_232',w:'stay with',jp:'〜と一緒に過ごす',num:232},
+{id:'while_233',w:'while',jp:'〜する間',num:233},
+{id:'work_for_234',w:'work for',jp:'のために働く',num:234},
+{id:'feel_235',w:'feel',jp:'感じる',num:235},
+{id:'quick_236',w:'quick',jp:'速い',num:236},
+{id:'ever_237',w:'ever',jp:'今まで',num:237},
+{id:'be_good_at_238',w:'be good at',jp:'〜が上手である',num:238},
+{id:'local_239',w:'local',jp:'地元の',num:239},
+{id:'lend_240',w:'lend',jp:'貸す',num:240},
+{id:'environment_241',w:'environment',jp:'環境・状況',num:241},
+{id:'hole_242',w:'hole',jp:'穴',num:242},
+{id:'explain_243',w:'explain',jp:'説明する',num:243},
+{id:'finger_244',w:'finger',jp:'指',num:244},
+{id:'head_245',w:'head',jp:'頭',num:245},
+{id:'hand_246',w:'hand',jp:'手',num:246},
+{id:'shape_247',w:'shape',jp:'形',num:247},
+{id:'think_of_248',w:'think of',jp:'思いつく',num:248},
+{id:'country_249',w:'country',jp:'国',num:249},
+{id:'company_250',w:'company',jp:'会社',num:250},
+{id:'taste_251',w:'taste',jp:'味',num:251},
+{id:'spend_252',w:'spend',jp:'費やす',num:252},
+{id:'in_fact_253',w:'in fact',jp:'実際には',num:253},
+{id:'visitor_254',w:'visitor',jp:'観光客',num:254},
+{id:'boil_255',w:'boil',jp:'ゆでる・煮る',num:255},
+{id:'history_256',w:'history',jp:'歴史',num:256},
+{id:'grew_257',w:'grew',jp:'育った',num:257},
+{id:'joined_258',w:'joined',jp:'参加した',num:258},
+{id:'letter_259',w:'letter',jp:'手紙',num:259},
+{id:'why_260',w:'why',jp:'なぜ',num:260},
+{id:'Saturday_261',w:'Saturday',jp:'土曜日',num:261},
+{id:'Friday_262',w:'Friday',jp:'金曜日',num:262},
+{id:'advice_263',w:'advice',jp:'忠告',num:263},
+{id:'Wednesday_264',w:'Wednesday',jp:'水曜日',num:264},
+{id:'few_265',w:'few',jp:'いくつかの',num:265},
+{id:'piece_266',w:'piece',jp:'欠片・一部',num:266},
+{id:'went_267',w:'went',jp:'行った',num:267},
+{id:'understand_268',w:'understand',jp:'理解する',num:268},
+{id:'reason_269',w:'reason',jp:'理由',num:269},
+{id:'pick_270',w:'pick',jp:'選ぶ',num:270},
+{id:'peaceful_271',w:'peaceful',jp:'平和な',num:271},
+{id:'handle_272',w:'handle',jp:'処理する',num:272},
+{id:'round_273',w:'round',jp:'まわりに',num:273},
+{id:'thirsty_274',w:'thirsty',jp:'のどの乾いた',num:274},
+{id:'same_275',w:'same',jp:'同じ',num:275},
+{id:'be_different_from_276',w:'be different from',jp:'とは異なる',num:276},
+{id:'more_277',w:'more',jp:'もっと',num:277},
+{id:'purpose_278',w:'purpose',jp:'目的',num:278},
+{id:'let_s_279',w:'let\'s',jp:'〜しよう',num:279},
+{id:'just_a_moment_280',w:'just a moment',jp:'少しの間',num:280},
+{id:'vegetable_281',w:'vegetable',jp:'野菜',num:281},
+{id:'May_282',w:'May',jp:'5月',num:282},
+{id:'date_283',w:'date',jp:'日付',num:283},
+{id:'February_284',w:'February',jp:'2月',num:284},
+{id:'such_285',w:'such',jp:'そのような',num:285},
+{id:'talk_to_286',w:'talk to',jp:'話しかける',num:286},
+{id:'wife_287',w:'wife',jp:'妻',num:287},
+{id:'move_288',w:'move',jp:'動く・引っ越す',num:288},
+{id:'daughter_289',w:'daughter',jp:'娘',num:289},
+{id:'always_290',w:'always',jp:'いつも',num:290},
+{id:'be_kind_to_291',w:'be kind to',jp:'〜に親切にする',num:291},
+{id:'everyone_292',w:'everyone',jp:'みんな',num:292},
+{id:'agree_with_293',w:'agree with',jp:'賛成である',num:293},
+{id:'fix_294',w:'fix',jp:'固定する',num:294},
+{id:'side_295',w:'side',jp:'側・面',num:295},
+{id:'hungry_296',w:'hungry',jp:'空腹の',num:296},
+{id:'here_297',w:'here',jp:'ここに',num:297},
+{id:'last_298',w:'last',jp:'ひとつ前の・最後の',num:298},
+{id:'headache_299',w:'headache',jp:'頭痛',num:299},
+{id:'mountain_300',w:'mountain',jp:'山',num:300},
+{id:'anywhere_301',w:'anywhere',jp:'どこでも',num:301},
+{id:'brush_302',w:'brush',jp:'をみがく',num:302},
+{id:'breakfast_303',w:'breakfast',jp:'朝食',num:303},
+{id:'hat_304',w:'hat',jp:'帽子',num:304},
+{id:'dinner_305',w:'dinner',jp:'夕食',num:305},
+{id:'watch_306',w:'watch',jp:'見る',num:306},
+{id:'around_307',w:'around',jp:'のまわりに',num:307},
+{id:'salad_308',w:'salad',jp:'サラダ',num:308},
+{id:'school_festival_309',w:'school festival',jp:'文化祭',num:309},
+{id:'nature_310',w:'nature',jp:'自然',num:310},
+{id:'design_311',w:'design',jp:'設計する',num:311},
+{id:'share_312',w:'share',jp:'分かち合う',num:312},
+{id:'long_313',w:'long',jp:'長い',num:313},
+{id:'receive_314',w:'receive',jp:'受け取る',num:314},
+{id:'injure_315',w:'injure',jp:'傷つける',num:315},
+{id:'theater_316',w:'theater',jp:'劇場',num:316},
+{id:'horror_317',w:'horror',jp:'恐怖',num:317},
+{id:'attend_318',w:'attend',jp:'通う・出席する',num:318},
+{id:'die_319',w:'die',jp:'死ぬ',num:319},
+{id:'every_year_320',w:'every year',jp:'毎年',num:320},
+{id:'fast_321',w:'fast',jp:'速い',num:321},
+{id:'umbrella_322',w:'umbrella',jp:'傘',num:322},
+{id:'pleasure_323',w:'pleasure',jp:'楽しみ',num:323},
+{id:'picture_324',w:'picture',jp:'絵・写真',num:324},
+{id:'see_325',w:'see',jp:'見る',num:325},
+{id:'art_326',w:'art',jp:'芸術',num:326},
+{id:'too_327',w:'too',jp:'〜もまた',num:327},
+{id:'grandmother_328',w:'grandmother',jp:'祖母',num:328},
+{id:'doctor_329',w:'doctor',jp:'医者',num:329},
+{id:'teach_330',w:'teach',jp:'教える',num:330},
+{id:'station_331',w:'station',jp:'駅',num:331},
+{id:'after_332',w:'after',jp:'〜の後で',num:332},
+{id:'airplane_333',w:'airplane',jp:'飛行機',num:333},
+{id:'memory_334',w:'memory',jp:'記憶',num:334},
+{id:'wish_335',w:'wish',jp:'望む',num:335},
+{id:'answer_336',w:'answer',jp:'答える',num:336},
+{id:'example_337',w:'example',jp:'例',num:337},
+{id:'protect_338',w:'protect',jp:'守る・保護する',num:338},
+{id:'century_339',w:'century',jp:'世紀',num:339},
+{id:'moment_340',w:'moment',jp:'瞬間',num:340},
+{id:'as_usual_341',w:'as usual',jp:'いつものように',num:341},
+{id:'difference_342',w:'difference',jp:'違い',num:342},
+{id:'finish_343',w:'finish',jp:'終える',num:343},
+{id:'actually_344',w:'actually',jp:'実は・本当は',num:344},
+{id:'in_those_days_345',w:'in those days',jp:'当時は',num:345},
+{id:'noisy_346',w:'noisy',jp:'騒がしい',num:346},
+{id:'hospital_347',w:'hospital',jp:'病院',num:347},
+{id:'recently_348',w:'recently',jp:'最近',num:348},
+{id:'fact_349',w:'fact',jp:'事実・現実',num:349},
+{id:'sight_350',w:'sight',jp:'見ること',num:350},
+{id:'judge_351',w:'judge',jp:'審判員',num:351},
+{id:'complain_352',w:'complain',jp:'不満を言う',num:352},
+{id:'reach_353',w:'reach',jp:'届く',num:353},
+{id:'lose_354',w:'lose',jp:'失う',num:354},
+{id:'a_few_355',w:'a few',jp:'いくらかの',num:355},
+{id:'toy_356',w:'toy',jp:'玩具',num:356},
+{id:'November_357',w:'November',jp:'11月',num:357},
+{id:'behind_358',w:'behind',jp:'背後に',num:358},
+{id:'support_359',w:'support',jp:'支援する・応援する',num:359},
+{id:'outside_360',w:'outside',jp:'外側に',num:360},
+{id:'matter_361',w:'matter',jp:'問題・困ったこと',num:361},
+{id:'forget_362',w:'forget',jp:'忘れる',num:362},
+{id:'wait_for_363',w:'wait for',jp:'待つ',num:363},
+{id:'tooth_364',w:'tooth',jp:'歯',num:364},
+{id:'rest_365',w:'rest',jp:'休息する',num:365},
+{id:'airline_366',w:'airline',jp:'航空会社',num:366},
+{id:'finally_367',w:'finally',jp:'ついに・やっと',num:367},
+{id:'river_368',w:'river',jp:'川',num:368},
+{id:'pond_369',w:'pond',jp:'池',num:369},
+{id:'hill_370',w:'hill',jp:'丘',num:370},
+{id:'cry_371',w:'cry',jp:'泣く',num:371},
+{id:'at_first_372',w:'at first',jp:'最初は',num:372},
+{id:'grade_373',w:'grade',jp:'評価',num:373},
+{id:'warn_374',w:'warn',jp:'警告する',num:374},
+{id:'comfortable_375',w:'comfortable',jp:'心地の良い',num:375},
+{id:'flavor_376',w:'flavor',jp:'風味',num:376},
+{id:'meat_377',w:'meat',jp:'肉',num:377},
+{id:'kind_378',w:'kind',jp:'種類',num:378},
+{id:'square_379',w:'square',jp:'正方形の',num:379},
+{id:'a_kind_of_380',w:'a kind of',jp:'一種の',num:380},
+{id:'bread_381',w:'bread',jp:'パン',num:381},
+{id:'quickly_382',w:'quickly',jp:'素早く',num:382},
+{id:'burn_383',w:'burn',jp:'燃やす',num:383},
+{id:'at_that_time_384',w:'at that time',jp:'あのときは',num:384},
+{id:'word_385',w:'word',jp:'言葉',num:385},
+{id:'continue_386',w:'continue',jp:'続く',num:386},
+{id:'manager_387',w:'manager',jp:'部長',num:387},
+{id:'not_at_all_388',w:'not at all',jp:'全くない',num:388},
+{id:'abroad_389',w:'abroad',jp:'外国へ',num:389},
+{id:'farmer_390',w:'farmer',jp:'農家',num:390},
+{id:'market_391',w:'market',jp:'市場',num:391},
+{id:'health_392',w:'health',jp:'健康',num:392},
+{id:'fresh_393',w:'fresh',jp:'新鮮な',num:393},
+{id:'build_394',w:'build',jp:'建てる',num:394},
+{id:'future_395',w:'future',jp:'未来',num:395},
+{id:'culture_396',w:'culture',jp:'文化',num:396},
+{id:'never_397',w:'never',jp:'1度もない',num:397},
+{id:'silent_398',w:'silent',jp:'静かな',num:398},
+{id:'worry_about_399',w:'worry about',jp:'について心配する',num:399},
+{id:'several_400',w:'several',jp:'いく幾つかの',num:400},
+{id:'however_401',w:'however',jp:'しかし',num:401},
+{id:'foreign_402',w:'foreign',jp:'外国の',num:402},
+{id:'interest_403',w:'interest',jp:'興味',num:403},
+{id:'at_last_404',w:'at last',jp:'ついに',num:404},
+{id:'speak_405',w:'speak',jp:'話す',num:405},
+{id:'somewhere_406',w:'somewhere',jp:'どこかに',num:406},
+{id:'for_free_407',w:'for free',jp:'無料で',num:407},
+{id:'less_than_408',w:'less than',jp:'未満',num:408},
+{id:'correct_409',w:'correct',jp:'正解',num:409},
+{id:'clever_410',w:'clever',jp:'利口な',num:410},
+{id:'very_411',w:'very',jp:'非常に',num:411},
+{id:'probably_412',w:'probably',jp:'たぶん',num:412},
+{id:'held_413',w:'held',jp:'握った',num:413},
+{id:'tradition_414',w:'tradition',jp:'伝統',num:414},
+{id:'know_415',w:'know',jp:'知っている',num:415},
+{id:'color_416',w:'color',jp:'色',num:416},
+{id:'afternoon_417',w:'afternoon',jp:'午後',num:417},
+{id:'sun_418',w:'sun',jp:'太陽',num:418},
+{id:'summer_419',w:'summer',jp:'夏',num:419},
+{id:'soil_420',w:'soil',jp:'土',num:420},
+{id:'thousand_421',w:'thousand',jp:'千',num:421},
+{id:'horse_422',w:'horse',jp:'馬',num:422},
+{id:'lost_423',w:'lost',jp:'失った',num:423},
+{id:'April_424',w:'April',jp:'4月',num:424},
+{id:'won_425',w:'won',jp:'勝った',num:425},
+{id:'tell_426',w:'tell',jp:'伝える',num:426},
+{id:'useful_427',w:'useful',jp:'役に立つ',num:427},
+{id:'cloud_428',w:'cloud',jp:'雲',num:428},
+{id:'exchange_429',w:'exchange',jp:'交換',num:429},
+{id:'shake_430',w:'shake',jp:'震える',num:430},
+{id:'raise_431',w:'raise',jp:'手などを挙げる',num:431},
+{id:'agree_432',w:'agree',jp:'賛成する',num:432},
+{id:'smell_433',w:'smell',jp:'においがする',num:433},
+{id:'where_434',w:'where',jp:'どこに',num:434},
+{id:'poor_435',w:'poor',jp:'貧乏な',num:435},
+{id:'gave_436',w:'gave',jp:'与えた',num:436},
+{id:'take_437',w:'take',jp:'取る',num:437},
+{id:'walk_438',w:'walk',jp:'散歩',num:438},
+{id:'both_439',w:'both',jp:'両方の',num:439},
+{id:'narrow_440',w:'narrow',jp:'狭い',num:440},
+{id:'studied_441',w:'studied',jp:'勉強した',num:441},
+{id:'sold_442',w:'sold',jp:'売った',num:442},
+{id:'go_abroad_443',w:'go abroad',jp:'外国に行く',num:443},
+{id:'spoke_444',w:'spoke',jp:'話した',num:444},
+{id:'made_445',w:'made',jp:'作った',num:445},
+{id:'graduate_446',w:'graduate',jp:'卒業する',num:446},
+{id:'within_447',w:'within',jp:'以内で',num:447},
+{id:'yesterday_448',w:'yesterday',jp:'昨日',num:448},
+{id:'because_449',w:'because',jp:'なぜなら',num:449},
+{id:'dangerous_450',w:'dangerous',jp:'危険な',num:450},
+{id:'island_451',w:'island',jp:'島',num:451},
+{id:'temple_452',w:'temple',jp:'寺',num:452},
+{id:'beginning_453',w:'beginning',jp:'最初',num:453},
+{id:'traditional_454',w:'traditional',jp:'伝統的な',num:454},
+{id:'in_season_455',w:'in season',jp:'旬で',num:455},
+{id:'heaven_456',w:'heaven',jp:'天国',num:456},
+{id:'fool_457',w:'fool',jp:'馬鹿',num:457},
+{id:'as_a_result_of_458',w:'as a result of',jp:'の結果',num:458},
+{id:'address_459',w:'address',jp:'住所',num:459},
+{id:'say_again_460',w:'say again',jp:'もう一度言う',num:460},
+{id:'lie_461',w:'lie',jp:'嘘',num:461},
+{id:'evacuation_462',w:'evacuation',jp:'避難',num:462},
+{id:'found_463',w:'found',jp:'見つけた',num:463},
+{id:'help_with_464',w:'help with',jp:'を助ける',num:464},
+{id:'personal_465',w:'personal',jp:'個人の',num:465},
+{id:'in_advance_466',w:'in advance',jp:'前もって',num:466},
+{id:'drop_out_467',w:'drop out',jp:'中退する',num:467},
+{id:'independence_468',w:'independence',jp:'独立',num:468},
+{id:'gentle_469',w:'gentle',jp:'優しい',num:469},
+{id:'a_second_470',w:'a second',jp:'少しの間',num:470},
+{id:'shout_471',w:'shout',jp:'叫ぶ',num:471},
+{id:'ordinary_472',w:'ordinary',jp:'普通の',num:472},
+{id:'more_and_more_473',w:'more and more',jp:'ますます多くの',num:473},
+{id:'many_474',w:'many',jp:'多くの',num:474},
+{id:'sentence_475',w:'sentence',jp:'文',num:475},
+{id:'up_until_476',w:'up until',jp:'まで',num:476},
+{id:'whole_477',w:'whole',jp:'すべての',num:477},
+{id:'calligraphy_478',w:'calligraphy',jp:'書道',num:478},
+{id:'calm_479',w:'calm',jp:'落ち着いた',num:479},
+{id:'fail_480',w:'fail',jp:'失敗する',num:480},
+{id:'too_for_481',w:'too for',jp:'〜すぎる',num:481},
+{id:'thousands_of_482',w:'thousands of',jp:'何千もの',num:482},
+{id:'so_that_483',w:'so that',jp:'とてもなので〜だ',num:483},
+{id:'unhappy_484',w:'unhappy',jp:'不幸な',num:484},
+{id:'well_485',w:'well',jp:'健康な',num:485},
+{id:'violence_486',w:'violence',jp:'暴力',num:486},
+{id:'awesome_487',w:'awesome',jp:'すばらしい',num:487},
+{id:'enemy_488',w:'enemy',jp:'敵',num:488},
+{id:'someone_489',w:'someone',jp:'だれか・ある人',num:489},
+{id:'arrow_490',w:'arrow',jp:'矢',num:490},
+{id:'bother_491',w:'bother',jp:'面倒',num:491},
+{id:'fight_492',w:'fight',jp:'戦う',num:492},
+{id:'worth_493',w:'worth',jp:'価値がある',num:493},
+{id:'custom_494',w:'custom',jp:'習慣',num:494},
+{id:'sent_495',w:'sent',jp:'送った',num:495},
+{id:'announce_496',w:'announce',jp:'発表する',num:496},
+{id:'illegal_497',w:'illegal',jp:'違法な',num:497},
+{id:'electronic_498',w:'electronic',jp:'電子の',num:498},
+{id:'latest_499',w:'latest',jp:'最新の',num:499},
+{id:'hurry_500',w:'hurry',jp:'急ぐ',num:500},
+{id:'shelter_501',w:'shelter',jp:'避難所',num:501},
+{id:'crowd_502',w:'crowd',jp:'群衆',num:502},
+{id:'surprisingly_503',w:'surprisingly',jp:'驚いたことには',num:503},
+{id:'by_bus_504',w:'by bus',jp:'バスで',num:504},
+{id:'give_a_ride_505',w:'give a ride',jp:'車に乗せる',num:505},
+{id:'cancer_506',w:'cancer',jp:'がん',num:506},
+{id:'every_minutes_507',w:'every minutes',jp:'毎分ごとに',num:507},
+{id:'fill_508',w:'fill',jp:'いっぱいにする',num:508},
+{id:'at_most_509',w:'at most',jp:'多くとも',num:509},
+{id:'on_the_way_510',w:'on the way',jp:'道の途中で',num:510},
+{id:'spelling_511',w:'spelling',jp:'綴り',num:511},
+{id:'beer_512',w:'beer',jp:'ビール',num:512},
+{id:'gas_513',w:'gas',jp:'ガソリン',num:513},
+{id:'both_of_514',w:'both of',jp:'二つとも',num:514},
+{id:'nuclear_515',w:'nuclear',jp:'核の・原子力の',num:515},
+{id:'between_516',w:'between',jp:'〜と〜の間',num:516},
+{id:'try_to_517',w:'try to',jp:'しようとする',num:517},
+{id:'disagree_518',w:'disagree',jp:'意見が合わない',num:518},
+{id:'destroy_519',w:'destroy',jp:'破壊する',num:519},
+{id:'go_straight_520',w:'go straight',jp:'まっすぐ行く',num:520},
+{id:'eat_out_521',w:'eat out',jp:'外食する',num:521},
+{id:'would_like_to_522',w:'would like to',jp:'に〜してほしい',num:522},
+{id:'palace_523',w:'palace',jp:'宮殿',num:523},
+{id:'bake_524',w:'bake',jp:'焼く',num:524},
+{id:'sailor_525',w:'sailor',jp:'船員',num:525},
+{id:'tell_to_526',w:'tell to',jp:'に〜するように言う',num:526},
+{id:'brain_527',w:'brain',jp:'頭脳',num:527},
+{id:'electronic_device_528',w:'electronic device',jp:'電子機器',num:528},
+{id:'get_fired_529',w:'get fired',jp:'解雇される',num:529},
+{id:'stand_by_530',w:'stand by',jp:'そばに立つ',num:530},
+{id:'border_531',w:'border',jp:'国境',num:531},
+{id:'learn_about_532',w:'learn about',jp:'について学ぶ',num:532},
+{id:'sustainable_533',w:'sustainable',jp:'存続可能な',num:533},
+{id:'encourage_534',w:'encourage',jp:'勇気づける',num:534},
+{id:'usual_535',w:'usual',jp:'通常の',num:535},
+{id:'fossil_fuel_536',w:'fossil fuel',jp:'化石燃料',num:536},
+{id:'death_537',w:'death',jp:'死',num:537},
+{id:'inventor_538',w:'inventor',jp:'発明家',num:538},
+{id:'born_539',w:'born',jp:'生まれる',num:539},
+{id:'habit_540',w:'habit',jp:'習慣',num:540},
+{id:'earth_541',w:'earth',jp:'地球',num:541},
+{id:'barber_542',w:'barber',jp:'散髪屋',num:542},
+{id:'emergency_543',w:'emergency',jp:'緊急事態',num:543},
+{id:'get_on_544',w:'get on',jp:'乗り込む',num:544},
+{id:'earthquake_545',w:'earthquake',jp:'地震',num:545},
+{id:'just_in_case_546',w:'just in case',jp:'もしもの場合に備えて',num:546},
+{id:'laugh_547',w:'laugh',jp:'笑う',num:547},
+{id:'field_trip_548',w:'field trip',jp:'遠足',num:548},
+{id:'spread_549',w:'spread',jp:'広がる・広まる',num:549},
+{id:'from_the_experience_550',w:'from the experience',jp:'経験から',num:550},
+{id:'such_as_551',w:'such as',jp:'のような',num:551},
+{id:'Let_us_552',w:'Let us',jp:'〜しましょう',num:552},
+{id:'tough_553',w:'tough',jp:'困難な・難しい',num:553},
+{id:'lip_554',w:'lip',jp:'唇',num:554},
+{id:'tightly_555',w:'tightly',jp:'しっかりと',num:555},
+{id:'bridge_556',w:'bridge',jp:'橋',num:556},
+{id:'farewell_party_557',w:'farewell party',jp:'送別会',num:557},
+{id:'elementary_school_558',w:'elementary school',jp:'小学校',num:558},
+{id:'president_559',w:'president',jp:'大統領',num:559},
+{id:'entrance_ceremony_560',w:'entrance ceremony',jp:'入学式',num:560},
+{id:'relatively_561',w:'relatively',jp:'比較的',num:561},
+{id:'not_always_562',w:'not always',jp:'いつもとは限らない',num:562},
+{id:'row_563',w:'row',jp:'こぐ',num:563},
+{id:'drove_564',w:'drove',jp:'運転した',num:564},
+{id:'low_565',w:'low',jp:'低い',num:565},
+{id:'be_excited_566',w:'be excited',jp:'興奮をする',num:566},
+{id:'branch_567',w:'branch',jp:'枝',num:567},
+{id:'on_your_right_568',w:'on your right',jp:'右側に',num:568},
+{id:'believe_in_569',w:'believe in',jp:'を信じる',num:569},
+{id:'common_570',w:'common',jp:'共通の',num:570},
+{id:'discover_571',w:'discover',jp:'発見する',num:571},
+{id:'tie_572',w:'tie',jp:'ネクタイ',num:572},
+{id:'coal_573',w:'coal',jp:'石炭',num:573},
+{id:'have_a_headache_574',w:'have a headache',jp:'頭痛がする',num:574},
+{id:'care_for_575',w:'care for',jp:'面倒を見る',num:575},
+{id:'agree_to_576',w:'agree to',jp:'承諾する',num:576},
+{id:'feel_free_to_577',w:'feel free to',jp:'気軽にする',num:577},
+{id:'wind_578',w:'wind',jp:'風',num:578},
+{id:'in_case_of_579',w:'in case of',jp:'の場合には',num:579},
+{id:'from_now_on_580',w:'from now on',jp:'これからは',num:580},
+{id:'thought_581',w:'thought',jp:'考え',num:581},
+{id:'make_all_the_differe_582',w:'make all the difference',jp:'大きな違いを生む',num:582},
+{id:'peace_583',w:'peace',jp:'平和',num:583},
+{id:'poet_584',w:'poet',jp:'詩人',num:584},
+{id:'not_only_but_also_585',w:'not only but also',jp:'だけでなく〜もまた',num:585},
+{id:'in_case_586',w:'in case',jp:'〜した場合には',num:586},
+{id:'definitely_587',w:'definitely',jp:'もちろん・確かに',num:587},
+{id:'rose_588',w:'rose',jp:'昇った',num:588},
+{id:'write_down_589',w:'write down',jp:'書く',num:589},
+{id:'be_made_of_590',w:'be made of',jp:'で出来ている',num:590},
+{id:'domestic_591',w:'domestic',jp:'国内の',num:591},
+{id:'rather_than_592',w:'rather than',jp:'ではなく',num:592},
+{id:'most_593',w:'most',jp:'大部分の',num:593},
+{id:'run_out_of_594',w:'run out of',jp:'使い果たす',num:594},
+{id:'get_attention_595',w:'get attention',jp:'注意を引く',num:595},
+{id:'strict_596',w:'strict',jp:'厳しい',num:596},
+{id:'artistic_597',w:'artistic',jp:'芸術的な',num:597},
+{id:'in_conclusion_598',w:'in conclusion',jp:'結論として',num:598},
+{id:'most_of_599',w:'most of',jp:'のほとんど',num:599},
+{id:'little_600',w:'little',jp:'ほとんど〜ない',num:600},
+{id:'wonder_601',w:'wonder',jp:'不思議に思う',num:601},
+{id:'war_602',w:'war',jp:'戦争',num:602},
+{id:'senior_603',w:'senior',jp:'年上の・上級の',num:603},
+{id:'roof_604',w:'roof',jp:'屋根',num:604},
+{id:'tax_605',w:'tax',jp:'税・税金',num:605},
+{id:'medicine_606',w:'medicine',jp:'薬',num:606},
+{id:'drop_607',w:'drop',jp:'落ちる',num:607},
+{id:'what_to_608',w:'what to',jp:'何をすべきか',num:608},
+{id:'east_609',w:'east',jp:'東',num:609},
+{id:'absent_610',w:'absent',jp:'欠席の',num:610},
+{id:'ecosystem_611',w:'ecosystem',jp:'生態系',num:611},
+{id:'illiterate_612',w:'illiterate',jp:'読み書きのできない',num:612},
+{id:'be_in_trouble_613',w:'be in trouble',jp:'困っている',num:613},
+{id:'possible_614',w:'possible',jp:'可能な',num:614},
+{id:'in_a_hurry_615',w:'in a hurry',jp:'急いで',num:615},
+{id:'introduce_616',w:'introduce',jp:'紹介する',num:616},
+{id:'ban_617',w:'ban',jp:'禁止する',num:617},
+{id:'land_618',w:'land',jp:'土地',num:618},
+{id:'by_car_619',w:'by car',jp:'車で',num:619},
+{id:'creative_620',w:'creative',jp:'創造力のある',num:620},
+{id:'overseas_621',w:'overseas',jp:'外国へ',num:621},
+{id:'discuss_622',w:'discuss',jp:'話し合う',num:622},
+{id:'flat_623',w:'flat',jp:'平らな',num:623},
+{id:'daily_624',w:'daily',jp:'日常の',num:624},
+{id:'prefer_A_to_B_625',w:'prefer A to B',jp:'BよりAを好む',num:625},
+{id:'hopeful_626',w:'hopeful',jp:'希望を持っている',num:626},
+{id:'so_far_627',w:'so far',jp:'これまでは',num:627},
+{id:'one_by_one_628',w:'one by one',jp:'一つずつ',num:628},
+{id:'all_day_long_629',w:'all day long',jp:'一日中',num:629},
+{id:'desert_630',w:'desert',jp:'砂漠',num:630},
+{id:'be_ready_for_631',w:'be ready for',jp:'の用意ができている',num:631},
+{id:'port_632',w:'port',jp:'港',num:632},
+{id:'researcher_633',w:'researcher',jp:'研究者',num:633},
+{id:'with_a_smile_634',w:'with a smile',jp:'笑顔で',num:634},
+{id:'belong_635',w:'belong',jp:'のものである',num:635},
+{id:'live_abroad_636',w:'live abroad',jp:'海外で生活する',num:636},
+{id:'functional_637',w:'functional',jp:'実用的な',num:637},
+{id:'be_famous_for_638',w:'be famous for',jp:'で有名である',num:638},
+{id:'electricity_639',w:'electricity',jp:'電力',num:639},
+{id:'keep_in_touch_640',w:'keep in touch',jp:'連絡を取り合う',num:640},
+{id:'leaf_641',w:'leaf',jp:'葉',num:641},
+{id:'establish_642',w:'establish',jp:'設立する',num:642},
+{id:'climb_643',w:'climb',jp:'登る',num:643},
+{id:'amaze_644',w:'amaze',jp:'をびっくりさせる',num:644},
+{id:'valley_645',w:'valley',jp:'谷',num:645},
+{id:'at_noon_646',w:'at noon',jp:'正午に',num:646},
+{id:'satisfy_647',w:'satisfy',jp:'満足させる',num:647},
+{id:'transport_648',w:'transport',jp:'輸送する',num:648},
+{id:'human_being_649',w:'human being',jp:'人間',num:649},
+{id:'blow_650',w:'blow',jp:'吹く',num:650},
+{id:'believe_it_or_not_651',w:'believe it or not',jp:'信じられないだろうけど',num:651},
+{id:'monthly_652',w:'monthly',jp:'月に1回の',num:652},
+{id:'second_653',w:'second',jp:'秒',num:653},
+{id:'get_out_654',w:'get out',jp:'外へ出る',num:654},
+{id:'although_655',w:'although',jp:'であるけれど',num:655},
+{id:'silk_656',w:'silk',jp:'絹',num:656},
+{id:'endangered_657',w:'endangered',jp:'絶滅の危機にさらされている',num:657},
+{id:'convenient_658',w:'convenient',jp:'便利な',num:658},
+{id:'gym_659',w:'gym',jp:'体育館',num:659},
+{id:'go_ahead_660',w:'go ahead',jp:'先に行く',num:660},
+{id:'breed_661',w:'breed',jp:'飼育する・繁殖する',num:661},
+{id:'wrap_662',w:'wrap',jp:'包む',num:662},
+{id:'increase_663',w:'increase',jp:'増やす・増大させる',num:663},
+{id:'railway_664',w:'railway',jp:'鉄道',num:664},
+{id:'on_the_other_hand_665',w:'on the other hand',jp:'一方で',num:665},
+{id:'shoulder_666',w:'shoulder',jp:'肩',num:666},
+{id:'supply_667',w:'supply',jp:'供給',num:667},
+{id:'according_to_668',w:'according to',jp:'によれば',num:668},
+{id:'lead_669',w:'lead',jp:'導く',num:669},
+{id:'national_670',w:'national',jp:'国家の',num:670},
+{id:'do_a_favor_671',w:'do a favor',jp:'頼みごとを聞く',num:671},
+{id:'foot_672',w:'foot',jp:'足',num:672},
+{id:'take_out_673',w:'take out',jp:'持ち帰り',num:673},
+{id:'survey_674',w:'survey',jp:'調査',num:674},
+{id:'south_675',w:'south',jp:'南',num:675},
+{id:'let_676',w:'let',jp:'〜に〜をさせる',num:676},
+{id:'sort_677',w:'sort',jp:'種類',num:677},
+{id:'arrive_at_678',w:'arrive at',jp:'到着する',num:678},
+{id:'on_foot_679',w:'on foot',jp:'歩いて',num:679},
+{id:'jewel_680',w:'jewel',jp:'宝石',num:680},
+{id:'fall_in_love_with_681',w:'fall in love with',jp:'恋をする',num:681},
+{id:'though_682',w:'though',jp:'だけれども',num:682},
+{id:'be_in_danger_of_683',w:'be in danger of',jp:'の危険にさらされている',num:683},
+{id:'dead_684',w:'dead',jp:'死んだ',num:684},
+{id:'hundred_685',w:'hundred',jp:'百',num:685},
+{id:'indeed_686',w:'indeed',jp:'実に',num:686},
+{id:'government_687',w:'government',jp:'政府',num:687},
+{id:'countryside_688',w:'countryside',jp:'田舎',num:688},
+{id:'amount_689',w:'amount',jp:'量・額',num:689},
+{id:'limited_690',w:'limited',jp:'限られた',num:690},
+{id:'climate_691',w:'climate',jp:'気候',num:691},
+{id:'out_of_order_692',w:'out of order',jp:'故障して',num:692},
+{id:'human_rights_693',w:'human rights',jp:'人権',num:693},
+{id:'surround_694',w:'surround',jp:'囲む',num:694},
+{id:'holy_695',w:'holy',jp:'神聖な',num:695},
+{id:'instruction_696',w:'instruction',jp:'指示',num:696},
+{id:'waste_697',w:'waste',jp:'浪費',num:697},
+{id:'survive_698',w:'survive',jp:'生き残る',num:698},
+{id:'weekly_699',w:'weekly',jp:'週刊の',num:699},
+{id:'on_the_wall_700',w:'on the wall',jp:'壁に',num:700},
+{id:'be_about_to_701',w:'be about to',jp:'するちょくぜんである',num:701},
+{id:'magazine_702',w:'magazine',jp:'雑誌',num:702},
+{id:'store_703',w:'store',jp:'蓄える',num:703},
+{id:'opinion_704',w:'opinion',jp:'意見・考え',num:704},
+{id:'day_after_day_705',w:'day after day',jp:'毎日',num:705},
+{id:'lazy_706',w:'lazy',jp:'怠け者の',num:706},
+{id:'discrimination_707',w:'discrimination',jp:'差別',num:707},
+{id:'root_708',w:'root',jp:'根',num:708},
+{id:'fold_709',w:'fold',jp:'折る・折りたたむ',num:709},
+{id:'even_so_710',w:'even so',jp:'それでも',num:710},
+{id:'afraid_711',w:'afraid',jp:'恐れて',num:711},
+{id:'bit_712',w:'bit',jp:'少し',num:712},
+{id:'all_over_713',w:'all over',jp:'至るところに',num:713},
+{id:'development_714',w:'development',jp:'開発',num:714},
+{id:'steam_715',w:'steam',jp:'蒸気',num:715},
+{id:'foolish_716',w:'foolish',jp:'愚かな',num:716},
+{id:'pain_717',w:'pain',jp:'痛み',num:717},
+{id:'from_A_to_B_718',w:'from A to B',jp:'AからBまで',num:718},
+{id:'chemical_719',w:'chemical',jp:'化学物質',num:719},
+{id:'check_out_720',w:'check out',jp:'調査する',num:720},
+{id:'said_721',w:'said',jp:'言った',num:721},
+{id:'capture_722',w:'capture',jp:'捕まえる',num:722},
+{id:'paper_crane_723',w:'paper crane',jp:'折り鶴',num:723},
+{id:'be_concerned_with_724',w:'be concerned with',jp:'関係している',num:724},
+{id:'be_sick_of_725',w:'be sick of',jp:'にうんざりしてる',num:725},
+{id:'tiny_726',w:'tiny',jp:'小さな',num:726},
+{id:'wet_727',w:'wet',jp:'濡れている',num:727},
+{id:'get_over_728',w:'get over',jp:'乗りこえる',num:728},
+{id:'arrest_729',w:'arrest',jp:'逮捕する',num:729},
+{id:'curious_730',w:'curious',jp:'好奇心の強い',num:730},
+{id:'encourage_to_731',w:'encourage to',jp:'に〜するように促す',num:731},
+{id:'get_along_with_732',w:'get along with',jp:'うまくやる',num:732},
+{id:'unfair_733',w:'unfair',jp:'不公平な・不当な',num:733},
+{id:'strange_734',w:'strange',jp:'奇妙な',num:734},
+{id:'carefully_735',w:'carefully',jp:'注意深く',num:735},
+{id:'tired_736',w:'tired',jp:'疲れて',num:736},
+{id:'take_a_rest_737',w:'take a rest',jp:'休憩する',num:737},
+{id:'terrible_738',w:'terrible',jp:'ひどい',num:738},
+{id:'hope_to_739',w:'hope to',jp:'したいと思う',num:739},
+{id:'accept_740',w:'accept',jp:'受け入れる',num:740},
+{id:'statue_741',w:'statue',jp:'像',num:741},
+{id:'else_742',w:'else',jp:'その他に',num:742},
+{id:'law_743',w:'law',jp:'法律',num:743},
+{id:'stationery_shop_744',w:'stationery shop',jp:'文房具店',num:744},
+{id:'site_745',w:'site',jp:'場所',num:745},
+{id:'hand_out_746',w:'hand out',jp:'配る',num:746},
+{id:'search_for_747',w:'search for',jp:'探索する',num:747},
+{id:'decision_748',w:'decision',jp:'決定',num:748},
+{id:'day_in_day_out_749',w:'day in day out',jp:'来る日も来る日も',num:749},
+{id:'in_detail_750',w:'in detail',jp:'詳細に',num:750},
+{id:'growth_751',w:'growth',jp:'増加',num:751},
+{id:'stationery_752',w:'stationery',jp:'文房具',num:752},
+{id:'above_753',w:'above',jp:'上に・上記の',num:753},
+{id:'stand_754',w:'stand',jp:'我慢する',num:754},
+{id:'yet_755',w:'yet',jp:'まだ・今のところは',num:755},
+{id:'include_756',w:'include',jp:'含む',num:756},
+{id:'hold_757',w:'hold',jp:'握る',num:757},
+{id:'carbon_dioxide_758',w:'carbon dioxide',jp:'二酸化炭素',num:758},
+{id:'hear_from_759',w:'hear from',jp:'から連絡がある',num:759},
+{id:'apply_760',w:'apply',jp:'当てはまる',num:760},
+{id:'enough_to_761',w:'enough to',jp:'するのに十分',num:761},
+{id:'wake_762',w:'wake',jp:'目が覚める',num:762},
+{id:'depend_on_763',w:'depend on',jp:'依存する',num:763},
+{id:'bomb_764',w:'bomb',jp:'爆弾',num:764},
+{id:'resident_765',w:'resident',jp:'住民・居住者',num:765},
+{id:'audience_766',w:'audience',jp:'聴衆・観客',num:766},
+{id:'brave_767',w:'brave',jp:'勇敢な',num:767},
+{id:'extinguisher_768',w:'extinguisher',jp:'消火器',num:768},
+{id:'iron_769',w:'iron',jp:'鉄',num:769},
+{id:'be_likely_to_770',w:'be likely to',jp:'する可能性が高い',num:770},
+{id:'trade_771',w:'trade',jp:'貿易',num:771},
+{id:'hall_772',w:'hall',jp:'廊下',num:772},
+{id:'be_in_need_of_773',w:'be in need of',jp:'を必要とする',num:773},
+{id:'in_good_shape_774',w:'in good shape',jp:'良い状態で',num:774},
+{id:'fill_in_775',w:'fill in',jp:'必要事項を記入する',num:775},
+{id:'capital_776',w:'capital',jp:'首都',num:776},
+{id:'person_777',w:'person',jp:'人',num:777},
+{id:'run_778',w:'run',jp:'主催する',num:778},
+{id:'flight_779',w:'flight',jp:'飛行',num:779},
+{id:'get_lost_780',w:'get lost',jp:'道に迷う',num:780},
+{id:'renewable_781',w:'renewable',jp:'再生可能な',num:781},
+{id:'all_the_time_782',w:'all the time',jp:'常に',num:782},
+{id:'poem_783',w:'poem',jp:'詩',num:783},
+{id:'ask_for_784',w:'ask for',jp:'人に求める',num:784},
+{id:'donate_785',w:'donate',jp:'寄付する',num:785},
+{id:'begin_786',w:'begin',jp:'始まる',num:786},
+{id:'nest_787',w:'nest',jp:'巣',num:787},
+{id:'be_known_as_788',w:'be known as',jp:'として知られている',num:788},
+{id:'import_789',w:'import',jp:'輸入する',num:789},
+{id:'secret_790',w:'secret',jp:'秘密',num:790},
+{id:'given_791',w:'given',jp:'与えた',num:791},
+{id:'progress_792',w:'progress',jp:'進歩',num:792},
+{id:'unused_793',w:'unused',jp:'未使用の',num:793},
+{id:'neither_794',w:'neither',jp:'〜も〜もない',num:794},
+{id:'as_a_whole_795',w:'as a whole',jp:'全体で',num:795},
+{id:'to_go_796',w:'to go',jp:'持ち帰り',num:796},
+{id:'wave_797',w:'wave',jp:'波',num:797},
+{id:'yen_798',w:'yen',jp:'円',num:798},
+{id:'debate_799',w:'debate',jp:'討論',num:799},
+{id:'lullaby_800',w:'lullaby',jp:'子守歌',num:800},
+{id:'feather_801',w:'feather',jp:'羽',num:801},
+{id:'go_through_802',w:'go through',jp:'人生をおくる',num:802},
+{id:'note_803',w:'note',jp:'紙幣',num:803},
+{id:'awake_804',w:'awake',jp:'目が覚める',num:804},
+{id:'fall_805',w:'fall',jp:'落ちる・降りる',num:805},
+{id:'crazy_806',w:'crazy',jp:'気の狂った',num:806},
+{id:'for_instance_807',w:'for instance',jp:'例えば',num:807},
+{id:'plastic_bag_808',w:'plastic bag',jp:'ビニール袋',num:808},
+{id:'discussion_809',w:'discussion',jp:'討論',num:809},
+{id:'junior_high_school_810',w:'junior high school',jp:'中学校',num:810},
+{id:'drop_by_811',w:'drop by',jp:'に立ち寄る',num:811},
+{id:'metal_812',w:'metal',jp:'金属',num:812},
+{id:'relation_813',w:'relation',jp:'関係',num:813},
+{id:'colony_814',w:'colony',jp:'植民地',num:814},
+{id:'airport_815',w:'airport',jp:'空港',num:815},
+{id:'past_816',w:'past',jp:'過去の',num:816},
+{id:'count_on_817',w:'count on',jp:'を当てにする',num:817},
+{id:'succeed_818',w:'succeed',jp:'成功する',num:818},
+{id:'certain_819',w:'certain',jp:'確かな',num:819},
+{id:'be_amazed_at_820',w:'be amazed at',jp:'に驚かされる',num:820},
+{id:'modern_821',w:'modern',jp:'現代的な',num:821},
+{id:'get_rid_of_822',w:'get rid of',jp:'を取り除く',num:822},
+{id:'affect_823',w:'affect',jp:'影響を与える',num:823},
+{id:'match_824',w:'match',jp:'試合',num:824},
+{id:'beyond_825',w:'beyond',jp:'を超えたところに',num:825},
+{id:'as_well_826',w:'as well',jp:'同様に',num:826},
+{id:'even_827',w:'even',jp:'〜さえ',num:827},
+{id:'be_satisfied_with_828',w:'be satisfied with',jp:'に満足している',num:828},
+{id:'quietly_829',w:'quietly',jp:'静かに・落ち着いて',num:829},
+{id:'for_example_830',w:'for example',jp:'例えば',num:830},
+{id:'foreign_language_831',w:'foreign language',jp:'外国語',num:831},
+{id:'blood_832',w:'blood',jp:'血',num:832},
+{id:'fall_asleep_833',w:'fall asleep',jp:'眠る',num:833},
+{id:'signal_834',w:'signal',jp:'信号',num:834},
+{id:'decide_to_835',w:'decide to',jp:'に決める',num:835},
+{id:'protest_836',w:'protest',jp:'抗議する',num:836},
+{id:'extinction_837',w:'extinction',jp:'絶滅',num:837},
+{id:'fantastic_838',w:'fantastic',jp:'素晴らしい',num:838},
+{id:'belong_to_839',w:'belong to',jp:'に属している',num:839},
+{id:'pleased_840',w:'pleased',jp:'喜んで',num:840},
+{id:'uniform_841',w:'uniform',jp:'制服',num:841},
+{id:'stranger_842',w:'stranger',jp:'他人',num:842},
+{id:'neighbor_843',w:'neighbor',jp:'隣人',num:843},
+{id:'mean_844',w:'mean',jp:'意味する',num:844},
+{id:'courage_845',w:'courage',jp:'勇気',num:845},
+{id:'eraser_846',w:'eraser',jp:'消しゴム',num:846},
+{id:'quarter_847',w:'quarter',jp:'4分の1',num:847},
+{id:'get_out_of_848',w:'get out of',jp:'の外に出る',num:848},
+{id:'leg_849',w:'leg',jp:'脚',num:849},
+{id:'from_now_850',w:'from now',jp:'これからは',num:850},
+{id:'army_851',w:'army',jp:'陸軍',num:851},
+{id:'language_852',w:'language',jp:'言語',num:852},
+{id:'universe_853',w:'universe',jp:'宇宙',num:853},
+{id:'for_a_while_854',w:'for a while',jp:'しばらくの間',num:854},
+{id:'solve_855',w:'solve',jp:'解決する',num:855},
+{id:'stay_up_856',w:'stay up',jp:'起きている',num:856},
+{id:'effective_857',w:'effective',jp:'効果的な',num:857},
+{id:'pursue_858',w:'pursue',jp:'追い求める',num:858},
+{id:'step_859',w:'step',jp:'足元・階段',num:859},
+{id:'an_average_of_860',w:'an average of',jp:'の平均',num:860},
+{id:'relate_to_861',w:'relate to',jp:'を〜に関係させる',num:861},
+{id:'well_known_862',w:'well-known',jp:'有名な',num:862},
+{id:'condition_863',w:'condition',jp:'状況',num:863},
+{id:'burden_864',w:'burden',jp:'負担・重荷',num:864},
+{id:'wood_865',w:'wood',jp:'木材',num:865},
+{id:'shade_866',w:'shade',jp:'陰・日陰',num:866},
+{id:'merchant_867',w:'merchant',jp:'商人',num:867},
+{id:'son_868',w:'son',jp:'息子',num:868},
+{id:'heard_869',w:'heard',jp:'聞いた',num:869},
+{id:'sidewalk_870',w:'sidewalk',jp:'歩道',num:870},
+{id:'quiet_871',w:'quiet',jp:'静かな',num:871},
+{id:'billion_872',w:'billion',jp:'10億',num:872},
+{id:'graduation_873',w:'graduation',jp:'卒業',num:873},
+{id:'by_the_way_874',w:'by the way',jp:'ところで',num:874},
+{id:'release_875',w:'release',jp:'放出する',num:875},
+{id:'heat_876',w:'heat',jp:'熱',num:876},
+{id:'get_tired_877',w:'get tired',jp:'疲れる',num:877},
+{id:'perhaps_878',w:'perhaps',jp:'たぶん',num:878},
+{id:'factory_879',w:'factory',jp:'工場',num:879},
+{id:'besides_880',w:'besides',jp:'そのうえ・さらに',num:880},
+{id:'successful_881',w:'successful',jp:'成功した',num:881},
+{id:'weapon_882',w:'weapon',jp:'武器',num:882},
+{id:'as_soon_as_possible_883',w:'as soon as possible',jp:'できるだけ早く',num:883},
+{id:'necessary_884',w:'necessary',jp:'必要な',num:884},
+{id:'extend_885',w:'extend',jp:'広げる',num:885},
+{id:'happiness_886',w:'happiness',jp:'幸福',num:886},
+{id:'be_scared_of_887',w:'be scared of',jp:'が怖い',num:887},
+{id:'midnight_888',w:'midnight',jp:'真夜中',num:888},
+{id:'consumer_889',w:'consumer',jp:'消費者',num:889},
+{id:'get_up_890',w:'get up',jp:'起きる',num:890},
+{id:'depend_891',w:'depend',jp:'頼る',num:891},
+{id:'trust_892',w:'trust',jp:'信用する',num:892},
+{id:'film_893',w:'film',jp:'映画',num:893},
+{id:'honest_894',w:'honest',jp:'正直な',num:894},
+{id:'college_895',w:'college',jp:'大学',num:895},
+{id:'loss_896',w:'loss',jp:'失うこと・喪失',num:896},
+{id:'front_897',w:'front',jp:'前',num:897},
+{id:'honey_898',w:'honey',jp:'蜂蜜',num:898},
+{id:'grass_899',w:'grass',jp:'草',num:899},
+{id:'after_a_while_900',w:'after a while',jp:'しばらくして',num:900},
+{id:'suddenly_901',w:'suddenly',jp:'突然に',num:901},
+{id:'heart_902',w:'heart',jp:'心',num:902},
+{id:'disaster_903',w:'disaster',jp:'災害',num:903},
+{id:'instead_of_904',w:'instead of',jp:'の代わりに',num:904},
+{id:'disease_905',w:'disease',jp:'病気',num:905},
+{id:'weak_906',w:'weak',jp:'弱い・かすかな',num:906},
+{id:'pass_by_907',w:'pass by',jp:'通り過ぎる',num:907},
+{id:'rapidly_908',w:'rapidly',jp:'速く・急速に',num:908},
+{id:'charge_909',w:'charge',jp:'充電する',num:909},
+{id:'behavior_910',w:'behavior',jp:'ふるまい',num:910},
+{id:'uncomfortable_911',w:'uncomfortable',jp:'心地の悪い',num:911},
+{id:'title_912',w:'title',jp:'題名・表題',num:912},
+{id:'resource_913',w:'resource',jp:'資源',num:913},
+{id:'police_officer_914',w:'police officer',jp:'警察官',num:914},
+{id:'ashamed_915',w:'ashamed',jp:'恥じて',num:915},
+{id:'image_916',w:'image',jp:'画像・印象',num:916},
+{id:'mouth_917',w:'mouth',jp:'口',num:917},
+{id:'be_familiar_with_918',w:'be familiar with',jp:'馴染みがある',num:918},
+{id:'seem_919',w:'seem',jp:'〜のように見える',num:919},
+{id:'north_920',w:'north',jp:'北',num:920},
+{id:'planet_921',w:'planet',jp:'惑星',num:921},
+{id:'even_if_922',w:'even if',jp:'たとえ〜だとしても',num:922},
+{id:'fortunately_923',w:'fortunately',jp:'幸運にも',num:923},
+{id:'exception_924',w:'exception',jp:'例外',num:924},
+{id:'cloth_925',w:'cloth',jp:'服',num:925},
+{id:'certainly_926',w:'certainly',jp:'確かに',num:926},
+{id:'surely_927',w:'surely',jp:'確かに',num:927},
+{id:'device_928',w:'device',jp:'装置',num:928},
+{id:'arm_929',w:'arm',jp:'腕',num:929},
+{id:'be_responsible_for_930',w:'be responsible for',jp:'に対して責任がある',num:930},
+{id:'treasure_931',w:'treasure',jp:'宝物',num:931},
+{id:'just_932',w:'just',jp:'たったいま',num:932},
+{id:'at_least_933',w:'at least',jp:'少なくとも',num:933},
+{id:'call_back_934',w:'call back',jp:'折り返し電話する',num:934},
+{id:'die_out_935',w:'die out',jp:'絶滅する',num:935},
+{id:'sit_down_936',w:'sit down',jp:'座る',num:936},
+{id:'look_after_937',w:'look after',jp:'の面倒をみる',num:937},
+{id:'focus_938',w:'focus',jp:'集中する',num:938},
+{id:'respect_939',w:'respect',jp:'尊敬する',num:939},
+{id:'somehow_940',w:'somehow',jp:'何らかの形で',num:940},
+{id:'mind_941',w:'mind',jp:'精神',num:941},
+{id:'fire_942',w:'fire',jp:'火事',num:942},
+{id:'leave_for_943',w:'leave for',jp:'へ出かける',num:943},
+{id:'god_944',w:'god',jp:'神',num:944},
+{id:'blind_945',w:'blind',jp:'目の見えない',num:945},
+{id:'be_aware_of_946',w:'be aware of',jp:'に気づいている',num:946},
+{id:'forward_947',w:'forward',jp:'前へ',num:947},
+{id:'tear_948',w:'tear',jp:'涙',num:948},
+{id:'employee_949',w:'employee',jp:'従業員',num:949},
+{id:'raw_950',w:'raw',jp:'生の',num:950},
+{id:'survival_951',w:'survival',jp:'存続・生き残ること',num:951},
+{id:'realize_952',w:'realize',jp:'実現する',num:952},
+{id:'road_953',w:'road',jp:'道路',num:953},
+{id:'species_954',w:'species',jp:'種',num:954},
+{id:'lawyer_955',w:'lawyer',jp:'弁護士',num:955},
+{id:'parking_lot_956',w:'parking lot',jp:'駐車場',num:956},
+{id:'pretty_957',w:'pretty',jp:'かなり',num:957},
+{id:'success_958',w:'success',jp:'成功',num:958},
+{id:'sleepy_959',w:'sleepy',jp:'眠い',num:959},
+{id:'quite_960',w:'quite',jp:'かなり・相当',num:960},
+{id:'away_961',w:'away',jp:'離れて',num:961},
+{id:'and_so_on_962',w:'and so on',jp:'などなど',num:962},
+{id:'kind_to_963',w:'kind to',jp:'に対して親切な',num:963},
+{id:'scared_964',w:'scared',jp:'怖がって',num:964},
+{id:'dislike_965',w:'dislike',jp:'嫌う',num:965},
+{id:'ahead_966',w:'ahead',jp:'前方に',num:966},
+{id:'excuse_967',w:'excuse',jp:'許す',num:967},
+{id:'period_968',w:'period',jp:'時代',num:968},
+{id:'Take_care__2000',w:'Take care.',jp:'気をつけてね',num:2000},
+{id:'Welcome_back__2001',w:'Welcome back.',jp:'おかえりなさい',num:2001},
+{id:'Long_time_no_see__2002',w:'Long time no see.',jp:'久しぶり',num:2002},
+{id:'Here_you_are__2003',w:'Here you are.',jp:'はい、どうぞ',num:2003},
+{id:'After_you__2004',w:'After you.',jp:'どうぞお先に',num:2004},
+{id:'No_problem__2005',w:'No problem.',jp:'問題ないよ',num:2005},
+{id:'You_re_welcome__2006',w:'You\'re welcome.',jp:'どういたしまして',num:2006},
+{id:'That_s_all_right__2007',w:'That\'s all right.',jp:'大丈夫ですよ',num:2007},
+{id:'Never_mind__2008',w:'Never mind.',jp:'気にしないで',num:2008},
+{id:'It_can_t_be_helped__2009',w:'It can\'t be helped.',jp:'しかたないよ',num:2009},
+{id:'I_appreciate_it__2010',w:'I appreciate it.',jp:'感謝しています',num:2010},
+{id:'My_pleasure__2011',w:'My pleasure.',jp:'よろこんで',num:2011},
+{id:'Sorry_to_bother_you__2012',w:'Sorry to bother you.',jp:'おじゃましてすみません',num:2012},
+{id:'Thank_you_anyway__2013',w:'Thank you anyway.',jp:'とにかくありがとう',num:2013},
+{id:'I_owe_you_one__2014',w:'I owe you one.',jp:'借りができたよ',num:2014},
+{id:'Don_t_mention_it__2015',w:'Don\'t mention it.',jp:'いえいえ',num:2015},
+{id:'Please_wait_a_minute_2016',w:'Please wait a minute.',jp:'ちょっと待ってください',num:2016},
+{id:'May_I_come_in__2017',w:'May I come in?',jp:'入ってもいいですか',num:2017},
+{id:'Can_I_ask_a_question_2018',w:'Can I ask a question?',jp:'質問してもいいですか',num:2018},
+{id:'Could_you_say_that_a_2019',w:'Could you say that again?',jp:'もう一度言ってくれますか',num:2019},
+{id:'Please_speak_more_sl_2020',w:'Please speak more slowly.',jp:'もっとゆっくり話してください',num:2020},
+{id:'Could_you_show_me_th_2021',w:'Could you show me the way?',jp:'道を教えてくれますか',num:2021},
+{id:'Can_I_try_it_on__2022',w:'Can I try it on?',jp:'試着してもいいですか',num:2022},
+{id:'Please_call_me_later_2023',w:'Please call me later.',jp:'あとで電話してください',num:2023},
+{id:'Can_you_carry_this_f_2024',w:'Can you carry this for me?',jp:'これを運んでくれる？',num:2024},
+{id:'May_I_borrow_this_bo_2025',w:'May I borrow this book?',jp:'この本を借りてもいいですか',num:2025},
+{id:'Please_turn_off_the__2026',w:'Please turn off the light.',jp:'電気を消してください',num:2026},
+{id:'Shall_I_help_you__2027',w:'Shall I help you?',jp:'手伝いましょうか',num:2027},
+{id:'Let_me_help_you__2028',w:'Let me help you.',jp:'手伝わせてください',num:2028},
+{id:'I_ll_carry_it_for_yo_2029',w:'I\'ll carry it for you.',jp:'それをあなたのために運ぶよ',num:2029},
+{id:'I_ll_get_the_door__2030',w:'I\'ll get the door.',jp:'ドアを開けるよ',num:2030},
+{id:'I_ll_call_you_back__2031',w:'I\'ll call you back.',jp:'折り返し電話するよ',num:2031},
+{id:'Let_me_know__2032',w:'Let me know.',jp:'教えてね',num:2032},
+{id:'Tell_me_if_you_need__2033',w:'Tell me if you need anything.',jp:'何か必要なら言ってね',num:2033},
+{id:'I_ll_be_right_back__2034',w:'I\'ll be right back.',jp:'すぐ戻るよ',num:2034},
+{id:'Why_don_t_we_take_a__2035',w:'Why don\'t we take a bus?',jp:'バスで行かない？',num:2035},
+{id:'How_about_some_coffe_2036',w:'How about some coffee?',jp:'コーヒーはどう？',num:2036},
+{id:'Shall_we_start_now__2037',w:'Shall we start now?',jp:'今始めようか',num:2037},
+{id:'Let_s_eat_out_tonigh_2038',w:'Let\'s eat out tonight.',jp:'今夜は外食しよう',num:2038},
+{id:'Why_don_t_you_ask_he_2039',w:'Why don\'t you ask her?',jp:'彼女に聞いてみたら？',num:2039},
+{id:'How_about_this_one__2040',w:'How about this one?',jp:'これはどう？',num:2040},
+{id:'Let_s_take_a_break__2041',w:'Let\'s take a break.',jp:'休憩しよう',num:2041},
+{id:'Shall_we_play_tennis_2042',w:'Shall we play tennis?',jp:'テニスをしようか',num:2042},
+{id:'Why_don_t_we_go_swim_2043',w:'Why don\'t we go swimming?',jp:'泳ぎに行かない？',num:2043},
+{id:'Let_s_meet_at_noon__2044',w:'Let\'s meet at noon.',jp:'正午に会おう',num:2044},
+{id:'How_about_next_Sunda_2045',w:'How about next Sunday?',jp:'次の日曜日はどう？',num:2045},
+{id:'Shall_we_watch_a_mov_2046',w:'Shall we watch a movie?',jp:'映画を見ようか',num:2046},
+{id:'Let_s_leave_early__2047',w:'Let\'s leave early.',jp:'早く出発しよう',num:2047},
+{id:'Why_don_t_you_come_w_2048',w:'Why don\'t you come with us?',jp:'一緒に来たら？',num:2048},
+{id:'It_s_almost_nine__2049',w:'It\'s almost nine.',jp:'もうすぐ9時です',num:2049},
+{id:'I_m_free_this_aftern_2050',w:'I\'m free this afternoon.',jp:'今日の午後は空いています',num:2050},
+{id:'I_have_plans_tomorro_2051',w:'I have plans tomorrow.',jp:'明日は予定があります',num:2051},
+{id:'I_m_leaving_on_Monda_2052',w:'I\'m leaving on Monday.',jp:'月曜日に出発します',num:2052},
+{id:'The_train_leaves_soo_2053',w:'The train leaves soon.',jp:'電車はもうすぐ出ます',num:2053},
+{id:'We_should_hurry__2054',w:'We should hurry.',jp:'急がないと',num:2054},
+{id:'I_m_on_my_way__2055',w:'I\'m on my way.',jp:'今向かっています',num:2055},
+{id:'I_ll_be_there_at_two_2056',w:'I\'ll be there at two.',jp:'2時に着きます',num:2056},
+{id:'It_starts_at_ten__2057',w:'It starts at ten.',jp:'10時に始まります',num:2057},
+{id:'What_time_should_we__2058',w:'What time should we meet?',jp:'何時に会いましょうか',num:2058},
+{id:'Are_you_busy_now__2059',w:'Are you busy now?',jp:'今忙しいですか',num:2059},
+{id:'I_m_ready_to_go__2060',w:'I\'m ready to go.',jp:'出かける準備ができました',num:2060},
+{id:'We_have_plenty_of_ti_2061',w:'We have plenty of time.',jp:'時間はたっぷりあります',num:2061},
+{id:'I_m_running_late__2062',w:'I\'m running late.',jp:'少し遅れています',num:2062},
+{id:'We_had_a_test_this_m_2063',w:'We had a test this morning.',jp:'今朝テストがありました',num:2063},
+{id:'I_forgot_my_homework_2064',w:'I forgot my homework.',jp:'宿題を忘れました',num:2064},
+{id:'I_need_my_dictionary_2065',w:'I need my dictionary.',jp:'辞書が必要です',num:2065},
+{id:'Please_hand_in_your__2066',w:'Please hand in your report.',jp:'レポートを提出してください',num:2066},
+{id:'I_left_school_early__2067',w:'I left school early.',jp:'早退しました',num:2067},
+{id:'We_don_t_have_practi_2068',w:'We don\'t have practice today.',jp:'今日は練習がありません',num:2068},
+{id:'I_have_to_study_for__2069',w:'I have to study for the exam.',jp:'試験勉強をしなければなりません',num:2069},
+{id:'May_I_use_the_comput_2070',w:'May I use the computer?',jp:'コンピューターを使ってもいいですか',num:2070},
+{id:'The_class_is_over__2071',w:'The class is over.',jp:'授業は終わりです',num:2071},
+{id:'Open_your_textbooks__2072',w:'Open your textbooks.',jp:'教科書を開いてください',num:2072},
+{id:'I_don_t_know_the_ans_2073',w:'I don\'t know the answer.',jp:'答えがわかりません',num:2073},
+{id:'Could_you_help_me_wi_2074',w:'Could you help me with math?',jp:'数学を手伝ってくれますか',num:2074},
+{id:'I_got_a_good_score__2075',w:'I got a good score.',jp:'いい点を取りました',num:2075},
+{id:'I_m_nervous_about_th_2076',w:'I\'m nervous about the test.',jp:'テストが心配です',num:2076},
+{id:'Can_I_help_you__2077',w:'Can I help you?',jp:'いらっしゃいませ',num:2077},
+{id:'I_m_just_looking__2078',w:'I\'m just looking.',jp:'見ているだけです',num:2078},
+{id:'Do_you_have_a_larger_2079',w:'Do you have a larger size?',jp:'もっと大きいサイズはありますか',num:2079},
+{id:'Can_I_try_this_on__2080',w:'Can I try this on?',jp:'これを試着してもいいですか',num:2080},
+{id:'I_ll_take_it__2081',w:'I\'ll take it.',jp:'これにします',num:2081},
+{id:'Do_you_take_credit_c_2082',w:'Do you take credit cards?',jp:'クレジットカードは使えますか',num:2082},
+{id:'It_s_on_sale_today__2083',w:'It\'s on sale today.',jp:'今日はセールです',num:2083},
+{id:'I_m_looking_for_a_gi_2084',w:'I\'m looking for a gift.',jp:'プレゼントを探しています',num:2084},
+{id:'It_s_too_expensive__2085',w:'It\'s too expensive.',jp:'高すぎます',num:2085},
+{id:'Do_you_have_it_in_bl_2086',w:'Do you have it in blue?',jp:'青はありますか',num:2086},
+{id:'Can_you_wrap_it__ple_2087',w:'Can you wrap it, please?',jp:'包んでもらえますか',num:2087},
+{id:'I_m_out_of_money__2088',w:'I\'m out of money.',jp:'お金が足りません',num:2088},
+{id:'Here_is_your_change__2089',w:'Here is your change.',jp:'おつりです',num:2089},
+{id:'I_d_like_a_salad__pl_2090',w:'I\'d like a salad, please.',jp:'サラダをお願いします',num:2090},
+{id:'Could_I_have_some_wa_2091',w:'Could I have some water?',jp:'お水をいただけますか',num:2091},
+{id:'May_I_see_the_menu__2092',w:'May I see the menu?',jp:'メニューを見てもいいですか',num:2092},
+{id:'I_m_ready_to_order__2093',w:'I\'m ready to order.',jp:'注文の準備ができました',num:2093},
+{id:'No_tomatoes__please__2094',w:'No tomatoes, please.',jp:'トマトは抜いてください',num:2094},
+{id:'The_food_is_deliciou_2095',w:'The food is delicious.',jp:'料理がおいしいです',num:2095},
+{id:'It_s_too_spicy_for_m_2096',w:'It\'s too spicy for me.',jp:'私には辛すぎます',num:2096},
+{id:'Could_we_have_the_bi_2097',w:'Could we have the bill?',jp:'お会計をお願いします',num:2097},
+{id:'I_ll_have_the_same__2098',w:'I\'ll have the same.',jp:'同じものをお願いします',num:2098},
+{id:'Is_breakfast_include_2099',w:'Is breakfast included?',jp:'朝食はついていますか',num:2099},
+{id:'I_m_full__2100',w:'I\'m full.',jp:'おなかいっぱいです',num:2100},
+{id:'Save_some_for_me__2101',w:'Save some for me.',jp:'少し残しておいて',num:2101},
+{id:'This_smells_good__2102',w:'This smells good.',jp:'いいにおいがします',num:2102},
+{id:'I_don_t_eat_meat__2103',w:'I don\'t eat meat.',jp:'肉は食べません',num:2103},
+{id:'I_m_going_to_the_sta_2104',w:'I\'m going to the station.',jp:'駅に行きます',num:2104},
+{id:'Which_bus_should_I_t_2105',w:'Which bus should I take?',jp:'どのバスに乗ればいいですか',num:2105},
+{id:'We_missed_the_train__2106',w:'We missed the train.',jp:'電車に乗り遅れました',num:2106},
+{id:'This_seat_is_taken__2107',w:'This seat is taken.',jp:'この席は空いていません',num:2107},
+{id:'How_long_does_it_tak_2108',w:'How long does it take?',jp:'どのくらいかかりますか',num:2108},
+{id:'It_s_a_ten_minute_wa_2109',w:'It\'s a ten-minute walk.',jp:'歩いて10分です',num:2109},
+{id:'Turn_left_at_the_cor_2110',w:'Turn left at the corner.',jp:'角を左に曲がってください',num:2110},
+{id:'Go_straight_ahead__2111',w:'Go straight ahead.',jp:'まっすぐ進んでください',num:2111},
+{id:'Is_this_the_right_wa_2112',w:'Is this the right way?',jp:'この道で合っていますか',num:2112},
+{id:'I_got_off_at_the_wro_2113',w:'I got off at the wrong station.',jp:'間違った駅で降りました',num:2113},
+{id:'Please_tell_me_when__2114',w:'Please tell me when to get off.',jp:'降りるときに教えてください',num:2114},
+{id:'My_passport_is_missi_2115',w:'My passport is missing.',jp:'パスポートが見当たりません',num:2115},
+{id:'It_s_getting_cold__2116',w:'It\'s getting cold.',jp:'寒くなってきました',num:2116},
+{id:'Take_an_umbrella_wit_2117',w:'Take an umbrella with you.',jp:'傘を持って行って',num:2117},
+{id:'Spring_is_my_favorit_2118',w:'Spring is my favorite season.',jp:'春が一番好きな季節です',num:2118},
+{id:'It_s_too_cold_to_go__2119',w:'It\'s too cold to go out.',jp:'外に出るには寒すぎます',num:2119},
+{id:'Summer_vacation_star_2120',w:'Summer vacation starts soon.',jp:'もうすぐ夏休みです',num:2120},
+{id:'I_love_autumn_leaves_2121',w:'I love autumn leaves.',jp:'紅葉が大好きです',num:2121},
+{id:'The_sun_is_coming_ou_2122',w:'The sun is coming out.',jp:'日がさしてきました',num:2122},
+{id:'How_are_you_feeling__2123',w:'How are you feeling?',jp:'気分はどうですか',num:2123},
+{id:'I_have_a_fever__2124',w:'I have a fever.',jp:'熱があります',num:2124},
+{id:'I_have_a_headache__2125',w:'I have a headache.',jp:'頭が痛いです',num:2125},
+{id:'I_caught_a_cold__2126',w:'I caught a cold.',jp:'風邪をひきました',num:2126},
+{id:'You_should_get_some__2127',w:'You should get some rest.',jp:'少し休んだほうがいいよ',num:2127},
+{id:'Take_this_medicine__2128',w:'Take this medicine.',jp:'この薬を飲んでください',num:2128},
+{id:'I_feel_much_better_n_2129',w:'I feel much better now.',jp:'もうずっとよくなりました',num:2129},
+{id:'My_stomach_hurts__2130',w:'My stomach hurts.',jp:'おなかが痛いです',num:2130},
+{id:'I_need_to_see_a_doct_2131',w:'I need to see a doctor.',jp:'医者に診てもらう必要があります',num:2131},
+{id:'Don_t_stay_up_late__2132',w:'Don\'t stay up late.',jp:'夜更かししないで',num:2132},
+{id:'Drink_plenty_of_wate_2133',w:'Drink plenty of water.',jp:'水をたくさん飲んで',num:2133},
+{id:'I_twisted_my_ankle__2134',w:'I twisted my ankle.',jp:'足首をひねりました',num:2134},
+{id:'I_m_a_little_tired__2135',w:'I\'m a little tired.',jp:'少し疲れています',num:2135},
+{id:'Get_well_soon__2136',w:'Get well soon.',jp:'早くよくなってね',num:2136},
+{id:'I_like_this_one__2137',w:'I like this one.',jp:'こちらが好きです',num:2137},
+{id:'I_don_t_like_spicy_f_2138',w:'I don\'t like spicy food.',jp:'辛い食べ物は好きではありません',num:2138},
+{id:'It_sounds_great__2139',w:'It sounds great.',jp:'それはよさそうです',num:2139},
+{id:'That_s_a_good_idea__2140',w:'That\'s a good idea.',jp:'それはいい考えです',num:2140},
+{id:'I_agree_with_you__2141',w:'I agree with you.',jp:'あなたに賛成です',num:2141},
+{id:'I_prefer_tea_to_coff_2142',w:'I prefer tea to coffee.',jp:'コーヒーよりお茶のほうが好きです',num:2142},
+{id:'This_is_my_favorite__2143',w:'This is my favorite song.',jp:'これは私の一番好きな歌です',num:2143},
+{id:'I_m_interested_in_ar_2144',w:'I\'m interested in art.',jp:'美術に興味があります',num:2144},
+{id:'I_enjoy_reading__2145',w:'I enjoy reading.',jp:'読書を楽しんでいます',num:2145},
+{id:'It_looks_delicious__2146',w:'It looks delicious.',jp:'おいしそうです',num:2146},
+{id:'That_s_too_difficult_2147',w:'That\'s too difficult for me.',jp:'それは私には難しすぎます',num:2147},
+{id:'I_practice_every_day_2148',w:'I practice every day.',jp:'毎日練習します',num:2148},
+{id:'I_m_on_the_school_te_2149',w:'I\'m on the school team.',jp:'学校のチームに入っています',num:2149},
+{id:'The_game_starts_soon_2150',w:'The game starts soon.',jp:'試合はもうすぐ始まります',num:2150},
+{id:'We_won_the_match__2151',w:'We won the match.',jp:'試合に勝ちました',num:2151},
+{id:'We_lost_by_one_point_2152',w:'We lost by one point.',jp:'1点差で負けました',num:2152},
+{id:'I_m_a_little_worried_2153',w:'I\'m a little worried.',jp:'少し不安です',num:2153},
+{id:'Let_s_cheer_for_them_2154',w:'Let\'s cheer for them.',jp:'みんなを応援しよう',num:2154},
+{id:'I_didn_t_practice_mu_2155',w:'I didn\'t practice much.',jp:'あまり練習しませんでした',num:2155},
+{id:'That_was_a_great_gam_2156',w:'That was a great game.',jp:'すばらしい試合でした',num:2156},
+{id:'Please_leave_a_messa_2157',w:'Please leave a message.',jp:'伝言を残してください',num:2157},
+{id:'Can_I_speak_to_Ken__2158',w:'Can I speak to Ken?',jp:'ケンさんをお願いします',num:2158},
+{id:'Hold_on__please__2159',w:'Hold on, please.',jp:'少々お待ちください',num:2159},
+{id:'The_line_is_busy__2160',w:'The line is busy.',jp:'話し中です',num:2160},
+{id:'I_ll_text_you_later__2161',w:'I\'ll text you later.',jp:'あとでメッセージするね',num:2161},
+{id:'My_phone_is_out_of_b_2162',w:'My phone is out of battery.',jp:'携帯の電池が切れました',num:2162},
+{id:'Can_you_hear_me__2163',w:'Can you hear me?',jp:'聞こえますか',num:2163},
+{id:'The_connection_is_ba_2164',w:'The connection is bad.',jp:'電波が悪いです',num:2164},
+{id:'I_ll_send_you_the_ph_2165',w:'I\'ll send you the photo.',jp:'写真を送るね',num:2165},
+{id:'Check_your_email__pl_2166',w:'Check your email, please.',jp:'メールを確認してください',num:2166},
+{id:'I_got_your_message__2167',w:'I got your message.',jp:'メッセージを受け取りました',num:2167},
+{id:'Sorry__wrong_number__2168',w:'Sorry, wrong number.',jp:'すみません、番号を間違えました',num:2168},
+{id:'Please_call_me_back__2169',w:'Please call me back.',jp:'折り返し電話してください',num:2169},
+{id:'I_can_t_find_my_key__2170',w:'I can\'t find my key.',jp:'鍵が見つかりません',num:2170},
+{id:'I_lost_my_wallet__2171',w:'I lost my wallet.',jp:'財布をなくしました',num:2171},
+{id:'My_bike_is_broken__2172',w:'My bike is broken.',jp:'自転車が壊れています',num:2172},
+{id:'I_forgot_my_ticket__2173',w:'I forgot my ticket.',jp:'切符を忘れました',num:2173},
+{id:'I_left_it_at_home__2174',w:'I left it at home.',jp:'それを家に置いてきました',num:2174},
+{id:'Something_is_wrong__2175',w:'Something is wrong.',jp:'何かおかしいです',num:2175},
+{id:'My_shoes_are_wet__2176',w:'My shoes are wet.',jp:'靴が濡れています',num:2176},
+{id:'I_made_a_mistake__2177',w:'I made a mistake.',jp:'まちがえました',num:2177},
+{id:'You_did_your_best__2178',w:'You did your best.',jp:'よくがんばったね',num:2178},
+{id:'I_m_proud_of_you__2179',w:'I\'m proud of you.',jp:'あなたを誇りに思うよ',num:2179},
+{id:'That_happens_sometim_2180',w:'That happens sometimes.',jp:'そういうこともあるよ',num:2180},
+{id:'Cheer_up__2181',w:'Cheer up.',jp:'元気を出して',num:2181},
+{id:'You_ll_be_fine__2182',w:'You\'ll be fine.',jp:'きっとうまくいくよ',num:2182},
+{id:'Take_your_time__2183',w:'Take your time.',jp:'ゆっくりでいいよ',num:2183},
+{id:'Keep_trying__2184',w:'Keep trying.',jp:'あきらめずに続けて',num:2184},
+{id:'That_s_too_bad__2185',w:'That\'s too bad.',jp:'それは残念だね',num:2185},
+{id:'Congratulations__2186',w:'Congratulations.',jp:'おめでとう',num:2186},
+{id:'I_m_happy_for_you__2187',w:'I\'m happy for you.',jp:'あなたのことがうれしいよ',num:2187},
+{id:'What_a_surprise__2188',w:'What a surprise.',jp:'びっくりした',num:2188},
+{id:'Sounds_fun__2189',w:'Sounds fun.',jp:'楽しそう',num:2189},
+{id:'I_m_glad_to_hear_tha_2190',w:'I\'m glad to hear that.',jp:'それを聞いてうれしいです',num:2190},
+{id:'I_m_home__2191',w:'I\'m home.',jp:'ただいま',num:2191},
+{id:'Dinner_is_ready__2192',w:'Dinner is ready.',jp:'ごはんができたよ',num:2192},
+{id:'Please_set_the_table_2193',w:'Please set the table.',jp:'テーブルを準備してください',num:2193},
+{id:'Don_t_forget_to_lock_2194',w:'Don\'t forget to lock the door.',jp:'ドアの鍵を忘れないで',num:2194},
+{id:'Can_you_take_out_the_2195',w:'Can you take out the trash?',jp:'ごみを出してくれる？',num:2195},
+{id:'I_m_doing_the_laundr_2196',w:'I\'m doing the laundry.',jp:'洗濯をしています',num:2196},
+{id:'Please_clean_your_ro_2197',w:'Please clean your room.',jp:'部屋を片づけてください',num:2197},
+{id:'The_room_is_dark__2198',w:'The room is dark.',jp:'部屋が暗いです',num:2198},
+{id:'Turn_on_the_light__p_2199',w:'Turn on the light, please.',jp:'電気をつけてください',num:2199},
+{id:'Let_s_meet_in_front__2200',w:'Let\'s meet in front of the station.',jp:'駅前で会いましょう',num:2200},
+{id:'I_ll_be_back_by_six__2201',w:'I\'ll be back by six.',jp:'6時までに戻ります',num:2201},
+{id:'I_have_an_appointmen_2202',w:'I have an appointment.',jp:'約束があります',num:2202},
+{id:'I_need_to_make_a_cop_2203',w:'I need to make a copy.',jp:'コピーを取る必要があります',num:2203},
+{id:'I_was_stuck_in_traff_2204',w:'I was stuck in traffic.',jp:'渋滞にはまっていました',num:2204},
+{id:'It_s_just_around_the_2205',w:'It\'s just around the corner.',jp:'すぐそこの角です',num:2205},
+{id:'I_m_on_my_lunch_brea_2206',w:'I\'m on my lunch break.',jp:'昼休み中です',num:2206},
+{id:'I_want_to_go_again__2207',w:'I want to go again.',jp:'また行きたいです',num:2207},
+{id:'This_is_my_first_tim_2208',w:'This is my first time.',jp:'これが初めてです',num:2208},
+{id:'This_is_my_second_ti_2209',w:'This is my second time.',jp:'これで2回目です',num:2209},
+{id:'I_m_looking_forward__2210',w:'I\'m looking forward to it.',jp:'楽しみにしています',num:2210},
+{id:'There_s_a_big_lake_t_2211',w:'There\'s a big lake there.',jp:'そこには大きな湖があります',num:2211},
+{id:'It_s_too_crowded__2212',w:'It\'s too crowded.',jp:'人が多すぎます',num:2212},
+{id:'It_s_my_piece_of_cak_2213',w:'It\'s my piece of cake.',jp:'それは私のケーキです',num:2213}
+];
+
+const LS={progress:'eiken_progress',settings:'eiken_settings',history:'eiken_history'};
+
+function localDateStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function localDayStart(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function loadProgress(){try{return JSON.parse(localStorage.getItem(LS.progress))||{};}catch(e){return {};}}
+function saveProgress(p){localStorage.setItem(LS.progress,JSON.stringify(p));}
+function loadSettings(){const def={examDate:'2026-10-04',dailyGoal:null};try{return Object.assign({},def,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return def;}}
+function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
+function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||[];}catch(e){return [];}}
+function addHistory(entry){const h=loadHistory();h.push(entry);localStorage.setItem(LS.history,JSON.stringify(h.slice(-200)));}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getMastery(id,prog){return (prog[id]&&prog[id].correct)||0;}
+function getStatus(id,prog){const m=getMastery(id,prog);if(m>=3)return 'master';if(m>=1)return 'learning';return 'new';}
+function daysUntilExam(){const s=loadSettings();if(!s.examDate)return null;const exam=new Date(s.examDate);const today=new Date();today.setHours(0,0,0,0);return Math.max(0,Math.ceil((exam-today)/86400000));}
+function calcDailyGoal(prog){const s=loadSettings();if(s.dailyGoal)return parseInt(s.dailyGoal);const days=daysUntilExam();if(!days||days===0)return 10;const notMastered=WORDS.filter(w=>getStatus(w.id,prog)!=='master').length;return Math.max(5,Math.ceil(notMastered/days));}
+function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0;const check=new Date();check.setHours(0,0,0,0);const dates=new Set(h.map(e=>e.date));while(true){const ds=localDayStart(check);if(dates.has(ds)){streak++;check.setDate(check.getDate()-1);}else break;if(streak>365)break;}return streak;}
+function buildSessionDeck(prog){
+  const goal=calcDailyGoal(prog);
+  // 例文あり優先・ステータス順でソート
+  const hasEx=w=>!!w.ex;
+  const nw_ex=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'&&hasEx(w)));
+  const nw_no=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'&&!hasEx(w)));
+  const lw_ex=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='learning'&&hasEx(w)));
+  const lw_no=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='learning'&&!hasEx(w)));
+  const mw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='master'));
+  // 学習中(例文あり)→学習中(なし)→未学習(例文あり)→未学習(なし)の順
+  let deck=[...lw_ex,...lw_no,...nw_ex,...nw_no].slice(0,Math.ceil(goal*0.85));
+  if(deck.length<goal)deck.push(...mw.slice(0,goal-deck.length));
+  if(deck.length===0)deck=shuffle([...WORDS]).slice(0,goal);
+  return deck.slice(0,goal);
+}
+
+function updateDash(){
+  const prog=loadProgress();const s=loadSettings();const total=WORDS.length;
+  const h=new Date().getHours();
+  document.getElementById('dashGreeting')&&(document.getElementById('dashGreeting').textContent=h<11?'おはようございます！':h<17?'こんにちは！':'お疲れさまです！');
+  const days=daysUntilExam();
+  document.getElementById('countdownDays').textContent=days!==null?days:'—';
+  if(s.examDate)document.getElementById('countdownSub').textContent=new Date(s.examDate).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'});
+  const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
+  const lc=WORDS.filter(w=>getStatus(w.id,prog)==='learning').length;
+  const nc=WORDS.filter(w=>getStatus(w.id,prog)==='new').length;
+  const goal=calcDailyGoal(prog);
+  document.getElementById('todayGoal').textContent=goal;
+  document.getElementById('totalWords').textContent=total;
+  document.getElementById('masteredCount').textContent=mc;
+  document.getElementById('streakCount').textContent=getStreak();
+  document.getElementById('progMasterNum').textContent=`${mc}/${total}`;
+  document.getElementById('progLearningNum').textContent=`${lc}/${total}`;
+  document.getElementById('progNewNum').textContent=`${nc}/${total}`;
+  document.getElementById('progMasterFill').style.width=`${Math.round(mc/total*100)}%`;
+  document.getElementById('progLearningFill').style.width=`${Math.round(lc/total*100)}%`;
+  document.getElementById('progNewFill').style.width=`${Math.round(nc/total*100)}%`;
+  const todayH=loadHistory().filter(e=>e.date===localDateStr());
+  const todayC=todayH.reduce((s,e)=>s+e.correct,0);
+  document.getElementById('planToday').textContent=todayC>0?`${todayC}語 学習済み`:'まだ学習していません';
+  document.getElementById('planSessions').textContent=`${loadHistory().length}回`;
+  if(days&&days>0){const needed=Math.ceil((total-mc)/days);const el=document.getElementById('planOnTrack');if(needed<=goal){el.textContent='順調！間に合います ✓';el.className='pace-val ok';}else{el.textContent=`1日${needed}語ペース必要`;el.className='pace-val warn';}}
+  const btn=document.getElementById('startSessionBtn');
+  if(todayC>=goal){btn.textContent='今日の目標達成！もう一度やる →';btn.classList.add('done');}
+  else{btn.textContent=`今日のセッションを始める（目標${goal}語） →`;btn.classList.remove('done');}
+}
+
+let sessionMode='flash';
+function selectMode(mode,btn){sessionMode=mode;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+
+let sessionDeck=[],sessionCurrent=0,sessionOk=0,sessionNg=0,sessionMissed=[];
+let isFlipped=false;
+let quizCurrent=0,quizOk=0,quizNg=0,quizMissed=[],quizAnswered=false;
+
+function startSession(){
+  const prog=loadProgress();
+  sessionDeck=buildSessionDeck(prog);
+  sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
+  if(sessionMode==='quiz'){quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];document.getElementById('quizTitle').textContent=`• QUIZ（${sessionDeck.length}問）•`;showScreen('quizScreen');renderQuiz();}
+  else{document.getElementById('fcTitle').textContent=`• FLASH CARDS（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
+}
+
+function makePips(containerId,mastery,isBack){
+  const c=document.getElementById(containerId);if(!c)return;c.innerHTML='';
+  for(let i=0;i<5;i++){const d=document.createElement('div');d.className='pip'+(i<mastery?' filled':'')+(isBack?'':' pip-front');c.appendChild(d);}
+}
+
+function renderFC(){
+  isFlipped=false;
+  document.getElementById('cardInner').classList.remove('flipped');
+  document.getElementById('flipBtn').classList.remove('hidden');
+  document.getElementById('actionRow').classList.remove('show');
+  const q=sessionDeck[sessionCurrent];
+  const prog=loadProgress();
+  const mastery=getMastery(q.id,prog);
+  makePips('masteryPips',mastery,false);
+  makePips('masteryPipsBack',mastery,true);
+  document.getElementById('wordEn').textContent=q.w;
+  document.getElementById('wordPh').textContent=q.ph||'';
+  document.getElementById('wordJp').textContent=q.jp;
+  document.getElementById('masteryLabel').textContent=mastery>=3?'✅ 定着済み':mastery>=1?`学習中（${mastery}回正解）`:'初めて見る単語';
+  const total=sessionDeck.length;
+  document.getElementById('fcProgFill').style.width=`${Math.round(sessionCurrent/total*100)}%`;
+  document.getElementById('fcProgLabel').textContent=`${sessionCurrent+1} / ${total}`;
+  document.getElementById('fcProgRemain').textContent=`残り${total-sessionCurrent}枚`;
+  document.getElementById('fcOkCount').textContent=sessionOk;
+  document.getElementById('fcNgCount').textContent=sessionNg;
+  const sb=document.getElementById('speakBtn');if(sb){sb.classList.remove('speaking');sb.textContent='🔊';}
+
+}
+
+function flipCard(){
+  if(isFlipped)return;isFlipped=true;
+  document.getElementById('cardInner').classList.add('flipped');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('actionRow').classList.add('show');
+}
+
+function judge(isOk){
+  if(!isFlipped)return;
+  const q=sessionDeck[sessionCurrent];
+  const prog=loadProgress();
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isOk){prog[q.id].correct++;sessionOk++;}else{prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);}
+  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
+  sessionCurrent++;
+  if(sessionCurrent>=sessionDeck.length)finishSession();else renderFC();
+}
+
+function speakWord(e){
+  e.stopPropagation();
+  const word=document.getElementById('wordEn').textContent;
+  if(!word||word==='—')return;
+  if(typeof speechSynthesis==="undefined")return; speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(word);utter.lang='en-US';utter.rate=0.9;
+  const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
+  if(v)utter.voice=v;
+  const btn=document.getElementById('speakBtn');btn.classList.add('speaking');btn.textContent='🔉';
+  utter.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊';};
+  speechSynthesis.speak(utter);
+}
+
+function renderQuiz(){
+  quizAnswered=false;
+  document.querySelectorAll('.quiz-choice').forEach(b=>{b.classList.remove('correct','wrong');b.disabled=false;});
+  const q=sessionDeck[quizCurrent];
+  const prog=loadProgress();
+  const mastery=getMastery(q.id,prog);
+  makePips('quizMasteryPips',mastery,false);
+  document.getElementById('quizWordEn').textContent=q.w;
+  document.getElementById('quizWordPh').textContent=q.ph||'';
+  const qexArea=document.getElementById('quizExArea');
+  const qex=document.getElementById('quizWordEx');
+  if(q.ex&&qex){qex.textContent=q.ex;if(qexArea)qexArea.style.display='';}
+  else if(qexArea){qexArea.style.display='none';}
+  const total=sessionDeck.length;
+  document.getElementById('quizProgFill').style.width=`${Math.round(quizCurrent/total*100)}%`;
+  document.getElementById('quizProgLabel').textContent=`${quizCurrent+1} / ${total}`;
+  document.getElementById('quizProgRemain').textContent=`残り${total-quizCurrent}問`;
+  document.getElementById('quizOkCount').textContent=quizOk;
+  document.getElementById('quizNgCount').textContent=quizNg;
+  const choices=shuffle([q,...shuffle(WORDS.filter(w=>w.id!==q.id)).slice(0,3)]);
+  const container=document.getElementById('quizChoices');container.innerHTML='';
+  choices.forEach((c,i)=>{
+    const btn=document.createElement('button');btn.className='quiz-choice';
+    btn.innerHTML=`<span class="quiz-num">${i+1}</span>${c.jp}`;
+    btn.onclick=()=>selectQuizAnswer(btn,c.id===q.id,q);
+    container.appendChild(btn);
+  });
+}
+
+function selectQuizAnswer(btn,isCorrect,q){
+  if(quizAnswered)return;quizAnswered=true;
+  const prog=loadProgress();
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isCorrect){prog[q.id].correct++;quizOk++;}else{prog[q.id].wrong++;quizNg++;quizMissed.push(q);}
+  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
+  document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===q.jp)b.classList.add('correct');});}
+  document.getElementById('quizOkCount').textContent=quizOk;
+  document.getElementById('quizNgCount').textContent=quizNg;
+  setTimeout(()=>{quizCurrent++;if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}else renderQuiz();},400);
+}
+
+function speakQuizWord(){
+  const word=document.getElementById('quizWordEn').textContent;
+  if(!word||word==='—')return;
+  speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(word);utter.lang='en-US';utter.rate=0.9;
+  const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
+  if(v)utter.voice=v;speechSynthesis.speak(utter);
+}
+
+function finishSession(){
+  if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
+  const total=sessionDeck.length;const pct=sessionOk/total;
+  let emoji,title,sub;
+  if(pct>=0.85){emoji='🌟';title='すばらしい！';sub='定着が進んできた。この調子で続けよう。';}
+  else if(pct>=0.6){emoji='📚';title='いい調子！';sub='✕の単語を重点的に回していくと一気に伸びる。';}
+  else{emoji='🌱';title='お疲れさま！';sub='知らない単語に出会えた分だけ前進してる。毎日少しずつ！';}
+  document.getElementById('sessEmoji').textContent=emoji;
+  document.getElementById('sessTitle').textContent=title;
+  document.getElementById('sessScoreNum').textContent=sessionOk;
+  document.getElementById('sessScoreTot').textContent=total;
+  document.getElementById('sessSub').textContent=sub;
+  const ml=document.getElementById('missedList');ml.innerHTML='';
+  const rb=document.getElementById('retryBtn');
+  if(sessionMissed.length===0){document.getElementById('missedBox').style.display='none';rb.style.display='none';}
+  else{
+    document.getElementById('missedBox').style.display='block';rb.style.display='block';
+    rb.textContent=`✕ の${sessionMissed.length}語をもう一度`;
+    sessionMissed.forEach(w=>{const div=document.createElement('div');div.className='missed-item';div.innerHTML=`<div class="missed-en">${w.w}</div><div class="missed-jp">${w.jp}</div>`;ml.appendChild(div);});
+  }
+  showScreen('sessResultScreen');
+}
+
+function retryMissed(){
+  sessionDeck=shuffle([...sessionMissed]);sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
+  if(sessionMode==='quiz'){quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];document.getElementById('quizTitle').textContent=`• RETRY QUIZ（${sessionDeck.length}問）•`;showScreen('quizScreen');renderQuiz();}
+  else{document.getElementById('fcTitle').textContent=`• RETRY（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
+}
+
+function copyResult(){
+  const prog=loadProgress();const total=WORDS.length;
+  const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
+  const days=daysUntilExam();
+  const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
+  const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
+  const text=`【lingo 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk} / ${sessionDeck.length}（正答率 ${Math.round(sessionOk/sessionDeck.length*100)}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc} / ${total}語 定着済み（${Math.round(mc/total*100)}%）\n試験まで：${days!==null?days+'日':'未設定'}\n連続学習：${getStreak()}日🔥\n${sessionMissed.length>0?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
+  navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
+  showToast('📋 コピーしました！Claudeに貼り付けてね');
+}
+function goToDash(){updateDash();showScreen('dashScreen');}
+function endSession(){if(confirm('セッションを終了しますか？'))goToDash();}
+
+let currentFilter='all';
+function renderWordList(){
+  const prog=loadProgress();
+  const filtered=WORDS.filter(w=>currentFilter==='all'||getStatus(w.id,prog)===currentFilter);
+  const container=document.getElementById('wordListItems');container.innerHTML='';
+  filtered.forEach(w=>{
+    const st=getStatus(w.id,prog);const m=getMastery(w.id,prog);
+    const dotCls=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
+    const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
+    const div=document.createElement('div');div.className='word-item';
+    const exHtml=w.ex?('<div class="wi-ex">'+w.ex+(w.exJp?' <span style="color:var(--ink-lt)">('+w.exJp+')</span>':'')+'</div>'):'';
+    div.innerHTML=`<div class="wi-dot ${dotCls}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div>`;
+    container.appendChild(div);
+  });
+}
+function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
+
+function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;}
+function confirmReset(){if(confirm('全ての学習データをリセットしますか？')){localStorage.removeItem(LS.progress);localStorage.removeItem(LS.history);showToast('リセットしました');updateDash();}}
+
+const tabScreens={dash:'dashScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
+function showTab(tab,btn){
+  document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.toggle('active',b===btn||b.getAttribute('onclick')===btn.getAttribute('onclick'));});
+  showScreen(tabScreens[tab]);
+  if(tab==='wordlist')renderWordList();
+  if(tab==='settings')loadSettingsUI();
+  if(tab==='dash')updateDash();
+}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
+updateDash();
+</script>
+</body>
+</html>
