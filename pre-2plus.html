@@ -936,6 +936,7 @@ function speakWord(e){
 
 function renderQuiz(){
   quizAnswered=false;
+  document.querySelectorAll('.quiz-choice').forEach(b=>{b.classList.remove('correct','wrong');b.disabled=false;});
   const q=sessionDeck[quizCurrent];
   const prog=loadProgress();
   const mastery=getMastery(q.id,prog);
