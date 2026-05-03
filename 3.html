@@ -99,7 +99,7 @@ body::before{
   position:relative;overflow:hidden;
 }
 .countdown-card::after{
-  content:'🍎';position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  content:'';position:absolute;right:16px;top:50%;transform:translateY(-50%);
   font-size:40px;opacity:0.12;
 }
 .countdown-days{
@@ -441,6 +441,19 @@ body::before{
   opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999;
 }
 .toast.show{opacity:1;}
+
+/* ══ モーダル ══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.hidden{display:none;}
+.modal-box{background:var(--card);border-radius:20px;padding:24px;width:100%;max-width:360px;border:1.5px solid var(--border);}
+.modal-title{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:8px;}
+.modal-sub{font-size:13px;color:var(--ink-mid);margin-bottom:16px;line-height:1.6;}
+.modal-textarea{width:100%;height:120px;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:12px;font-family:monospace;resize:none;background:var(--bg);color:var(--ink);box-sizing:border-box;margin-bottom:14px;}
+.modal-btns{display:flex;gap:10px;}
+.modal-btn{flex:1;padding:12px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;border:1.5px solid var(--border);}
+.modal-btn-primary{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
+.modal-btn-danger{background:var(--wrong);color:white;border-color:#b03020;}
+.modal-btn-cancel{background:var(--bg);color:var(--ink-mid);}
 </style>
 </head>
 <body>
@@ -664,7 +677,11 @@ body::before{
       </div>
       <div class="set-row">
         <div><div class="set-label">1日の目標語数</div><div class="set-sub">自動計算の上書き</div></div>
-        <input class="set-input" type="number" id="dailyGoalInput" min="5" max="50" placeholder="自動" onchange="saveSetting('dailyGoal',this.value)">
+        <input class="set-input" type="number" id="dailyGoalInput" min="5" max="200" placeholder="自動" onchange="saveSetting('dailyGoal',this.value)">
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">1セッションの出題数</div><div class="set-sub">1回に出題される語数</div></div>
+        <input class="set-input" type="number" id="sessionSizeInput" min="5" max="100" placeholder="20" onchange="saveSetting('sessionSize',this.value)">
       </div>
     </div>
     <div class="set-section-title" style="margin-bottom:10px">バックアップ</div>
@@ -1885,7 +1902,7 @@ function localDateStr(){const d=new Date();return `${d.getFullYear()}-${String(d
 function localDayStart(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function loadProgress(){try{return JSON.parse(localStorage.getItem(LS.progress))||{};}catch(e){return {};}}
 function saveProgress(p){localStorage.setItem(LS.progress,JSON.stringify(p));}
-function loadSettings(){const def={examDate:'2026-10-04',dailyGoal:null};try{return Object.assign({},def,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return def;}}
+function loadSettings(){const def={examDate:'2026-10-04',dailyGoal:null,sessionSize:20};try{return Object.assign({},def,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return def;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||[];}catch(e){return [];}}
 function addHistory(entry){const h=loadHistory();h.push(entry);localStorage.setItem(LS.history,JSON.stringify(h.slice(-200)));}
@@ -1893,10 +1910,11 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function getMastery(id,prog){return (prog[id]&&prog[id].correct)||0;}
 function getStatus(id,prog){const m=getMastery(id,prog);if(m>=5)return 'master';if(m>=1)return 'learning';return 'new';}
 function daysUntilExam(){const s=loadSettings();if(!s.examDate)return null;const exam=new Date(s.examDate);const today=new Date();today.setHours(0,0,0,0);return Math.max(0,Math.ceil((exam-today)/86400000));}
+function calcSessionSize(){const s=loadSettings();return s.sessionSize?parseInt(s.sessionSize):20;}
 function calcDailyGoal(prog){const s=loadSettings();if(s.dailyGoal)return parseInt(s.dailyGoal);const days=daysUntilExam();if(!days||days===0)return 10;const notMastered=WORDS.filter(w=>getStatus(w.id,prog)!=='master').length;return Math.max(5,Math.ceil(notMastered/days));}
 function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0;const check=new Date();check.setHours(0,0,0,0);const dates=new Set(h.map(e=>e.date));while(true){const ds=localDayStart(check);if(dates.has(ds)){streak++;check.setDate(check.getDate()-1);}else break;if(streak>365)break;}return streak;}
 function buildSessionDeck(prog){
-  const goal=calcDailyGoal(prog);
+  const goal=calcSessionSize();
   // 上から順番に出題（numの小さい順で未学習→学習中を優先）
   const sorted=[...WORDS].sort((a,b)=>a.num-b.num);
   const lw_early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
@@ -2156,7 +2174,7 @@ function renderWordList(){
 }
 function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
 
-function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;}
+function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;}
 function exportData(){
   try{
     const data={
@@ -2186,22 +2204,9 @@ function exportData(){
   }
 }
 
-function importData(){
-  const text=prompt('バックアップのテキストを貼り付けてください：');
-  if(!text)return;
-  try{
-    const data=JSON.parse(text);
-    if(data.progress)localStorage.setItem(LS.progress,data.progress);
-    if(data.history)localStorage.setItem(LS.history,data.history);
-    if(data.settings)localStorage.setItem(LS.settings,data.settings);
-    showToast('✅ データを復元しました！');
-    updateDash();
-  }catch(e){
-    showToast('⚠️ データの読み込みに失敗しました');
-  }
-}
 
-function confirmReset(){if(confirm('全ての学習データをリセットしますか？')){localStorage.removeItem(LS.progress);localStorage.removeItem(LS.history);showToast('リセットしました');updateDash();}}
+
+
 
 const tabScreens={dash:'dashScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
 function showTab(tab,btn){
@@ -2216,6 +2221,56 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 
 try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
 updateDash();
+
+function openModal(id){document.getElementById(id).classList.remove('hidden');}
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+function importData(){document.getElementById('importTextarea').value='';openModal('importModal');}
+function doImport(){
+  const text=document.getElementById('importTextarea').value.trim();
+  if(!text){showToast('⚠️ テキストが空です');return;}
+  try{
+    const data=JSON.parse(text);
+    if(data.progress)localStorage.setItem(LS.progress,data.progress);
+    if(data.history)localStorage.setItem(LS.history,data.history);
+    if(data.settings)localStorage.setItem(LS.settings,data.settings);
+    closeModal('importModal');
+    showToast('✅ データを復元しました！');
+    updateDash();renderWordList();
+  }catch(e){showToast('⚠️ データの読み込みに失敗しました');}
+}
+function confirmReset(){openModal('resetModal');}
+function doReset(){
+  localStorage.removeItem(LS.progress);
+  localStorage.removeItem(LS.history);
+  closeModal('resetModal');
+  showToast('リセットしました');
+  updateDash();renderWordList();
+}
 </script>
+
+<!-- ══ インポートモーダル ══ -->
+<div class="modal-overlay hidden" id="importModal">
+  <div class="modal-box">
+    <div class="modal-title">データを読み込む</div>
+    <div class="modal-sub">バックアップのテキストを貼り付けてください</div>
+    <textarea class="modal-textarea" id="importTextarea" placeholder="ここに貼り付け..."></textarea>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('importModal')">キャンセル</button>
+      <button class="modal-btn modal-btn-primary" onclick="doImport()">読み込む</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ リセット確認モーダル ══ -->
+<div class="modal-overlay hidden" id="resetModal">
+  <div class="modal-box">
+    <div class="modal-title">⚠️ 全データをリセット</div>
+    <div class="modal-sub">全ての学習データが削除されます。この操作は取り消せません。</div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('resetModal')">キャンセル</button>
+      <button class="modal-btn modal-btn-danger" onclick="doReset()">リセットする</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
