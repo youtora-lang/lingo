@@ -672,6 +672,23 @@ body::before{
         <input class="set-input" type="number" id="dailyGoalInput" min="5" max="50" placeholder="自動" onchange="saveSetting('dailyGoal',this.value)">
       </div>
     </div>
+    <div class="set-section-title" style="margin-bottom:10px">バックアップ</div>
+    <div class="set-card">
+      <div style="font-size:12px;color:var(--ink-mid);font-weight:600;line-height:1.7;padding:8px 0 12px;border-bottom:1.5px dashed var(--bg-deep);margin-bottom:4px;">
+        💡 ホーム画面のアイコンを変える前に必ずバックアップを取ってください。<br>
+        ① 「書き出す」→ テキストがコピーされます<br>
+        ② メモアプリに貼り付けて保存<br>
+        ③ アイコンを変えたあと「読み込む」→ メモのテキストを貼り付けて復元
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">データをエクスポート</div><div class="set-sub">学習履歴をコピー</div></div>
+        <button class="set-input" style="width:auto;padding:6px 12px;cursor:pointer;background:var(--gold-bg);border-color:var(--gold);font-weight:800;" onclick="exportData()">書き出す</button>
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">データをインポート</div><div class="set-sub">バックアップから復元</div></div>
+        <button class="set-input" style="width:auto;padding:6px 12px;cursor:pointer;background:var(--bg);border-color:var(--card-flip);font-weight:800;" onclick="importData()">読み込む</button>
+      </div>
+    </div>
     <div class="set-section-title" style="margin-bottom:10px">リセット</div>
     <div class="set-card">
       <button class="reset-btn" onclick="confirmReset()">⚠️ 全学習データをリセット</button>
@@ -897,28 +914,30 @@ function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||
 function addHistory(entry){const h=loadHistory();h.push(entry);localStorage.setItem(LS.history,JSON.stringify(h.slice(-200)));}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function getMastery(id,prog){return (prog[id]&&prog[id].correct)||0;}
-function getStatus(id,prog){const m=getMastery(id,prog);if(m>=3)return 'master';if(m>=1)return 'learning';return 'new';}
+function getStatus(id,prog){const m=getMastery(id,prog);if(m>=5)return 'master';if(m>=1)return 'learning';return 'new';}
 function daysUntilExam(){const s=loadSettings();if(!s.examDate)return null;const exam=new Date(s.examDate);const today=new Date();today.setHours(0,0,0,0);return Math.max(0,Math.ceil((exam-today)/86400000));}
 function calcDailyGoal(prog){const s=loadSettings();if(s.dailyGoal)return parseInt(s.dailyGoal);const days=daysUntilExam();if(!days||days===0)return 10;const notMastered=WORDS.filter(w=>getStatus(w.id,prog)!=='master').length;return Math.max(5,Math.ceil(notMastered/days));}
 function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0;const check=new Date();check.setHours(0,0,0,0);const dates=new Set(h.map(e=>e.date));while(true){const ds=localDayStart(check);if(dates.has(ds)){streak++;check.setDate(check.getDate()-1);}else break;if(streak>365)break;}return streak;}
 function buildSessionDeck(prog){
   const goal=calcDailyGoal(prog);
-  const lw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='learning'));
+  const lw_early=shuffle(WORDS.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;}));
+  const lw_late=shuffle(WORDS.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;}));
   const nw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'));
-  const mw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='master'));
-  const nLearning=Math.round(goal*0.5);
-  const nNew=Math.round(goal*0.4);
-  const nMaster=goal-nLearning-nNew;
+  const nNew=Math.round(goal*0.5);
+  const nEarly=Math.round(goal*0.35);
+  const nLate=goal-nNew-nEarly;
   let deck=[
-    ...lw.slice(0,nLearning),
     ...nw.slice(0,nNew),
-    ...mw.slice(0,nMaster),
+    ...lw_early.slice(0,nEarly),
+    ...lw_late.slice(0,nLate),
   ];
+  // 足りない分を定着済み以外で補充
   if(deck.length<goal){
     const used=new Set(deck.map(w=>w.id));
-    const rest=shuffle(WORDS.filter(w=>!used.has(w.id)));
+    const rest=shuffle(WORDS.filter(w=>!used.has(w.id)&&getStatus(w.id,prog)!=='master'));
     deck.push(...rest.slice(0,goal-deck.length));
   }
+  if(deck.length===0)deck=shuffle(WORDS.filter(w=>getStatus(w.id,prog)!=='master')).slice(0,goal);
   if(deck.length===0)deck=shuffle([...WORDS]).slice(0,goal);
   return shuffle(deck).slice(0,goal);
 }
@@ -1146,6 +1165,51 @@ function renderWordList(){
 function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
 
 function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;}
+function exportData(){
+  try{
+    const data={
+      progress:localStorage.getItem(LS.progress),
+      history:localStorage.getItem(LS.history),
+      settings:localStorage.getItem(LS.settings),
+    };
+    const json=JSON.stringify(data);
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='lingo_backup_'+localDateStr()+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📦 バックアップを保存しました');
+  }catch(e){
+    // ダウンロードできない場合はクリップボードにコピー
+    try{
+      const data={
+        progress:localStorage.getItem(LS.progress),
+        history:localStorage.getItem(LS.history),
+        settings:localStorage.getItem(LS.settings),
+      };
+      navigator.clipboard.writeText(JSON.stringify(data));
+      showToast('📋 データをコピーしました。メモ帳などに貼り付けて保存してください');
+    }catch(e2){showToast('⚠️ エクスポートに失敗しました');}
+  }
+}
+
+function importData(){
+  const text=prompt('バックアップのテキストを貼り付けてください：');
+  if(!text)return;
+  try{
+    const data=JSON.parse(text);
+    if(data.progress)localStorage.setItem(LS.progress,data.progress);
+    if(data.history)localStorage.setItem(LS.history,data.history);
+    if(data.settings)localStorage.setItem(LS.settings,data.settings);
+    showToast('✅ データを復元しました！');
+    updateDash();
+  }catch(e){
+    showToast('⚠️ データの読み込みに失敗しました');
+  }
+}
+
 function confirmReset(){if(confirm('全ての学習データをリセットしますか？')){localStorage.removeItem(LS.progress);localStorage.removeItem(LS.history);showToast('リセットしました');updateDash();}}
 
 const tabScreens={dash:'dashScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
