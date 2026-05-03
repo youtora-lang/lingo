@@ -17,4 +17,4 @@
 
 英検 準2級プラス👉 [https://youtora-lang.github.io/lingo/pre-2plus](https://youtora-lang.github.io/lingo/pre-2plus)
 
-ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
+🌈ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
