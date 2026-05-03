@@ -1092,7 +1092,19 @@ function selectQuizAnswer(btn,isCorrect,q){
   if(!isCorrect){document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===q.jp)b.classList.add('correct');});}
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
-  setTimeout(()=>{quizCurrent++;if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}else renderQuiz();},600);
+  setTimeout(()=>{
+    document.getElementById('quizChoices').style.visibility='hidden';
+    setTimeout(()=>{
+      quizCurrent++;
+      if(quizCurrent>=sessionDeck.length){
+        addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+        sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
+      }else{
+        renderQuiz();
+        document.getElementById('quizChoices').style.visibility='visible';
+      }
+    },50);
+  },500);
 }
 
 function speakQuizWord(){
