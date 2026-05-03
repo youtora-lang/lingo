@@ -140,9 +140,9 @@ body::before{
 .prog-num{color:var(--ink-lt);}
 .prog-bar{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;border:1.5px solid var(--bg-deep);}
 .prog-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
-.fill-master{background:var(--correct);}
-.fill-learning{background:var(--gold-lt);}
-.fill-new{background:var(--ink-lt);}
+.fill-master{background:#4a9a6a;}
+.fill-learning{background:#e8b030;}
+.fill-new{background:#8aA0b8;}
 
 .pace-row{
   display:flex;align-items:center;justify-content:space-between;
@@ -382,6 +382,10 @@ body::before{
 /* ══ 単語一覧 ══ */
 .wl-body{padding:14px;overflow-y:auto;flex:1;}
 .wl-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.wf-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+.wf-master{background:#4a9a6a;}
+.wf-learning{background:#e8b030;}
+.wf-new{background:#8aA0b8;}
 .wl-filter{
   padding:5px 12px;border-radius:99px;border:2px solid var(--border);
   background:var(--card);font-family:inherit;font-size:12px;font-weight:900;
@@ -395,9 +399,9 @@ body::before{
   display:flex;align-items:center;gap:12px;
 }
 .wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.wi-master{background:var(--correct);}
-.wi-learning{background:var(--gold-lt);}
-.wi-new{background:var(--ink-lt);}
+.wi-master{background:#4a9a6a;}
+.wi-learning{background:#e8b030;}
+.wi-new{background:#8aA0b8;}
 .wi-body{flex:1;}
 .wi-en{font-size:15px;font-weight:900;color:var(--ink);}
 .wi-jp{font-size:12px;color:var(--ink-mid);margin-top:2px;font-weight:700;}
@@ -492,15 +496,15 @@ body::before{
     <div class="section-card">
       <div class="section-title">全体進捗</div>
       <div class="prog-row">
-        <div class="prog-header"><span class="prog-key">🟢 定着済み</span><span class="prog-num" id="progMasterNum">0 / 1561</span></div>
+        <div class="prog-header"><span class="prog-key"><span class="wf-dot wf-master"></span>定着済み</span><span class="prog-num" id="progMasterNum">0 / 1561</span></div>
         <div class="prog-bar"><div class="prog-fill fill-master" id="progMasterFill" style="width:0%"></div></div>
       </div>
       <div class="prog-row" style="margin-top:10px">
-        <div class="prog-header"><span class="prog-key">🟡 学習中</span><span class="prog-num" id="progLearningNum">0 / 1561</span></div>
+        <div class="prog-header"><span class="prog-key"><span class="wf-dot wf-learning"></span>学習中</span><span class="prog-num" id="progLearningNum">0 / 1561</span></div>
         <div class="prog-bar"><div class="prog-fill fill-learning" id="progLearningFill" style="width:0%"></div></div>
       </div>
       <div class="prog-row" style="margin-top:10px">
-        <div class="prog-header"><span class="prog-key">⚪ 未学習</span><span class="prog-num" id="progNewNum">1561 / 1561</span></div>
+        <div class="prog-header"><span class="prog-key"><span class="wf-dot wf-new"></span>未学習</span><span class="prog-num" id="progNewNum">1561 / 1561</span></div>
         <div class="prog-bar"><div class="prog-fill fill-new" id="progNewFill" style="width:100%"></div></div>
       </div>
     </div>
@@ -636,9 +640,9 @@ body::before{
   <div class="wl-body">
     <div class="wl-filters">
       <button class="wl-filter active" data-filter="all" onclick="filterWords(this)">すべて</button>
-      <button class="wl-filter" data-filter="master" onclick="filterWords(this)">🟢 定着済み</button>
-      <button class="wl-filter" data-filter="learning" onclick="filterWords(this)">🟡 学習中</button>
-      <button class="wl-filter" data-filter="new" onclick="filterWords(this)">⚪ 未学習</button>
+      <button class="wl-filter" data-filter="master" onclick="filterWords(this)"><span class="wf-dot wf-master"></span>定着済み</button>
+      <button class="wl-filter" data-filter="learning" onclick="filterWords(this)"><span class="wf-dot wf-learning"></span>学習中</button>
+      <button class="wl-filter" data-filter="new" onclick="filterWords(this)"><span class="wf-dot wf-new"></span>未学習</button>
     </div>
     <div id="wordListItems"></div>
   </div>

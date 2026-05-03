@@ -395,6 +395,10 @@ body::before{
 /* ══ 単語一覧 ══ */
 .wl-body{padding:14px;overflow-y:auto;flex:1;}
 .wl-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.wf-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+.wf-master{background:var(--correct);}
+.wf-learning{background:var(--gold-lt);}
+.wf-new{background:var(--ink-lt);}
 .wl-filter{
   padding:5px 12px;border-radius:99px;border:2px solid var(--border);
   background:var(--card);font-family:inherit;font-size:12px;font-weight:900;
@@ -654,9 +658,9 @@ body::before{
   <div class="wl-body">
     <div class="wl-filters">
       <button class="wl-filter active" data-filter="all" onclick="filterWords(this)">すべて</button>
-      <button class="wl-filter" data-filter="master" onclick="filterWords(this)">🟢 定着済み</button>
-      <button class="wl-filter" data-filter="learning" onclick="filterWords(this)">🟡 学習中</button>
-      <button class="wl-filter" data-filter="new" onclick="filterWords(this)">⚪ 未学習</button>
+      <button class="wl-filter" data-filter="master" onclick="filterWords(this)"><span class="wf-dot wf-master"></span>定着済み</button>
+      <button class="wl-filter" data-filter="learning" onclick="filterWords(this)"><span class="wf-dot wf-learning"></span>学習中</button>
+      <button class="wl-filter" data-filter="new" onclick="filterWords(this)"><span class="wf-dot wf-new"></span>未学習</button>
     </div>
     <div id="wordListItems"></div>
   </div>
