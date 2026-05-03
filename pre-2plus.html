@@ -282,26 +282,33 @@ body::before{
 .speak-btn.speaking{background:var(--card-flip);color:white;border-color:var(--card-flip);}
 
 /* アクションボタン */
+.btn-stack{
+  position:relative;width:100%;max-width:360px;
+  margin-bottom:12px;height:52px;
+}
 .flip-btn{
-  width:100%;max-width:360px;padding:14px;
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  width:100%;
   background:var(--card);color:var(--ink);
   border:1.5px solid var(--border);border-radius:14px;
   font-family:inherit;font-size:15px;font-weight:900;
-  cursor:pointer;margin-bottom:12px;transition:all 0.15s;
+  cursor:pointer;transition:all 0.15s;
+  visibility:visible;
 }
 .flip-btn:active{transform:translateY(2px);}
-.flip-btn.hidden{display:none;}
+.flip-btn.hidden{visibility:hidden;}
 
 .action-row{
-  display:flex;gap:12px;width:100%;max-width:360px;
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;gap:12px;
   opacity:0;transition:opacity 0.3s;pointer-events:none;
 }
 .action-row.show{opacity:1;pointer-events:all;}
 .action-btn{
-  flex:1;padding:14px 8px;border:1.5px solid var(--border);
+  flex:1;padding:0 8px;border:1.5px solid var(--border);
   border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;
   cursor:pointer;transition:all 0.15s;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
+  display:flex;align-items:center;justify-content:center;
 }
 .action-btn:active{transform:scale(0.95);}
 .btn-ok{background:var(--gold-lt);color:var(--ink);}
@@ -571,10 +578,12 @@ body::before{
       </div>
     </div>
 
-    <button class="flip-btn" id="flipBtn" onclick="flipCard()">タップして答えを見る</button>
-    <div class="action-row" id="actionRow">
-      <button class="action-btn btn-ng" onclick="judge(false)">😅 もう少し<span class="btn-label">もう一度</span></button>
-      <button class="action-btn btn-ok" onclick="judge(true)">✓ 覚えてた！<span class="btn-label">わかった</span></button>
+    <div class="btn-stack">
+      <button class="flip-btn" id="flipBtn" onclick="flipCard()">タップして答えを見る</button>
+      <div class="action-row" id="actionRow">
+        <button class="action-btn btn-ng" onclick="judge(false)">もう一度</button>
+        <button class="action-btn btn-ok" onclick="judge(true)">覚えた！</button>
+      </div>
     </div>
     <div class="counter-row">
       <div class="counter"><div class="c-dot c-ok"></div><span id="fcOkCount">0</span> OK</div>
@@ -919,9 +928,11 @@ function calcDailyGoal(prog){const s=loadSettings();if(s.dailyGoal)return parseI
 function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0;const check=new Date();check.setHours(0,0,0,0);const dates=new Set(h.map(e=>e.date));while(true){const ds=localDayStart(check);if(dates.has(ds)){streak++;check.setDate(check.getDate()-1);}else break;if(streak>365)break;}return streak;}
 function buildSessionDeck(prog){
   const goal=calcDailyGoal(prog);
-  const lw_early=shuffle(WORDS.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;}));
-  const lw_late=shuffle(WORDS.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;}));
-  const nw=shuffle(WORDS.filter(w=>getStatus(w.id,prog)==='new'));
+  // 上から順番に出題（numの小さい順で未学習→学習中を優先）
+  const sorted=[...WORDS].sort((a,b)=>a.num-b.num);
+  const lw_early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
+  const lw_late=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;});
+  const nw=sorted.filter(w=>getStatus(w.id,prog)==='new');
   const nNew=Math.round(goal*0.5);
   const nEarly=Math.round(goal*0.35);
   const nLate=goal-nNew-nEarly;
@@ -933,11 +944,11 @@ function buildSessionDeck(prog){
   // 足りない分を定着済み以外で補充
   if(deck.length<goal){
     const used=new Set(deck.map(w=>w.id));
-    const rest=shuffle(WORDS.filter(w=>!used.has(w.id)&&getStatus(w.id,prog)!=='master'));
+    const rest=sorted.filter(w=>!used.has(w.id)&&getStatus(w.id,prog)!=='master');
     deck.push(...rest.slice(0,goal-deck.length));
   }
-  if(deck.length===0)deck=shuffle(WORDS.filter(w=>getStatus(w.id,prog)!=='master')).slice(0,goal);
-  if(deck.length===0)deck=shuffle([...WORDS]).slice(0,goal);
+  if(deck.length===0)deck=sorted.filter(w=>getStatus(w.id,prog)!=='master').slice(0,goal);
+  if(deck.length===0)deck=sorted.slice(0,goal);
   return shuffle(deck).slice(0,goal);
 }
 
@@ -1036,7 +1047,14 @@ function judge(isOk){
   if(isOk){prog[q.id].correct++;sessionOk++;}else{prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);}
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);
   sessionCurrent++;
-  if(sessionCurrent>=sessionDeck.length)finishSession();else renderFC();
+  // カードフリップアニメーション完了後に次カードを描画（日本語が見えるバグ対策）
+  document.getElementById('cardInner').classList.remove('flipped');
+  document.getElementById('actionRow').classList.remove('show');
+  if(sessionCurrent>=sessionDeck.length){
+    setTimeout(()=>finishSession(),450);
+  }else{
+    setTimeout(()=>renderFC(),450);
+  }
 }
 
 function speakWord(e){
@@ -1093,16 +1111,17 @@ function selectQuizAnswer(btn,isCorrect,q){
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
   setTimeout(()=>{
-    quizCurrent++;
-    if(quizCurrent>=sessionDeck.length){
-      addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
-      sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
-    }else{
-      const container=document.getElementById('quizChoices');
-      container.innerHTML='';
-      void container.offsetHeight; /* iOSの描画を強制フラッシュ */
-      renderQuiz();
-    }
+    document.getElementById('quizChoices').style.visibility='hidden';
+    setTimeout(()=>{
+      quizCurrent++;
+      if(quizCurrent>=sessionDeck.length){
+        addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+        sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
+      }else{
+        renderQuiz();
+        document.getElementById('quizChoices').style.visibility='visible';
+      }
+    },50);
   },500);
 }
 

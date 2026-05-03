@@ -1,0 +1,2514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="https://youtora-lang.github.io/lingo/apple-touch-icon.png">
+<link rel="icon" href="https://youtora-lang.github.io/lingo/favicon.ico">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="lingo">
+<title>lingo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #fdf8e8;
+  --bg-deep:    #f5e8b0;
+  --card:       #ffffff;
+  --card-flip:  #3aaabf;
+  --card-flip-deep: #2a8a9f;
+  --border:     #3a2a00;
+  --gold:       #3aaabf;
+  --gold-lt:    #7acfdf;
+  --gold-pale:  #c8eef5;
+  --gold-bg:    #e0f5fa;
+  --ink:        #2a2000;
+  --ink-mid:    #2a6a7a;
+  --ink-lt:     #a09050;
+  --white:      #ffffff;
+  --correct:    #4a8a3a;
+  --correct-pale:#d8f0c8;
+  --wrong:      #d94a3a;
+  --wrong-pale: #fde0d8;
+  --star-color: rgba(60,180,210,0.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:'Nunito','Zen Maru Gothic',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+/* 背景の星飾り */
+body::before{
+  content:'✦ ✧ ✦ ✧ ✦ ✧';
+  position:fixed;top:8px;left:0;right:0;
+  text-align:center;font-size:10px;
+  color:var(--star-color);letter-spacing:20px;
+  pointer-events:none;z-index:0;
+}
+
+/* ══ SCREEN ══ */
+.screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;}
+
+/* ══ NAV ══ */
+.nav{
+  display:flex;background:var(--card);
+  border-bottom:1.5px solid var(--border);
+  position:sticky;top:0;z-index:10;
+}
+.nav-btn{
+  flex:1;padding:10px 4px 8px;
+  border:none;background:none;
+  font-family:inherit;font-size:10px;font-weight:800;
+  color:var(--ink-lt);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.nav-btn.active{color:var(--card-flip);}
+.nav-icon{
+  font-size:20px;width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-btn.active .nav-icon{background:var(--bg);}
+
+/* ══ DASHBOARD ══ */
+.dash-body{padding:16px;overflow-y:auto;flex:1;}
+
+/* タイトルバッジ */
+.page-badge{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;margin-bottom:16px;
+}
+.badge-pill{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:99px;padding:6px 20px;
+  font-size:13px;font-weight:900;color:var(--ink);
+  letter-spacing:0.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--gold-lt);}
+
+/* カウントダウン */
+.countdown-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:20px;padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+  position:relative;overflow:hidden;
+}
+.countdown-card::after{
+  content:'🌟';position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:40px;opacity:0.12;
+}
+.countdown-days{
+  font-size:52px;font-weight:900;color:var(--card-flip);line-height:1;
+  font-family:'Nunito',sans-serif;
+}
+.countdown-label{font-size:11px;color:var(--ink-mid);margin-top:2px;font-weight:800;}
+.countdown-right{text-align:right;}
+.countdown-exam{font-size:13px;font-weight:900;color:var(--ink);}
+.countdown-sub{font-size:10px;color:var(--ink-lt);margin-top:3px;font-weight:700;}
+
+/* スタッツ */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.stat-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:13px 14px;
+}
+.stat-label{font-size:10px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+.stat-val{font-size:28px;font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
+.stat-unit{font-size:11px;color:var(--ink-lt);margin-top:3px;font-weight:700;}
+.stat-card.hl{background:var(--bg);border-color:var(--card-flip);}
+.stat-card.hl .stat-val{color:var(--card-flip);}
+.stat-card.hl-gold{background:var(--gold-bg);border-color:var(--gold);}
+.stat-card.hl-gold .stat-val{color:var(--gold);}
+
+/* セクションカード */
+.section-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:18px;padding:16px;margin-bottom:12px;
+}
+.section-title{
+  font-size:11px;font-weight:900;color:var(--ink-mid);
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;
+}
+.prog-row{margin-bottom:10px;}
+.prog-header{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:5px;}
+.prog-key{color:var(--ink-mid);}
+.prog-num{color:var(--ink-lt);}
+.prog-bar{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;border:1.5px solid var(--bg-deep);}
+.prog-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+.fill-master{background:var(--correct);}
+.fill-learning{background:var(--gold-lt);}
+.fill-new{background:var(--ink-lt);}
+
+.pace-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1.5px dashed var(--bg-deep);font-size:13px;
+}
+.pace-row:last-child{border-bottom:none;}
+.pace-key{color:var(--ink-mid);font-weight:700;}
+.pace-val{font-weight:900;color:var(--ink);}
+.pace-val.ok{color:var(--correct);}
+.pace-val.warn{color:var(--wrong);}
+
+/* モード選択 */
+.mode-row{display:flex;gap:10px;margin-bottom:10px;}
+.mode-btn{
+  flex:1;padding:11px 8px;
+  border:1.5px solid var(--border);background:var(--card);
+  border-radius:14px;font-family:inherit;font-size:12px;font-weight:800;
+  color:var(--ink-mid);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.15s;
+}
+.mode-btn .mode-icon{font-size:22px;}
+.mode-btn.selected{
+  border-color:var(--card-flip);background:var(--bg);
+  color:var(--card-flip);
+}
+
+/* スタートボタン */
+.start-btn{
+  width:100%;padding:16px;
+  background:var(--gold-lt);color:var(--ink);
+  border:1.5px solid var(--border);border-radius:16px;
+  font-family:inherit;font-size:16px;font-weight:900;
+  cursor:pointer;transition:all 0.15s;
+}
+.start-btn:active{transform:translateY(2px);}
+.start-btn.done{background:var(--correct);color:white;}
+
+/* ══ FC HEADER ══ */
+.fc-header{
+  background:var(--card);border-bottom:1.5px solid var(--border);
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.fc-title{font-size:13px;font-weight:900;color:var(--ink);letter-spacing:0.05em;}
+.fc-close{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--border);background:var(--bg);
+  font-size:13px;cursor:pointer;color:var(--ink-mid);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;
+}
+
+.prog-wrap{
+  padding:10px 16px 8px;background:var(--card);
+  border-bottom:1.5px solid var(--bg-deep);
+}
+.prog-bar-thin{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:var(--card-flip);border-radius:99px;transition:width 0.4s ease;}
+.prog-nums{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-lt);font-weight:800;margin-top:4px;}
+
+/* ══ CARD AREA ══ */
+.card-area{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:16px 16px 24px;
+}
+
+/* フラッシュカード */
+.flashcard{width:100%;max-width:360px;perspective:1000px;margin-bottom:16px;cursor:pointer;}
+.flashcard-inner{
+  position:relative;width:100%;height:230px;
+  transform-style:preserve-3d;
+  transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.flashcard-inner.flipped{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border:1.5px solid var(--border);border-radius:22px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;
+}
+.fc-front{background:var(--card);}
+.fc-back{transform:rotateY(180deg);background:var(--card-flip);}
+
+/* 前面 */
+.gold-tag{
+  display:inline-block;background:var(--gold-lt);
+  border:2px solid var(--border);border-radius:99px;
+  padding:3px 14px;font-size:11px;font-weight:900;
+  color:var(--ink);margin-bottom:12px;
+}
+.word-en{font-size:32px;font-weight:900;color:var(--ink);margin-bottom:6px;font-family:'Nunito',sans-serif;}
+.word-ph{font-size:12px;color:var(--ink-lt);margin-bottom:10px;font-weight:700;}
+.tap-hint{font-size:11px;color:var(--ink-lt);font-weight:700;margin-top:8px;}
+
+
+
+
+
+/* 背面 */
+.word-jp{font-size:26px;font-weight:900;color:var(--white);margin-bottom:10px;font-family:'Zen Maru Gothic',sans-serif;}
+
+
+
+
+.mastery-label{font-size:10px;color:rgba(255,255,255,0.65);margin-top:8px;font-weight:800;}
+
+/* ピップ */
+.pip-row{display:flex;gap:5px;margin-bottom:10px;}
+.pip{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.4);}
+.pip.filled{background:var(--gold-lt);border-color:var(--gold);}
+.pip-front{background:var(--bg);border-color:var(--bg-deep);}
+.pip-front.filled{background:var(--gold-lt);border-color:var(--gold);}
+
+/* スピークボタン */
+.speak-btn{
+  position:absolute;top:10px;right:10px;
+  width:34px;height:34px;border-radius:50%;
+  border:2px solid var(--bg-deep);background:var(--bg);
+  font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-mid);transition:all 0.2s;
+}
+.speak-btn.speaking{background:var(--card-flip);color:white;border-color:var(--card-flip);}
+
+/* アクションボタン */
+.btn-stack{
+  position:relative;width:100%;max-width:360px;
+  margin-bottom:12px;height:52px;
+}
+.flip-btn{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  width:100%;
+  background:var(--card);color:var(--ink);
+  border:1.5px solid var(--border);border-radius:14px;
+  font-family:inherit;font-size:15px;font-weight:900;
+  cursor:pointer;transition:all 0.15s;
+  visibility:visible;
+}
+.flip-btn:active{transform:translateY(2px);}
+.flip-btn.hidden{visibility:hidden;}
+
+.action-row{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;gap:12px;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.action-row.show{opacity:1;pointer-events:all;}
+.action-btn{
+  flex:1;padding:0 8px;border:1.5px solid var(--border);
+  border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.action-btn:active{transform:scale(0.95);}
+.btn-ok{background:var(--gold-lt);color:var(--ink);}
+.btn-ng{background:var(--card);color:var(--ink-mid);}
+.btn-label{font-size:10px;font-weight:800;}
+
+.counter-row{display:flex;gap:16px;margin-top:14px;justify-content:center;}
+.counter{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:900;color:var(--ink-mid);}
+.c-dot{width:9px;height:9px;border-radius:50%;}
+.c-ok{background:var(--correct);}
+.c-ng{background:var(--wrong);}
+
+/* ══ 4択クイズ ══ */
+.quiz-question{
+  width:100%;max-width:360px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:22px;
+  padding:22px 20px 18px;text-align:center;margin-bottom:14px;
+}
+.quiz-choices{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;}
+.quiz-choice{
+  width:100%;padding:13px 16px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;font-family:inherit;font-size:14px;font-weight:800;
+  color:var(--ink);cursor:pointer;transition:all 0.15s;text-align:left;
+  display:flex;align-items:center;gap:10px;
+}
+.quiz-choice:hover:not(:disabled){
+  border-color:var(--card-flip);background:var(--bg);
+  transform:translateY(-1px);
+}
+.quiz-choice.correct{border-color:var(--correct);background:var(--correct-pale);color:var(--correct);}
+.quiz-choice.wrong{border-color:var(--wrong);background:var(--wrong-pale);color:var(--wrong);}
+.quiz-choice:disabled{cursor:default;transform:none;}
+.quiz-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--bg-deep);
+  font-size:11px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:var(--ink-mid);
+}
+.correct .quiz-num{background:var(--correct);color:white;border-color:var(--correct);}
+.wrong .quiz-num{background:var(--wrong);color:white;border-color:var(--wrong);}
+
+/* ══ セッション結果 ══ */
+.sess-result{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;overflow-y:auto;}
+.sess-emoji{font-size:56px;margin-bottom:10px;text-align:center;}
+.sess-title{font-size:22px;font-weight:900;color:var(--ink);text-align:center;margin-bottom:6px;}
+.sess-score{font-size:48px;font-weight:900;color:var(--card-flip);text-align:center;font-family:'Nunito',sans-serif;}
+.sess-score span{font-size:18px;color:var(--ink-lt);font-weight:700;}
+.sess-sub{font-size:14px;color:var(--ink-mid);text-align:center;line-height:1.7;margin-bottom:24px;max-width:320px;font-weight:700;}
+
+.missed-box{width:100%;max-width:400px;margin-bottom:16px;}
+.missed-section-title{font-size:11px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.missed-item{
+  background:var(--card);border:2px solid var(--border);
+  border-radius:12px;padding:10px 14px;
+  display:flex;align-items:center;gap:12px;margin-bottom:7px;
+}
+.missed-en{font-size:15px;font-weight:900;color:var(--ink);min-width:110px;}
+.missed-jp{font-size:13px;color:var(--ink-mid);font-weight:700;}
+
+.copy-btn{
+  width:100%;max-width:400px;padding:13px;
+  background:var(--bg);color:var(--card-flip);
+  border:1.5px solid var(--card-flip);border-radius:14px;
+  font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:10px;
+  transition:all 0.15s;
+}
+.copy-btn:active{transform:translateY(2px);}
+
+.sess-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px;}
+.s-btn{
+  padding:14px;border-radius:14px;font-family:inherit;
+  font-size:15px;font-weight:900;cursor:pointer;border:1.5px solid var(--border);
+  transition:all 0.15s;
+}
+.s-btn:active{transform:translateY(2px);}
+.s-btn-retry{background:var(--card);color:var(--ink-mid);}
+.s-btn-dash{background:var(--gold-lt);color:var(--ink);}
+
+/* ══ 単語一覧 ══ */
+.wl-body{padding:14px;overflow-y:auto;flex:1;}
+.wl-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.wl-filter{
+  padding:5px 12px;border-radius:99px;border:2px solid var(--border);
+  background:var(--card);font-family:inherit;font-size:12px;font-weight:900;
+  color:var(--ink-mid);cursor:pointer;
+}
+.wl-filter.active{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
+
+.word-item{
+  background:var(--card);border:2px solid var(--border);
+  border-radius:12px;padding:11px 14px;margin-bottom:7px;
+  display:flex;align-items:center;gap:12px;
+}
+.wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.wi-master{background:var(--correct);}
+.wi-learning{background:var(--gold-lt);}
+.wi-new{background:var(--ink-lt);}
+.wi-body{flex:1;}
+.wi-en{font-size:15px;font-weight:900;color:var(--ink);}
+.wi-jp{font-size:12px;color:var(--ink-mid);margin-top:2px;font-weight:700;}
+.wi-meta{font-size:11px;color:var(--ink-lt);text-align:right;font-weight:800;}
+.wi-ex{font-size:11px;color:var(--ink-lt);margin-top:4px;font-style:italic;line-height:1.5;}
+
+/* ══ 設定 ══ */
+.set-body{padding:16px;overflow-y:auto;flex:1;}
+.set-section-title{font-size:11px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.set-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:14px;margin-bottom:16px;
+}
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1.5px dashed var(--bg-deep);
+}
+.set-row:last-child{border-bottom:none;}
+.set-label{font-size:14px;font-weight:800;color:var(--ink);}
+.set-sub{font-size:11px;color:var(--ink-lt);margin-top:2px;font-weight:700;}
+.set-input{
+  padding:6px 10px;border:2px solid var(--border);border-radius:8px;
+  font-family:inherit;font-size:14px;color:var(--ink);background:var(--bg);
+  width:130px;text-align:right;font-weight:800;
+}
+.reset-btn{
+  width:100%;padding:13px;background:none;border:1.5px solid var(--wrong);
+  border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;
+  color:var(--wrong);cursor:pointer;
+}
+
+/* ══ TOAST ══ */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:white;font-size:13px;font-weight:900;
+  padding:10px 20px;border-radius:99px;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="dashScreen" class="screen active">
+  <div class="nav">
+    <button class="nav-btn active" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="dash-body">
+    <div class="page-badge">
+      <span class="badge-dot"></span>
+      <div class="badge-pill">lingo</div>
+      <span class="badge-dot"></span>
+    </div>
+
+    <div class="countdown-card">
+      <div>
+        <div class="countdown-days" id="countdownDays">—</div>
+        <div class="countdown-label">日後に試験 📝</div>
+      </div>
+      <div class="countdown-right">
+        <div class="countdown-exam">英検 準2級</div>
+        <div class="countdown-sub" id="countdownSub">2026年10月4日</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card hl">
+        <div class="stat-label">TODAY'S GOAL</div>
+        <div class="stat-val" id="todayGoal">—</div>
+        <div class="stat-unit">語 / 日</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TOTAL WORDS</div>
+        <div class="stat-val" id="totalWords">1561</div>
+        <div class="stat-unit">語収録</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">MASTERED 🟢</div>
+        <div class="stat-val" id="masteredCount">0</div>
+        <div class="stat-unit">語 定着済み</div>
+      </div>
+      <div class="stat-card hl-gold">
+        <div class="stat-label">STREAK 🔥</div>
+        <div class="stat-val" id="streakCount">0</div>
+        <div class="stat-unit">日連続</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">全体進捗</div>
+      <div class="prog-row">
+        <div class="prog-header"><span class="prog-key">🟢 定着済み</span><span class="prog-num" id="progMasterNum">0 / 1561</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-master" id="progMasterFill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-row" style="margin-top:10px">
+        <div class="prog-header"><span class="prog-key">🟡 学習中</span><span class="prog-num" id="progLearningNum">0 / 1561</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-learning" id="progLearningFill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-row" style="margin-top:10px">
+        <div class="prog-header"><span class="prog-key">⚪ 未学習</span><span class="prog-num" id="progNewNum">1561 / 1561</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-new" id="progNewFill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">学習ペース</div>
+      <div class="pace-row"><span class="pace-key">今日の学習</span><span class="pace-val" id="planToday">—</span></div>
+      <div class="pace-row"><span class="pace-key">このペースで完走</span><span class="pace-val" id="planOnTrack">—</span></div>
+      <div class="pace-row"><span class="pace-key">累計セッション</span><span class="pace-val" id="planSessions">—</span></div>
+    </div>
+
+    <div class="mode-row">
+      <button class="mode-btn selected" id="modeFlash" onclick="selectMode('flash',this)">
+        <span class="mode-icon">📇</span>フラッシュ
+      </button>
+      <button class="mode-btn" id="modeQuiz" onclick="selectMode('quiz',this)">
+        <span class="mode-icon">🔤</span>4択クイズ
+      </button>
+    </div>
+    <button class="start-btn" id="startSessionBtn" onclick="startSession()">今日のセッションを始める →</button>
+  </div>
+</div>
+
+<!-- ══ FLASHCARD ══ -->
+<div id="fcScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="fcTitle">• FLASH CARDS •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="fcProgFill" style="width:0%"></div></div>
+    <div class="prog-nums">
+      <span id="fcProgLabel">1 / 20</span>
+      <span id="fcProgRemain">残り 20枚</span>
+    </div>
+  </div>
+  <div class="card-area">
+    <div class="flashcard" onclick="flipCard()">
+      <div class="flashcard-inner" id="cardInner">
+        <!-- 前面 -->
+        <div class="fc-face fc-front">
+          <button class="speak-btn" id="speakBtn" onclick="speakWord(event)">🔊</button>
+          <div class="gold-tag" id="fcTag">英語 → 日本語</div>
+          <div class="pip-row" id="masteryPips"></div>
+          <div class="word-en" id="wordEn">—</div>
+          <div class="word-ph" id="wordPh"></div>
+          <div class="tap-hint">タップして答えを見る</div>
+        </div>
+        <!-- 背面 -->
+        <div class="fc-face fc-back">
+          <div class="pip-row" id="masteryPipsBack"></div>
+          <div class="word-jp" id="wordJp">—</div>
+
+          <div class="mastery-label" id="masteryLabel"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-stack">
+      <button class="flip-btn" id="flipBtn" onclick="flipCard()">タップして答えを見る</button>
+      <div class="action-row" id="actionRow">
+        <button class="action-btn btn-ng" onclick="judge(false)">もう一度</button>
+        <button class="action-btn btn-ok" onclick="judge(true)">覚えた！</button>
+      </div>
+    </div>
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="fcOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="fcNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4択クイズ ══ -->
+<div id="quizScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="quizTitle">• QUIZ •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="quizProgFill" style="width:0%"></div></div>
+    <div class="prog-nums">
+      <span id="quizProgLabel">1 / 20</span>
+      <span id="quizProgRemain">残り 20問</span>
+    </div>
+  </div>
+  <div class="card-area">
+    <div class="quiz-question">
+      <div class="gold-tag">英語 → 日本語</div>
+      <div class="pip-row" id="quizMasteryPips" style="justify-content:center;margin-top:8px;"></div>
+      <div class="word-en" id="quizWordEn">—</div>
+      <div class="word-ph" id="quizWordPh"></div>
+      <div class="ex-area-front" id="quizExArea" style="margin-top:10px;display:none;">
+        <div class="ex-label">例文</div>
+        <div class="ex-text" id="quizWordEx"></div>
+        <div class="ex-jp" id="quizWordExJp"></div>
+      </div>
+      <button class="speak-btn" style="position:static;margin:8px auto 0;" onclick="speakQuizWord()">🔊</button>
+    </div>
+    <div class="quiz-choices" id="quizChoices"></div>
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="quizOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="quizNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ セッション結果 ══ -->
+<div id="sessResultScreen" class="screen">
+  <div class="sess-result">
+    <div class="sess-emoji" id="sessEmoji">🎉</div>
+    <div class="sess-title" id="sessTitle"></div>
+    <div class="sess-score"><span id="sessScoreNum">0</span><span> / <span id="sessScoreTot">0</span></span></div>
+    <div class="sess-sub" id="sessSub"></div>
+    <div class="missed-box" id="missedBox">
+      <div class="missed-section-title">📌 要復習の単語</div>
+      <div id="missedList"></div>
+    </div>
+    <button class="copy-btn" onclick="copyResult()">📋 結果をClaudeに貼り付け用コピー</button>
+    <div class="sess-btns">
+      <button class="s-btn s-btn-retry" id="retryBtn" onclick="retryMissed()">✕ の単語だけもう一度</button>
+      <button class="s-btn s-btn-dash" onclick="goToDash()">ダッシュボードへ戻る</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 単語一覧 ══ -->
+<div id="wordlistScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn active" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="wl-body">
+    <div class="wl-filters">
+      <button class="wl-filter active" data-filter="all" onclick="filterWords(this)">すべて</button>
+      <button class="wl-filter" data-filter="master" onclick="filterWords(this)">🟢 定着済み</button>
+      <button class="wl-filter" data-filter="learning" onclick="filterWords(this)">🟡 学習中</button>
+      <button class="wl-filter" data-filter="new" onclick="filterWords(this)">⚪ 未学習</button>
+    </div>
+    <div id="wordListItems"></div>
+  </div>
+</div>
+
+<!-- ══ 設定 ══ -->
+<div id="settingsScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn active" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="set-body">
+    <div class="set-section-title" style="margin-bottom:10px">試験・学習設定</div>
+    <div class="set-card">
+      <div class="set-row">
+        <div><div class="set-label">試験日</div><div class="set-sub">英検の受験予定日</div></div>
+        <input class="set-input" type="date" id="examDateInput" onchange="saveSetting('examDate',this.value);updateDash()">
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">1日の目標語数</div><div class="set-sub">自動計算の上書き</div></div>
+        <input class="set-input" type="number" id="dailyGoalInput" min="5" max="50" placeholder="自動" onchange="saveSetting('dailyGoal',this.value)">
+      </div>
+    </div>
+    <div class="set-section-title" style="margin-bottom:10px">バックアップ</div>
+    <div class="set-card">
+      <div style="font-size:12px;color:var(--ink-mid);font-weight:600;line-height:1.7;padding:8px 0 12px;border-bottom:1.5px dashed var(--bg-deep);margin-bottom:4px;">
+        ① 「書き出す」→ テキストがコピーされます<br>
+        ② メモアプリに貼り付けて保存<br>
+        ③ 復元するときは「読み込む」→ メモのテキストを貼り付け
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">データをエクスポート</div><div class="set-sub">学習履歴をコピー</div></div>
+        <button class="set-input" style="width:auto;padding:6px 12px;cursor:pointer;background:var(--gold-bg);border-color:var(--gold);font-weight:800;" onclick="exportData()">書き出す</button>
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">データをインポート</div><div class="set-sub">バックアップから復元</div></div>
+        <button class="set-input" style="width:auto;padding:6px 12px;cursor:pointer;background:var(--bg);border-color:var(--card-flip);font-weight:800;" onclick="importData()">読み込む</button>
+      </div>
+    </div>
+    <div class="set-section-title" style="margin-bottom:10px">リセット</div>
+    <div class="set-card">
+      <button class="reset-btn" onclick="confirmReset()">⚠️ 全学習データをリセット</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WORDS=[
+  {id:'as_a_result_1',w:'as a result',jp:'結果として',num:1},
+  {id:'look_up_2',w:'look up',jp:'調べる',num:2},
+  {id:'available_3',w:'available',jp:'利用できる',num:3},
+  {id:'at_first_4',w:'at first',jp:'最初に',num:4},
+  {id:'in_the_past_5',w:'in the past',jp:'過去に',num:5},
+  {id:'nowadays_6',w:'nowadays',jp:'最近・近頃',num:6},
+  {id:'information_7',w:'information',jp:'情報',num:7},
+  {id:'drop_by_8',w:'drop by',jp:'立ち寄る',num:8},
+  {id:'gain_9',w:'gain',jp:'得る・獲得する',num:9},
+  {id:'traditional_10',w:'traditional',jp:'伝統的な',num:10},
+  {id:'quality_11',w:'quality',jp:'質',num:11},
+  {id:'improve_12',w:'improve',jp:'改善する',num:12},
+  {id:'however_13',w:'however',jp:'しかしながら',num:13},
+  {id:'collect_14',w:'collect',jp:'集める',num:14},
+  {id:'extra_15',w:'extra',jp:'余分の・特別の',num:15},
+  {id:'clothing_16',w:'clothing',jp:'衣料品・服',num:16},
+  {id:'comfortable_17',w:'comfortable',jp:'心地よい・快適な',num:17},
+  {id:'disappoint_18',w:'disappoint',jp:'がっかりさせる',num:18},
+  {id:'instead_19',w:'instead',jp:'代わりに',num:19},
+  {id:'originally_20',w:'originally',jp:'元々は',num:20},
+  {id:'take_part_in_21',w:'take part in',jp:'参加する',num:21},
+  {id:'dress_up_22',w:'dress up',jp:'着飾る',num:22},
+  {id:'certainly_23',w:'certainly',jp:'確かに',num:23},
+  {id:'find_out_24',w:'find out',jp:'見つけ出す',num:24},
+  {id:'search_for_25',w:'search for',jp:'探索する',num:25},
+  {id:'come_up_with_26',w:'come up with',jp:'思いつく',num:26},
+  {id:'company_27',w:'company',jp:'会社',num:27},
+  {id:'details_28',w:'details',jp:'詳細',num:28},
+  {id:'melt_29',w:'melt',jp:'溶ける',num:29},
+  {id:'direction_30',w:'direction',jp:'方向',num:30},
+  {id:'injury_31',w:'injury',jp:'怪我',num:31},
+  {id:'silence_32',w:'silence',jp:'沈黙',num:32},
+  {id:'tight_33',w:'tight',jp:'狭い・締まった',num:33},
+  {id:'protect_34',w:'protect',jp:'守る・保護する',num:34},
+  {id:'sharp_35',w:'sharp',jp:'鋭い',num:35},
+  {id:'behind_36',w:'behind',jp:'背後に',num:36},
+  {id:'bother_37',w:'bother',jp:'面倒・迷惑をかける',num:37},
+  {id:'emergency_38',w:'emergency',jp:'緊急',num:38},
+  {id:'waste_39',w:'waste',jp:'浪費する・廃棄物',num:39},
+  {id:'amount_40',w:'amount',jp:'量・額',num:40},
+  {id:'advantage_41',w:'advantage',jp:'有利・利点',num:41},
+  {id:'object_42',w:'object',jp:'物体',num:42},
+  {id:'add_43',w:'add',jp:'足す',num:43},
+  {id:'surface_44',w:'surface',jp:'表面',num:44},
+  {id:'destroy_45',w:'destroy',jp:'破壊する',num:45},
+  {id:'knowledge_46',w:'knowledge',jp:'知識',num:46},
+  {id:'continue_47',w:'continue',jp:'続ける',num:47},
+  {id:'immediately_48',w:'immediately',jp:'即座に',num:48},
+  {id:'correct_49',w:'correct',jp:'正確な',num:49},
+  {id:'government_50',w:'government',jp:'政府',num:50},
+  {id:'raise_51',w:'raise',jp:'上げる・持ち上げる',num:51},
+  {id:'hurt_52',w:'hurt',jp:'傷つける',num:52},
+  {id:'experiment_53',w:'experiment',jp:'実験',num:53},
+  {id:'fail_54',w:'fail',jp:'失敗する',num:54},
+  {id:'material_55',w:'material',jp:'材料・原料',num:55},
+  {id:'recently_56',w:'recently',jp:'最近',num:56},
+  {id:'spread_57',w:'spread',jp:'広げる・広がる',num:57},
+  {id:'traffic_58',w:'traffic',jp:'交通',num:58},
+  {id:'modern_59',w:'modern',jp:'現代的な',num:59},
+  {id:'reduce_60',w:'reduce',jp:'減らす',num:60},
+  {id:'distance_61',w:'distance',jp:'距離',num:61},
+  {id:'opportunity_62',w:'opportunity',jp:'機会',num:62},
+  {id:'activity_63',w:'activity',jp:'活動',num:63},
+  {id:'abroad_64',w:'abroad',jp:'外国で',num:64},
+  {id:'prefer_65',w:'prefer',jp:'より好む',num:65},
+  {id:'mention_66',w:'mention',jp:'言及する',num:66},
+  {id:'although_67',w:'although',jp:'だけれども',num:67},
+  {id:'climate_68',w:'climate',jp:'気候',num:68},
+  {id:'condition_69',w:'condition',jp:'状態・条件',num:69},
+  {id:'impression_70',w:'impression',jp:'印象',num:70},
+  {id:'item_71',w:'item',jp:'項目',num:71},
+  {id:'profit_72',w:'profit',jp:'利益',num:72},
+  {id:'survey_73',w:'survey',jp:'調査',num:73},
+  {id:'sink_74',w:'sink',jp:'沈む',num:74},
+  {id:'illness_75',w:'illness',jp:'病気',num:75},
+  {id:'flavor_76',w:'flavor',jp:'風味・味',num:76},
+  {id:'expert_77',w:'expert',jp:'専門家',num:77},
+  {id:'borrow_78',w:'borrow',jp:'借りる',num:78},
+  {id:'notice_79',w:'notice',jp:'気づく',num:79},
+  {id:'quit_80',w:'quit',jp:'やめる',num:80},
+  {id:'silly_81',w:'silly',jp:'馬鹿な・愚かな',num:81},
+  {id:'wealthy_82',w:'wealthy',jp:'裕福な',num:82},
+  {id:'behave_83',w:'behave',jp:'振る舞う',num:83},
+  {id:'decrease_84',w:'decrease',jp:'減少する',num:84},
+  {id:'divide_85',w:'divide',jp:'分割する',num:85},
+  {id:'ignore_86',w:'ignore',jp:'無視する',num:86},
+  {id:'judge_87',w:'judge',jp:'判断する',num:87},
+  {id:'organize_88',w:'organize',jp:'組織する',num:88},
+  {id:'overcome_89',w:'overcome',jp:'克服する',num:89},
+  {id:'narrow_90',w:'narrow',jp:'幅が狭い・細い',num:90},
+  {id:'attract_91',w:'attract',jp:'引きつける',num:91},
+  {id:'breathe_92',w:'breathe',jp:'呼吸をする',num:92},
+  {id:'confuse_93',w:'confuse',jp:'混乱させる',num:93},
+  {id:'reserve_94',w:'reserve',jp:'取っておく',num:94},
+  {id:'asleep_95',w:'asleep',jp:'眠っている',num:95},
+  {id:'nervous_96',w:'nervous',jp:'神経質な・びくびくして',num:96},
+  {id:'discuss_97',w:'discuss',jp:'議論する',num:97},
+  {id:'rarely_98',w:'rarely',jp:'めったに〜ない',num:98},
+  {id:'thanks_to_99',w:'thanks to',jp:'のおかげで',num:99},
+  {id:'anyway_100',w:'anyway',jp:'ともかく',num:100},
+  {id:'by_the_time_101',w:'by the time',jp:'するまでには',num:101},
+  {id:'in_particular_102',w:'in particular',jp:'特に・とりわけ',num:102},
+  {id:'take_over_103',w:'take over',jp:'引き継ぐ',num:103},
+  {id:'in_addition_104',w:'in addition',jp:'追加として',num:104},
+  {id:'be_filled_with_105',w:'be filled with',jp:'で満たされている',num:105},
+  {id:'even_though_106',w:'even though',jp:'〜であるのに',num:106},
+  {id:'refrigerator_107',w:'refrigerator',jp:'冷蔵庫',num:107},
+  {id:'and_so_on_108',w:'and so on',jp:'などなど',num:108},
+  {id:'at_most_109',w:'at most',jp:'多くとも',num:109},
+  {id:'do_me_a_favor_110',w:'do me a favor',jp:'お願いをする',num:110},
+  {id:'get_along_with_111',w:'get along with',jp:'とうまくやっていく',num:111},
+  {id:'get_back_112',w:'get back',jp:'取り戻す',num:112},
+  {id:'in_spite_of_113',w:'in spite of',jp:'にも関わらず',num:113},
+  {id:'keep_in_mind_114',w:'keep in mind',jp:'心に留めておく',num:114},
+  {id:'on_the_way_to_115',w:'on the way to',jp:'道の途中で',num:115},
+  {id:'put_down_116',w:'put down',jp:'置く',num:116},
+  {id:'rely_on_117',w:'rely on',jp:'頼る',num:117},
+  {id:'run_out_of_118',w:'run out of',jp:'使い果たす',num:118},
+  {id:'so_far_119',w:'so far',jp:'これまでは',num:119},
+  {id:'appeal_to_120',w:'appeal to',jp:'訴える',num:120},
+  {id:'as_well_121',w:'as well',jp:'同様に',num:121},
+  {id:'be_good_at_122',w:'be good at',jp:'〜が上手である',num:122},
+  {id:'be_responsible_for_123',w:'be responsible for',jp:'責任がある',num:123},
+  {id:'call_off_124',w:'call off',jp:'中止する',num:124},
+  {id:'in_case_125',w:'in case',jp:'万一に備えて',num:125},
+  {id:'on_average_126',w:'on average',jp:'平均して',num:126},
+  {id:'on_foot_127',w:'on foot',jp:'歩いて',num:127},
+  {id:'out_of_order_128',w:'out of order',jp:'故障して',num:128},
+  {id:'on_purpose_129',w:'on purpose',jp:'故意に',num:129},
+  {id:'stay_away_from_130',w:'stay away from',jp:'離れている',num:130},
+  {id:'suffer_from_131',w:'suffer from',jp:'で苦しむ',num:131},
+  {id:'apologize_132',w:'apologize',jp:'謝る',num:132},
+  {id:'succeed_in_133',w:'succeed in',jp:'に成功する',num:133},
+  {id:'after_all_134',w:'after all',jp:'結局',num:134},
+  {id:'be_popular_with_135',w:'be popular with',jp:'に人気がある',num:135},
+  {id:'be_sick_of_136',w:'be sick of',jp:'にうんざりしている',num:136},
+  {id:'be_unlikely_to_137',w:'be unlikely to',jp:'起こりそうにない',num:137},
+  {id:'catch_up_with_138',w:'catch up with',jp:'に追いつく',num:138},
+  {id:'differ_from_139',w:'differ from',jp:'とは違って',num:139},
+  {id:'in_advance_140',w:'in advance',jp:'前もって',num:140},
+  {id:'in_a_hurry_141',w:'in a hurry',jp:'急いで',num:141},
+  {id:'participate_in_142',w:'participate in',jp:'参加する',num:142},
+  {id:'sooner_or_later_143',w:'sooner or later',jp:'遅かれ早かれ',num:143},
+  {id:'try_on_144',w:'try on',jp:'試着する',num:144},
+  {id:'similar_to_145',w:'similar to',jp:'に似ている',num:145},
+  {id:'show_off_146',w:'show off',jp:'見せびらかす',num:146},
+  {id:'turn_down_147',w:'turn down',jp:'断る',num:147},
+  {id:'fill_out_148',w:'fill out',jp:'書き込む・記入する',num:148},
+  {id:'mostly_149',w:'mostly',jp:'主に・ほとんど',num:149},
+  {id:'dig_150',w:'dig',jp:'掘る',num:150},
+  {id:'muscle_151',w:'muscle',jp:'筋肉',num:151},
+  {id:'bite_152',w:'bite',jp:'噛む',num:152},
+  {id:'treat_153',w:'treat',jp:'扱う・待遇する',num:153},
+  {id:'rather_154',w:'rather',jp:'むしろ',num:154},
+  {id:'apparently_155',w:'apparently',jp:'見たらわかる',num:155},
+  {id:'spend_156',w:'spend',jp:'費やす',num:156},
+  {id:'discover_157',w:'discover',jp:'発見する',num:157},
+  {id:'discovery_158',w:'discovery',jp:'発見',num:158},
+  {id:'arrival_159',w:'arrival',jp:'到着',num:159},
+  {id:'degree_160',w:'degree',jp:'程度・度',num:160},
+  {id:'achieve_161',w:'achieve',jp:'達成する',num:161},
+  {id:'attitude_162',w:'attitude',jp:'態度',num:162},
+  {id:'explain_163',w:'explain',jp:'説明する',num:163},
+  {id:'establish_164',w:'establish',jp:'設立する',num:164},
+  {id:'tax_165',w:'tax',jp:'税金',num:165},
+  {id:'belief_166',w:'belief',jp:'信念',num:166},
+  {id:'demonstrate_167',w:'demonstrate',jp:'実証する',num:167},
+  {id:'ancient_168',w:'ancient',jp:'古代の',num:168},
+  {id:'formal_169',w:'formal',jp:'正式な',num:169},
+  {id:'allow_170',w:'allow',jp:'許可する',num:170},
+  {id:'article_171',w:'article',jp:'記事',num:171},
+  {id:'contain_172',w:'contain',jp:'含む',num:172},
+  {id:'temperature_173',w:'temperature',jp:'温度・気温',num:173},
+  {id:'common_174',w:'common',jp:'共通の',num:174},
+  {id:'mean_175',w:'mean',jp:'意味する',num:175},
+  {id:'hardly_176',w:'hardly',jp:'ほとんどない',num:176},
+  {id:'unable_177',w:'unable',jp:'できない',num:177},
+  {id:'argument_178',w:'argument',jp:'議論・口論',num:178},
+  {id:'ancestor_179',w:'ancestor',jp:'祖先',num:179},
+  {id:'capital_180',w:'capital',jp:'資本・首都',num:180},
+  {id:'disaster_181',w:'disaster',jp:'災害',num:181},
+  {id:'height_182',w:'height',jp:'高さ',num:182},
+  {id:'ideal_183',w:'ideal',jp:'理想',num:183},
+  {id:'popularity_184',w:'popularity',jp:'人気',num:184},
+  {id:'blow_185',w:'blow',jp:'吹く',num:185},
+  {id:'decision_186',w:'decision',jp:'決定',num:186},
+  {id:'agent_187',w:'agent',jp:'代理人',num:187},
+  {id:'praise_188',w:'praise',jp:'褒める',num:188},
+  {id:'punish_189',w:'punish',jp:'罰する',num:189},
+  {id:'chemical_190',w:'chemical',jp:'化学物質',num:190},
+  {id:'negative_191',w:'negative',jp:'否定の',num:191},
+  {id:'consist_192',w:'consist',jp:'成り立つ',num:192},
+  {id:'criticize_193',w:'criticize',jp:'批評する',num:193},
+  {id:'import_194',w:'import',jp:'輸入する',num:194},
+  {id:'promote_195',w:'promote',jp:'促進する',num:195},
+  {id:'recover_196',w:'recover',jp:'回復する',num:196},
+  {id:'release_197',w:'release',jp:'解放する',num:197},
+  {id:'translate_198',w:'translate',jp:'翻訳する',num:198},
+  {id:'warn_199',w:'warn',jp:'警告する',num:199},
+  {id:'childhood_200',w:'childhood',jp:'子供時代',num:200},
+  {id:'thought_201',w:'thought',jp:'考え・意見',num:201},
+  {id:'accomplish_202',w:'accomplish',jp:'成し遂げる',num:202},
+  {id:'combine_203',w:'combine',jp:'結合させる',num:203},
+  {id:'complain_204',w:'complain',jp:'不満を言う',num:204},
+  {id:'favorite_205',w:'favorite',jp:'お気に入りの',num:205},
+  {id:'responsible_206',w:'responsible',jp:'責任がある',num:206},
+  {id:'tiny_207',w:'tiny',jp:'ごく小さい',num:207},
+  {id:'look_down_on_208',w:'look down on',jp:'下に見る',num:208},
+  {id:'get_rid_of_209',w:'get rid of',jp:'取り除く',num:209},
+  {id:'instead_of_210',w:'instead of',jp:'の代わりに',num:210},
+  {id:'plenty_of_211',w:'plenty of',jp:'たくさんの',num:211},
+  {id:'stomach_212',w:'stomach',jp:'腹',num:212},
+  {id:'vision_213',w:'vision',jp:'未来像',num:213},
+  {id:'expansion_214',w:'expansion',jp:'拡張・拡大',num:214},
+  {id:'occur_215',w:'occur',jp:'発生する',num:215},
+  {id:'indeed_216',w:'indeed',jp:'実に・全く',num:216},
+  {id:'solution_217',w:'solution',jp:'解決法',num:217},
+  {id:'ease_218',w:'ease',jp:'容易さ',num:218},
+  {id:'elect_219',w:'elect',jp:'選出する',num:219},
+  {id:'unit_220',w:'unit',jp:'単位',num:220},
+  {id:'lie_221',w:'lie',jp:'うそ',num:221},
+  {id:'educational_222',w:'educational',jp:'教育の',num:222},
+  {id:'manner_223',w:'manner',jp:'やり方・方法',num:223},
+  {id:'suffering_224',w:'suffering',jp:'苦しみ',num:224},
+  {id:'crucial_225',w:'crucial',jp:'重要な・決定的な',num:225},
+  {id:'tear_226',w:'tear',jp:'引き裂く',num:226},
+  {id:'govern_227',w:'govern',jp:'統治する',num:227},
+  {id:'enforcement_228',w:'enforcement',jp:'執行・実施',num:228},
+  {id:'brain_229',w:'brain',jp:'頭脳',num:229},
+  {id:'talented_230',w:'talented',jp:'才能のある',num:230},
+  {id:'research_231',w:'research',jp:'研究',num:231},
+  {id:'firm_232',w:'firm',jp:'しっかりした',num:232},
+  {id:'community_233',w:'community',jp:'共同体',num:233},
+  {id:'force_234',w:'force',jp:'力・勢い',num:234},
+  {id:'past_235',w:'past',jp:'過去の',num:235},
+  {id:'right_236',w:'right',jp:'正しい',num:236},
+  {id:'impressive_237',w:'impressive',jp:'印象的な',num:237},
+  {id:'salary_238',w:'salary',jp:'給与',num:238},
+  {id:'deal_239',w:'deal',jp:'扱う',num:239},
+  {id:'prompt_240',w:'prompt',jp:'即座の',num:240},
+  {id:'let_a_do_241',w:'let A do',jp:'Aにさせる',num:241},
+  {id:'vote_242',w:'vote',jp:'投票する',num:242},
+  {id:'president_243',w:'president',jp:'社長・大統領',num:243},
+  {id:'range_244',w:'range',jp:'範囲',num:244},
+  {id:'vital_245',w:'vital',jp:'極めて重要な',num:245},
+  {id:'estate_246',w:'estate',jp:'財産',num:246},
+  {id:'responsibility_247',w:'responsibility',jp:'責任',num:247},
+  {id:'unknown_248',w:'unknown',jp:'未知の',num:248},
+  {id:'grant_249',w:'grant',jp:'給付金',num:249},
+  {id:'perceive_250',w:'perceive',jp:'知覚する',num:250},
+  {id:'especially_251',w:'especially',jp:'特に',num:251},
+  {id:'client_252',w:'client',jp:'顧客',num:252},
+  {id:'mysterious_253',w:'mysterious',jp:'不可解な',num:253},
+  {id:'steel_254',w:'steel',jp:'鋼鉄',num:254},
+  {id:'concept_255',w:'concept',jp:'概念',num:255},
+  {id:'nevertheless_256',w:'nevertheless',jp:'にも関わらず',num:256},
+  {id:'attribute_257',w:'attribute',jp:'帰する',num:257},
+  {id:'prevent_258',w:'prevent',jp:'妨げる',num:258},
+  {id:'manufacturer_259',w:'manufacturer',jp:'製造業者',num:259},
+  {id:'effect_260',w:'effect',jp:'効果・影響',num:260},
+  {id:'million_261',w:'million',jp:'100万',num:261},
+  {id:'encounter_262',w:'encounter',jp:'遭遇する',num:262},
+  {id:'accuse_263',w:'accuse',jp:'告発する',num:263},
+  {id:'briefly_264',w:'briefly',jp:'簡単に・手短に',num:264},
+  {id:'so_called_265',w:'so-called',jp:'いわゆる',num:265},
+  {id:'global_266',w:'global',jp:'地球の・世界の',num:266},
+  {id:'according_to_267',w:'according to',jp:'によると',num:267},
+  {id:'lack_268',w:'lack',jp:'不足・欠乏',num:268},
+  {id:'essay_269',w:'essay',jp:'論文・随筆',num:269},
+  {id:'approach_270',w:'approach',jp:'近づく',num:270},
+  {id:'bear_271',w:'bear',jp:'我慢する',num:271},
+  {id:'natural_272',w:'natural',jp:'当然の・自然の',num:272},
+  {id:'administration_273',w:'administration',jp:'機関・運営',num:273},
+  {id:'audience_274',w:'audience',jp:'聴衆・観客',num:274},
+  {id:'production_275',w:'production',jp:'生産・製造',num:275},
+  {id:'qualify_276',w:'qualify',jp:'資格を与える',num:276},
+  {id:'intention_277',w:'intention',jp:'意図・目的',num:277},
+  {id:'previously_278',w:'previously',jp:'以前は',num:278},
+  {id:'language_279',w:'language',jp:'言語',num:279},
+  {id:'fee_280',w:'fee',jp:'料金',num:280},
+  {id:'nor_281',w:'nor',jp:'もない',num:281},
+  {id:'negotiation_282',w:'negotiation',jp:'交渉',num:282},
+  {id:'automobile_283',w:'automobile',jp:'自動車',num:283},
+  {id:'dust_284',w:'dust',jp:'ほこり',num:284},
+  {id:'extremely_285',w:'extremely',jp:'極端に',num:285},
+  {id:'echo_286',w:'echo',jp:'こだま・反響',num:286},
+  {id:'detailed_287',w:'detailed',jp:'詳細の',num:287},
+  {id:'maximum_288',w:'maximum',jp:'最大',num:288},
+  {id:'pan_289',w:'pan',jp:'フライパン',num:289},
+  {id:'improvement_290',w:'improvement',jp:'改善・改良',num:290},
+  {id:'genius_291',w:'genius',jp:'天才',num:291},
+  {id:'credit_292',w:'credit',jp:'信用',num:292},
+  {id:'debt_293',w:'debt',jp:'借金',num:293},
+  {id:'resource_294',w:'resource',jp:'資源',num:294},
+  {id:'therapy_295',w:'therapy',jp:'治療・療法',num:295},
+  {id:'glance_296',w:'glance',jp:'一目見る',num:296},
+  {id:'storage_297',w:'storage',jp:'保管場所',num:297},
+  {id:'academic_298',w:'academic',jp:'学術の',num:298},
+  {id:'permit_299',w:'permit',jp:'許可する',num:299},
+  {id:'concern_300',w:'concern',jp:'心配する',num:300},
+  {id:'strain_301',w:'strain',jp:'張る',num:301},
+  {id:'role_302',w:'role',jp:'役割',num:302},
+  {id:'nowhere_303',w:'nowhere',jp:'どこにも',num:303},
+  {id:'recent_304',w:'recent',jp:'最近の',num:304},
+  {id:'mate_305',w:'mate',jp:'友達・仲間',num:305},
+  {id:'distinguish_306',w:'distinguish',jp:'区別する',num:306},
+  {id:'sophisticated_307',w:'sophisticated',jp:'洗練された',num:307},
+  {id:'upset_308',w:'upset',jp:'気持ちが動揺した',num:308},
+  {id:'disturb_309',w:'disturb',jp:'阻害する',num:309},
+  {id:'invest_310',w:'invest',jp:'投資する',num:310},
+  {id:'intense_311',w:'intense',jp:'激しい',num:311},
+  {id:'retire_312',w:'retire',jp:'退職する',num:312},
+  {id:'wildlife_313',w:'wildlife',jp:'野生動物',num:313},
+  {id:'polite_314',w:'polite',jp:'礼儀正しい',num:314},
+  {id:'entertain_315',w:'entertain',jp:'楽しませる',num:315},
+  {id:'competition_316',w:'competition',jp:'競争',num:316},
+  {id:'inquiry_317',w:'inquiry',jp:'問い合わせ',num:317},
+  {id:'period_318',w:'period',jp:'期間',num:318},
+  {id:'bind_319',w:'bind',jp:'縛りつける',num:319},
+  {id:'certain_320',w:'certain',jp:'確信している',num:320},
+  {id:'passenger_321',w:'passenger',jp:'乗客',num:321},
+  {id:'behavior_322',w:'behavior',jp:'振る舞い・態度',num:322},
+  {id:'meanwhile_323',w:'meanwhile',jp:'一方で',num:323},
+  {id:'earn_324',w:'earn',jp:'稼ぐ',num:324},
+  {id:'enter_325',w:'enter',jp:'入る',num:325},
+  {id:'complex_326',w:'complex',jp:'複雑な',num:326},
+  {id:'moreover_327',w:'moreover',jp:'さらに',num:327},
+  {id:'structure_328',w:'structure',jp:'構造',num:328},
+  {id:'annoy_329',w:'annoy',jp:'いらだたせる',num:329},
+  {id:'direction_330',w:'direction',jp:'方向',num:330},
+  {id:'influence_331',w:'influence',jp:'影響',num:331},
+  {id:'rapidly_332',w:'rapidly',jp:'素早く',num:332},
+  {id:'detail_333',w:'detail',jp:'詳細',num:333},
+  {id:'culture_334',w:'culture',jp:'文化',num:334},
+  {id:'prior_335',w:'prior',jp:'前の',num:335},
+  {id:'fire_336',w:'fire',jp:'首にする・火',num:336},
+  {id:'assessment_337',w:'assessment',jp:'評価・査定',num:337},
+  {id:'engaged_338',w:'engaged',jp:'従事して',num:338},
+  {id:'regret_339',w:'regret',jp:'後悔する',num:339},
+  {id:'excuse_340',w:'excuse',jp:'言い訳',num:340},
+  {id:'court_341',w:'court',jp:'裁判所',num:341},
+  {id:'solve_342',w:'solve',jp:'解決する',num:342},
+  {id:'threaten_343',w:'threaten',jp:'脅かす',num:343},
+  {id:'enable_344',w:'enable',jp:'可能にさせる',num:344},
+  {id:'unfortunately_345',w:'unfortunately',jp:'残念なことに',num:345},
+  {id:'representation_346',w:'representation',jp:'表現',num:346},
+  {id:'procedure_347',w:'procedure',jp:'手続き',num:347},
+  {id:'expectation_348',w:'expectation',jp:'期待',num:348},
+  {id:'asset_349',w:'asset',jp:'資産',num:349},
+  {id:'dump_350',w:'dump',jp:'投げ捨てる',num:350},
+  {id:'citizen_351',w:'citizen',jp:'市民',num:351},
+  {id:'occupation_352',w:'occupation',jp:'職業',num:352},
+  {id:'restore_353',w:'restore',jp:'元に戻す',num:353},
+  {id:'significance_354',w:'significance',jp:'重要性',num:354},
+  {id:'flow_355',w:'flow',jp:'流れる',num:355},
+  {id:'failure_356',w:'failure',jp:'失敗',num:356},
+  {id:'earnings_357',w:'earnings',jp:'収益',num:357},
+  {id:'disease_358',w:'disease',jp:'病気',num:358},
+  {id:'peer_359',w:'peer',jp:'同僚',num:359},
+  {id:'strategy_360',w:'strategy',jp:'戦略',num:360},
+  {id:'remarkable_361',w:'remarkable',jp:'目立った',num:361},
+  {id:'heel_362',w:'heel',jp:'かかと',num:362},
+  {id:'definitely_363',w:'definitely',jp:'絶対に',num:363},
+  {id:'ordinary_364',w:'ordinary',jp:'普通の',num:364},
+  {id:'isolate_365',w:'isolate',jp:'孤立させる',num:365},
+  {id:'competitive_366',w:'competitive',jp:'競争力のある',num:366},
+  {id:'progress_367',w:'progress',jp:'進歩',num:367},
+  {id:'typical_368',w:'typical',jp:'典型的な',num:368},
+  {id:'compete_369',w:'compete',jp:'競争する',num:369},
+  {id:'assault_370',w:'assault',jp:'暴行',num:370},
+  {id:'conviction_371',w:'conviction',jp:'信念・確信',num:371},
+  {id:'terrible_372',w:'terrible',jp:'ひどい',num:372},
+  {id:'bill_373',w:'bill',jp:'請求書',num:373},
+  {id:'pain_374',w:'pain',jp:'痛み',num:374},
+  {id:'emphasize_375',w:'emphasize',jp:'強調する',num:375},
+  {id:'weather_376',w:'weather',jp:'天気',num:376},
+  {id:'immigrant_377',w:'immigrant',jp:'移民',num:377},
+  {id:'interpret_378',w:'interpret',jp:'解釈する',num:378},
+  {id:'thick_379',w:'thick',jp:'厚い',num:379},
+  {id:'merchant_380',w:'merchant',jp:'商人',num:380},
+  {id:'physics_381',w:'physics',jp:'物理学',num:381},
+  {id:'trigger_382',w:'trigger',jp:'引き金',num:382},
+  {id:'status_383',w:'status',jp:'状態・身分',num:383},
+  {id:'worth_384',w:'worth',jp:'の価値がある',num:384},
+  {id:'relation_385',w:'relation',jp:'関係性',num:385},
+  {id:'later_386',w:'later',jp:'後に',num:386},
+  {id:'political_387',w:'political',jp:'政治の',num:387},
+  {id:'truth_388',w:'truth',jp:'真実',num:388},
+  {id:'partly_389',w:'partly',jp:'部分的に',num:389},
+  {id:'observe_390',w:'observe',jp:'観察する',num:390},
+  {id:'stream_391',w:'stream',jp:'流れ',num:391},
+  {id:'oppose_392',w:'oppose',jp:'反対する',num:392},
+  {id:'quite_393',w:'quite',jp:'かなり',num:393},
+  {id:'conscious_394',w:'conscious',jp:'意識して',num:394},
+  {id:'intend_395',w:'intend',jp:'意図する',num:395},
+  {id:'operation_396',w:'operation',jp:'操作・作用',num:396},
+  {id:'recommend_397',w:'recommend',jp:'推薦する',num:397},
+  {id:'feature_398',w:'feature',jp:'特徴',num:398},
+  {id:'consideration_399',w:'consideration',jp:'考慮',num:399},
+  {id:'diet_400',w:'diet',jp:'食事',num:400},
+  {id:'horror_401',w:'horror',jp:'恐怖',num:401},
+  {id:'population_402',w:'population',jp:'人口',num:402},
+  {id:'necessarily_403',w:'necessarily',jp:'必然的に',num:403},
+  {id:'agree_404',w:'agree',jp:'同意する',num:404},
+  {id:'whether_405',w:'whether',jp:'どちらか',num:405},
+  {id:'analysis_406',w:'analysis',jp:'分析',num:406},
+  {id:'conflict_407',w:'conflict',jp:'対立',num:407},
+  {id:'extreme_408',w:'extreme',jp:'極端な',num:408},
+  {id:'wherever_409',w:'wherever',jp:'どこでも',num:409},
+  {id:'source_410',w:'source',jp:'情報源',num:410},
+  {id:'objective_411',w:'objective',jp:'目標・目的',num:411},
+  {id:'rural_412',w:'rural',jp:'田舎の',num:412},
+  {id:'headline_413',w:'headline',jp:'見出し',num:413},
+  {id:'analyst_414',w:'analyst',jp:'分析者',num:414},
+  {id:'sign_415',w:'sign',jp:'標識・合図',num:415},
+  {id:'clue_416',w:'clue',jp:'手がかり',num:416},
+  {id:'controversial_417',w:'controversial',jp:'議論の的になる',num:417},
+  {id:'realize_418',w:'realize',jp:'だとわかる',num:418},
+  {id:'surround_419',w:'surround',jp:'取り囲む',num:419},
+  {id:'commission_420',w:'commission',jp:'手数料・委任状',num:420},
+  {id:'seek_421',w:'seek',jp:'求める',num:421},
+  {id:'independent_422',w:'independent',jp:'独立した',num:422},
+  {id:'proposed_423',w:'proposed',jp:'提案した',num:423},
+  {id:'international_424',w:'international',jp:'国際的な',num:424},
+  {id:'several_425',w:'several',jp:'幾つかの',num:425},
+  {id:'theory_426',w:'theory',jp:'理論',num:426},
+  {id:'fellow_427',w:'fellow',jp:'仲間・友人',num:427},
+  {id:'elderly_428',w:'elderly',jp:'年配の',num:428},
+  {id:'extension_429',w:'extension',jp:'拡張',num:429},
+  {id:'proper_430',w:'proper',jp:'適切な',num:430},
+  {id:'enhance_431',w:'enhance',jp:'強調する',num:431},
+  {id:'beyond_432',w:'beyond',jp:'〜を越えて',num:432},
+  {id:'hear_from_433',w:'hear from',jp:'から連絡をもらう',num:433},
+  {id:'due_434',w:'due',jp:'期限の',num:434},
+  {id:'existing_435',w:'existing',jp:'既存の',num:435},
+  {id:'expand_436',w:'expand',jp:'拡大する',num:436},
+  {id:'wrong_437',w:'wrong',jp:'間違い',num:437},
+  {id:'rebel_438',w:'rebel',jp:'反逆者',num:438},
+  {id:'suffer_439',w:'suffer',jp:'患う',num:439},
+  {id:'within_440',w:'within',jp:'以内で',num:440},
+  {id:'taste_441',w:'taste',jp:'味',num:441},
+  {id:'democrat_442',w:'democrat',jp:'民主主義者',num:442},
+  {id:'personally_443',w:'personally',jp:'個人的に',num:443},
+  {id:'throughout_444',w:'throughout',jp:'至るところに',num:444},
+  {id:'preserve_445',w:'preserve',jp:'保存する',num:445},
+  {id:'intelligent_446',w:'intelligent',jp:'かしこい',num:446},
+  {id:'slide_447',w:'slide',jp:'滑る',num:447},
+  {id:'popular_448',w:'popular',jp:'人気のある',num:448},
+  {id:'murder_449',w:'murder',jp:'殺人',num:449},
+  {id:'attend_450',w:'attend',jp:'出席する',num:450},
+  {id:'constantly_451',w:'constantly',jp:'常に',num:451},
+  {id:'drift_452',w:'drift',jp:'漂流',num:452},
+  {id:'result_453',w:'result',jp:'結果',num:453},
+  {id:'priority_454',w:'priority',jp:'優先度',num:454},
+  {id:'joint_455',w:'joint',jp:'関節',num:455},
+  {id:'viewer_456',w:'viewer',jp:'視聴者',num:456},
+  {id:'satellite_457',w:'satellite',jp:'衛星',num:457},
+  {id:'distant_458',w:'distant',jp:'遠く離れた',num:458},
+  {id:'delivery_459',w:'delivery',jp:'配達',num:459},
+  {id:'anxious_460',w:'anxious',jp:'心配した',num:460},
+  {id:'towards_461',w:'towards',jp:'の方へ',num:461},
+  {id:'employee_462',w:'employee',jp:'従業員',num:462},
+  {id:'significant_463',w:'significant',jp:'重要な',num:463},
+  {id:'particular_464',w:'particular',jp:'特定の',num:464},
+  {id:'float_465',w:'float',jp:'浮かぶ',num:465},
+  {id:'criticism_466',w:'criticism',jp:'批判',num:466},
+  {id:'appear_467',w:'appear',jp:'現れる',num:467},
+  {id:'permission_468',w:'permission',jp:'許可',num:468},
+  {id:'virus_469',w:'virus',jp:'ウイルス',num:469},
+  {id:'deny_470',w:'deny',jp:'否定する',num:470},
+  {id:'valuable_471',w:'valuable',jp:'貴重な',num:471},
+  {id:'comprehensive_472',w:'comprehensive',jp:'包括的な',num:472},
+  {id:'till_473',w:'till',jp:'まで',num:473},
+  {id:'properly_474',w:'properly',jp:'適切に',num:474},
+  {id:'vulnerable_475',w:'vulnerable',jp:'傷つきやすい',num:475},
+  {id:'directly_476',w:'directly',jp:'直接',num:476},
+  {id:'occupy_477',w:'occupy',jp:'占める',num:477},
+  {id:'curious_478',w:'curious',jp:'好奇心が強い',num:478},
+  {id:'vary_479',w:'vary',jp:'多様化する',num:479},
+  {id:'stare_480',w:'stare',jp:'じっと見つめる',num:480},
+  {id:'decade_481',w:'decade',jp:'10年間',num:481},
+  {id:'armed_482',w:'armed',jp:'武装した',num:482},
+  {id:'seem_483',w:'seem',jp:'の様に見える',num:483},
+  {id:'fate_484',w:'fate',jp:'運命',num:484},
+  {id:'convince_485',w:'convince',jp:'納得させる',num:485},
+  {id:'criminal_486',w:'criminal',jp:'犯罪の',num:486},
+  {id:'stable_487',w:'stable',jp:'安定した',num:487},
+  {id:'naked_488',w:'naked',jp:'裸の',num:488},
+  {id:'jewish_489',w:'Jewish',jp:'ユダヤ人',num:489},
+  {id:'senate_490',w:'senate',jp:'上院',num:490},
+  {id:'hide_491',w:'hide',jp:'隠す',num:491},
+  {id:'recovery_492',w:'recovery',jp:'回復',num:492},
+  {id:'bond_493',w:'bond',jp:'拘束',num:493},
+  {id:'portrait_494',w:'portrait',jp:'肖像画',num:494},
+  {id:'intervention_495',w:'intervention',jp:'介在・仲裁',num:495},
+  {id:'consistent_496',w:'consistent',jp:'一貫した',num:496},
+  {id:'investigator_497',w:'investigator',jp:'捜査官',num:497},
+  {id:'normally_498',w:'normally',jp:'通常は',num:498},
+  {id:'conclude_499',w:'conclude',jp:'締めくくる',num:499},
+  {id:'well_known_500',w:'well-known',jp:'よく知られた',num:500},
+  {id:'development_501',w:'development',jp:'発展・発達',num:501},
+  {id:'desire_502',w:'desire',jp:'願望',num:502},
+  {id:'probably_503',w:'probably',jp:'おそらく',num:503},
+  {id:'respond_504',w:'respond',jp:'反応する',num:504},
+  {id:'involvement_505',w:'involvement',jp:'関与',num:505},
+  {id:'minister_506',w:'minister',jp:'大臣',num:506},
+  {id:'patch_507',w:'patch',jp:'当て布',num:507},
+  {id:'chairman_508',w:'chairman',jp:'会長',num:508},
+  {id:'ethnic_509',w:'ethnic',jp:'民族の',num:509},
+  {id:'lap_510',w:'lap',jp:'ひざ',num:510},
+  {id:'refer_511',w:'refer',jp:'参考にする',num:511},
+  {id:'repair_512',w:'repair',jp:'修理する',num:512},
+  {id:'current_513',w:'current',jp:'現在の',num:513},
+  {id:'obviously_514',w:'obviously',jp:'明らかに',num:514},
+  {id:'ceiling_515',w:'ceiling',jp:'天井',num:515},
+  {id:'philosopher_516',w:'philosopher',jp:'哲学者',num:516},
+  {id:'suicide_517',w:'suicide',jp:'自殺',num:517},
+  {id:'social_518',w:'social',jp:'社会の',num:518},
+  {id:'potential_519',w:'potential',jp:'潜在的な',num:519},
+  {id:'sum_520',w:'sum',jp:'合計',num:520},
+  {id:'draw_521',w:'draw',jp:'描く',num:521},
+  {id:'rough_522',w:'rough',jp:'ごつごつした',num:522},
+  {id:'fundamental_523',w:'fundamental',jp:'基本的な',num:523},
+  {id:'association_524',w:'association',jp:'協会',num:524},
+  {id:'yield_525',w:'yield',jp:'産出する',num:525},
+  {id:'politician_526',w:'politician',jp:'政治家',num:526},
+  {id:'department_527',w:'department',jp:'部門',num:527},
+  {id:'palm_528',w:'palm',jp:'手のひら',num:528},
+  {id:'phenomenon_529',w:'phenomenon',jp:'現象',num:529},
+  {id:'admit_530',w:'admit',jp:'認める',num:530},
+  {id:'critical_531',w:'critical',jp:'極めて重要な',num:531},
+  {id:'throat_532',w:'throat',jp:'のど',num:532},
+  {id:'adapt_533',w:'adapt',jp:'適合させる',num:533},
+  {id:'largely_534',w:'largely',jp:'主として',num:534},
+  {id:'belong_535',w:'belong',jp:'に属する',num:535},
+  {id:'attempt_536',w:'attempt',jp:'試み',num:536},
+  {id:'impress_537',w:'impress',jp:'感銘を与える',num:537},
+  {id:'submit_538',w:'submit',jp:'提出する',num:538},
+  {id:'bored_539',w:'bored',jp:'退屈した',num:539},
+  {id:'electric_540',w:'electric',jp:'電気の',num:540},
+  {id:'civilized_541',w:'civilized',jp:'発達した文明をもつ',num:541},
+  {id:'combat_542',w:'combat',jp:'戦闘',num:542},
+  {id:'destruction_543',w:'destruction',jp:'破壊',num:543},
+  {id:'ally_544',w:'ally',jp:'連合する',num:544},
+  {id:'similarly_545',w:'similarly',jp:'同様に',num:545},
+  {id:'complete_546',w:'complete',jp:'完全な',num:546},
+  {id:'complicated_547',w:'complicated',jp:'複雑な',num:547},
+  {id:'mad_548',w:'mad',jp:'狂った',num:548},
+  {id:'hate_549',w:'hate',jp:'ひどく嫌う',num:549},
+  {id:'urban_550',w:'urban',jp:'都会の',num:550},
+  {id:'reputation_551',w:'reputation',jp:'評判',num:551},
+  {id:'phase_552',w:'phase',jp:'段階',num:552},
+  {id:'philosophy_553',w:'philosophy',jp:'哲学',num:553},
+  {id:'shooting_554',w:'shooting',jp:'撮影・射撃',num:554},
+  {id:'include_555',w:'include',jp:'含む',num:555},
+  {id:'medium_556',w:'medium',jp:'中間の',num:556},
+  {id:'contemporary_557',w:'contemporary',jp:'現在の・現代の',num:557},
+  {id:'jury_558',w:'jury',jp:'陪審員',num:558},
+  {id:'huge_559',w:'huge',jp:'巨大な',num:559},
+  {id:'awful_560',w:'awful',jp:'ひどい',num:560},
+  {id:'examine_561',w:'examine',jp:'検査する',num:561},
+  {id:'element_562',w:'element',jp:'要素',num:562},
+  {id:'mainly_563',w:'mainly',jp:'主に',num:563},
+  {id:'success_564',w:'success',jp:'成功',num:564},
+  {id:'exist_565',w:'exist',jp:'存在する',num:565},
+  {id:'gentle_566',w:'gentle',jp:'穏やかな',num:566},
+  {id:'occasion_567',w:'occasion',jp:'特定の時・行事',num:567},
+  {id:'accompany_568',w:'accompany',jp:'付き添う',num:568},
+  {id:'virtually_569',w:'virtually',jp:'実質的に',num:569},
+  {id:'withdraw_570',w:'withdraw',jp:'撤回する',num:570},
+  {id:'leisure_571',w:'leisure',jp:'余暇',num:571},
+  {id:'representative_572',w:'representative',jp:'代表者',num:572},
+  {id:'mass_573',w:'mass',jp:'塊・大部分',num:573},
+  {id:'honest_574',w:'honest',jp:'正直な',num:574},
+  {id:'imply_575',w:'imply',jp:'ほのめかす',num:575},
+  {id:'mixture_576',w:'mixture',jp:'混合物',num:576},
+  {id:'aware_577',w:'aware',jp:'気づいている',num:577},
+  {id:'device_578',w:'device',jp:'装置',num:578},
+  {id:'deputy_579',w:'deputy',jp:'代理',num:579},
+  {id:'smell_580',w:'smell',jp:'においがする',num:580},
+  {id:'overall_581',w:'overall',jp:'全体的な',num:581},
+  {id:'custom_582',w:'custom',jp:'習慣',num:582},
+  {id:'roll_583',w:'roll',jp:'転がる',num:583},
+  {id:'exposure_584',w:'exposure',jp:'暴露',num:584},
+  {id:'term_585',w:'term',jp:'期間・専門用語',num:585},
+  {id:'industry_586',w:'industry',jp:'産業',num:586},
+  {id:'otherwise_587',w:'otherwise',jp:'さもなければ',num:587},
+  {id:'electronic_588',w:'electronic',jp:'電子の',num:588},
+  {id:'proud_589',w:'proud',jp:'自慢に思って',num:589},
+  {id:'task_590',w:'task',jp:'仕事',num:590},
+  {id:'concentration_591',w:'concentration',jp:'集中',num:591},
+  {id:'debate_592',w:'debate',jp:'討論',num:592},
+  {id:'suggest_593',w:'suggest',jp:'提案する',num:593},
+  {id:'derive_594',w:'derive',jp:'引き出す',num:594},
+  {id:'lawn_595',w:'lawn',jp:'芝生',num:595},
+  {id:'compose_596',w:'compose',jp:'構成する',num:596},
+  {id:'react_597',w:'react',jp:'反応する',num:597},
+  {id:'proportion_598',w:'proportion',jp:'比率',num:598},
+  {id:'confident_599',w:'confident',jp:'自信のある',num:599},
+  {id:'manufacturing_600',w:'manufacturing',jp:'製造している',num:600},
+  {id:'multiple_601',w:'multiple',jp:'掛け算する',num:601},
+  {id:'chest_602',w:'chest',jp:'たんす・胸',num:602},
+  {id:'authority_603',w:'authority',jp:'権威',num:603},
+  {id:'creature_604',w:'creature',jp:'生き物',num:604},
+  {id:'wear_605',w:'wear',jp:'身につけている',num:605},
+  {id:'swear_606',w:'swear',jp:'誓う',num:606},
+  {id:'survival_607',w:'survival',jp:'生存',num:607},
+  {id:'attractive_608',w:'attractive',jp:'魅力的な',num:608},
+  {id:'union_609',w:'union',jp:'統合',num:609},
+  {id:'prisoner_610',w:'prisoner',jp:'囚人',num:610},
+  {id:'sight_611',w:'sight',jp:'見ること・視力',num:611},
+  {id:'expose_612',w:'expose',jp:'明らかにする',num:612},
+  {id:'therefore_613',w:'therefore',jp:'それゆえ',num:613},
+  {id:'prosecutor_614',w:'prosecutor',jp:'検察官',num:614},
+  {id:'present_615',w:'present',jp:'現在の',num:615},
+  {id:'publication_616',w:'publication',jp:'出版物',num:616},
+  {id:'dull_617',w:'dull',jp:'面白みのない',num:617},
+  {id:'aspect_618',w:'aspect',jp:'局面・側面',num:618},
+  {id:'advice_619',w:'advice',jp:'助言',num:619},
+  {id:'fair_620',w:'fair',jp:'公平な',num:620},
+  {id:'via_621',w:'via',jp:'〜経由で',num:621},
+  {id:'mayor_622',w:'mayor',jp:'市長',num:622},
+  {id:'lose_623',w:'lose',jp:'失う',num:623},
+  {id:'judgement_624',w:'judgement',jp:'判断',num:624},
+  {id:'observer_625',w:'observer',jp:'観察者',num:625},
+  {id:'tongue_626',w:'tongue',jp:'言葉・舌',num:626},
+  {id:'defendant_627',w:'defendant',jp:'被告人',num:627},
+  {id:'handle_628',w:'handle',jp:'手で扱う',num:628},
+  {id:'component_629',w:'component',jp:'成分',num:629},
+  {id:'declare_630',w:'declare',jp:'宣言する',num:630},
+  {id:'squeeze_631',w:'squeeze',jp:'絞る',num:631},
+  {id:'maintain_632',w:'maintain',jp:'維持する',num:632},
+  {id:'passage_633',w:'passage',jp:'一節',num:633},
+  {id:'bitter_634',w:'bitter',jp:'苦い',num:634},
+  {id:'whom_635',w:'whom',jp:'誰を',num:635},
+  {id:'split_636',w:'split',jp:'割る',num:636},
+  {id:'capable_637',w:'capable',jp:'可能性がある',num:637},
+  {id:'habit_638',w:'habit',jp:'習慣',num:638},
+  {id:'concrete_639',w:'concrete',jp:'具体的な',num:639},
+  {id:'remaining_640',w:'remaining',jp:'残りの',num:640},
+  {id:'depend_641',w:'depend',jp:'依存する',num:641},
+  {id:'dependent_642',w:'dependent',jp:'依存している',num:642},
+  {id:'so_that_643',w:'so that',jp:'とても〜なので',num:643},
+  {id:'argue_644',w:'argue',jp:'主張する',num:644},
+  {id:'consequence_645',w:'consequence',jp:'結果・影響',num:645},
+  {id:'outcome_646',w:'outcome',jp:'結果・成果',num:646},
+  {id:'heritage_647',w:'heritage',jp:'遺産',num:647},
+  {id:'ban_648',w:'ban',jp:'禁止する',num:648},
+  {id:'steam_649',w:'steam',jp:'蒸気',num:649},
+  {id:'biological_650',w:'biological',jp:'生物学上の',num:650},
+  {id:'voter_651',w:'voter',jp:'投票者',num:651},
+  {id:'landscape_652',w:'landscape',jp:'風景',num:652},
+  {id:'moment_653',w:'moment',jp:'瞬間',num:653},
+  {id:'occasionally_654',w:'occasionally',jp:'時折',num:654},
+  {id:'practical_655',w:'practical',jp:'実用的な',num:655},
+  {id:'wipe_656',w:'wipe',jp:'拭く',num:656},
+  {id:'tradition_657',w:'tradition',jp:'伝統',num:657},
+  {id:'affair_658',w:'affair',jp:'事柄・問題',num:658},
+  {id:'reward_659',w:'reward',jp:'褒美',num:659},
+  {id:'award_660',w:'award',jp:'賞',num:660},
+  {id:'purpose_661',w:'purpose',jp:'目的',num:661},
+  {id:'gather_662',w:'gather',jp:'集める',num:662},
+  {id:'respect_663',w:'respect',jp:'尊敬',num:663},
+  {id:'advertise_664',w:'advertise',jp:'宣伝する',num:664},
+  {id:'eventually_665',w:'eventually',jp:'結局は',num:665},
+  {id:'approval_666',w:'approval',jp:'承認',num:666},
+  {id:'reach_667',w:'reach',jp:'到着する',num:667},
+  {id:'afraid_668',w:'afraid',jp:'心配して',num:668},
+  {id:'commercial_669',w:'commercial',jp:'商業の',num:669},
+  {id:'harmful_670',w:'harmful',jp:'有害な',num:670},
+  {id:'suggestion_671',w:'suggestion',jp:'提案',num:671},
+  {id:'contrast_672',w:'contrast',jp:'対照',num:672},
+  {id:'coal_673',w:'coal',jp:'石炭',num:673},
+  {id:'headquarters_674',w:'headquarters',jp:'本部',num:674},
+  {id:'absorb_675',w:'absorb',jp:'吸収する',num:675},
+  {id:'proposal_676',w:'proposal',jp:'提案・勧告',num:676},
+  {id:'consumer_677',w:'consumer',jp:'消費者',num:677},
+  {id:'historic_678',w:'historic',jp:'由緒のある',num:678},
+  {id:'pursue_679',w:'pursue',jp:'追い求める',num:679},
+  {id:'immediate_680',w:'immediate',jp:'即座の',num:680},
+  {id:'knee_681',w:'knee',jp:'膝',num:681},
+  {id:'apply_682',w:'apply',jp:'適用する',num:682},
+  {id:'existence_683',w:'existence',jp:'存在',num:683},
+  {id:'dismiss_684',w:'dismiss',jp:'退出させる',num:684},
+  {id:'regional_685',w:'regional',jp:'地方の',num:685},
+  {id:'war_686',w:'war',jp:'戦争',num:686},
+  {id:'factor_687',w:'factor',jp:'要因',num:687},
+  {id:'constant_688',w:'constant',jp:'絶え間ない',num:688},
+  {id:'encourage_689',w:'encourage',jp:'勇気づける',num:689},
+  {id:'prayer_690',w:'prayer',jp:'祈り',num:690},
+  {id:'forward_691',w:'forward',jp:'前方へ',num:691},
+  {id:'principle_692',w:'principle',jp:'原理',num:692},
+  {id:'bravely_693',w:'bravely',jp:'勇気をもって',num:693},
+  {id:'stimulate_694',w:'stimulate',jp:'刺激する',num:694},
+  {id:'address_695',w:'address',jp:'住所',num:695},
+  {id:'accept_696',w:'accept',jp:'受け入れる',num:696},
+  {id:'increase_697',w:'increase',jp:'増やす',num:697},
+  {id:'remind_698',w:'remind',jp:'思い出させる',num:698},
+  {id:'proof_699',w:'proof',jp:'証拠',num:699},
+  {id:'appropriate_700',w:'appropriate',jp:'適当な',num:700},
+  {id:'deserve_701',w:'deserve',jp:'値する',num:701},
+  {id:'establishment_702',w:'establishment',jp:'設立',num:702},
+  {id:'definition_703',w:'definition',jp:'定義',num:703},
+  {id:'economic_704',w:'economic',jp:'経済の',num:704},
+  {id:'introduce_705',w:'introduce',jp:'紹介する',num:705},
+  {id:'convey_706',w:'convey',jp:'伝える',num:706},
+  {id:'partnership_707',w:'partnership',jp:'共同・提携',num:707},
+  {id:'attorney_708',w:'attorney',jp:'弁護士',num:708},
+  {id:'index_709',w:'index',jp:'索引',num:709},
+  {id:'circumstance_710',w:'circumstance',jp:'状況・環境',num:710},
+  {id:'conversation_711',w:'conversation',jp:'会話',num:711},
+  {id:'poet_712',w:'poet',jp:'詩人',num:712},
+  {id:'craft_713',w:'craft',jp:'工芸・技能',num:713},
+  {id:'spill_714',w:'spill',jp:'こぼす',num:714},
+  {id:'reject_715',w:'reject',jp:'拒絶する',num:715},
+  {id:'province_716',w:'province',jp:'州・地方',num:716},
+  {id:'admission_717',w:'admission',jp:'入場・入場料',num:717},
+  {id:'consumption_718',w:'consumption',jp:'消費',num:718},
+  {id:'bishop_719',w:'bishop',jp:'司教',num:719},
+  {id:'fuel_720',w:'fuel',jp:'燃料',num:720},
+  {id:'guess_721',w:'guess',jp:'推測する',num:721},
+  {id:'economy_722',w:'economy',jp:'経済',num:722},
+  {id:'construct_723',w:'construct',jp:'組み立てる',num:723},
+  {id:'assistance_724',w:'assistance',jp:'支援',num:724},
+  {id:'implement_725',w:'implement',jp:'実施する',num:725},
+  {id:'peak_726',w:'peak',jp:'頂上',num:726},
+  {id:'sculpture_727',w:'sculpture',jp:'彫刻',num:727},
+  {id:'various_728',w:'various',jp:'様々な',num:728},
+  {id:'symptom_729',w:'symptom',jp:'症状',num:729},
+  {id:'tribe_730',w:'tribe',jp:'部族',num:730},
+  {id:'agriculture_731',w:'agriculture',jp:'農業',num:731},
+  {id:'dealer_732',w:'dealer',jp:'販売業者',num:732},
+  {id:'unlike_733',w:'unlike',jp:'と異なって',num:733},
+  {id:'invent_734',w:'invent',jp:'発明する',num:734},
+  {id:'treaty_735',w:'treaty',jp:'条約',num:735},
+  {id:'trust_736',w:'trust',jp:'信頼',num:736},
+  {id:'instruction_737',w:'instruction',jp:'指示',num:737},
+  {id:'comedy_738',w:'comedy',jp:'喜劇',num:738},
+  {id:'absolutely_739',w:'absolutely',jp:'絶対に',num:739},
+  {id:'alliance_740',w:'alliance',jp:'同盟',num:740},
+  {id:'law_741',w:'law',jp:'法律',num:741},
+  {id:'evil_742',w:'evil',jp:'邪悪な',num:742},
+  {id:'chamber_743',w:'chamber',jp:'小部屋',num:743},
+  {id:'suppose_744',w:'suppose',jp:'だと思う',num:744},
+  {id:'develop_745',w:'develop',jp:'発達させる',num:745},
+  {id:'remember_746',w:'remember',jp:'覚えている',num:746},
+  {id:'entitle_747',w:'entitle',jp:'と題する',num:747},
+  {id:'significantly_748',w:'significantly',jp:'かなり',num:748},
+  {id:'confidence_749',w:'confidence',jp:'自信',num:749},
+  {id:'national_750',w:'national',jp:'国の・国民の',num:750},
+  {id:'whenever_751',w:'whenever',jp:'する時はいつでも',num:751},
+  {id:'rush_752',w:'rush',jp:'突進する',num:752},
+  {id:'female_753',w:'female',jp:'雌の・女性の',num:753},
+  {id:'identity_754',w:'identity',jp:'同一性',num:754},
+  {id:'independence_755',w:'independence',jp:'独立',num:755},
+  {id:'match_756',w:'match',jp:'試合',num:756},
+  {id:'fix_757',w:'fix',jp:'固定する',num:757},
+  {id:'cooperation_758',w:'cooperation',jp:'協力',num:758},
+  {id:'coalition_759',w:'coalition',jp:'連立',num:759},
+  {id:'detect_760',w:'detect',jp:'検出する',num:760},
+  {id:'interior_761',w:'interior',jp:'内部の',num:761},
+  {id:'alter_762',w:'alter',jp:'変える',num:762},
+  {id:'retirement_763',w:'retirement',jp:'退職',num:763},
+  {id:'sensitive_764',w:'sensitive',jp:'敏感な',num:764},
+  {id:'reply_765',w:'reply',jp:'返答する',num:765},
+  {id:'opposition_766',w:'opposition',jp:'反対',num:766},
+  {id:'export_767',w:'export',jp:'輸出する',num:767},
+  {id:'psychologist_768',w:'psychologist',jp:'心理学者',num:768},
+  {id:'pension_769',w:'pension',jp:'年金',num:769},
+  {id:'correspondent_770',w:'correspondent',jp:'特派員',num:770},
+  {id:'duty_771',w:'duty',jp:'職務・関税',num:771},
+  {id:'attach_772',w:'attach',jp:'貼り付ける',num:772},
+  {id:'personality_773',w:'personality',jp:'人格',num:773},
+  {id:'fully_774',w:'fully',jp:'十分に',num:774},
+  {id:'scheme_775',w:'scheme',jp:'計画',num:775},
+  {id:'install_776',w:'install',jp:'導入する',num:776},
+  {id:'ingredient_777',w:'ingredient',jp:'材料・成分',num:777},
+  {id:'flood_778',w:'flood',jp:'洪水',num:778},
+  {id:'folk_779',w:'folk',jp:'人々・群衆',num:779},
+  {id:'election_780',w:'election',jp:'選挙',num:780},
+  {id:'despite_781',w:'despite',jp:'にも関わらず',num:781},
+  {id:'revolution_782',w:'revolution',jp:'革命',num:782},
+  {id:'promotion_783',w:'promotion',jp:'昇進',num:783},
+  {id:'industrial_784',w:'industrial',jp:'産業の',num:784},
+  {id:'dramatic_785',w:'dramatic',jp:'劇的な',num:785},
+  {id:'lean_786',w:'lean',jp:'傾く',num:786},
+  {id:'exhibition_787',w:'exhibition',jp:'展示',num:787},
+  {id:'compromise_788',w:'compromise',jp:'妥協',num:788},
+  {id:'anxiety_789',w:'anxiety',jp:'心配・不安',num:789},
+  {id:'relevant_790',w:'relevant',jp:'関連のある',num:790},
+  {id:'observation_791',w:'observation',jp:'観察',num:791},
+  {id:'manager_792',w:'manager',jp:'部長',num:792},
+  {id:'defeat_793',w:'defeat',jp:'負かす',num:793},
+  {id:'surgery_794',w:'surgery',jp:'手術',num:794},
+  {id:'reaction_795',w:'reaction',jp:'反応',num:795},
+  {id:'abandon_796',w:'abandon',jp:'捨て去る',num:796},
+  {id:'crisis_797',w:'crisis',jp:'危機',num:797},
+  {id:'comfort_798',w:'comfort',jp:'快適さ',num:798},
+  {id:'wise_799',w:'wise',jp:'賢い',num:799},
+  {id:'sustain_800',w:'sustain',jp:'保持する',num:800},
+  {id:'hire_801',w:'hire',jp:'雇う',num:801},
+  {id:'slip_802',w:'slip',jp:'滑る',num:802},
+  {id:'entirely_803',w:'entirely',jp:'完全に',num:803},
+  {id:'totally_804',w:'totally',jp:'完全に',num:804},
+  {id:'extensive_805',w:'extensive',jp:'広範な',num:805},
+  {id:'represent_806',w:'represent',jp:'表す',num:806},
+  {id:'receive_807',w:'receive',jp:'受け取る',num:807},
+  {id:'employ_808',w:'employ',jp:'雇う',num:808},
+  {id:'hang_809',w:'hang',jp:'つるす',num:809},
+  {id:'context_810',w:'context',jp:'文脈',num:810},
+  {id:'famous_811',w:'famous',jp:'有名な',num:811},
+  {id:'assumption_812',w:'assumption',jp:'想定・仮説',num:812},
+  {id:'charge_813',w:'charge',jp:'非難・料金',num:813},
+  {id:'civilization_814',w:'civilization',jp:'文明',num:814},
+  {id:'aid_815',w:'aid',jp:'援助',num:815},
+  {id:'poll_816',w:'poll',jp:'投票・選挙',num:816},
+  {id:'scientific_817',w:'scientific',jp:'科学の',num:817},
+  {id:'pleasure_818',w:'pleasure',jp:'楽しみ',num:818},
+  {id:'dislike_819',w:'dislike',jp:'嫌がる',num:819},
+  {id:'environment_820',w:'environment',jp:'環境',num:820},
+  {id:'architect_821',w:'architect',jp:'建築家',num:821},
+  {id:'coast_822',w:'coast',jp:'海岸',num:822},
+  {id:'evolution_823',w:'evolution',jp:'進化',num:823},
+  {id:'recall_824',w:'recall',jp:'呼び戻す',num:824},
+  {id:'agreement_825',w:'agreement',jp:'同意',num:825},
+  {id:'county_826',w:'county',jp:'州・郡',num:826},
+  {id:'nation_827',w:'nation',jp:'国家',num:827},
+  {id:'negotiate_828',w:'negotiate',jp:'交渉する',num:828},
+  {id:'depth_829',w:'depth',jp:'深さ',num:829},
+  {id:'astronaut_830',w:'astronaut',jp:'宇宙飛行士',num:830},
+  {id:'threat_831',w:'threat',jp:'脅威',num:831},
+  {id:'transform_832',w:'transform',jp:'変える',num:832},
+  {id:'method_833',w:'method',jp:'方法',num:833},
+  {id:'jail_834',w:'jail',jp:'刑務所',num:834},
+  {id:'university_835',w:'university',jp:'大学',num:835},
+  {id:'primitive_836',w:'primitive',jp:'原始的な',num:836},
+  {id:'emerge_837',w:'emerge',jp:'現れる',num:837},
+  {id:'physical_838',w:'physical',jp:'身体の',num:838},
+  {id:'false_839',w:'false',jp:'誤った',num:839},
+  {id:'highlight_840',w:'highlight',jp:'目立たせる',num:840},
+  {id:'estimate_841',w:'estimate',jp:'推定する',num:841},
+  {id:'rational_842',w:'rational',jp:'理性のある',num:842},
+  {id:'efficient_843',w:'efficient',jp:'効率のいい',num:843},
+  {id:'initiative_844',w:'initiative',jp:'主導権',num:844},
+  {id:'recommendation_845',w:'recommendation',jp:'推薦',num:845},
+  {id:'according_846',w:'according',jp:'による',num:846},
+  {id:'implication_847',w:'implication',jp:'含み',num:847},
+  {id:'seldom_848',w:'seldom',jp:'めったに〜しない',num:848},
+  {id:'pregnant_849',w:'pregnant',jp:'妊娠している',num:849},
+  {id:'society_850',w:'society',jp:'社会',num:850},
+  {id:'breath_851',w:'breath',jp:'息・呼吸',num:851},
+  {id:'employer_852',w:'employer',jp:'雇用者',num:852},
+  {id:'advertising_853',w:'advertising',jp:'広告',num:853},
+  {id:'equipment_854',w:'equipment',jp:'装置・設備',num:854},
+  {id:'universe_855',w:'universe',jp:'宇宙',num:855},
+  {id:'addition_856',w:'addition',jp:'追加',num:856},
+  {id:'visible_857',w:'visible',jp:'目に見える',num:857},
+  {id:'opinion_858',w:'opinion',jp:'意見',num:858},
+  {id:'decline_859',w:'decline',jp:'断る',num:859},
+  {id:'male_860',w:'male',jp:'男性',num:860},
+  {id:'somehow_861',w:'somehow',jp:'どうにか',num:861},
+  {id:'suit_862',w:'suit',jp:'適合する',num:862},
+  {id:'latter_863',w:'latter',jp:'後者の',num:863},
+  {id:'merely_864',w:'merely',jp:'単に',num:864},
+  {id:'appearance_865',w:'appearance',jp:'出現・外見',num:865},
+  {id:'fairly_866',w:'fairly',jp:'かなり',num:866},
+  {id:'chapter_867',w:'chapter',jp:'章',num:867},
+  {id:'nearby_868',w:'nearby',jp:'近くの',num:868},
+  {id:'settle_869',w:'settle',jp:'決着させる',num:869},
+  {id:'contribute_870',w:'contribute',jp:'寄付する',num:870},
+  {id:'foreign_871',w:'foreign',jp:'外国の',num:871},
+  {id:'extend_872',w:'extend',jp:'延びる',num:872},
+  {id:'policy_873',w:'policy',jp:'政策',num:873},
+  {id:'cope_874',w:'cope',jp:'対処する',num:874},
+  {id:'religion_875',w:'religion',jp:'宗教',num:875},
+  {id:'conclusion_876',w:'conclusion',jp:'結論',num:876},
+  {id:'treatment_877',w:'treatment',jp:'扱い',num:877},
+  {id:'alternative_878',w:'alternative',jp:'代替物',num:878},
+  {id:'reverse_879',w:'reverse',jp:'反対の',num:879},
+  {id:'former_880',w:'former',jp:'前の',num:880},
+  {id:'victim_881',w:'victim',jp:'犠牲者',num:881},
+  {id:'distinction_882',w:'distinction',jp:'区別',num:882},
+  {id:'lab_883',w:'lab',jp:'研究室',num:883},
+  {id:'literary_884',w:'literary',jp:'文学の',num:884},
+  {id:'feed_885',w:'feed',jp:'えさを与える',num:885},
+  {id:'patient_886',w:'patient',jp:'我慢強い・患者',num:886},
+  {id:'state_887',w:'state',jp:'状態・状況',num:887},
+  {id:'forever_888',w:'forever',jp:'永遠に',num:888},
+  {id:'propose_889',w:'propose',jp:'提案する',num:889},
+  {id:'pleasant_890',w:'pleasant',jp:'楽しい',num:890},
+  {id:'content_891',w:'content',jp:'中身・内容',num:891},
+  {id:'order_892',w:'order',jp:'命令',num:892},
+  {id:'superior_893',w:'superior',jp:'より優れた',num:893},
+  {id:'pretend_894',w:'pretend',jp:'のふりをする',num:894},
+  {id:'unique_895',w:'unique',jp:'他に類を見ない',num:895},
+  {id:'preparation_896',w:'preparation',jp:'準備',num:896},
+  {id:'afford_897',w:'afford',jp:'余裕がある',num:897},
+  {id:'congress_898',w:'congress',jp:'会議・集会',num:898},
+  {id:'nuclear_899',w:'nuclear',jp:'核の',num:899},
+  {id:'regarding_900',w:'regarding',jp:'に関して',num:900},
+  {id:'party_901',w:'party',jp:'政党',num:901},
+  {id:'finance_902',w:'finance',jp:'財政',num:902},
+  {id:'financial_903',w:'financial',jp:'財政の',num:903},
+  {id:'intelligently_904',w:'intelligently',jp:'かしこく',num:904},
+  {id:'describe_905',w:'describe',jp:'述べる',num:905},
+  {id:'operate_906',w:'operate',jp:'操作する',num:906},
+  {id:'embrace_907',w:'embrace',jp:'抱きしめる',num:907},
+  {id:'resistance_908',w:'resistance',jp:'抵抗',num:908},
+  {id:'dozen_909',w:'dozen',jp:'12の',num:909},
+  {id:'corridor_910',w:'corridor',jp:'廊下',num:910},
+  {id:'bend_911',w:'bend',jp:'曲げる',num:911},
+  {id:'strike_912',w:'strike',jp:'叩く・打つ',num:912},
+  {id:'educate_913',w:'educate',jp:'教育する',num:913},
+  {id:'fabric_914',w:'fabric',jp:'織物・布地',num:914},
+  {id:'clerk_915',w:'clerk',jp:'事務員',num:915},
+  {id:'evidence_916',w:'evidence',jp:'証拠',num:916},
+  {id:'concentrate_917',w:'concentrate',jp:'集中する',num:917},
+  {id:'funding_918',w:'funding',jp:'資金調達',num:918},
+  {id:'extraordinary_919',w:'extraordinary',jp:'普通でない',num:919},
+  {id:'civilian_920',w:'civilian',jp:'民間人',num:920},
+  {id:'broadcast_921',w:'broadcast',jp:'放送する',num:921},
+  {id:'maintenance_922',w:'maintenance',jp:'持続・保全',num:922},
+  {id:'faith_923',w:'faith',jp:'信頼',num:923},
+  {id:'alike_924',w:'alike',jp:'よく似た',num:924},
+  {id:'grammar_925',w:'grammar',jp:'文法',num:925},
+  {id:'vehicle_926',w:'vehicle',jp:'乗り物',num:926},
+  {id:'remain_927',w:'remain',jp:'のままである',num:927},
+  {id:'benefit_928',w:'benefit',jp:'利益',num:928},
+  {id:'length_929',w:'length',jp:'長さ',num:929},
+  {id:'carbon_930',w:'carbon',jp:'炭素',num:930},
+  {id:'useful_931',w:'useful',jp:'役に立つ',num:931},
+  {id:'fat_932',w:'fat',jp:'太った',num:932},
+  {id:'provision_933',w:'provision',jp:'供給・支給',num:933},
+  {id:'subject_934',w:'subject',jp:'教科・主題',num:934},
+  {id:'region_935',w:'region',jp:'地域',num:935},
+  {id:'boundary_936',w:'boundary',jp:'境界',num:936},
+  {id:'adopt_937',w:'adopt',jp:'取り入れる',num:937},
+  {id:'wisdom_938',w:'wisdom',jp:'知恵',num:938},
+  {id:'express_939',w:'express',jp:'表現する',num:939},
+  {id:'brick_940',w:'brick',jp:'れんが',num:940},
+  {id:'creation_941',w:'creation',jp:'創造',num:941},
+  {id:'greet_942',w:'greet',jp:'出迎える',num:942},
+  {id:'block_943',w:'block',jp:'妨げる',num:943},
+  {id:'escape_944',w:'escape',jp:'逃れる',num:944},
+  {id:'obtain_945',w:'obtain',jp:'手に入れる',num:945},
+  {id:'gradually_946',w:'gradually',jp:'次第に',num:946},
+  {id:'obvious_947',w:'obvious',jp:'明白な',num:947},
+  {id:'innocent_948',w:'innocent',jp:'罪のない',num:948},
+  {id:'distribution_949',w:'distribution',jp:'分布・配分',num:949},
+  {id:'exactly_950',w:'exactly',jp:'正確に',num:950},
+  {id:'continent_951',w:'continent',jp:'大陸',num:951},
+  {id:'arms_952',w:'arms',jp:'武器',num:952},
+  {id:'compound_953',w:'compound',jp:'調合する',num:953},
+  {id:'public_954',w:'public',jp:'公共の',num:954},
+  {id:'awareness_955',w:'awareness',jp:'気づき',num:955},
+  {id:'remove_956',w:'remove',jp:'取り除く',num:956},
+  {id:'opponent_957',w:'opponent',jp:'相手',num:957},
+  {id:'neighborhood_958',w:'neighborhood',jp:'近所',num:958},
+  {id:'while_959',w:'while',jp:'一方で',num:959},
+  {id:'council_960',w:'council',jp:'議会',num:960},
+  {id:'suitable_961',w:'suitable',jp:'適した',num:961},
+  {id:'secretary_962',w:'secretary',jp:'秘書',num:962},
+  {id:'participate_963',w:'participate',jp:'参加する',num:963},
+  {id:'politics_964',w:'politics',jp:'政治',num:964},
+  {id:'accurate_965',w:'accurate',jp:'正確な',num:965},
+  {id:'chew_966',w:'chew',jp:'噛む',num:966},
+  {id:'strange_967',w:'strange',jp:'奇妙な',num:967},
+  {id:'conventional_968',w:'conventional',jp:'従来の',num:968},
+  {id:'organization_969',w:'organization',jp:'組織',num:969},
+  {id:'desperate_970',w:'desperate',jp:'やけくその',num:970},
+  {id:'moral_971',w:'moral',jp:'道徳の',num:971},
+  {id:'intellectual_972',w:'intellectual',jp:'知的な',num:972},
+  {id:'emphasis_973',w:'emphasis',jp:'強調',num:973},
+  {id:'particularly_974',w:'particularly',jp:'特に',num:974},
+  {id:'founder_975',w:'founder',jp:'創設者',num:975},
+  {id:'consider_976',w:'consider',jp:'について考える',num:976},
+  {id:'emotional_977',w:'emotional',jp:'感情の',num:977},
+  {id:'infection_978',w:'infection',jp:'感染',num:978},
+  {id:'identify_979',w:'identify',jp:'見分ける',num:979},
+  {id:'demand_980',w:'demand',jp:'要求',num:980},
+  {id:'given_981',w:'given',jp:'与えられた',num:981},
+  {id:'transition_982',w:'transition',jp:'遷移・変遷',num:982},
+  {id:'author_983',w:'author',jp:'著者',num:983},
+  {id:'considerable_984',w:'considerable',jp:'かなりの',num:984},
+  {id:'graduate_985',w:'graduate',jp:'卒業する',num:985},
+  {id:'conduct_986',w:'conduct',jp:'行為・行動',num:986},
+  {id:'crowd_987',w:'crowd',jp:'群衆',num:987},
+  {id:'nature_988',w:'nature',jp:'自然',num:988},
+  {id:'broad_989',w:'broad',jp:'広い',num:989},
+  {id:'physician_990',w:'physician',jp:'医師',num:990},
+  {id:'persuade_991',w:'persuade',jp:'説得する',num:991},
+  {id:'achievement_992',w:'achievement',jp:'達成',num:992},
+  {id:'witness_993',w:'witness',jp:'目撃者',num:993},
+  {id:'face_994',w:'face',jp:'直面する',num:994},
+  {id:'focus_995',w:'focus',jp:'焦点',num:995},
+  {id:'federal_996',w:'federal',jp:'連邦の',num:996},
+  {id:'associate_997',w:'associate',jp:'結びつけて考える',num:997},
+  {id:'aim_998',w:'aim',jp:'ねらいをつける',num:998},
+  {id:'deficit_999',w:'deficit',jp:'赤字',num:999},
+  {id:'activist_1000',w:'activist',jp:'行動主義者',num:1000},
+  {id:'primary_1001',w:'primary',jp:'最初の',num:1001},
+  {id:'joy_1002',w:'joy',jp:'喜び',num:1002},
+  {id:'inspector_1003',w:'inspector',jp:'検査官',num:1003},
+  {id:'actually_1004',w:'actually',jp:'実際に',num:1004},
+  {id:'previous_1005',w:'previous',jp:'前の',num:1005},
+  {id:'variation_1006',w:'variation',jp:'変化・変動',num:1006},
+  {id:'stupid_1007',w:'stupid',jp:'馬鹿な',num:1007},
+  {id:'poverty_1008',w:'poverty',jp:'貧困',num:1008},
+  {id:'appeal_1009',w:'appeal',jp:'訴える',num:1009},
+  {id:'substance_1010',w:'substance',jp:'物質',num:1010},
+  {id:'regulation_1011',w:'regulation',jp:'規制',num:1011},
+  {id:'bare_1012',w:'bare',jp:'裸の・露出の',num:1012},
+  {id:'awake_1013',w:'awake',jp:'目を覚ましている',num:1013},
+  {id:'suspect_1014',w:'suspect',jp:'疑う',num:1014},
+  {id:'battery_1015',w:'battery',jp:'電池',num:1015},
+  {id:'income_1016',w:'income',jp:'所得・収入',num:1016},
+  {id:'fault_1017',w:'fault',jp:'欠点',num:1017},
+  {id:'tissue_1018',w:'tissue',jp:'組織',num:1018},
+  {id:'stranger_1019',w:'stranger',jp:'他人',num:1019},
+  {id:'expensive_1020',w:'expensive',jp:'高価な',num:1020},
+  {id:'difference_1021',w:'difference',jp:'違い',num:1021},
+  {id:'percentage_1022',w:'percentage',jp:'割合',num:1022},
+  {id:'own_1023',w:'own',jp:'自身の',num:1023},
+  {id:'brief_1024',w:'brief',jp:'短い',num:1024},
+  {id:'useless_1025',w:'useless',jp:'役に立たない',num:1025},
+  {id:'predict_1026',w:'predict',jp:'予想する',num:1026},
+  {id:'personnel_1027',w:'personnel',jp:'人事・職員',num:1027},
+  {id:'sudden_1028',w:'sudden',jp:'突然の',num:1028},
+  {id:'transfer_1029',w:'transfer',jp:'移す',num:1029},
+  {id:'solid_1030',w:'solid',jp:'固い',num:1030},
+  {id:'mess_1031',w:'mess',jp:'混乱',num:1031},
+  {id:'flee_1032',w:'flee',jp:'逃げる',num:1032},
+  {id:'drain_1033',w:'drain',jp:'排出させる',num:1033},
+  {id:'remark_1034',w:'remark',jp:'ことば',num:1034},
+  {id:'lecture_1035',w:'lecture',jp:'講義',num:1035},
+  {id:'resolution_1036',w:'resolution',jp:'解決・決意',num:1036},
+  {id:'desert_1037',w:'desert',jp:'砂漠',num:1037},
+  {id:'advocate_1038',w:'advocate',jp:'提唱する',num:1038},
+  {id:'bet_1039',w:'bet',jp:'賭ける',num:1039},
+  {id:'characteristic_1040',w:'characteristic',jp:'特有の',num:1040},
+  {id:'education_1041',w:'education',jp:'教育',num:1041},
+  {id:'whatever_1042',w:'whatever',jp:'なんでも',num:1042},
+  {id:'cause_1043',w:'cause',jp:'原因',num:1043},
+  {id:'commitment_1044',w:'commitment',jp:'約束・委託',num:1044},
+  {id:'supply_1045',w:'supply',jp:'供給',num:1045},
+  {id:'temporary_1046',w:'temporary',jp:'一時的な',num:1046},
+  {id:'involve_1047',w:'involve',jp:'含む・巻き込む',num:1047},
+  {id:'meal_1048',w:'meal',jp:'食事',num:1048},
+  {id:'replace_1049',w:'replace',jp:'取り換える',num:1049},
+  {id:'expression_1050',w:'expression',jp:'表現・言い回し',num:1050},
+  {id:'investor_1051',w:'investor',jp:'投資家',num:1051},
+  {id:'humanity_1052',w:'humanity',jp:'人間・人間性',num:1052},
+  {id:'majority_1053',w:'majority',jp:'大多数',num:1053},
+  {id:'possess_1054',w:'possess',jp:'所有する',num:1054},
+  {id:'contribution_1055',w:'contribution',jp:'寄付・貢献',num:1055},
+  {id:'frequently_1056',w:'frequently',jp:'頻繁に',num:1056},
+  {id:'shrug_1057',w:'shrug',jp:'肩をすくめる',num:1057},
+  {id:'operator_1058',w:'operator',jp:'操作者',num:1058},
+  {id:'slightly_1059',w:'slightly',jp:'わずかに',num:1059},
+  {id:'interpretation_1060',w:'interpretation',jp:'解釈・通訳',num:1060},
+  {id:'rely_1061',w:'rely',jp:'頼る',num:1061},
+  {id:'reduction_1062',w:'reduction',jp:'削減',num:1062},
+  {id:'whole_1063',w:'whole',jp:'全部の',num:1063},
+  {id:'purchase_1064',w:'purchase',jp:'購入する',num:1064},
+  {id:'summit_1065',w:'summit',jp:'頂上・山頂',num:1065},
+  {id:'hell_1066',w:'hell',jp:'地獄',num:1066},
+  {id:'typically_1067',w:'typically',jp:'典型的に',num:1067},
+  {id:'admire_1068',w:'admire',jp:'賞賛する',num:1068},
+  {id:'literature_1069',w:'literature',jp:'文学',num:1069},
+  {id:'issue_1070',w:'issue',jp:'問題',num:1070},
+  {id:'rent_1071',w:'rent',jp:'家賃',num:1071},
+  {id:'widely_1072',w:'widely',jp:'広範囲に',num:1072},
+  {id:'satisfaction_1073',w:'satisfaction',jp:'満足',num:1073},
+  {id:'worry_1074',w:'worry',jp:'心配する',num:1074},
+  {id:'rub_1075',w:'rub',jp:'こする',num:1075},
+  {id:'completely_1076',w:'completely',jp:'完全に',num:1076},
+  {id:'disappear_1077',w:'disappear',jp:'消える',num:1077},
+  {id:'inflation_1078',w:'inflation',jp:'膨張・拡大',num:1078},
+  {id:'maybe_1079',w:'maybe',jp:'たぶん',num:1079},
+  {id:'calculate_1080',w:'calculate',jp:'計算する',num:1080},
+  {id:'determine_1081',w:'determine',jp:'決める',num:1081},
+  {id:'mexican_1082',w:'Mexican',jp:'メキシコの',num:1082},
+  {id:'crop_1083',w:'crop',jp:'収穫物・作物',num:1083},
+  {id:'prosecution_1084',w:'prosecution',jp:'起訴',num:1084},
+  {id:'toe_1085',w:'toe',jp:'つま先',num:1085},
+  {id:'seize_1086',w:'seize',jp:'つかむ',num:1086},
+  {id:'imagination_1087',w:'imagination',jp:'想像',num:1087},
+  {id:'governor_1088',w:'governor',jp:'知事',num:1088},
+  {id:'curiosity_1089',w:'curiosity',jp:'好奇心',num:1089},
+  {id:'rise_1090',w:'rise',jp:'上がる',num:1090},
+  {id:'tail_1091',w:'tail',jp:'尾',num:1091},
+  {id:'except_1092',w:'except',jp:'を除いて',num:1092},
+  {id:'lie_1093',w:'lie',jp:'横たわる',num:1093},
+  {id:'string_1094',w:'string',jp:'紐・糸',num:1094},
+  {id:'appoint_1095',w:'appoint',jp:'任命する',num:1095},
+  {id:'military_1096',w:'military',jp:'軍隊',num:1096},
+  {id:'conference_1097',w:'conference',jp:'会議',num:1097},
+  {id:'explanation_1098',w:'explanation',jp:'説明',num:1098},
+  {id:'atmosphere_1099',w:'atmosphere',jp:'雰囲気・気候',num:1099},
+  {id:'toward_1100',w:'toward',jp:'向かって',num:1100},
+  {id:'convenient_1101',w:'convenient',jp:'都合がよい',num:1101},
+  {id:'examination_1102',w:'examination',jp:'試験',num:1102},
+  {id:'sort_1103',w:'sort',jp:'種類',num:1103},
+  {id:'strongly_1104',w:'strongly',jp:'強く',num:1104},
+  {id:'fear_1105',w:'fear',jp:'恐れ',num:1105},
+  {id:'ability_1106',w:'ability',jp:'能力',num:1106},
+  {id:'weight_1107',w:'weight',jp:'重さ',num:1107},
+  {id:'exclude_1108',w:'exclude',jp:'除く',num:1108},
+  {id:'discipline_1109',w:'discipline',jp:'しつけ・規律',num:1109},
+  {id:'share_1110',w:'share',jp:'分かち合う',num:1110},
+  {id:'potentially_1111',w:'potentially',jp:'潜在的に',num:1111},
+  {id:'extent_1112',w:'extent',jp:'程度・大きさ',num:1112},
+  {id:'discussion_1113',w:'discussion',jp:'議論',num:1113},
+  {id:'settlement_1114',w:'settlement',jp:'移住・定住',num:1114},
+  {id:'enormous_1115',w:'enormous',jp:'非常に大きい',num:1115},
+  {id:'presence_1116',w:'presence',jp:'存在',num:1116},
+  {id:'effective_1117',w:'effective',jp:'効果的な',num:1117},
+  {id:'rapid_1118',w:'rapid',jp:'急速な',num:1118},
+  {id:'basis_1119',w:'basis',jp:'土台',num:1119},
+  {id:'commander_1120',w:'commander',jp:'司令官',num:1120},
+  {id:'radical_1121',w:'radical',jp:'急進的な',num:1121},
+  {id:'individual_1122',w:'individual',jp:'個人の',num:1122},
+  {id:'journal_1123',w:'journal',jp:'日誌・日記',num:1123},
+  {id:'avoid_1124',w:'avoid',jp:'避ける',num:1124},
+  {id:'stake_1125',w:'stake',jp:'くい・掛け金',num:1125},
+  {id:'possibly_1126',w:'possibly',jp:'ひょっとすると',num:1126},
+  {id:'violence_1127',w:'violence',jp:'暴力',num:1127},
+  {id:'likely_1128',w:'likely',jp:'起こりそうな',num:1128},
+  {id:'entertainment_1129',w:'entertainment',jp:'娯楽',num:1129},
+  {id:'opposite_1130',w:'opposite',jp:'反対の',num:1130},
+  {id:'district_1131',w:'district',jp:'地域・地区',num:1131},
+  {id:'domestic_1132',w:'domestic',jp:'国内の',num:1132},
+  {id:'pitch_1133',w:'pitch',jp:'投げる',num:1133},
+  {id:'historical_1134',w:'historical',jp:'歴史上の',num:1134},
+  {id:'bullet_1135',w:'bullet',jp:'弾丸',num:1135},
+  {id:'revenue_1136',w:'revenue',jp:'収益',num:1136},
+  {id:'democracy_1137',w:'democracy',jp:'民主主義',num:1137},
+  {id:'legislation_1138',w:'legislation',jp:'立法',num:1138},
+  {id:'breast_1139',w:'breast',jp:'胸部',num:1139},
+  {id:'actual_1140',w:'actual',jp:'現実の',num:1140},
+  {id:'eager_1141',w:'eager',jp:'強く望んでいる',num:1141},
+  {id:'possible_1142',w:'possible',jp:'可能な',num:1142},
+  {id:'proverb_1143',w:'proverb',jp:'ことわざ',num:1143},
+  {id:'psychological_1144',w:'psychological',jp:'心理的な',num:1144},
+  {id:'refugee_1145',w:'refugee',jp:'難民',num:1145},
+  {id:'origin_1146',w:'origin',jp:'起源',num:1146},
+  {id:'transport_1147',w:'transport',jp:'輸送する',num:1147},
+  {id:'notion_1148',w:'notion',jp:'考え・意見',num:1148},
+  {id:'initially_1149',w:'initially',jp:'最初は',num:1149},
+  {id:'doubt_1150',w:'doubt',jp:'疑い',num:1150},
+  {id:'sigh_1151',w:'sigh',jp:'ため息をつく',num:1151},
+  {id:'laboratory_1152',w:'laboratory',jp:'実験室',num:1152},
+  {id:'delight_1153',w:'delight',jp:'喜び',num:1153},
+  {id:'shortly_1154',w:'shortly',jp:'まもなく',num:1154},
+  {id:'universal_1155',w:'universal',jp:'普遍的な',num:1155},
+  {id:'surely_1156',w:'surely',jp:'確かに',num:1156},
+  {id:'labor_1157',w:'labor',jp:'労働',num:1157},
+  {id:'entire_1158',w:'entire',jp:'全体の',num:1158},
+  {id:'blood_1159',w:'blood',jp:'血',num:1159},
+  {id:'wonder_1160',w:'wonder',jp:'かなと思う',num:1160},
+  {id:'arise_1161',w:'arise',jp:'起こる',num:1161},
+  {id:'incorporate_1162',w:'incorporate',jp:'合体させる',num:1162},
+  {id:'mere_1163',w:'mere',jp:'単なる',num:1163},
+  {id:'agenda_1164',w:'agenda',jp:'議題',num:1164},
+  {id:'terror_1165',w:'terror',jp:'恐怖',num:1165},
+  {id:'truly_1166',w:'truly',jp:'真に',num:1166},
+  {id:'necessary_1167',w:'necessary',jp:'必要な',num:1167},
+  {id:'science_1168',w:'science',jp:'科学',num:1168},
+  {id:'favor_1169',w:'favor',jp:'親切な行為',num:1169},
+  {id:'recession_1170',w:'recession',jp:'不況',num:1170},
+  {id:'aircraft_1171',w:'aircraft',jp:'航空機',num:1171},
+  {id:'prison_1172',w:'prison',jp:'刑務所',num:1172},
+  {id:'anniversary_1173',w:'anniversary',jp:'周年・記念日',num:1173},
+  {id:'possibility_1174',w:'possibility',jp:'可能性',num:1174},
+  {id:'sequence_1175',w:'sequence',jp:'連続',num:1175},
+  {id:'slight_1176',w:'slight',jp:'かすかな',num:1176},
+  {id:'customer_1177',w:'customer',jp:'顧客',num:1177},
+  {id:'inform_1178',w:'inform',jp:'情報を与える',num:1178},
+  {id:'illegal_1179',w:'illegal',jp:'違法の',num:1179},
+  {id:'investigation_1180',w:'investigation',jp:'調査',num:1180},
+  {id:'depression_1181',w:'depression',jp:'落ち込み・不景気',num:1181},
+  {id:'matter_1182',w:'matter',jp:'問題',num:1182},
+  {id:'unless_1183',w:'unless',jp:'でない限り',num:1183},
+  {id:'necessity_1184',w:'necessity',jp:'必要性',num:1184},
+  {id:'supreme_1185',w:'supreme',jp:'最高の',num:1185},
+  {id:'severe_1186',w:'severe',jp:'厳しい',num:1186},
+  {id:'bloody_1187',w:'bloody',jp:'血の',num:1187},
+  {id:'apart_1188',w:'apart',jp:'離れて',num:1188},
+  {id:'cast_1189',w:'cast',jp:'投げる',num:1189},
+  {id:'airline_1190',w:'airline',jp:'航空会社',num:1190},
+  {id:'trading_1191',w:'trading',jp:'取引',num:1191},
+  {id:'path_1192',w:'path',jp:'小道',num:1192},
+  {id:'appreciate_1193',w:'appreciate',jp:'感謝する',num:1193},
+  {id:'crack_1194',w:'crack',jp:'裂け目',num:1194},
+  {id:'hesitate_1195',w:'hesitate',jp:'ためらう',num:1195},
+  {id:'contrary_1196',w:'contrary',jp:'反対の',num:1196},
+  {id:'depending_1197',w:'depending',jp:'依存している',num:1197},
+  {id:'household_1198',w:'household',jp:'家族・世帯',num:1198},
+  {id:'laughter_1199',w:'laughter',jp:'笑い',num:1199},
+  {id:'teenager_1200',w:'teenager',jp:'十代',num:1200},
+  {id:'crime_1201',w:'crime',jp:'犯罪',num:1201},
+  {id:'frighten_1202',w:'frighten',jp:'怖がらせる',num:1202},
+  {id:'quarter_1203',w:'quarter',jp:'四半期',num:1203},
+  {id:'mortgage_1204',w:'mortgage',jp:'抵当',num:1204},
+  {id:'indicate_1205',w:'indicate',jp:'指し示す',num:1205},
+  {id:'stroke_1206',w:'stroke',jp:'打撃',num:1206},
+  {id:'shortage_1207',w:'shortage',jp:'不足',num:1207},
+  {id:'explore_1208',w:'explore',jp:'探索する',num:1208},
+  {id:'property_1209',w:'property',jp:'財産',num:1209},
+  {id:'freeze_1210',w:'freeze',jp:'凍る',num:1210},
+  {id:'closely_1211',w:'closely',jp:'綿密に',num:1211},
+  {id:'venture_1212',w:'venture',jp:'冒険的事業',num:1212},
+  {id:'pretty_1213',w:'pretty',jp:'かなり',num:1213},
+  {id:'account_1214',w:'account',jp:'銀行口座',num:1214},
+  {id:'internal_1215',w:'internal',jp:'内部の',num:1215},
+  {id:'edge_1216',w:'edge',jp:'端・縁',num:1216},
+  {id:'environmental_1217',w:'environmental',jp:'環境の',num:1217},
+  {id:'plenty_1218',w:'plenty',jp:'たくさん',num:1218},
+  {id:'amendment_1219',w:'amendment',jp:'修正',num:1219},
+  {id:'fiber_1220',w:'fiber',jp:'繊維',num:1220},
+  {id:'somewhat_1221',w:'somewhat',jp:'いくぶん',num:1221},
+  {id:'restriction_1222',w:'restriction',jp:'制限',num:1222},
+  {id:'in_order_to_1223',w:'in order to',jp:'するために',num:1223},
+  {id:'not_only_a_but_also_b_1224',w:'not only A but also B',jp:'AだけでなくBも',num:1224},
+  {id:'a_number_of_1225',w:'a number of',jp:'たくさんの',num:1225},
+  {id:'be_likely_to_1226',w:'be likely to',jp:'する可能性が高い',num:1226},
+  {id:'end_up_1227',w:'end up',jp:'最終的になる',num:1227},
+  {id:'publish_1228',w:'publish',jp:'出版する',num:1228},
+  {id:'expense_1229',w:'expense',jp:'費用・出費',num:1229},
+  {id:'similar_1230',w:'similar',jp:'似ている',num:1230},
+  {id:'pollution_1231',w:'pollution',jp:'汚染',num:1231},
+  {id:'foundation_1232',w:'foundation',jp:'土台・設立',num:1232},
+  {id:'compare_1233',w:'compare',jp:'比較する',num:1233},
+  {id:'lead_to_1234',w:'lead to',jp:'つながる',num:1234},
+  {id:'furthermore_1235',w:'furthermore',jp:'さらに',num:1235},
+  {id:'more_and_more_1236',w:'more and more',jp:'ますます多くの',num:1236},
+  {id:'consume_1237',w:'consume',jp:'消費する',num:1237},
+  {id:'employment_1238',w:'employment',jp:'雇用',num:1238},
+  {id:'by_chance_1239',w:'by chance',jp:'偶然に',num:1239},
+  {id:'until_1240',w:'until',jp:'までに',num:1240},
+  {id:'on_the_other_hand_1241',w:'on the other hand',jp:'一方で',num:1241},
+  {id:'arrest_1242',w:'arrest',jp:'逮捕する',num:1242},
+  {id:'betray_1243',w:'betray',jp:'裏切る',num:1243},
+  {id:'affect_1244',w:'affect',jp:'影響を与える',num:1244},
+  {id:'portable_1245',w:'portable',jp:'持ち運べる',num:1245},
+  {id:'construction_1246',w:'construction',jp:'建設',num:1246},
+  {id:'convert_1247',w:'convert',jp:'変える',num:1247},
+  {id:'resident_1248',w:'resident',jp:'住民',num:1248},
+  {id:'provide_1249',w:'provide',jp:'供給する',num:1249},
+  {id:'metal_1250',w:'metal',jp:'金属',num:1250},
+  {id:'currency_1251',w:'currency',jp:'通貨',num:1251},
+  {id:'in_detail_1252',w:'in detail',jp:'詳細に',num:1252},
+  {id:'in_contrast_1253',w:'in contrast',jp:'対照的に',num:1253},
+  {id:'for_instance_1254',w:'for instance',jp:'例えば',num:1254},
+  {id:'additionally_1255',w:'additionally',jp:'加えて',num:1255},
+  {id:'in_response_to_1256',w:'in response to',jp:'に応じて',num:1256},
+  {id:'at_the_same_time_1257',w:'at the same time',jp:'同時に',num:1257},
+  {id:'preserved_1258',w:'preserved',jp:'保存された',num:1258},
+  {id:'be_known_as_1259',w:'be known as',jp:'として知られている',num:1259},
+  {id:'analyze_1260',w:'analyze',jp:'分析する',num:1260},
+  {id:'a_variety_of_1261',w:'a variety of',jp:'いろいろな',num:1261},
+  {id:'sympathy_1262',w:'sympathy',jp:'同情',num:1262},
+  {id:'flexibility_1263',w:'flexibility',jp:'しなやかさ',num:1263},
+  {id:'manage_1264',w:'manage',jp:'何とかうまくやる',num:1264},
+  {id:'reach_out_1265',w:'reach out',jp:'手を延ばす',num:1265},
+  {id:'for_fear_of_1266',w:'for fear of',jp:'を恐れて',num:1266},
+  {id:'on_behalf_of_1267',w:'on behalf of',jp:'の代わりに',num:1267},
+  {id:'on_account_of_1268',w:'on account of',jp:'のため',num:1268},
+  {id:'artificial_1269',w:'artificial',jp:'人工的な',num:1269},
+  {id:'prevent_a_from_b_1270',w:'prevent A from B',jp:'AをBから防ぐ',num:1270},
+  {id:'rather_than_1271',w:'rather than',jp:'よりむしろ',num:1271},
+  {id:'measure_1272',w:'measure',jp:'措置・測る',num:1272},
+  {id:'be_born_with_1273',w:'be born with',jp:'生まれつき',num:1273},
+  {id:'since_then_1274',w:'since then',jp:'それ以来',num:1274},
+  {id:'turn_a_into_b_1275',w:'turn A into B',jp:'AをBに変える',num:1275},
+  {id:'fertilizer_1276',w:'fertilizer',jp:'肥料',num:1276},
+  {id:'made_of_1277',w:'made of',jp:'で出来ている',num:1277},
+  {id:'make_sure_1278',w:'make sure',jp:'を確かめる',num:1278},
+  {id:'tolerate_1279',w:'tolerate',jp:'に耐える',num:1279},
+  {id:'journey_1280',w:'journey',jp:'旅・旅行',num:1280},
+  {id:'get_along_1281',w:'get along',jp:'うまくやる',num:1281},
+  {id:'keep_up_with_1282',w:'keep up with',jp:'に遅れず付いていく',num:1282},
+  {id:'cell_1283',w:'cell',jp:'細胞',num:1283},
+  {id:'such_as_1284',w:'such as',jp:'のような',num:1284},
+  {id:'annually_1285',w:'annually',jp:'毎年',num:1285},
+  {id:'invest_in_1286',w:'invest in',jp:'に投資する',num:1286},
+  {id:'embarrass_1287',w:'embarrass',jp:'恥ずかしがらせる',num:1287},
+  {id:'enlarge_1288',w:'enlarge',jp:'拡大する',num:1288},
+  {id:'brilliant_1289',w:'brilliant',jp:'優れた',num:1289},
+  {id:'vote_for_1290',w:'vote for',jp:'に賛成する',num:1290},
+  {id:'frequent_1291',w:'frequent',jp:'頻繁な',num:1291},
+  {id:'gravity_1292',w:'gravity',jp:'重力',num:1292},
+  {id:'rare_1293',w:'rare',jp:'まれな',num:1293},
+  {id:'decide_1294',w:'decide',jp:'決心する',num:1294},
+  {id:'bank_account_1295',w:'bank account',jp:'銀行口座',num:1295},
+  {id:'locate_1296',w:'locate',jp:'見つける',num:1296},
+  {id:'apply_to_1297',w:'apply to',jp:'に適用する',num:1297},
+  {id:'politely_1298',w:'politely',jp:'丁寧に',num:1298},
+  {id:'accidentally_1299',w:'accidentally',jp:'誤って',num:1299},
+  {id:'satisfy_1300',w:'satisfy',jp:'満足させる',num:1300},
+  {id:'appointment_1301',w:'appointment',jp:'予定・約束',num:1301},
+  {id:'luxury_1302',w:'luxury',jp:'贅沢',num:1302},
+  {id:'replacement_1303',w:'replacement',jp:'置換・代替',num:1303},
+  {id:'in_touch_1304',w:'in touch',jp:'連絡中',num:1304},
+  {id:'celebrate_1305',w:'celebrate',jp:'祝う',num:1305},
+  {id:'imitate_1306',w:'imitate',jp:'模倣する',num:1306},
+  {id:'assignment_1307',w:'assignment',jp:'割り当て',num:1307},
+  {id:'instrument_1308',w:'instrument',jp:'楽器',num:1308},
+  {id:'capable_of_1309',w:'capable of',jp:'ができる',num:1309},
+  {id:'arrange_1310',w:'arrange',jp:'整える',num:1310},
+  {id:'take_after_1311',w:'take after',jp:'をまねる',num:1311},
+  {id:'guilty_of_1312',w:'guilty of',jp:'罪を犯して',num:1312},
+  {id:'work_out_1313',w:'work out',jp:'練習する',num:1313},
+  {id:'electricity_1314',w:'electricity',jp:'電力',num:1314},
+  {id:'composer_1315',w:'composer',jp:'作曲家',num:1315},
+  {id:'furniture_1316',w:'furniture',jp:'家具',num:1316},
+  {id:'medicine_1317',w:'medicine',jp:'薬',num:1317},
+  {id:'at_last_1318',w:'at last',jp:'ついに',num:1318},
+  {id:'sufficient_1319',w:'sufficient',jp:'十分な',num:1319},
+  {id:'barely_1320',w:'barely',jp:'かろうじて',num:1320},
+  {id:'delete_1321',w:'delete',jp:'削除する',num:1321},
+  {id:'urgent_1322',w:'urgent',jp:'緊急の',num:1322},
+  {id:'generous_1323',w:'generous',jp:'気前のよい',num:1323},
+  {id:'cruel_1324',w:'cruel',jp:'残酷な',num:1324},
+  {id:'celebration_1325',w:'celebration',jp:'お祝い',num:1325},
+  {id:'reflection_1326',w:'reflection',jp:'反響・反射',num:1326},
+  {id:'whisper_1327',w:'whisper',jp:'ささやく',num:1327},
+  {id:'deposit_1328',w:'deposit',jp:'お金を預ける',num:1328},
+  {id:'apology_1329',w:'apology',jp:'謝罪',num:1329},
+  {id:'deceive_1330',w:'deceive',jp:'欺く',num:1330},
+  {id:'endure_1331',w:'endure',jp:'我慢する',num:1331},
+  {id:'disposal_1332',w:'disposal',jp:'処理・処分',num:1332},
+  {id:'statistics_1333',w:'statistics',jp:'統計',num:1333},
+  {id:'terminal_1334',w:'terminal',jp:'終りの',num:1334},
+  {id:'formation_1335',w:'formation',jp:'形成・構成',num:1335},
+  {id:'envelope_1336',w:'envelope',jp:'封筒',num:1336},
+  {id:'quarrel_1337',w:'quarrel',jp:'喧嘩・口論',num:1337},
+  {id:'from_time_to_time_1338',w:'from time to time',jp:'時々',num:1338},
+  {id:'in_demand_1339',w:'in demand',jp:'需要のある',num:1339},
+  {id:'stand_out_1340',w:'stand out',jp:'目立つ',num:1340},
+  {id:'in_the_meantime_1341',w:'in the meantime',jp:'とりあえず',num:1341},
+  {id:'to_some_extent_1342',w:'to some extent',jp:'いくらか',num:1342},
+  {id:'at_any_cost_1343',w:'at any cost',jp:'どんな犠牲を払っても',num:1343},
+  {id:'on_the_contrary_1344',w:'on the contrary',jp:'その反対で',num:1344},
+  {id:'lose_face_1345',w:'lose face',jp:'面子を失う',num:1345},
+  {id:'answer_for_1346',w:'answer for',jp:'責任を負う',num:1346},
+  {id:'insist_on_1347',w:'insist on',jp:'強く求める',num:1347},
+  {id:'not_always_1348',w:'not always',jp:'必ずしもではない',num:1348},
+  {id:'at_that_time_1349',w:'at that time',jp:'あの時は',num:1349},
+  {id:'in_common_1350',w:'in common',jp:'共通して',num:1350},
+  {id:'be_affected_by_1351',w:'be affected by',jp:'の影響を受ける',num:1351},
+  {id:'luckily_1352',w:'luckily',jp:'幸いなことに',num:1352},
+  {id:'not_yet_1353',w:'not yet',jp:'まだ',num:1353},
+  {id:'in_response_1354',w:'in response',jp:'に応じて',num:1354},
+  {id:'have_effects_on_1355',w:'have effects on',jp:'に影響を与える',num:1355},
+  {id:'one_day_1356',w:'one day',jp:'ある日',num:1356},
+  {id:'five_senses_1357',w:'five senses',jp:'五感',num:1357},
+  {id:'ankle_1358',w:'ankle',jp:'足首',num:1358},
+  {id:'related_to_1359',w:'related to',jp:'に関連する',num:1359},
+  {id:'active_1360',w:'active',jp:'活動的な',num:1360},
+  {id:'lesser_1361',w:'lesser',jp:'より少ない',num:1361},
+  {id:'immune_1362',w:'immune',jp:'免疫の',num:1362},
+  {id:'disorder_1363',w:'disorder',jp:'無秩序・混乱',num:1363},
+  {id:'mental_1364',w:'mental',jp:'精神の',num:1364},
+  {id:'intend_to_1365',w:'intend to',jp:'するつもりである',num:1365},
+  {id:'at_present_1366',w:'at present',jp:'現在は',num:1366},
+  {id:'make_a_difference_1367',w:'make a difference',jp:'違いを生む',num:1367},
+  {id:'exceptionally_1368',w:'exceptionally',jp:'例外的に',num:1368},
+  {id:'almost_1369',w:'almost',jp:'ほとんど',num:1369},
+  {id:'as_to_1370',w:'as to',jp:'に関して',num:1370},
+  {id:'collapse_1371',w:'collapse',jp:'崩壊する',num:1371},
+  {id:'insult_1372',w:'insult',jp:'侮辱する',num:1372},
+  {id:'isolated_1373',w:'isolated',jp:'孤立した',num:1373},
+  {id:'punctual_1374',w:'punctual',jp:'時間通りの',num:1374},
+  {id:'frightened_1375',w:'frightened',jp:'恐ろしかった',num:1375},
+  {id:'guarantee_1376',w:'guarantee',jp:'保証する',num:1376},
+  {id:'blame_1377',w:'blame',jp:'非難する',num:1377},
+  {id:'violate_1378',w:'violate',jp:'違反する',num:1378},
+  {id:'delay_1379',w:'delay',jp:'遅らせる',num:1379},
+  {id:'immigrate_1380',w:'immigrate',jp:'移住する',num:1380},
+  {id:'instinct_1381',w:'instinct',jp:'直感・本能',num:1381},
+  {id:'strangely_1382',w:'strangely',jp:'不思議なことに',num:1382},
+  {id:'chase_1383',w:'chase',jp:'追跡する',num:1383},
+  {id:'pour_1384',w:'pour',jp:'注ぐ',num:1384},
+  {id:'at_one_time_1385',w:'at one time',jp:'一度に',num:1385},
+  {id:'all_the_way_1386',w:'all the way',jp:'はるばる',num:1386},
+  {id:'pull_away_1387',w:'pull away',jp:'引き離す',num:1387},
+  {id:'try_out_1388',w:'try out',jp:'試す',num:1388},
+  {id:'break_into_1389',w:'break into',jp:'侵入する',num:1389},
+  {id:'call_it_a_day_1390',w:'call it a day',jp:'終了する',num:1390},
+  {id:'be_awake_1391',w:'be awake',jp:'目を覚ましている',num:1391},
+  {id:'brightness_1392',w:'brightness',jp:'輝度・明るさ',num:1392},
+  {id:'have_an_effect_on_1393',w:'have an effect on',jp:'に影響を及ぼす',num:1393},
+  {id:'indoor_1394',w:'indoor',jp:'室内の',num:1394},
+  {id:'senior_1395',w:'senior',jp:'ポストが上の',num:1395},
+  {id:'be_adjusted_to_1396',w:'be adjusted to',jp:'に調整する',num:1396},
+  {id:'specific_1397',w:'specific',jp:'具体的な',num:1397},
+  {id:'heart_rate_1398',w:'heart rate',jp:'心拍数',num:1398},
+  {id:'be_beneficial_to_1399',w:'be beneficial to',jp:'に有益である',num:1399},
+  {id:'what_is_called_1400',w:'what is called',jp:'いわゆる',num:1400},
+  {id:'symmetry_1401',w:'symmetry',jp:'対称・左右対称',num:1401},
+  {id:'each_other_1402',w:'each other',jp:'お互い',num:1402},
+  {id:'check_for_1403',w:'check for',jp:'を調べる',num:1403},
+  {id:'over_time_1404',w:'over time',jp:'超過勤務',num:1404},
+  {id:'what_is_more_1405',w:'What is more',jp:'さらに',num:1405},
+  {id:'for_some_time_1406',w:'for some time',jp:'しばらくの間',num:1406},
+  {id:'at_a_time_1407',w:'at a time',jp:'１度に',num:1407},
+  {id:'parking_lot_1408',w:'parking lot',jp:'駐車場',num:1408},
+  {id:'learn_by_heart_1409',w:'learn by heart',jp:'暗記する',num:1409},
+  {id:'copyright_1410',w:'copyright',jp:'著作権',num:1410},
+  {id:'director_1411',w:'director',jp:'監督',num:1411},
+  {id:'in_reality_1412',w:'in reality',jp:'実際に',num:1412},
+  {id:'depend_on_1413',w:'depend on',jp:'に頼る',num:1413},
+  {id:'claim_to_do_1414',w:'claim to do',jp:'することを主張する',num:1414},
+  {id:'agree_with_1415',w:'agree with',jp:'に賛成である',num:1415},
+  {id:'it_is_common_to_hear_1416',w:'it is common to hear',jp:'よく聞かれる',num:1416},
+  {id:'temple_1417',w:'temple',jp:'お寺',num:1417},
+  {id:'bring_1418',w:'bring',jp:'持って来る',num:1418},
+  {id:'throw_away_1419',w:'throw away',jp:'廃棄する',num:1419},
+  {id:'garbage_1420',w:'garbage',jp:'生ゴミ',num:1420},
+  {id:'environmentally_1421',w:'environmentally',jp:'環境的に',num:1421},
+  {id:'process_1422',w:'process',jp:'過程・手順',num:1422},
+  {id:'up_to_1423',w:'up to',jp:'〜まで',num:1423},
+  {id:'turn_into_1424',w:'turn into',jp:'に変わる',num:1424},
+  {id:'cut_down_on_1425',w:'cut down on',jp:'を切り詰める',num:1425},
+  {id:'fossil_fuel_1426',w:'fossil fuel',jp:'化石燃料',num:1426},
+  {id:'plastic_bag_1427',w:'plastic bag',jp:'ビニール袋',num:1427},
+  {id:'harm_1428',w:'harm',jp:'害',num:1428},
+  {id:'unbelievable_1429',w:'unbelievable',jp:'信じられない',num:1429},
+  {id:'arrogant_1430',w:'arrogant',jp:'傲慢な',num:1430},
+  {id:'harbor_1431',w:'harbor',jp:'港',num:1431},
+  {id:'temper_1432',w:'temper',jp:'気性・かんしゃく',num:1432},
+  {id:'legend_1433',w:'legend',jp:'伝説',num:1433},
+  {id:'vague_1434',w:'vague',jp:'漠然とした',num:1434},
+  {id:'harvest_1435',w:'harvest',jp:'収穫する',num:1435},
+  {id:'planet_1436',w:'planet',jp:'惑星',num:1436},
+  {id:'ruin_1437',w:'ruin',jp:'台無しにする',num:1437},
+  {id:'launch_1438',w:'launch',jp:'発売する',num:1438},
+  {id:'refuse_1439',w:'refuse',jp:'拒否する',num:1439},
+  {id:'overtake_1440',w:'overtake',jp:'追い越す',num:1440},
+  {id:'restrict_1441',w:'restrict',jp:'制限する',num:1441},
+  {id:'stock_1442',w:'stock',jp:'株・在庫',num:1442},
+  {id:'competitor_1443',w:'competitor',jp:'競合他社',num:1443},
+  {id:'spectator_1444',w:'spectator',jp:'観客',num:1444},
+  {id:'explorer_1445',w:'explorer',jp:'冒険者',num:1445},
+  {id:'remind_of_1446',w:'remind of',jp:'を思い出させる',num:1446},
+  {id:'concentrate_on_1447',w:'concentrate on',jp:'に集中する',num:1447},
+  {id:'laugh_at_1448',w:'laugh at',jp:'を見て笑う',num:1448},
+  {id:'well_off_1449',w:'well off',jp:'裕福な',num:1449},
+  {id:'straight_on_1450',w:'straight on',jp:'まっすぐに',num:1450},
+  {id:'far_off_1451',w:'far off',jp:'はるかかなたの',num:1451},
+  {id:'equal_1452',w:'equal',jp:'同等',num:1452},
+  {id:'drop_off_1453',w:'drop off',jp:'落ちる',num:1453},
+  {id:'leave_out_1454',w:'leave out',jp:'除外する',num:1454},
+  {id:'the_other_1455',w:'the other',jp:'もう一方の',num:1455},
+  {id:'be_concerned_with_1456',w:'be concerned with',jp:'に関係している',num:1456},
+  {id:'sustainable_1457',w:'sustainable',jp:'存続可能な',num:1457},
+  {id:'leftover_1458',w:'leftover',jp:'残り物',num:1458},
+  {id:'because_of_1459',w:'because of',jp:'〜が理由で',num:1459},
+  {id:'hundreds_of_1460',w:'hundreds of',jp:'何百もの',num:1460},
+  {id:'efficiency_1461',w:'efficiency',jp:'効率',num:1461},
+  {id:'arrangement_1462',w:'arrangement',jp:'配置・配列',num:1462},
+  {id:'prescription_1463',w:'prescription',jp:'処方',num:1463},
+  {id:'generously_1464',w:'generously',jp:'惜しみなく',num:1464},
+  {id:'do_well_1465',w:'do well',jp:'うまくやる',num:1465},
+  {id:'deadline_1466',w:'deadline',jp:'締め切り',num:1466},
+  {id:'exception_1467',w:'exception',jp:'例外',num:1467},
+  {id:'temporarily_1468',w:'temporarily',jp:'一時的に',num:1468},
+  {id:'provide_a_with_b_1469',w:'provide A with B',jp:'AにBを提供する',num:1469},
+  {id:'fund_1470',w:'fund',jp:'基金・資金',num:1470},
+  {id:'in_the_long_run_1471',w:'in the long run',jp:'長い目で見れば',num:1471},
+  {id:'overlap_1472',w:'overlap',jp:'重ねる',num:1472},
+  {id:'collaboration_1473',w:'collaboration',jp:'共同・協力',num:1473},
+  {id:'detective_1474',w:'detective',jp:'探偵',num:1474},
+  {id:'modify_1475',w:'modify',jp:'変更する',num:1475},
+  {id:'stir_1476',w:'stir',jp:'かき混ぜる',num:1476},
+  {id:'orbit_1477',w:'orbit',jp:'軌道',num:1477},
+  {id:'emotionally_1478',w:'emotionally',jp:'感情的に',num:1478},
+  {id:'evaluate_1479',w:'evaluate',jp:'評価する',num:1479},
+  {id:'prospect_1480',w:'prospect',jp:'見込み',num:1480},
+];
+
+const LS={progress:'eiken_pre2_progress',settings:'eiken_pre2_settings',history:'eiken_pre2_history'};
+
+function localDateStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function localDayStart(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function loadProgress(){try{return JSON.parse(localStorage.getItem(LS.progress))||{};}catch(e){return {};}}
+function saveProgress(p){localStorage.setItem(LS.progress,JSON.stringify(p));}
+function loadSettings(){const def={examDate:'2026-10-04',dailyGoal:null};try{return Object.assign({},def,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return def;}}
+function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
+function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||[];}catch(e){return [];}}
+function addHistory(entry){const h=loadHistory();h.push(entry);localStorage.setItem(LS.history,JSON.stringify(h.slice(-200)));}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getMastery(id,prog){return (prog[id]&&prog[id].correct)||0;}
+function getStatus(id,prog){const m=getMastery(id,prog);if(m>=5)return 'master';if(m>=1)return 'learning';return 'new';}
+function daysUntilExam(){const s=loadSettings();if(!s.examDate)return null;const exam=new Date(s.examDate);const today=new Date();today.setHours(0,0,0,0);return Math.max(0,Math.ceil((exam-today)/86400000));}
+function calcDailyGoal(prog){const s=loadSettings();if(s.dailyGoal)return parseInt(s.dailyGoal);const days=daysUntilExam();if(!days||days===0)return 10;const notMastered=WORDS.filter(w=>getStatus(w.id,prog)!=='master').length;return Math.max(5,Math.ceil(notMastered/days));}
+function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0;const check=new Date();check.setHours(0,0,0,0);const dates=new Set(h.map(e=>e.date));while(true){const ds=localDayStart(check);if(dates.has(ds)){streak++;check.setDate(check.getDate()-1);}else break;if(streak>365)break;}return streak;}
+function buildSessionDeck(prog){
+  const goal=calcDailyGoal(prog);
+  // 上から順番に出題（numの小さい順で未学習→学習中を優先）
+  const sorted=[...WORDS].sort((a,b)=>a.num-b.num);
+  const lw_early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
+  const lw_late=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;});
+  const nw=sorted.filter(w=>getStatus(w.id,prog)==='new');
+  const nNew=Math.round(goal*0.5);
+  const nEarly=Math.round(goal*0.35);
+  const nLate=goal-nNew-nEarly;
+  let deck=[
+    ...nw.slice(0,nNew),
+    ...lw_early.slice(0,nEarly),
+    ...lw_late.slice(0,nLate),
+  ];
+  // 足りない分を定着済み以外で補充
+  if(deck.length<goal){
+    const used=new Set(deck.map(w=>w.id));
+    const rest=sorted.filter(w=>!used.has(w.id)&&getStatus(w.id,prog)!=='master');
+    deck.push(...rest.slice(0,goal-deck.length));
+  }
+  if(deck.length===0)deck=sorted.filter(w=>getStatus(w.id,prog)!=='master').slice(0,goal);
+  if(deck.length===0)deck=sorted.slice(0,goal);
+  return shuffle(deck).slice(0,goal);
+}
+
+function updateDash(){
+  const prog=loadProgress();const s=loadSettings();const total=WORDS.length;
+  const h=new Date().getHours();
+  document.getElementById('dashGreeting')&&(document.getElementById('dashGreeting').textContent=h<11?'おはようございます！':h<17?'こんにちは！':'お疲れさまです！');
+  const days=daysUntilExam();
+  document.getElementById('countdownDays').textContent=days!==null?days:'—';
+  if(s.examDate)document.getElementById('countdownSub').textContent=new Date(s.examDate).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'});
+  const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
+  const lc=WORDS.filter(w=>getStatus(w.id,prog)==='learning').length;
+  const nc=WORDS.filter(w=>getStatus(w.id,prog)==='new').length;
+  const goal=calcDailyGoal(prog);
+  document.getElementById('todayGoal').textContent=goal;
+  document.getElementById('totalWords').textContent=total;
+  document.getElementById('masteredCount').textContent=mc;
+  document.getElementById('streakCount').textContent=getStreak();
+  document.getElementById('progMasterNum').textContent=`${mc}/${total}`;
+  document.getElementById('progLearningNum').textContent=`${lc}/${total}`;
+  document.getElementById('progNewNum').textContent=`${nc}/${total}`;
+  document.getElementById('progMasterFill').style.width=`${Math.round(mc/total*100)}%`;
+  document.getElementById('progLearningFill').style.width=`${Math.round(lc/total*100)}%`;
+  document.getElementById('progNewFill').style.width=`${Math.round(nc/total*100)}%`;
+  const todayH=loadHistory().filter(e=>e.date===localDateStr());
+  const todayC=todayH.reduce((s,e)=>s+e.correct,0);
+  document.getElementById('planToday').textContent=todayC>0?`${todayC}語 学習済み`:'まだ学習していません';
+  document.getElementById('planSessions').textContent=`${loadHistory().length}回`;
+  if(days&&days>0){const needed=Math.ceil((total-mc)/days);const el=document.getElementById('planOnTrack');if(needed<=goal){el.textContent='順調！間に合います ✓';el.className='pace-val ok';}else{el.textContent=`1日${needed}語ペース必要`;el.className='pace-val warn';}}
+  const btn=document.getElementById('startSessionBtn');
+  if(todayC>=goal){btn.textContent='今日の目標達成！もう一度やる →';btn.classList.add('done');}
+  else{btn.textContent=`今日のセッションを始める（目標${goal}語） →`;btn.classList.remove('done');}
+}
+
+let sessionMode='flash';
+function selectMode(mode,btn){sessionMode=mode;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+
+let sessionDeck=[],sessionCurrent=0,sessionOk=0,sessionNg=0,sessionMissed=[];
+let isFlipped=false;
+let quizCurrent=0,quizOk=0,quizNg=0,quizMissed=[],quizAnswered=false;
+
+function startSession(){
+  const prog=loadProgress();
+  sessionDeck=buildSessionDeck(prog);
+  sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
+  if(sessionMode==='quiz'){quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];document.getElementById('quizTitle').textContent=`• QUIZ（${sessionDeck.length}問）•`;showScreen('quizScreen');renderQuiz();}
+  else{document.getElementById('fcTitle').textContent=`• FLASH CARDS（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
+}
+
+function makePips(containerId,mastery,isBack){
+  const c=document.getElementById(containerId);if(!c)return;c.innerHTML='';
+  for(let i=0;i<5;i++){const d=document.createElement('div');d.className='pip'+(i<mastery?' filled':'')+(isBack?'':' pip-front');c.appendChild(d);}
+}
+
+function renderFC(){
+  isFlipped=false;
+  document.getElementById('cardInner').classList.remove('flipped');
+  document.getElementById('flipBtn').classList.remove('hidden');
+  document.getElementById('actionRow').classList.remove('show');
+  const q=sessionDeck[sessionCurrent];
+  const prog=loadProgress();
+  const mastery=getMastery(q.id,prog);
+  makePips('masteryPips',mastery,false);
+  makePips('masteryPipsBack',mastery,true);
+  document.getElementById('wordEn').textContent=q.w;
+  document.getElementById('wordPh').textContent=q.ph||'';
+  document.getElementById('wordJp').textContent=q.jp;
+  document.getElementById('masteryLabel').textContent=mastery>=3?'✅ 定着済み':mastery>=1?`学習中（${mastery}回正解）`:'初めて見る単語';
+  const total=sessionDeck.length;
+  document.getElementById('fcProgFill').style.width=`${Math.round(sessionCurrent/total*100)}%`;
+  document.getElementById('fcProgLabel').textContent=`${sessionCurrent+1} / ${total}`;
+  document.getElementById('fcProgRemain').textContent=`残り${total-sessionCurrent}枚`;
+  document.getElementById('fcOkCount').textContent=sessionOk;
+  document.getElementById('fcNgCount').textContent=sessionNg;
+  const sb=document.getElementById('speakBtn');if(sb){sb.classList.remove('speaking');sb.textContent='🔊';}
+
+}
+
+function flipCard(){
+  if(isFlipped)return;isFlipped=true;
+  document.getElementById('cardInner').classList.add('flipped');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('actionRow').classList.add('show');
+}
+
+function judge(isOk){
+  if(!isFlipped)return;
+  const q=sessionDeck[sessionCurrent];
+  const prog=loadProgress();
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isOk){prog[q.id].correct++;sessionOk++;}else{prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);}
+  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
+  sessionCurrent++;
+  // カードフリップアニメーション完了後に次カードを描画（日本語が見えるバグ対策）
+  document.getElementById('cardInner').classList.remove('flipped');
+  document.getElementById('actionRow').classList.remove('show');
+  if(sessionCurrent>=sessionDeck.length){
+    setTimeout(()=>finishSession(),450);
+  }else{
+    setTimeout(()=>renderFC(),450);
+  }
+}
+
+function speakWord(e){
+  e.stopPropagation();
+  const word=document.getElementById('wordEn').textContent;
+  if(!word||word==='—')return;
+  if(typeof speechSynthesis==="undefined")return; speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(word);utter.lang='en-US';utter.rate=0.9;
+  const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
+  if(v)utter.voice=v;
+  const btn=document.getElementById('speakBtn');btn.classList.add('speaking');btn.textContent='🔉';
+  utter.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊';};
+  speechSynthesis.speak(utter);
+}
+
+function renderQuiz(){
+  quizAnswered=false;
+  document.getElementById('quizChoices').innerHTML='';
+  const q=sessionDeck[quizCurrent];
+  const prog=loadProgress();
+  const mastery=getMastery(q.id,prog);
+  makePips('quizMasteryPips',mastery,false);
+  document.getElementById('quizWordEn').textContent=q.w;
+  document.getElementById('quizWordPh').textContent=q.ph||'';
+  const qexArea=document.getElementById('quizExArea');
+  const qex=document.getElementById('quizWordEx');
+  if(q.ex&&qex){qex.textContent=q.ex;if(qexArea)qexArea.style.display='';}
+  else if(qexArea){qexArea.style.display='none';}
+  const total=sessionDeck.length;
+  document.getElementById('quizProgFill').style.width=`${Math.round(quizCurrent/total*100)}%`;
+  document.getElementById('quizProgLabel').textContent=`${quizCurrent+1} / ${total}`;
+  document.getElementById('quizProgRemain').textContent=`残り${total-quizCurrent}問`;
+  document.getElementById('quizOkCount').textContent=quizOk;
+  document.getElementById('quizNgCount').textContent=quizNg;
+  const choices=shuffle([q,...shuffle(WORDS.filter(w=>w.id!==q.id)).slice(0,3)]);
+  const container=document.getElementById('quizChoices');container.innerHTML='';
+  choices.forEach((c,i)=>{
+    const btn=document.createElement('button');btn.className='quiz-choice';
+    btn.innerHTML=`<span class="quiz-num">${i+1}</span>${c.jp}`;
+    btn.onclick=()=>selectQuizAnswer(btn,c.id===q.id,q);
+    container.appendChild(btn);
+  });
+}
+
+function selectQuizAnswer(btn,isCorrect,q){
+  if(quizAnswered)return;quizAnswered=true;
+  const prog=loadProgress();
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isCorrect){prog[q.id].correct++;quizOk++;}else{prog[q.id].wrong++;quizNg++;quizMissed.push(q);}
+  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
+  document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===q.jp)b.classList.add('correct');});}
+  document.getElementById('quizOkCount').textContent=quizOk;
+  document.getElementById('quizNgCount').textContent=quizNg;
+  setTimeout(()=>{
+    quizCurrent++;
+    if(quizCurrent>=sessionDeck.length){
+      addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+      sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
+    }else{
+      const container=document.getElementById('quizChoices');
+      container.innerHTML='';
+      void container.offsetHeight; /* iOSの描画を強制フラッシュ */
+      renderQuiz();
+    }
+  },500);
+}
+
+function speakQuizWord(){
+  const word=document.getElementById('quizWordEn').textContent;
+  if(!word||word==='—')return;
+  speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(word);utter.lang='en-US';utter.rate=0.9;
+  const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
+  if(v)utter.voice=v;speechSynthesis.speak(utter);
+}
+
+function finishSession(){
+  if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
+  const total=sessionDeck.length;const pct=sessionOk/total;
+  let emoji,title,sub;
+  if(pct>=0.85){emoji='🌟';title='すばらしい！';sub='定着が進んできた。この調子で続けよう。';}
+  else if(pct>=0.6){emoji='📚';title='いい調子！';sub='✕の単語を重点的に回していくと一気に伸びる。';}
+  else{emoji='🌱';title='お疲れさま！';sub='知らない単語に出会えた分だけ前進してる。毎日少しずつ！';}
+  document.getElementById('sessEmoji').textContent=emoji;
+  document.getElementById('sessTitle').textContent=title;
+  document.getElementById('sessScoreNum').textContent=sessionOk;
+  document.getElementById('sessScoreTot').textContent=total;
+  document.getElementById('sessSub').textContent=sub;
+  const ml=document.getElementById('missedList');ml.innerHTML='';
+  const rb=document.getElementById('retryBtn');
+  if(sessionMissed.length===0){document.getElementById('missedBox').style.display='none';rb.style.display='none';}
+  else{
+    document.getElementById('missedBox').style.display='block';rb.style.display='block';
+    rb.textContent=`✕ の${sessionMissed.length}語をもう一度`;
+    sessionMissed.forEach(w=>{const div=document.createElement('div');div.className='missed-item';div.innerHTML=`<div class="missed-en">${w.w}</div><div class="missed-jp">${w.jp}</div>`;ml.appendChild(div);});
+  }
+  showScreen('sessResultScreen');
+}
+
+function retryMissed(){
+  sessionDeck=shuffle([...sessionMissed]);sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
+  if(sessionMode==='quiz'){quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];document.getElementById('quizTitle').textContent=`• RETRY QUIZ（${sessionDeck.length}問）•`;showScreen('quizScreen');renderQuiz();}
+  else{document.getElementById('fcTitle').textContent=`• RETRY（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
+}
+
+function copyResult(){
+  const prog=loadProgress();const total=WORDS.length;
+  const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
+  const days=daysUntilExam();
+  const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
+  const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
+  const text=`【lingo 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk} / ${sessionDeck.length}（正答率 ${Math.round(sessionOk/sessionDeck.length*100)}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc} / ${total}語 定着済み（${Math.round(mc/total*100)}%）\n試験まで：${days!==null?days+'日':'未設定'}\n連続学習：${getStreak()}日🔥\n${sessionMissed.length>0?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
+  navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
+  showToast('📋 コピーしました！Claudeに貼り付けてね');
+}
+function goToDash(){updateDash();showScreen('dashScreen');}
+function endSession(){if(confirm('セッションを終了しますか？'))goToDash();}
+
+let currentFilter='all';
+function renderWordList(){
+  const prog=loadProgress();
+  const filtered=WORDS.filter(w=>currentFilter==='all'||getStatus(w.id,prog)===currentFilter);
+  const container=document.getElementById('wordListItems');container.innerHTML='';
+  filtered.forEach(w=>{
+    const st=getStatus(w.id,prog);const m=getMastery(w.id,prog);
+    const dotCls=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
+    const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
+    const div=document.createElement('div');div.className='word-item';
+    const exHtml=w.ex?('<div class="wi-ex">'+w.ex+(w.exJp?' <span style="color:var(--ink-lt)">('+w.exJp+')</span>':'')+'</div>'):'';
+    div.innerHTML=`<div class="wi-dot ${dotCls}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div>`;
+    container.appendChild(div);
+  });
+}
+function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
+
+function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;}
+function exportData(){
+  try{
+    const data={
+      progress:localStorage.getItem(LS.progress),
+      history:localStorage.getItem(LS.history),
+      settings:localStorage.getItem(LS.settings),
+    };
+    const json=JSON.stringify(data);
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='lingo_pre2_backup_'+localDateStr()+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📦 バックアップを保存しました');
+  }catch(e){
+    try{
+      const data={
+        progress:localStorage.getItem(LS.progress),
+        history:localStorage.getItem(LS.history),
+        settings:localStorage.getItem(LS.settings),
+      };
+      navigator.clipboard.writeText(JSON.stringify(data));
+      showToast('📋 データをコピーしました。メモ帳などに貼り付けて保存してください');
+    }catch(e2){showToast('⚠️ エクスポートに失敗しました');}
+  }
+}
+
+function importData(){
+  const text=prompt('バックアップのテキストを貼り付けてください：');
+  if(!text)return;
+  try{
+    const data=JSON.parse(text);
+    if(data.progress)localStorage.setItem(LS.progress,data.progress);
+    if(data.history)localStorage.setItem(LS.history,data.history);
+    if(data.settings)localStorage.setItem(LS.settings,data.settings);
+    showToast('✅ データを復元しました！');
+    updateDash();
+  }catch(e){
+    showToast('⚠️ データの読み込みに失敗しました');
+  }
+}
+
+function confirmReset(){if(confirm('全ての学習データをリセットしますか？')){localStorage.removeItem(LS.progress);localStorage.removeItem(LS.history);showToast('リセットしました');updateDash();}}
+
+const tabScreens={dash:'dashScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
+function showTab(tab,btn){
+  document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.toggle('active',b===btn||b.getAttribute('onclick')===btn.getAttribute('onclick'));});
+  showScreen(tabScreens[tab]);
+  if(tab==='wordlist')renderWordList();
+  if(tab==='settings')loadSettingsUI();
+  if(tab==='dash')updateDash();
+}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
+updateDash();
+</script>
+</body>
+</html>
