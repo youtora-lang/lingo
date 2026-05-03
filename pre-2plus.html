@@ -1036,7 +1036,7 @@ function speakWord(e){
 
 function renderQuiz(){
   quizAnswered=false;
-  document.querySelectorAll('.quiz-choice').forEach(b=>{b.classList.remove('correct','wrong');b.disabled=false;});
+  document.getElementById('quizChoices').innerHTML='';
   const q=sessionDeck[quizCurrent];
   const prog=loadProgress();
   const mastery=getMastery(q.id,prog);
@@ -1074,10 +1074,7 @@ function selectQuizAnswer(btn,isCorrect,q){
   if(!isCorrect){document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===q.jp)b.classList.add('correct');});}
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
-  setTimeout(()=>{
-    document.querySelectorAll('.quiz-choice').forEach(b=>{b.classList.remove('correct','wrong');});
-    setTimeout(()=>{quizCurrent++;if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}else renderQuiz();},50);
-  },500);
+  setTimeout(()=>{quizCurrent++;if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}else renderQuiz();},600);
 }
 
 function speakQuizWord(){
