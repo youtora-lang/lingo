@@ -1093,17 +1093,16 @@ function selectQuizAnswer(btn,isCorrect,q){
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
   setTimeout(()=>{
-    document.getElementById('quizChoices').style.visibility='hidden';
-    setTimeout(()=>{
-      quizCurrent++;
-      if(quizCurrent>=sessionDeck.length){
-        addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
-        sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
-      }else{
-        renderQuiz();
-        document.getElementById('quizChoices').style.visibility='visible';
-      }
-    },50);
+    quizCurrent++;
+    if(quizCurrent>=sessionDeck.length){
+      addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+      sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
+    }else{
+      const container=document.getElementById('quizChoices');
+      container.innerHTML='';
+      void container.offsetHeight; /* iOSの描画を強制フラッシュ */
+      renderQuiz();
+    }
   },500);
 }
 
