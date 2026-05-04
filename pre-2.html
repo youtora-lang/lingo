@@ -234,7 +234,7 @@ body::before{
   padding:3px 14px;font-size:11px;font-weight:900;
   color:var(--ink);margin-bottom:12px;
 }
-.word-en{font-size:32px;font-weight:900;color:var(--ink);margin-bottom:6px;font-family:'Nunito',sans-serif;}
+.word-en{font-size:32px;font-weight:900;color:var(--ink);margin-bottom:6px;font-family:'Zen Maru Gothic',sans-serif;}
 .word-ph{font-size:12px;color:var(--ink-lt);margin-bottom:10px;font-weight:700;}
 .tap-hint{font-size:11px;color:var(--ink-lt);font-weight:700;margin-top:8px;}
 
@@ -454,6 +454,11 @@ body::before{
 .modal-btn-primary{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
 .modal-btn-danger{background:var(--wrong);color:white;border-color:#b03020;}
 .modal-btn-cancel{background:var(--bg);color:var(--ink-mid);}
+
+.word-item.excluded{opacity:0.4;}
+.wi-toggle{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:1.5px solid var(--border);
+  background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.wi-toggle.on{background:var(--card-flip);border-color:var(--card-flip-deep);color:white;}
 </style>
 </head>
 <body>
@@ -656,6 +661,7 @@ body::before{
       <button class="wl-filter" data-filter="master" onclick="filterWords(this)"><span class="wf-dot wf-master"></span>定着済み</button>
       <button class="wl-filter" data-filter="learning" onclick="filterWords(this)"><span class="wf-dot wf-learning"></span>学習中</button>
       <button class="wl-filter" data-filter="new" onclick="filterWords(this)"><span class="wf-dot wf-new"></span>未学習</button>
+      <button class="wl-filter" data-filter="excluded" onclick="filterWords(this)">除外</button>
     </div>
     <div id="wordListItems"></div>
   </div>
@@ -674,6 +680,13 @@ body::before{
       <div class="set-row">
         <div><div class="set-label">試験日</div><div class="set-sub">英検の受験予定日</div></div>
         <input class="set-input" type="date" id="examDateInput" onchange="saveSetting('examDate',this.value);updateDash()">
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">出題方向</div><div class="set-sub">表面に出す言語</div></div>
+        <select class="set-input" id="directionInput" onchange="saveSetting('direction',this.value)">
+          <option value="en2jp">英語 → 日本語</option>
+          <option value="jp2en">日本語 → 英語</option>
+        </select>
       </div>
       <div class="set-row">
         <div><div class="set-label">1日の目標語数</div><div class="set-sub">自動計算の上書き</div></div>
@@ -2199,7 +2212,7 @@ function localDateStr(){const d=new Date();return `${d.getFullYear()}-${String(d
 function localDayStart(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function loadProgress(){try{return JSON.parse(localStorage.getItem(LS.progress))||{};}catch(e){return {};}}
 function saveProgress(p){localStorage.setItem(LS.progress,JSON.stringify(p));}
-function loadSettings(){const def={examDate:'2026-10-04',dailyGoal:null,sessionSize:20};try{return Object.assign({},def,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return def;}}
+function loadSettings(){const def={examDate:'2026-10-04',dailyGoal:null,sessionSize:20,direction:'en2jp'};try{return Object.assign({},def,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return def;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||[];}catch(e){return [];}}
 function addHistory(entry){const h=loadHistory();h.push(entry);localStorage.setItem(LS.history,JSON.stringify(h.slice(-200)));}
@@ -2213,7 +2226,8 @@ function getStreak(){const h=loadHistory();if(h.length===0)return 0;let streak=0
 function buildSessionDeck(prog){
   const goal=calcSessionSize();
   // 上から順番に出題（numの小さい順で未学習→学習中を優先）
-  const sorted=[...WORDS].sort((a,b)=>a.num-b.num);
+  const excluded=new Set(Object.keys(prog).filter(id=>prog[id]&&prog[id].excluded));
+  const sorted=[...WORDS].filter(w=>!excluded.has(w.id)).sort((a,b)=>a.num-b.num);
   const lw_early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
   const lw_late=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;});
   const nw=sorted.filter(w=>getStatus(w.id,prog)==='new');
@@ -2297,9 +2311,14 @@ function renderFC(){
   const mastery=getMastery(q.id,prog);
   makePips('masteryPips',mastery,false);
   makePips('masteryPipsBack',mastery,true);
-  document.getElementById('wordEn').textContent=q.w;
-  document.getElementById('wordPh').textContent=q.ph||'';
-  document.getElementById('wordJp').textContent=q.jp;
+  const dir=loadSettings().direction||'en2jp';
+  const isJp2En=dir==='jp2en';
+  document.getElementById('fcTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
+  document.getElementById('wordEn').textContent=isJp2En?q.jp:q.w;
+  document.getElementById('wordEn').style.fontSize=isJp2En?'26px':'32px';
+  document.getElementById('wordPh').textContent=isJp2En?'':(q.ph||'');
+  document.getElementById('wordJp').textContent=isJp2En?q.w:q.jp;
+  document.getElementById('wordJp').style.fontSize=isJp2En?'32px':'26px';
   document.getElementById('masteryLabel').textContent=mastery>=3?'✅ 定着済み':mastery>=1?`学習中（${mastery}回正解）`:'初めて見る単語';
   const total=sessionDeck.length;
   document.getElementById('fcProgFill').style.width=`${Math.round(sessionCurrent/total*100)}%`;
@@ -2356,11 +2375,15 @@ function renderQuiz(){
   const prog=loadProgress();
   const mastery=getMastery(q.id,prog);
   makePips('quizMasteryPips',mastery,false);
-  document.getElementById('quizWordEn').textContent=q.w;
-  document.getElementById('quizWordPh').textContent=q.ph||'';
+  const dir=loadSettings().direction||'en2jp';
+  const isJp2En=dir==='jp2en';
+  document.querySelector('#quizScreen .gold-tag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
+  document.getElementById('quizWordEn').textContent=isJp2En?q.jp:q.w;
+  document.getElementById('quizWordEn').style.fontSize=isJp2En?'26px':'32px';
+  document.getElementById('quizWordPh').textContent=isJp2En?'':(q.ph||'');
   const qexArea=document.getElementById('quizExArea');
   const qex=document.getElementById('quizWordEx');
-  if(q.ex&&qex){qex.textContent=q.ex;if(qexArea)qexArea.style.display='';}
+  if(!isJp2En&&q.ex&&qex){qex.textContent=q.ex;if(qexArea)qexArea.style.display='';}
   else if(qexArea){qexArea.style.display='none';}
   const total=sessionDeck.length;
   document.getElementById('quizProgFill').style.width=`${Math.round(quizCurrent/total*100)}%`;
@@ -2372,7 +2395,7 @@ function renderQuiz(){
   const container=document.getElementById('quizChoices');container.innerHTML='';
   choices.forEach((c,i)=>{
     const btn=document.createElement('button');btn.className='quiz-choice';
-    btn.innerHTML=`<span class="quiz-num">${i+1}</span>${c.jp}`;
+    btn.innerHTML=`<span class="quiz-num">${i+1}</span>${isJp2En?c.w:c.jp}`;
     btn.onclick=()=>selectQuizAnswer(btn,c.id===q.id,q);
     container.appendChild(btn);
   });
@@ -2386,7 +2409,7 @@ function selectQuizAnswer(btn,isCorrect,q){
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);
   document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
   btn.classList.add(isCorrect?'correct':'wrong');
-  if(!isCorrect){document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===q.jp)b.classList.add('correct');});}
+  if(!isCorrect){const ans=isJp2En?q.w:q.jp;document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});}
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
   setTimeout(()=>{
@@ -2457,21 +2480,24 @@ function endSession(){if(confirm('セッションを終了しますか？'))goTo
 let currentFilter='all';
 function renderWordList(){
   const prog=loadProgress();
-  const filtered=WORDS.filter(w=>currentFilter==='all'||getStatus(w.id,prog)===currentFilter);
+  const filtered=WORDS.filter(w=>{if(currentFilter==='excluded')return prog[w.id]&&prog[w.id].excluded;if(currentFilter==='all')return true;if(prog[w.id]&&prog[w.id].excluded)return false;return getStatus(w.id,prog)===currentFilter;});
   const container=document.getElementById('wordListItems');container.innerHTML='';
   filtered.forEach(w=>{
     const st=getStatus(w.id,prog);const m=getMastery(w.id,prog);
+    const isExcluded=prog[w.id]&&prog[w.id].excluded;
     const dotCls=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
     const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
-    const div=document.createElement('div');div.className='word-item';
+    const div=document.createElement('div');div.className='word-item'+(isExcluded?' excluded':'');
     const exHtml=w.ex?('<div class="wi-ex">'+w.ex+(w.exJp?' <span style="color:var(--ink-lt)">('+w.exJp+')</span>':'')+'</div>'):'';
-    div.innerHTML=`<div class="wi-dot ${dotCls}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div>`;
+    const toggleCls=isExcluded?'wi-toggle':'wi-toggle on';
+    const toggleLabel=isExcluded?'✕':'✓';
+    div.innerHTML=`<div class="wi-dot ${dotCls}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div><button class="${toggleCls}" onclick="toggleExclude('${w.id}',this)" title="${isExcluded?'除外中（タップで戻す）':'タップで除外'}">${toggleLabel}</button>`;
     container.appendChild(div);
   });
 }
 function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
 
-function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;}
+function loadSettingsUI(){const s=loadSettings();if(s.examDate)document.getElementById('examDateInput').value=s.examDate;if(s.dailyGoal)document.getElementById('dailyGoalInput').value=s.dailyGoal;if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;if(s.direction)document.getElementById('directionInput').value=s.direction;}
 function exportData(){
   try{
     const data={
@@ -2542,6 +2568,19 @@ function doReset(){
   closeModal('resetModal');
   showToast('リセットしました');
   updateDash();renderWordList();
+}
+
+function toggleExclude(id,btn){
+  const prog=loadProgress();
+  if(!prog[id])prog[id]={correct:0,wrong:0,lastSeen:null};
+  prog[id].excluded=!prog[id].excluded;
+  saveProgress(prog);
+  const isExcluded=prog[id].excluded;
+  btn.classList.toggle('on',!isExcluded);
+  btn.textContent=isExcluded?'✕':'✓';
+  btn.closest('.word-item').classList.toggle('excluded',isExcluded);
+  btn.title=isExcluded?'除外中（タップで戻す）':'タップで除外';
+  showToast(isExcluded?'除外しました':'除外を解除しました');
 }
 </script>
 
