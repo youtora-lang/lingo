@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM'S LINGO — Japanese Survival Guide</title>
+<script>
+(function(){
+  // Pixel art golden apple — 16x16 grid scaled to 192x192
+  const size = 192;
+  const grid = 16;
+  const px = size / grid;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  // Color palette
+  const _ = null;          // transparent
+  const K = '#0a0a0f';     // dark bg
+  const G = '#4a7c2f';     // stem green
+  const L = '#6abf3f';     // leaf green
+  const Y = '#ffd700';     // gold base
+  const O = '#ffb300';     // gold mid
+  const D = '#e67e00';     // gold dark
+  const H = '#fff176';     // gold highlight
+  const S = '#fffde7';     // specular white
+
+  // 16x16 pixel map (row by row)
+  const map = [
+    [_,_,_,_,_,_,_,G,_,_,_,_,_,_,_,_],
+    [_,_,_,_,_,_,L,G,L,_,_,_,_,_,_,_],
+    [_,_,_,_,_,L,L,G,_,_,_,_,_,_,_,_],
+    [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+    [_,_,_,_,D,O,Y,Y,Y,O,D,_,_,_,_,_],
+    [_,_,_,D,O,Y,H,S,H,Y,O,D,_,_,_,_],
+    [_,_,D,O,Y,H,S,S,H,Y,Y,O,D,_,_,_],
+    [_,_,O,Y,H,S,H,H,Y,Y,O,O,D,_,_,_],
+    [_,_,O,Y,Y,H,Y,Y,Y,O,O,D,D,_,_,_],
+    [_,_,O,Y,Y,Y,O,O,O,O,D,D,_,_,_,_],
+    [_,_,O,O,Y,O,O,D,D,D,D,_,_,_,_,_],
+    [_,_,_,O,O,O,D,D,D,D,_,_,_,_,_,_],
+    [_,_,_,D,O,D,D,D,D,_,_,_,_,_,_,_],
+    [_,_,_,_,D,D,D,D,_,_,_,_,_,_,_,_],
+    [_,_,_,_,_,D,D,_,_,_,_,_,_,_,_,_],
+    [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+  ];
+
+  // Fill background
+  ctx.fillStyle = K;
+  ctx.fillRect(0, 0, size, size);
+
+  // Draw pixels
+  map.forEach((row, r) => {
+    row.forEach((col, c) => {
+      if (col) {
+        ctx.fillStyle = col;
+        ctx.fillRect(c * px, r * px, px, px);
+      }
+    });
+  });
+
+  const dataUrl = canvas.toDataURL('image/png');
+
+  // Favicon
+  const favicon = document.createElement('link');
+  favicon.rel = 'icon';
+  favicon.type = 'image/png';
+  favicon.href = dataUrl;
+  document.head.appendChild(favicon);
+
+  // Apple touch icon (home screen)
+  const touch = document.createElement('link');
+  touch.rel = 'apple-touch-icon';
+  touch.href = dataUrl;
+  document.head.appendChild(touch);
+
+  // Android / PWA manifest icon fallback
+  const touch2 = document.createElement('link');
+  touch2.rel = 'apple-touch-icon-precomposed';
+  touch2.href = dataUrl;
+  document.head.appendChild(touch2);
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --panel: #0f0f1a;
+    --panel2: #13131f;
+    --border: #2a2a4a;
+    --accent: #ff6b35;
+    --accent2: #ff9a5c;
+    --blue: #3a7bd5;
+    --blue2: #5b9ef0;
+    --star: #c8d6f0;
+    --text: #e8eaf6;
+    --text2: #8890b0;
+    --green: #4caf7d;
+    --correct: #4caf7d;
+    --wrong: #e05555;
+    --gold: #ffd54f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STARFIELD */
+  #stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* SPEED LINES (like the reference image) */
+  .speed-lines {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    background: 
+      repeating-linear-gradient(
+        75deg,
+        transparent,
+        transparent 2px,
+        rgba(255,107,53,0.4) 2px,
+        rgba(255,107,53,0.4) 3px
+      ),
+      repeating-linear-gradient(
+        -15deg,
+        transparent,
+        transparent 4px,
+        rgba(58,123,213,0.3) 4px,
+        rgba(58,123,213,0.3) 5px
+      );
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 32px 0 24px;
+    position: relative;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 3px 12px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 7vw, 56px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 20%, var(--accent2) 50%, var(--accent) 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+  }
+
+  .header-sub {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--text2);
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  /* SCORE BAR */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    padding: 10px 20px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .score-item { color: var(--text2); }
+  .score-item span { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 16px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    color: var(--text2);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .tab.active {
+    color: var(--accent);
+  }
+
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .tab:hover:not(.active) { color: var(--text); }
+
+  /* PANEL */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  /* FLASHCARD */
+  .flashcard-wrap {
+    perspective: 1000px;
+    margin-bottom: 28px;
+  }
+
+  .flashcard {
+    width: 100%;
+    min-height: 220px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .card-back { transform: rotateY(180deg); }
+
+  .card-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .card-situation {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 480px;
+  }
+
+  .card-emoji {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .card-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: clamp(28px, 6vw, 44px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .card-furigana {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+
+  .card-romaji {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: var(--accent2);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .card-en {
+    font-size: 13px;
+    color: var(--text2);
+    letter-spacing: 1px;
+  }
+
+  .card-hint {
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--border);
+    text-transform: uppercase;
+  }
+
+  .card-counter {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    color: var(--text2);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .card-counter span { color: var(--accent); }
+
+  .card-nav {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 10px 24px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-primary {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* BONUS CARD */
+  .bonus-tag {
+    font-size: 9px;
+    letter-spacing: 3px;
+    background: var(--gold);
+    color: #000;
+    padding: 2px 8px;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+
+  /* QUIZ */
+  .quiz-situation {
+    background: var(--panel2);
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .quiz-question-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .quiz-opt {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quiz-opt:hover:not(.disabled) {
+    border-color: var(--blue2);
+    background: rgba(58,123,213,0.1);
+  }
+
+  .quiz-opt.correct {
+    border-color: var(--correct);
+    background: rgba(76,175,125,0.15);
+  }
+
+  .quiz-opt.wrong {
+    border-color: var(--wrong);
+    background: rgba(224,85,85,0.15);
+  }
+
+  .quiz-opt.disabled { cursor: default; }
+
+  .opt-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .opt-romaji {
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1px;
+  }
+
+  .quiz-feedback {
+    text-align: center;
+    font-size: 14px;
+    min-height: 32px;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+  }
+
+  .feedback-correct { color: var(--correct); }
+  .feedback-wrong { color: var(--wrong); }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    height: 4px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    transition: width 0.5s ease;
+    position: relative;
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 2px;
+    height: 10px;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* PHRASE LIST */
+  .phrase-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .phrase-row {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: center;
+    transition: border-color 0.2s;
+    font-size: 13px;
+  }
+
+  .phrase-row:hover { border-color: var(--accent); }
+
+  .phrase-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--accent);
+    text-align: center;
+  }
+
+  .phrase-en { color: var(--text); }
+
+  .phrase-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: 15px;
+  }
+
+  .phrase-situation { color: var(--text2); font-size: 11px; line-height: 1.5; }
+
+  .phrase-bonus { color: var(--gold); font-size: 10px; }
+
+  /* RESULT SCREEN */
+  .result-screen {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .result-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .result-score {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 56px;
+    color: var(--gold);
+    margin: 20px 0;
+    text-shadow: 0 0 30px rgba(255,213,79,0.4);
+  }
+
+  .hidden { display: none; }
+
+  /* GLOW effect on accent elements */
+  .glow { box-shadow: 0 0 20px rgba(255,107,53,0.15); }
+
+  /* Scanline overlay */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+  }
+
+  @media (max-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .phrase-row { grid-template-columns: 28px 1fr 1fr; }
+    .phrase-situation { display: none; }
+    .tabs { overflow-x: auto; }
+    .tab { white-space: nowrap; padding: 10px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="speed-lines"></div>
+<div class="scanlines"></div>
+
+<div class="app">
+  <div class="header">
+    <div class="header-badge">🚀 Logistics Division · Iwakuni</div>
+    <h1>Sam's Lingo</h1>
+    <div class="header-sub">Japanese Survival Guide · Field Edition</div>
+  </div>
+
+  <div class="score-bar">
+    <div class="score-item">SCORE <span id="totalScore">0</span></div>
+    <div class="score-item">STREAK 🔥 <span id="streak">0</span></div>
+    <div class="score-item">MASTERED <span id="mastered">0</span>/16</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('flashcard')">Flash Cards</button>
+    <button class="tab" onclick="switchTab('quiz')">4-Choice Quiz</button>
+    <button class="tab" onclick="switchTab('list')">Phrase List</button>
+  </div>
+
+  <!-- FLASHCARD TAB -->
+  <div id="tab-flashcard" class="panel glow">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="fc-progress" style="width:0%"></div>
+    </div>
+    <div class="card-counter">Card <span id="fc-num">1</span> of <span id="fc-total">16</span></div>
+    <div class="flashcard-wrap">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="card-face card-front">
+          <div class="card-label">📍 Situation</div>
+          <div class="card-situation" id="fc-situation"></div>
+          <div class="card-hint">TAP TO REVEAL ▶</div>
+        </div>
+        <div class="card-face card-back">
+          <div id="fc-bonus-tag" class="bonus-tag hidden">⭐ BONUS</div>
+          <div class="card-label">Japanese</div>
+          <div class="card-jp" id="fc-jp"></div>
+          <div class="card-furigana" id="fc-furigana"></div>
+          <div class="card-romaji" id="fc-romaji"></div>
+          <div class="card-en" id="fc-en"></div>
+          <div class="card-hint">TAP TO FLIP ↺</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-nav">
+      <button class="btn" onclick="prevCard()">◀ PREV</button>
+      <button class="btn btn-primary" onclick="nextCard()">NEXT ▶</button>
+    </div>
+  </div>
+
+  <!-- QUIZ TAB -->
+  <div id="tab-quiz" class="panel glow hidden">
+    <div id="quiz-game">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="quiz-progress" style="width:0%"></div>
+      </div>
+      <div class="card-counter">Question <span id="q-num">1</span> of <span id="q-total">16</span></div>
+      <div class="quiz-situation">
+        <div class="quiz-question-label">📍 SITUATION</div>
+        <div id="q-situation"></div>
+      </div>
+      <div class="quiz-options" id="quiz-opts"></div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+    </div>
+    <div id="quiz-result" class="result-screen hidden">
+      <div class="result-title">MISSION COMPLETE</div>
+      <div style="color:var(--text2); font-size:12px; letter-spacing:2px;">FINAL SCORE</div>
+      <div class="result-score" id="result-score">0/16</div>
+      <div style="color:var(--text2); font-size:13px; margin-bottom:28px;" id="result-msg"></div>
+      <button class="btn btn-primary" onclick="restartQuiz()">RETRY MISSION</button>
+    </div>
+  </div>
+
+  <!-- LIST TAB -->
+  <div id="tab-list" class="panel hidden">
+    <div class="phrase-list" id="phrase-list"></div>
+  </div>
+</div>
+
+<script>
+const phrases = [
+  { en: "Good morning", jp: "おはよう", furigana: "おはよう", romaji: "Ohayou", situation: "When you see someone in the morning", situationJa: "朝、会ったとき", emoji: "🌅" },
+  { en: "Logistics is simple", jp: "物流は単純", furigana: "ぶつりゅうはたんじゅん", romaji: "Butsuryuu wa tanjun", situation: "When a team member overcomplicates things", situationJa: "部下が難しく考えすぎて進まないとき", emoji: "📦" },
+  { en: "I don't know", jp: "わからない", furigana: "わからない", romaji: "Wakaranai", situation: "When you're thinking \"don't ask me\"", situationJa: "「俺に聞くなよ」と思ってるとき", emoji: "🤷" },
+  { en: "I don't speak Japanese", jp: "日本語話せません", furigana: "にほんごはなせません", romaji: "Nihongo hanasemasen", situation: "When you want someone to speak English", situationJa: "相手に英語で話してほしいとき", emoji: "🗣️" },
+  { en: "Think outside the box", jp: "頭を柔らかく", furigana: "あたまをやわらかく", romaji: "Atama wo yawarakaku", situation: "When there must be a better way", situationJa: "他にもっといい案があるはず！なとき", emoji: "💡" },
+  { en: "Say less", jp: "簡潔に", furigana: "かんけつに", romaji: "Kanketsu ni", situation: "When someone writes an email that's too long", situationJa: "メール文が長すぎるとき", emoji: "✉️" },
+  { en: "Less work", jp: "やりすぎ", furigana: "やりすぎ", romaji: "Yarisugi", situation: "When a team member puts in unnecessary extra effort", situationJa: "部下が必要以上に丁寧すぎる仕事をしてるとき", emoji: "😅" },
+  { en: "I'm not IT", jp: "ITじゃないです", furigana: "ITじゃないです", romaji: "IT ja nai desu", situation: "When you want to tell someone you're not the IT person", situationJa: "IT担当者ではないと伝えたいとき", emoji: "💻" },
+  { en: "Please", jp: "お願いします", furigana: "おねがいします", romaji: "Onegai shimasu", situation: "When you really need someone to get it done", situationJa: "ちゃんとやってほしいとき", emoji: "🙏" },
+  { en: "Perfect", jp: "完璧", furigana: "かんぺき", romaji: "Kanpeki", situation: "When a team member handles something well", situationJa: "部下が上手にこなしたとき", emoji: "✅" },
+  { en: "Amazing", jp: "素晴らしい！", furigana: "すばらしい", romaji: "Subarashii!", situation: "When things go well", situationJa: "うまくいったとき", emoji: "🌟" },
+  { en: "Send it", jp: "進めて", furigana: "すすめて", romaji: "Susumete", situation: "When the direction is set and it's time to move forward", situationJa: "方針が固まって次に進めてほしいとき", emoji: "🚀" },
+  { en: "Thank you very much", jp: "ありがとうございます", furigana: "ありがとうございます", romaji: "Arigatou gozaimasu", situation: "When you feel lucky to have such a great team", situationJa: "優秀な部下たちがいて幸せだなと思うとき", emoji: "🙌" },
+  { en: "Go home", jp: "帰ってください", furigana: "かえってください", romaji: "Kaette kudasai", situation: "When your team won't leave at closing time", situationJa: "部下がなかなか定時で帰ってくれないとき", emoji: "🌙" },
+  { en: "See you", jp: "またね", furigana: "またね", romaji: "Mata ne", situation: "When you want to see someone again", situationJa: "また会いたいとき", emoji: "👋" },
+  { en: "Goldilocks", jp: "ちょうどいい！", furigana: "ちょうどいい", romaji: "Choudo ii!", situation: "When something is just right", situationJa: "ちょうどいいとき", emoji: "⭐", bonus: true },
+];
+
+// State
+let fcIndex = 0;
+let fcFlipped = false;
+let quizIndex = 0;
+let quizScore = 0;
+let quizOrder = [];
+let quizAnswered = false;
+let totalScore = 0;
+let streak = 0;
+let mastered = 0;
+
+// STARS
+(function() {
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.4 + 0.2,
+        a: Math.random(),
+        speed: Math.random() * 0.003 + 0.001
+      });
+    }
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.speed;
+      const alpha = 0.3 + Math.sin(s.a) * 0.3;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200, 214, 240, ${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();
+  initStars();
+  draw();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+})();
+
+// TAB SWITCH
+function switchTab(name) {
+  ['flashcard','quiz','list'].forEach(t => {
+    document.getElementById('tab-'+t).classList.add('hidden');
+    document.querySelectorAll('.tab').forEach((el,i) => {
+      if(['flashcard','quiz','list'][i] === name) el.classList.add('active');
+      else el.classList.remove('active');
+    });
+  });
+  document.getElementById('tab-'+name).classList.remove('hidden');
+  if (name === 'quiz') initQuiz();
+  if (name === 'list') renderList();
+}
+
+// FLASHCARD
+function renderFlashcard() {
+  const p = phrases[fcIndex];
+  document.getElementById('fc-situation').textContent = p.emoji + '  ' + p.situation;
+  document.getElementById('fc-jp').textContent = p.jp;
+  document.getElementById('fc-furigana').textContent = p.furigana !== p.jp ? p.furigana : '';
+  document.getElementById('fc-romaji').textContent = p.romaji;
+  document.getElementById('fc-en').textContent = p.en;
+  document.getElementById('fc-num').textContent = fcIndex + 1;
+  document.getElementById('fc-total').textContent = phrases.length;
+  document.getElementById('fc-progress').style.width = ((fcIndex+1)/phrases.length*100) + '%';
+
+  const bonusTag = document.getElementById('fc-bonus-tag');
+  if (p.bonus) bonusTag.classList.remove('hidden');
+  else bonusTag.classList.add('hidden');
+
+  // reset flip
+  const card = document.getElementById('flashcard');
+  card.classList.remove('flipped');
+  fcFlipped = false;
+}
+
+function flipCard() {
+  const card = document.getElementById('flashcard');
+  fcFlipped = !fcFlipped;
+  card.classList.toggle('flipped', fcFlipped);
+}
+
+function nextCard() {
+  fcIndex = (fcIndex + 1) % phrases.length;
+  renderFlashcard();
+}
+
+function prevCard() {
+  fcIndex = (fcIndex - 1 + phrases.length) % phrases.length;
+  renderFlashcard();
+}
+
+renderFlashcard();
+
+// QUIZ
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initQuiz() {
+  quizOrder = shuffle([...Array(phrases.length).keys()]);
+  quizIndex = 0;
+  quizScore = 0;
+  document.getElementById('quiz-game').classList.remove('hidden');
+  document.getElementById('quiz-result').classList.add('hidden');
+  renderQuiz();
+}
+
+function renderQuiz() {
+  if (quizIndex >= phrases.length) {
+    showQuizResult();
+    return;
+  }
+
+  quizAnswered = false;
+  const correct = phrases[quizOrder[quizIndex]];
+  document.getElementById('q-num').textContent = quizIndex + 1;
+  document.getElementById('q-total').textContent = phrases.length;
+  document.getElementById('quiz-progress').style.width = (quizIndex/phrases.length*100) + '%';
+  document.getElementById('q-situation').textContent = correct.emoji + '  ' + correct.situation;
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-feedback').className = 'quiz-feedback';
+
+  // 4 options
+  let others = phrases.filter((_, i) => i !== quizOrder[quizIndex]);
+  let wrong = shuffle(others).slice(0, 3);
+  let options = shuffle([correct, ...wrong]);
+
+  const optsEl = document.getElementById('quiz-opts');
+  optsEl.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('div');
+    btn.className = 'quiz-opt';
+    btn.innerHTML = `<span class="opt-jp">${opt.jp}</span><span class="opt-romaji">${opt.romaji}</span>`;
+    btn.onclick = () => selectAnswer(btn, opt, correct, options);
+    optsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(btn, selected, correct, allOptions) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.classList.add('disabled'));
+
+  const feedback = document.getElementById('quiz-feedback');
+
+  if (selected === correct) {
+    btn.classList.add('correct');
+    quizScore++;
+    totalScore += 10;
+    streak++;
+    feedback.textContent = '✓  ' + ['Excellent!', 'Perfect!', '素晴らしい！', 'Kanpeki!', 'Nice work!'][Math.floor(Math.random()*5)];
+    feedback.classList.add('feedback-correct');
+    document.getElementById('totalScore').textContent = totalScore;
+    document.getElementById('streak').textContent = streak;
+  } else {
+    btn.classList.add('wrong');
+    streak = 0;
+    document.getElementById('streak').textContent = 0;
+    // Show correct
+    opts.forEach(o => {
+      if (o.querySelector('.opt-jp').textContent === correct.jp) o.classList.add('correct');
+    });
+    feedback.textContent = '✗  Correct: ' + correct.jp + ' (' + correct.romaji + ')';
+    feedback.classList.add('feedback-wrong');
+  }
+
+  setTimeout(() => {
+    quizIndex++;
+    renderQuiz();
+  }, 1600);
+}
+
+function showQuizResult() {
+  document.getElementById('quiz-game').classList.add('hidden');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  document.getElementById('result-score').textContent = quizScore + '/' + phrases.length;
+
+  mastered = Math.max(mastered, quizScore);
+  document.getElementById('mastered').textContent = mastered;
+
+  const pct = quizScore / phrases.length;
+  let msg = '';
+  if (pct === 1) msg = '🏆 PERFECT SCORE — Sam-sensei status achieved';
+  else if (pct >= 0.8) msg = '🚀 Outstanding — Logistics boss approved';
+  else if (pct >= 0.6) msg = '👍 Good — Keep going, 物流は単純！';
+  else msg = '😅 Keep practicing — ITじゃないです is not an excuse';
+  document.getElementById('result-msg').textContent = msg;
+}
+
+function restartQuiz() {
+  initQuiz();
+}
+
+// LIST
+function renderList() {
+  const list = document.getElementById('phrase-list');
+  list.innerHTML = '';
+  phrases.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.className = 'phrase-row';
+    row.innerHTML = `
+      <div class="phrase-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="phrase-en">${p.bonus ? '<span class="phrase-bonus">⭐ BONUS  </span>' : ''}${p.en}</div>
+      <div class="phrase-jp">${p.jp}</div>
+      <div class="phrase-situation">${p.situation}</div>
+    `;
+    list.appendChild(row);
+  });
+}
+</script>
+</body>
+</html>
