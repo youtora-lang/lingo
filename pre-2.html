@@ -2409,7 +2409,7 @@ function selectQuizAnswer(btn,isCorrect,q){
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);
   document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
   btn.classList.add(isCorrect?'correct':'wrong');
-  if(!isCorrect){const ans=isJp2En?q.w:q.jp;document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});}
+  if(!isCorrect){const _dir=loadSettings().direction||'en2jp';const _jp2en=_dir==='jp2en';const ans=_jp2en?q.w:q.jp;document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});}
   document.getElementById('quizOkCount').textContent=quizOk;
   document.getElementById('quizNgCount').textContent=quizNg;
   setTimeout(()=>{
