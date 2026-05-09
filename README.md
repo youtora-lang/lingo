@@ -19,7 +19,7 @@
 
 英検 準2級プラス👉 [https://youtora-lang.github.io/lingo/pre-2plus](https://youtora-lang.github.io/lingo/pre-2plus)
 
-AEP　完全ガイド👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
+AEP 完全ガイド👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
 
 chiilingo（じぶん専用リンゴ）👉 [https://youtora-lang.github.io/lingo/chiilingo](https://youtora-lang.github.io/lingo/chiilingo)
 
