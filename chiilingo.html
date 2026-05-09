@@ -716,7 +716,8 @@ function updateDash(){
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
   const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める（目標${goal}語 / ${sz}語出題）→`;
-  const appName=(s.appName||'chii')+'lingo';
+  const rawName=s.appName||'chii';
+  const appName=rawName.replace(/lingo$/i,'')+'lingo';
   document.getElementById('appTitleLabel').textContent=appName;
   document.getElementById('pageTitle').textContent=appName;
   showTicketBanner();
@@ -897,7 +898,7 @@ function copyResult(){
   const prog=loadProgress();const total=WORDS.length;const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
   const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
   const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
-  const appName=(loadSettings().appName||'chii')+'lingo';
+  const appName=(loadSettings().appName||'chii').replace(/lingo$/i,'')+'lingo';
   const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
   navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
   showToast('📋 コピーしました！');
