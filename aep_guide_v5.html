@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEP Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --font: 'M PLUS Rounded 1c', sans-serif;
+  --bg: #f5f0eb;
+  --card: #ffffff;
+  --border: #333;
+  --text: #333;
+  --mint: #78c8a8;
+  --mint-light: #d8f0e8;
+  --coral: #e87870;
+  --coral-light: #fce8e6;
+  --sky: #68b8e0;
+  --sky-light: #d8eef8;
+  --gold: #e8c040;
+  --gold-light: #f8f0cc;
+  --lavender: #b878d0;
+  --lavender-light: #ecdaf4;
+  --orange: #e89050;
+  --orange-light: #fcecd8;
+  --green: #5cb87a;
+  --green-light: #d6f0df;
+}
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+  position: relative;
+  overflow-x: hidden;
+}
+body::before {
+  content: "★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★";
+  position: fixed;
+  top: 10px; left: 0; right: 0;
+  text-align: center;
+  font-size: 11px;
+  color: #ccc;
+  letter-spacing: 18px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-wrap { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* --- Setup Panel --- */
+.setup-panel {
+  background: white;
+  border: 2.5px solid var(--border);
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+.setup-panel-title {
+  font-size: 10px; font-weight: 800; color: #aaa;
+  letter-spacing: 2px; margin-bottom: 12px;
+}
+.setup-row {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; margin-bottom: 12px;
+}
+.setup-row:last-child { margin-bottom: 0; }
+.setup-label {
+  font-size: 12px; font-weight: 800;
+  white-space: nowrap; width: 60px;
+}
+.setup-row input[type="text"] {
+  flex: 1; min-width: 100px;
+  border: 2px solid var(--border);
+  border-radius: 99px; padding: 7px 16px;
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  outline: none; background: var(--mint-light); color: var(--text);
+}
+.setup-row input[type="text"]:focus { border-color: var(--mint); }
+.level-pills { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+.level-pill {
+  border: 2px solid var(--border); border-radius: 99px;
+  padding: 5px 12px; font-family: var(--font);
+  font-size: 11px; font-weight: 800; cursor: pointer;
+  background: white; color: var(--text);
+  transition: transform 0.1s, background 0.15s, color 0.15s;
+}
+.level-pill:active { transform: scale(0.95); }
+.level-pill.active { color: white; }
+.level-pill[data-level="A1"].active  { background: #e85858; }
+.level-pill[data-level="A2"].active  { background: #e88030; }
+.level-pill[data-level="B1"].active  { background: #d8b028; }
+.level-pill[data-level="B2"].active  { background: #60b050; }
+.level-pill[data-level="C1"].active  { background: #48a0d0; }
+.level-pill[data-level="C1+"].active { background: #b068c8; }
+.apply-btn {
+  background: var(--mint); color: white;
+  border: 2px solid var(--border); border-radius: 99px;
+  padding: 9px 22px; font-family: var(--font);
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  transition: transform 0.1s; width: 100%; margin-top: 4px; letter-spacing: 1px;
+}
+.apply-btn:active { transform: scale(0.97); }
+
+/* --- Hero --- */
+.hero { text-align: center; margin-bottom: 20px; }
+.hero-badge {
+  display: inline-block; background: var(--coral); color: white;
+  border: 2.5px solid var(--border); border-radius: 99px;
+  padding: 4px 20px 5px; font-size: 11px; font-weight: 800;
+  letter-spacing: 2px; margin-bottom: 10px;
+}
+.hero h1 { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+.hero h1 span.username { color: var(--coral); -webkit-text-stroke: 1.5px var(--border); paint-order: stroke fill; }
+.hero p { font-size: 12px; font-weight: 700; color: #888; line-height: 1.7; }
+
+/* --- Cards --- */
+.card {
+  background: var(--card); border: 2.5px solid var(--border);
+  border-radius: 20px; padding: 18px 20px;
+  margin-bottom: 14px; position: relative; overflow: hidden;
+}
+.card-tag {
+  position: absolute; top: -1px; left: 18px; color: white;
+  border: 2px solid var(--border); border-top: none;
+  border-radius: 0 0 10px 10px; font-size: 9px; font-weight: 800;
+  padding: 3px 12px 4px; letter-spacing: 1px;
+}
+.card h2 {
+  font-size: 15px; font-weight: 800;
+  margin-bottom: 10px; margin-top: 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+.card h2 .dot {
+  width: 10px; height: 10px; border-radius: 99px;
+  border: 2px solid var(--border); display: inline-block; flex-shrink: 0;
+}
+.card.mint  .card-tag, .card.mint  .dot { background: var(--mint); }
+.card.sky   .card-tag, .card.sky   .dot { background: var(--sky); }
+.card.gold  .card-tag { background: var(--gold); color: #333; }
+.card.gold  .dot { background: var(--gold); }
+.card.lavender .card-tag, .card.lavender .dot { background: var(--lavender); }
+.card.orange .card-tag, .card.orange .dot { background: var(--orange); }
+.card.coral .card-tag, .card.coral .dot { background: var(--coral); }
+.card.green .card-tag, .card.green .dot { background: var(--green); }
+
+/* mode blocks */
+.mode-block {
+  border: 2px dashed var(--border); border-radius: 14px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.mode-block:last-child { margin-bottom: 0; }
+.mode-label {
+  display: inline-block; font-size: 9px; font-weight: 800;
+  border: 2px solid var(--border); border-radius: 99px;
+  padding: 2px 12px 3px; margin-bottom: 8px; color: white; letter-spacing: 1px;
+}
+.mode-block p { font-size: 12px; font-weight: 700; line-height: 1.8; color: #444; }
+.trigger {
+  display: inline-block; background: var(--gold-light);
+  border: 1.5px solid var(--gold); border-radius: 8px;
+  padding: 1px 8px 2px; font-size: 11px; font-weight: 800;
+  color: #987800; margin: 0 2px;
+}
+
+/* step list */
+.step-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.step-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; font-weight: 700; line-height: 1.7; color: #444;
+}
+.step-num {
+  width: 22px; height: 22px; border-radius: 99px;
+  border: 2px solid var(--border); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: white;
+  flex-shrink: 0; margin-top: 2px;
+}
+.cmd {
+  display: inline-block; background: var(--sky-light);
+  border: 1.5px solid var(--sky); border-radius: 8px;
+  padding: 1px 10px 2px; font-size: 11px; font-weight: 800;
+  color: #1870a8; white-space: nowrap;
+}
+.cmd-apple {
+  display: inline-block; background: var(--green-light);
+  border: 1.5px solid var(--green); border-radius: 8px;
+  padding: 1px 10px 2px; font-size: 11px; font-weight: 800;
+  color: #2a7a48; white-space: nowrap;
+}
+
+/* tip box */
+.tip-box {
+  background: var(--gold-light); border: 2px dashed var(--gold);
+  border-radius: 14px; padding: 10px 14px;
+  font-size: 11px; font-weight: 700; color: #7a6000; line-height: 1.8; margin-top: 10px;
+}
+.tip-box strong { color: #987800; font-weight: 800; }
+
+/* cat grid */
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.cat-item {
+  border: 2px solid var(--border); border-radius: 12px;
+  padding: 7px 12px; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; gap: 7px;
+}
+.cat-dot { width: 8px; height: 8px; border-radius: 99px; border: 1.5px solid var(--border); flex-shrink: 0; }
+
+/* CEFR grid */
+.cefr-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: 4px; }
+.cefr-cell { border: 2px solid var(--border); border-radius: 10px; padding: 6px 4px; text-align: center; }
+.cefr-cell .level { font-size: 13px; font-weight: 800; }
+.cefr-cell .range { font-size: 8px; font-weight: 700; color: #666; margin-top: 2px; line-height: 1.3; }
+
+/* setup steps */
+.setup-step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.setup-step:last-child { margin-bottom: 0; }
+.setup-step-num {
+  width: 26px; height: 26px; border-radius: 99px;
+  background: var(--coral); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: white;
+  flex-shrink: 0; margin-top: 1px;
+}
+.setup-step-body { flex: 1; }
+.setup-step-title { font-size: 13px; font-weight: 800; margin-bottom: 3px; line-height: 1.4; }
+.setup-step-desc { font-size: 11px; font-weight: 700; color: #666; line-height: 1.8; }
+.setup-step-desc .hl {
+  display: inline-block; background: var(--coral-light);
+  border: 1px solid var(--coral); border-radius: 6px;
+  padding: 0 6px; color: var(--coral); font-weight: 800;
+}
+.setup-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #ddd 0, #ddd 6px, transparent 6px, transparent 12px);
+  margin: 12px 0;
+}
+
+/* prompt box */
+.prompt-box {
+  background: #1e1e2e; border: 2px solid var(--border);
+  border-radius: 14px; padding: 14px 16px;
+  font-family: monospace; font-size: 10.5px; line-height: 1.75;
+  color: #cdd6f4; white-space: pre-wrap; word-break: break-word;
+  max-height: 220px; overflow-y: auto; margin-top: 10px;
+}
+.prompt-name-highlight  { color: #a6e3a1; font-weight: 800; }
+.prompt-level-highlight { color: #f9e2af; font-weight: 800; }
+.copy-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 10px; width: 100%; padding: 11px 20px 12px;
+  border-radius: 99px; background: #1e1e2e; color: #cdd6f4;
+  border: 2.5px solid var(--border); font-family: var(--font);
+  font-size: 13px; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+  transition: background 0.15s, color 0.15s;
+}
+.copy-btn.copied { background: var(--mint); color: white; }
+
+/* chart btn */
+.chart-btn-wrap { text-align: center; margin-top: 18px; }
+.chart-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--lavender); color: white;
+  border: 2.5px solid var(--border); border-radius: 99px;
+  padding: 12px 28px 13px; font-family: var(--font);
+  font-size: 14px; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 4px 4px 0 var(--border);
+}
+.chart-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--border); }
+.chart-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--border); }
+.chart-btn .btn-dot { width: 8px; height: 8px; background: white; border-radius: 99px; border: 1.5px solid var(--border); flex-shrink: 0; }
+
+.footer { text-align: center; margin-top: 28px; font-size: 10px; font-weight: 700; color: #bbb; letter-spacing: 1px; }
+
+/* --- Modal --- */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 100;
+  align-items: center; justify-content: center; padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: white; border: 2.5px solid var(--border);
+  border-radius: 24px; width: 100%; max-width: 480px;
+  max-height: 90vh; overflow-y: auto; padding: 20px; position: relative;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: var(--coral-light); border: 2px solid var(--border);
+  border-radius: 99px; width: 30px; height: 30px;
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font); color: var(--border); transition: transform 0.1s;
+}
+.modal-close:hover { transform: scale(1.1); }
+.modal-title { font-size: 14px; font-weight: 800; color: var(--lavender); margin-bottom: 12px; -webkit-text-stroke: 0.5px var(--border); paint-order: stroke fill; }
+.modal-subtitle { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 12px; line-height: 1.7; }
+.json-area {
+  width: 100%; height: 190px;
+  border: 2px dashed var(--lavender); border-radius: 14px;
+  padding: 12px 14px; font-family: monospace; font-size: 11px;
+  resize: vertical; outline: none;
+  background: var(--lavender-light); color: var(--text); line-height: 1.6;
+}
+.json-error { font-size: 11px; color: #b83030; margin-top: 6px; background: #fce8e8; border-radius: 8px; padding: 5px 10px; border: 1px dashed var(--coral); font-weight: 700; display: none; }
+.json-error.show { display: block; }
+.gen-btn {
+  margin-top: 10px; width: 100%; padding: 12px 24px 13px;
+  border-radius: 99px; background: var(--lavender); color: white;
+  border: 2.5px solid var(--border); font-family: var(--font);
+  font-size: 13px; font-weight: 800; cursor: pointer; letter-spacing: 1px; transition: transform 0.1s;
+}
+.gen-btn:active { transform: scale(0.98); }
+#chart-output { margin-top: 16px; display: none; }
+#chart-output.show { display: block; }
+
+/* score card */
+.sc-wrap { font-family: var(--font); border: 2.5px solid var(--border); border-radius: 24px; padding: 10px 18px 18px; }
+.sc-header-badge { display: flex; justify-content: center; margin-bottom: 6px; }
+.sc-badge { display: inline-flex; align-items: center; gap: 5px; color: white; border-radius: 99px; border: 2px solid var(--border); padding: 3px 14px 4px; font-size: 10px; font-weight: 800; letter-spacing: 2px; }
+.sc-dot { width: 6px; height: 6px; border-radius: 99px; border: 1px solid var(--border); }
+.sc-score-row { display: flex; align-items: center; margin-bottom: 8px; }
+.sc-cefr-col { width: 44px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; }
+.sc-center { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.sc-score-card { background: white; border-radius: 20px; border: 2.5px solid var(--border); text-align: center; width: 140px; padding: 8px 0 11px; }
+.sc-total { font-size: 44px; font-weight: 800; line-height: 1; -webkit-text-stroke: 3px var(--border); paint-order: stroke fill; }
+.sc-max { font-size: 11px; color: #333; font-weight: 700; }
+.sc-date { font-size: 11px; color: #333; font-weight: 700; text-align: center; }
+.sc-bar-col { width: 44px; flex-shrink: 0; display: flex; justify-content: flex-end; }
+.sc-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.sc-bar-pct { font-size: 10px; font-weight: 800; -webkit-text-stroke: 1px var(--border); paint-order: stroke fill; line-height: 1; }
+.sc-bar-track { width: 13px; height: 76px; border-radius: 99px; border: 2px solid var(--border); position: relative; overflow: hidden; }
+.sc-bar-fill { position: absolute; bottom: 0; left: 0; right: 0; border-radius: 99px; }
+.sc-radar-area { background: white; border-radius: 18px; padding: 10px 4px; margin-bottom: 10px; }
+.sc-conversion-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; margin-bottom: 10px; }
+.sc-conv-card { background: white; border-radius: 14px; border: 2px dashed; padding: 6px 8px 10px; text-align: center; }
+.sc-conv-label { font-size: 9px; color: #333; margin-bottom: 3px; font-weight: 700; }
+.sc-conv-value { font-size: 14px; font-weight: 800; -webkit-text-stroke: 1.5px var(--border); paint-order: stroke fill; }
+.sc-conv-unit { font-size: 9px; font-weight: 700; color: #333; -webkit-text-stroke: 0; }
+.sc-comment-box { background: white; border-radius: 14px; border: 2px dashed; padding: 12px 14px 13px; position: relative; }
+.sc-comment-label { position: absolute; top: -10px; left: 12px; color: white; border: 1.5px solid var(--border); font-size: 9px; font-weight: 800; border-radius: 99px; padding: 2px 10px 3px; line-height: 1.4; }
+.sc-comment-text { font-size: 10px; color: #333; line-height: 1.8; padding-top: 2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Setup Panel -->
+  <div class="setup-panel">
+    <div class="setup-panel-title">SETTINGS</div>
+    <div class="setup-row">
+      <span class="setup-label" style="color: var(--mint);">名前</span>
+      <input type="text" id="username-input" value="CA" placeholder="あなたの名前" maxlength="20">
+    </div>
+    <div class="setup-row">
+      <span class="setup-label" style="color: var(--lavender);">レベル</span>
+      <div class="level-pills">
+        <button class="level-pill" data-level="A1" onclick="selectLevel(this)">A1</button>
+        <button class="level-pill" data-level="A2" onclick="selectLevel(this)">A2</button>
+        <button class="level-pill active" data-level="B1" onclick="selectLevel(this)">B1</button>
+        <button class="level-pill" data-level="B2" onclick="selectLevel(this)">B2</button>
+        <button class="level-pill" data-level="C1" onclick="selectLevel(this)">C1</button>
+        <button class="level-pill" data-level="C1+" onclick="selectLevel(this)">C1+</button>
+      </div>
+    </div>
+    <button class="apply-btn" onclick="applySettings()">✓ 適用 / Apply</button>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">AEP GUIDE</div>
+    <h1><span class="username" id="hero-name">CA</span>'s English<br>Practice System</h1>
+    <p>Alex English Project へようこそ。<br>このガイドを読めば、今日から始められます。</p>
+  </div>
+
+  <!-- Overview -->
+  <div class="card mint">
+    <div class="card-tag">OVERVIEW</div>
+    <h2><span class="dot"></span>AEP とは？</h2>
+    <div class="mode-block" style="background: var(--mint-light); border-color: var(--mint);">
+      <p>AEP（Alex English Project）は、AIの友人「Alex」との英会話を通じて、自然なアメリカ英語を身につけるシステムです。<br>レッスンではなく、<strong>友達との会話</strong>として設計されています。</p>
+    </div>
+    <div class="tip-box">
+      <strong>目標：</strong>フォーマルな教科書英語ではなく、友達に話しかけるような自然で温かいアメリカ英語を身につけること。
+    </div>
+  </div>
+
+  <!-- Modes -->
+  <div class="card sky">
+    <div class="card-tag">HOW TO USE</div>
+    <h2><span class="dot"></span>2つのモード</h2>
+    <div class="mode-block">
+      <div class="mode-label" style="background: var(--sky);">MODE 1 — ALEX（友達モード）</div>
+      <p>英語で話しかけるだけでスタート。Alexは友達として自然に会話してくれます。<br>
+      あなたが<strong>80%</strong>話す。Alexは<strong>20%</strong>だけ。<br>
+      一度に質問はひとつ。ミスは「リキャスト」で自然に修正されます。</p>
+    </div>
+    <div class="mode-block">
+      <div class="mode-label" style="background: var(--coral);">MODE 2 — ANALYST（分析モード）</div>
+      <p>会話が終わったら、日付とセッション番号を入力してください。<br>
+      例：<span class="trigger">2026/04/08 #1</span><br>
+      Alexがコーチとして全体を振り返り、<strong>日本語で</strong>フィードバックします。</p>
+    </div>
+  </div>
+
+  <!-- Commands -->
+  <div class="card orange">
+    <div class="card-tag">COMMANDS</div>
+    <h2><span class="dot"></span>特殊コマンド一覧</h2>
+    <ul class="step-list">
+      <li>
+        <span class="step-num" style="background: var(--orange);">1</span>
+        <div><span class="cmd">まとめ</span> → 会話の全文書き起こし（英語＋日本語訳）を出力</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--orange);">2</span>
+        <div><span class="cmd">確認</span> → あなたが言いたかったことを箇条書きで整理（修正可）</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--orange);">3</span>
+        <div><span class="cmd">理想</span> → 「こう言えてたら？」の理想の会話を日英で表示</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--orange);">4</span>
+        <div><span class="cmd">英語</span> → 理想の会話を英語のみで再出力</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--green);">5</span>
+        <div><span class="cmd-apple">りんご</span> → 今日の重要単語をchiilingo用JSONで出力し、アプリで定着練習！</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--coral);">+</span>
+        <div>日付＋番号 → アナリストモードへ（例：<span class="trigger">2026/04/08 #2</span>）</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Score -->
+  <div class="card gold">
+    <div class="card-tag">SCORE</div>
+    <h2><span class="dot"></span>AEPスコアについて</h2>
+    <p style="font-size:12px; font-weight:700; color:#444; line-height:1.8; margin-bottom:10px;">アナリストモードでは、会話を8つのカテゴリで採点します。各カテゴリ最大40点、合計320点満点。</p>
+    <div class="cat-grid">
+      <div class="cat-item"><span class="cat-dot" style="background:#e85858;"></span>語彙</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#e88030;"></span>文法</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#60b050;"></span>流暢さ</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#48a0d0;"></span>コミュ力</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#b068c8;"></span>自然さ</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#d8b028;"></span>発音</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#e85858;"></span>リカバリー</div>
+      <div class="cat-item"><span class="cat-dot" style="background:#48a0d0;"></span>表現の幅</div>
+    </div>
+    <div style="margin-top:12px;">
+      <p style="font-size:11px; font-weight:800; color:#987800; margin-bottom:6px;">CEFRレベル対応表</p>
+      <div class="cefr-grid">
+        <div class="cefr-cell" style="background:#fce8e8; border-color:#e85858;"><div class="level" style="color:#e85858;">A1</div><div class="range">0–63</div></div>
+        <div class="cefr-cell" style="background:#fceedd; border-color:#e88030;"><div class="level" style="color:#e88030;">A2</div><div class="range">64–127</div></div>
+        <div class="cefr-cell" style="background:#f8f0cc; border-color:#d8b028;"><div class="level" style="color:#d8b028;">B1</div><div class="range">128–191</div></div>
+        <div class="cefr-cell" style="background:#dff0d8; border-color:#60b050;"><div class="level" style="color:#60b050;">B2</div><div class="range">192–239</div></div>
+        <div class="cefr-cell" style="background:#d8eef8; border-color:#48a0d0;"><div class="level" style="color:#48a0d0;">C1</div><div class="range">240–287</div></div>
+        <div class="cefr-cell" style="background:#ecdaf4; border-color:#b068c8;"><div class="level" style="color:#b068c8;">C2</div><div class="range">288–320</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Getting Started -->
+  <div class="card coral">
+    <div class="card-tag">GETTING STARTED</div>
+    <h2><span class="dot"></span>始め方 / How to Start</h2>
+
+    <div class="setup-step">
+      <div class="setup-step-num">1</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">名前とレベルを設定する / Set your name & level</div>
+        <div class="setup-step-desc">
+          上部の <span class="hl">SETTINGS</span> で名前とレベルを選んで <span class="hl">適用 / Apply</span> を押してください。<br>
+          プロンプト内の名前・レベルが自動で書き換わります。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">2</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">プロンプトをコピーする / Copy the prompt</div>
+        <div class="setup-step-desc">
+          下のボックスにプロンプトが表示されています。<br>
+          <span class="hl">プロンプトをコピー / Copy Prompt</span> ボタンを押してクリップボードにコピーしてください。
+        </div>
+        <div class="prompt-box" id="prompt-preview"></div>
+        <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">
+          <span>&#x2398;</span>&nbsp;プロンプトをコピー / Copy Prompt
+        </button>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">3</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">Claude.ai でプロジェクトを作成する / Create a project</div>
+        <div class="setup-step-desc">
+          左サイドバーの <span class="hl">+ New Project</span> をタップ。<br>
+          プロジェクト名は <span class="hl">AEP</span> など好きな名前でOK。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">4</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">Project Instructions に貼り付けて保存 / Paste & save</div>
+        <div class="setup-step-desc">
+          プロジェクトの <span class="hl">Edit</span> または <span class="hl">Project Instructions</span> を開き、<br>
+          コピーしたプロンプトを貼り付けて保存してください。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">5</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">英語で話しかける / Start talking in English</div>
+        <div class="setup-step-desc">
+          プロジェクト内で <span class="hl">+ New Chat</span> を開き、<br>
+          英語で何か話しかければ Alex がすぐに応えてくれます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow -->
+  <div class="card lavender">
+    <div class="card-tag">FLOW</div>
+    <h2><span class="dot"></span>1回のセッションの流れ</h2>
+    <ul class="step-list">
+      <li>
+        <span class="step-num" style="background: var(--lavender);">1</span>
+        <div>AEPプロジェクトを開いて、英語で話しかける</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--lavender);">2</span>
+        <div>Alexと自由に会話（テーマは何でもOK）</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--lavender);">3</span>
+        <div>日付＋番号を入力してアナリストモードへ</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--lavender);">4</span>
+        <div>JSONが出力されたら下のボタンからスコアカードを確認</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--lavender);">5</span>
+        <div>特殊コマンドで、言いたかったことを確認・調整<br>
+          <span style="font-size:11px; color:#888;">（<span class="cmd" style="font-size:10px;">確認</span> → <span class="cmd" style="font-size:10px;">理想</span> → <span class="cmd" style="font-size:10px;">英語</span>）</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--green);">6</span>
+        <div><span class="cmd-apple">りんご</span> でlingoアプリと連携して、定着するまで練習！</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- chiilingo card -->
+  <div class="card green">
+    <div class="card-tag">CHIILINGO</div>
+    <h2><span class="dot"></span>りんご × chiilingo 連携</h2>
+    <div class="mode-block" style="background: var(--green-light); border-color: var(--green);">
+      <p>会話終了後に <strong>「りんご」</strong> と入力すると、今日の会話から重要単語・フレーズをJSONで出力します。そのJSONをchiiilingoに貼り付けるだけで、フラッシュカード練習がスタート！</p>
+    </div>
+    <div class="tip-box" style="background: var(--green-light); border-color: var(--green); color: #1a5c33;">
+      <strong>出力される単語の種類：</strong><br>
+      🔴 言えなかった・間違えた単語<br>
+      🟡 今日の会話で出てきたキーワード<br>
+      🟢 日常会話でよく使う便利フレーズ
+    </div>
+  </div>
+
+  <!-- Chart Button -->
+  <div class="chart-btn-wrap">
+    <button class="chart-btn" onclick="openChartModal()">
+      <span class="btn-dot"></span>
+      AEPスコアカードを開く / Open Scorecard
+      <span class="btn-dot"></span>
+    </button>
+  </div>
+
+  <div class="footer">AEP — Alex English Project</div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="chart-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeChartModal()">×</button>
+    <div class="modal-title">AEP スコアチャート</div>
+    <div class="modal-subtitle">アナリストが出力したJSONを貼り付けて「生成」を押してください。</div>
+    <textarea class="json-area" id="json-input" placeholder='{ "date": "2026/04/08", "session": 1, "scores": { "vocabulary": 24, "grammar": 20, "fluency": 28, "communication": 32, "naturalness": 22, "pronunciation": 18, "recovery": 26, "range": 20 }, "comment": "コメントがここに入ります。" }'></textarea>
+    <div class="json-error" id="json-error">JSONの形式が正しくありません。</div>
+    <button class="gen-btn" onclick="generateChart()">チャートを生成する / Generate</button>
+    <div id="chart-output"></div>
+  </div>
+</div>
+
+<script>
+const LEVELS_DATA = {
+  "A1":  { desc: "A1（超初級）", color: "#e85858", tip: "単語レベルでOK。とにかく話すことに慣れる段階。" },
+  "A2":  { desc: "A2（初級）",   color: "#e88030", tip: "短い文で日常的なやりとりができる段階。" },
+  "B1":  { desc: "B1（中級）",   color: "#d8b028", tip: "身近なトピックなら自分の意見を伝えられる段階。" },
+  "B2":  { desc: "B2（中上級）", color: "#60b050", tip: "複雑な話題も流暢に話せる段階。" },
+  "C1":  { desc: "C1（上級）",   color: "#48a0d0", tip: "ほぼネイティブ水準の流暢さと自然さがある段階。" },
+  "C1+": { desc: "C1〜C2（上級〜ネイティブ水準）", color: "#b068c8", tip: "ネイティブレベルの表現力・正確さを目指す段階。" },
+};
+
+let currentName = 'CA';
+let currentLevel = 'B1';
+
+function selectLevel(el) {
+  document.querySelectorAll('.level-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentLevel = el.dataset.level;
+}
+
+function buildPrompt(name, level) {
+  const ld = LEVELS_DATA[level] || LEVELS_DATA['B1'];
+  return `## About ${name}
+${name}'s current English level: ${ld.desc}
+${ld.tip}
+Adjust your vocabulary, pace, and complexity to match this level throughout the conversation.
+
+## Modes
+- ${name} speaks English or joins the project → **Alex mode (Mode 1)**
+- ${name} inputs a date + session number (e.g. "2026/03/28 #4") → **Analyst mode (Mode 2)**
+
+---
+
+## Mode 1: Alex
+
+You are Alex — warm, playful, and genuinely good at helping people open up in English. You are ${name}'s friend. Not a teacher. Not a coach. A friend who happens to speak great English.
+Talk like a friend from start to finish. Never frame the conversation as a lesson or practice. No matter what happens, stay in friend mode.
+Keep your turns short. ${name} talks 80%, you 20%.
+Ask ONE question at a time. Never stack questions.
+React like a real person — laugh, get curious, push back a little.
+If ${name} goes quiet or gives a short answer, don't wait.
+Riff on what they said. Share something. Ask a follow-up.
+Use every tool you have to keep the conversation alive and fun.
+Never end the session yourself. Keep going until ${name} says stop.
+Correction: Use recasting only — weave the correct form naturally into your reply. Never say "that's wrong." Only correct explicitly if the same error appears 3+ times or blocks understanding.
+Level: Read the conversation. Match ${name}'s pace. Stretch gently when they're flowing. Dial back quietly when they're struggling. Never assume a fixed level.
+
+---
+
+## Mode 2: Analyst
+
+Triggered when ${name} inputs a date + session number (e.g. "2026/03/28 #4").
+Analyze the conversation from this thread.
+All output in Japanese.
+
+📋 Session Summary
+✅ What went well (3–5 items, with quotes + reasons)
+🔬 Mistakes & Upgrades
+　❌ What ${name} said: "…"
+　✅ More natural version: "…"
+　💡 Reason: …
+🎯 One focus point for next time
+💬 Expression Bank (3–5 items)
+　・"[expression]" → [one-line explanation]
+
+### AEP Score JSON
+
+Output after Expression Bank. Precede with:
+「以下のJSONをコピーして、チャートスレッドに貼り付けてください👇」
+
+\`\`\`json
+{
+  "date": "YYYY/MM/DD",
+  "session": [number],
+  "scores": {
+    "vocabulary":    [0–40],
+    "grammar":       [0–40],
+    "fluency":       [0–40],
+    "communication": [0–40],
+    "naturalness":   [0–40],
+    "pronunciation": [0–40],
+    "recovery":      [0–40],
+    "range":         [0–40]
+  },
+  "comment": "[1–2 sentences in Japanese]"
+}
+\`\`\`
+
+### Scoring (CEFR-based)
+
+Score actual output only. Not effort, personality, or topic knowledge.
+
+- **1–8 (A1):** Isolated words. Barely communicates.
+- **9–16 (A2):** Simple exchanges. Frequent errors. Limited range.
+- **17–24 (B1):** Main ideas expressed with some fluency. Errors present but don't block communication.
+- **25–32 (B2):** Fluent, mostly accurate, natural in familiar contexts.
+- **33–40 (C1/C2):** Highly fluent, accurate, near-native.
+
+**Pronunciation:** If correctly transcribed → correctly pronounced → score high. Deduct only if mispronunciation clearly broke meaning.
+
+**Before finalizing:** Ask — "Would a trained CEFR examiner give this score based solely on what was said?" If no, adjust accordingly.
+
+Scores reflect actual performance. Never capped by assumed level.
+All 8 fields required. Integers 0–40. Comment: Japanese, 1–2 sentences.
+Use date and session number ${name} provided.
+
+---
+
+## Session Transcript
+
+**Trigger:** ${name} inputs「まとめ」
+
+Output the full conversation from this thread — every exchange, nothing skipped.
+
+**Format:**
+\`\`\`
+Alex: [original English]
+（[Japanese translation]）
+${name}: [original English]
+（[Japanese translation]）
+\`\`\`
+
+**Translation rules:**
+- Preserve all nuance, tone, and personality of the original.
+- Keep fillers, hesitations, and incomplete sentences exactly as they are.
+- Do not clean up or polish ${name}'s English — translate it as spoken.
+- Do not summarize. Output every single line.
+
+---
+
+## Confirmation
+
+**Trigger:** ${name} inputs「確認」
+
+Read the entire conversation carefully. Use Alex's lines only as context to understand the flow — not as content. Extract what ${name} was trying to say, based solely on ${name}'s own lines.
+
+Output as a bullet list in Japanese — one point per thing ${name} wanted to express. Keep each point concise and true to ${name}'s intent. Do not interpret, expand, or add anything ${name} did not say.
+
+最後に：「修正があればどうぞ。」
+
+---
+
+## Ideal Conversation
+
+**Trigger:** ${name} inputs「理想」
+
+Output the ideal version of this conversation — not a brand new dialogue, but the same conversation between ${name} and Alex as it would have flowed if ${name} had spoken naturally and fluently from the start.
+
+**Always display this title at the top:**
+💭 もしこう言えてたら？
+
+**Format** — alternate English and Japanese translation for every line:
+\`\`\`
+Alex: [Alex's line]
+（[Japanese translation]）
+${name}: [ideal English version]
+（[Japanese translation]）
+\`\`\`
+
+**Rules:**
+- ${name}'s lines are based solely on the confirmation list. Do not add anything ${name} did not say.
+- If a topic was introduced by Alex in the original conversation, Alex must introduce it here too — even if the content appears in the confirmation list. Do not reassign it to ${name}.
+- ${name}'s lines must be corrected for grammar, completeness, and naturalness. Specifically:
+  - Fix all grammatical errors.
+  - Complete any incomplete or fragment sentences.
+  - Fix unnatural phrasing so it sounds like a fluent English speaker.
+  - Keep ${name}'s original word choices where possible.
+  - Never change what ${name} meant to say.
+  - Never add content ${name} did not express.
+- Alex's lines are not bound by the original conversation. Generate them fresh in response to ${name}'s corrected lines. However, carry over the overall topic, flow, and atmosphere of the original conversation.
+- If ${name}'s word choice is unnatural or off, Alex should recast it naturally within his response — not correct it explicitly.
+- Follow the original conversation's flow, order, and initiative exactly. If ${name} initiated a topic, ${name} initiates it here. If Alex did, Alex does.
+- ${name}'s questions, observations, and requests for clarification from the original must remain ${name}'s lines here — do not reassign them to Alex.
+- Alex's role is to respond naturally to whatever ${name} says — not to lead, introduce topics, or shape the conversation.
+- If there were pauses, silences, or moments where the conversation ran dry, reflect that naturally. Do not fill gaps that weren't filled in the original.
+- This is not a polished dialogue. It is what two ordinary friends would sound like if ${name} had been fluent from the start.
+- Keep Alex's personality consistent throughout.
+- Japanese translations should preserve nuance and tone.
+
+---
+
+## English-Only Output
+
+**Trigger:** ${name} inputs「英語」
+
+Re-output the ideal conversation in full — English lines only, no Japanese translations.
+
+**Always display this title at the top:**
+💭 What if I could have said it like this?
+
+**Format:**
+\`\`\`
+Alex: [English]
+${name}: [English]
+\`\`\`
+
+---
+
+## Vocabulary Harvest
+
+**Trigger:** ${name} inputs「りんご」
+
+Read the entire conversation. Extract vocabulary in three categories:
+
+1. **Words ${name} couldn't say** — words or phrases ${name} was trying to express but couldn't find, used incorrectly, or visibly struggled with.
+2. **Key words from today's conversation** — important words or phrases that came up naturally in the session and are worth remembering.
+3. **High-frequency everyday English** — common expressions from the conversation that are useful in daily conversation.
+
+For each item, output in the following format:
+
+「以下のJSONをコピーして、chiilingoに貼り付けてください👇」
+
+\`\`\`json
+[
+  {
+    "w": "[word or phrase in English]",
+    "ph": "[pronunciation in IPA]",
+    "jp": "[Japanese translation]",
+    "ex": "[example sentence from or inspired by today's conversation]",
+    "exJp": "[Japanese translation of the example sentence]"
+  }
+]
+\`\`\`
+
+**Rules:**
+- Aim for 5–10 items total across all three categories.
+- Example sentences should feel natural and close to the actual conversation context.
+- Do not include words ${name} already used correctly and fluently.
+- All Japanese translations should be natural, not literal.
+- \`exJp\` must be written in Japanese only. Do not include any English words or phrases — including the target word itself.
+- **Character limits (including spaces):**
+  - \`w\` (English word/phrase): 20 characters or fewer
+  - \`jp\` (Japanese translation): 10 characters or fewer
+  - \`ex\` (English example sentence): 60 characters or fewer
+  - \`exJp\` (Japanese example sentence): 30 characters or fewer
+  - If a natural output exceeds these limits, shorten it without changing the meaning.
+
+---
+
+## Guide Display
+
+At the end of every response — **except during Alex mode (Mode 1) conversations** — display the following in Japanese exactly as written:
+
+---
+
+AEPでできること：
+- 英語で話しかける → Alexモードで自然な英会話
+- 日付＋セッション番号（例：2026/04/11 #9）を入力 → Analystモードでフィードバック
+- 「まとめ」→ このセッションの全会話を日英で出力
+- 「確認」→ ${name}が言いたかったことを箇条書きで整理（修正可）
+- 「理想」→ 理想の英会話バージョンを日英で出力
+- 「英語」→ 理想の会話を英語のみで再出力
+- 「りんご」→ 今日の重要単語をchiilingo用JSONで出力`;
+}
+
+function updatePromptPreview(name, level) {
+  const el = document.getElementById('prompt-preview');
+  if (!el) return;
+  const text = buildPrompt(name, level);
+  const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const ld = LEVELS_DATA[level] || LEVELS_DATA['B1'];
+  const safeDesc = ld.desc.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  let highlighted = escaped.replace(
+    new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g'),
+    `<span class="prompt-name-highlight">${name}</span>`
+  );
+  highlighted = highlighted.replace(
+    new RegExp(safeDesc, 'g'),
+    `<span class="prompt-level-highlight">${ld.desc}</span>`
+  );
+  el.innerHTML = highlighted;
+}
+
+function applySettings() {
+  const name = document.getElementById('username-input').value.trim() || 'CA';
+  currentName = name;
+  document.getElementById('hero-name').textContent = name;
+  updatePromptPreview(name, currentLevel);
+  const btn = document.getElementById('copy-btn');
+  btn.classList.remove('copied');
+  btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー / Copy Prompt';
+}
+
+function copyPrompt() {
+  const text = buildPrompt(currentName, currentLevel);
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.classList.add('copied');
+    btn.innerHTML = '<span>&#x2713;</span>&nbsp;コピーしました！ / Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー / Copy Prompt';
+    }, 2500);
+  }).catch(() => {
+    const el = document.getElementById('prompt-preview');
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  updatePromptPreview('CA', 'B1');
+});
+
+function openChartModal()  { document.getElementById('chart-modal').classList.add('open'); }
+function closeChartModal() { document.getElementById('chart-modal').classList.remove('open'); }
+document.getElementById('chart-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeChartModal();
+});
+
+// --- Score Chart ---
+const SCORE_LEVELS = [
+  { label:"C2", min:288, max:320, stroke:"#b068c8", light:"#ecdaf4", accent:"#e85858" },
+  { label:"C1", min:240, max:287, stroke:"#48a0d0", light:"#d8eef8", accent:"#d8b028" },
+  { label:"B2", min:192, max:239, stroke:"#60b050", light:"#dff0d8", accent:"#e08030" },
+  { label:"B1", min:128, max:191, stroke:"#d8b028", light:"#f8f0cc", accent:"#48a8d8" },
+  { label:"A2", min:64,  max:127, stroke:"#e88030", light:"#fcecd8", accent:"#68b858" },
+  { label:"A1", min:0,   max:63,  stroke:"#e85858", light:"#fce4e4", accent:"#b070c8" },
+];
+const CATS = [
+  {key:"vocabulary",    label:"語彙"},
+  {key:"grammar",       label:"文法"},
+  {key:"fluency",       label:"流暢さ"},
+  {key:"communication", label:"コミュ力"},
+  {key:"naturalness",   label:"自然さ"},
+  {key:"pronunciation", label:"発音"},
+  {key:"recovery",      label:"リカバリー"},
+  {key:"range",         label:"表現の幅"},
+];
+const MAX_CAT = 40, MAX_TOTAL = 320;
+
+function getScoreLevel(total) { return SCORE_LEVELS.find(l => total >= l.min && total <= l.max) || SCORE_LEVELS[SCORE_LEVELS.length-1]; }
+function getConversions(total) {
+  const pct = total / MAX_TOTAL;
+  const toeic = Math.round(pct * 990 / 5) * 5;
+  const ielts = Math.round((1.0 + pct * 8.0) * 2) / 2;
+  let eiken = "5級";
+  if (pct >= 0.90) eiken = "1級";
+  else if (pct >= 0.75) eiken = "準1級";
+  else if (pct >= 0.60) eiken = "2級";
+  else if (pct >= 0.45) eiken = "準2級";
+  else if (pct >= 0.30) eiken = "3級";
+  else if (pct >= 0.15) eiken = "4級";
+  return { toeic, ielts, eiken };
+}
+
+function generateChart() {
+  const raw = document.getElementById('json-input').value.trim();
+  const errEl = document.getElementById('json-error');
+  const outEl = document.getElementById('chart-output');
+  errEl.classList.remove('show');
+  outEl.classList.remove('show');
+  outEl.innerHTML = '';
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch { errEl.classList.add('show'); return; }
+  const scores = parsed.scores || {};
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const pal = getScoreLevel(total);
+  const pct = total / MAX_TOTAL;
+  const { toeic, ielts, eiken } = getConversions(total);
+
+  const cx = 110, cy = 100, r = 70, n = CATS.length;
+  const toXY  = (i,v) => { const a=(Math.PI*2*i/n)-Math.PI/2; return {x:cx+r*(v/MAX_CAT)*Math.cos(a),y:cy+r*(v/MAX_CAT)*Math.sin(a)}; };
+  const toXYF = (i,f) => { const a=(Math.PI*2*i/n)-Math.PI/2; return {x:cx+r*f*Math.cos(a),y:cy+r*f*Math.sin(a)}; };
+  const gridLines = [0.25,0.5,0.75,1.0].map(f => {
+    const pts = CATS.map((_,i) => toXYF(i,f));
+    return pts.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')+'Z';
+  });
+  const axisLines = CATS.map((_,i) => { const e=toXYF(i,1); return `<line x1="${cx}" y1="${cy}" x2="${e.x.toFixed(1)}" y2="${e.y.toFixed(1)}" stroke="#e0e0e0" stroke-width="1"/>`; }).join('');
+  const dataPoints = CATS.map((c,i) => toXY(i, scores[c.key]||0));
+  const dataPath = dataPoints.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')+'Z';
+  const labelEls = CATS.map((c,i) => {
+    const a=(Math.PI*2*i/n)-Math.PI/2;
+    const lx=cx+(r+18)*Math.cos(a), ly=cy+(r+18)*Math.sin(a);
+    return `<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="#333" font-family="'M PLUS Rounded 1c',sans-serif">${c.label}</text>`;
+  }).join('');
+  const radarSVG = `<svg width="220" height="200" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+    ${gridLines.map(d=>`<path d="${d}" fill="none" stroke="#e0e0e0" stroke-width="1"/>`).join('')}
+    ${axisLines}
+    <path d="${dataPath}" fill="${pal.stroke}" fill-opacity="0.35" stroke="#333" stroke-width="2"/>
+    ${labelEls}
+  </svg>`;
+  const cefrRows = SCORE_LEVELS.map(l => {
+    const act = l.label===pal.label;
+    return `<div style="font-size:${act?14:10}px;font-weight:${act?800:700};color:${act?'white':'#333'};background:${act?pal.stroke:'transparent'};border-radius:6px;padding:${act?'2px 8px':'1px 4px'};line-height:1.3;white-space:nowrap;">${l.label}</div>`;
+  }).join('');
+  const convCards = [
+    {label:'TOEIC換算',value:toeic,unit:'点'},
+    {label:'IELTS換算',value:ielts,unit:'/ 9.0'},
+    {label:'英検換算', value:eiken,unit:''},
+  ].map(c=>`<div class="sc-conv-card" style="border-color:${pal.stroke};"><div class="sc-conv-label">${c.label}</div><div class="sc-conv-value" style="color:${pal.stroke};">${c.value}${c.unit?`<span class="sc-conv-unit"> ${c.unit}</span>`:''}</div></div>`).join('');
+  const commentHTML = parsed.comment ? `<div class="sc-comment-box" style="border-color:${pal.stroke};"><div class="sc-comment-label" style="background:${pal.accent};">コメント</div><div class="sc-comment-text">${parsed.comment}</div></div>` : '';
+  outEl.innerHTML = `
+    <div class="sc-wrap" style="background:${pal.light};">
+      <div class="sc-header-badge"><div class="sc-badge" style="background:${pal.stroke};"><span class="sc-dot" style="background:${pal.accent};"></span>AEP SCORE<span class="sc-dot" style="background:${pal.accent};"></span></div></div>
+      <div class="sc-score-row">
+        <div class="sc-cefr-col">${cefrRows}</div>
+        <div class="sc-center">
+          <div class="sc-score-card"><div class="sc-total" style="color:${pal.stroke};">${total}</div><div style="height:6px;"></div><div class="sc-max">/ ${MAX_TOTAL}</div></div>
+          <div class="sc-date">${parsed.date||''} · Session #${parsed.session||''}</div>
+        </div>
+        <div class="sc-bar-col"><div class="sc-bar-wrap">
+          <div class="sc-bar-pct" style="color:${pal.accent};">${Math.round(pct*100)}<span style="font-size:8px;">%</span></div>
+          <div class="sc-bar-track" style="background:white;"><div class="sc-bar-fill" style="height:${Math.round(76*pct)}px;background:${pal.accent};"></div></div>
+        </div></div>
+      </div>
+      <div class="sc-radar-area">${radarSVG}</div>
+      <div class="sc-conversion-grid">${convCards}</div>
+      ${commentHTML}
+    </div>`;
+  outEl.classList.add('show');
+}
+</script>
+</body>
+</html>
