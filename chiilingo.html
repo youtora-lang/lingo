@@ -459,8 +459,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="set-section-title" style="margin-bottom:10px">アプリ設定</div>
     <div class="set-card">
       <div class="set-row">
-        <div><div class="set-label">アプリ名</div><div class="set-sub">タイトルに表示される名前</div></div>
-        <input class="set-input" type="text" id="appNameInput" placeholder="chiilingo" onchange="saveAppName(this.value)">
+        <div><div class="set-label">アプリ名</div><div class="set-sub">「〇〇lingo」の〇〇部分を入力</div></div>
+        <div style="display:flex;align-items:center;gap:2px;">
+          <input class="set-input" type="text" id="appNameInput" placeholder="chii" style="width:80px;text-align:right;" onchange="saveAppName(this.value)">
+          <span style="font-size:14px;font-weight:900;color:var(--ink-mid);">lingo</span>
+        </div>
       </div>
       <div class="set-row">
         <div><div class="set-label">文字サイズ</div><div class="set-sub">カード内のフォントサイズ</div></div>
@@ -558,11 +561,12 @@ function makeId(w){return w.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_
 let WORDS=loadWords();
 
 // 設定
-function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'chiilingo',fontSize:'medium'};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
+function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'chii',fontSize:'medium'};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function saveAppName(v){
-  const n=v.trim()||'chiilingo';
-  saveSetting('appName',n);
+  const prefix=(v.trim()||'chii').replace(/lingo$/i,'');
+  const n=prefix+'lingo';
+  saveSetting('appName',prefix);
   document.getElementById('appTitleLabel').textContent=n;
   document.getElementById('pageTitle').textContent=n;
   const pwa=document.getElementById('pwaTitle');
@@ -688,7 +692,7 @@ function updateDash(){
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
   const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める（目標${goal}語 / ${sz}語出題）→`;
-  const appName=s.appName||'chiilingo';
+  const appName=(s.appName||'chii')+'lingo';
   document.getElementById('appTitleLabel').textContent=appName;
   document.getElementById('pageTitle').textContent=appName;
   showTicketBanner();
@@ -869,7 +873,7 @@ function copyResult(){
   const prog=loadProgress();const total=WORDS.length;const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
   const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
   const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
-  const appName=loadSettings().appName||'chiilingo';
+  const appName=(loadSettings().appName||'chii')+'lingo';
   const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
   navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
   showToast('📋 コピーしました！');
@@ -906,7 +910,7 @@ function loadSettingsUI(){
   if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;
   if(s.direction)document.getElementById('directionInput').value=s.direction;
   document.getElementById('dailyGoalInput').value=s.dailyGoal||10;
-  if(s.appName)document.getElementById('appNameInput').value=s.appName;
+  if(s.appName)document.getElementById('appNameInput').value=s.appName.replace(/lingo$/i,'');
   const fs=s.fontSize||'medium';
   document.querySelectorAll('.fs-btn').forEach(b=>b.classList.toggle('active',b.dataset.fs===fs));
   document.getElementById('ticketCountDisplay').textContent=getTicketDisplay();
