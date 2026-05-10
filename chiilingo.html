@@ -806,7 +806,7 @@ function updateDash(){
   document.getElementById('progLearningFill').style.width=`${total?Math.round(lc/total*100):0}%`;
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
   const sz=calcSessionSize();const goal=s.dailyGoal||10;
-  document.getElementById('startSessionBtn').textContent=`セッションを始める（目標${goal}語 / ${sz}語出題）→`;
+  document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
   const rawName=s.appName||'chii';
   const appName=rawName.replace(/lingo$/i,'')+'lingo';
   document.getElementById('appTitleLabel').textContent=appName;
