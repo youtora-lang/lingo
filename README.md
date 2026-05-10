@@ -21,6 +21,10 @@
 
 AEP 完全ガイド👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
 
-chiilingo（じぶん専用リンゴ）👉 [https://youtora-lang.github.io/lingo/chiilingo](https://youtora-lang.github.io/lingo/chiilingo)
+chiilingo（じぶん専用リンゴ EN）👉 [https://youtora-lang.github.io/lingo/chiilingo](https://youtora-lang.github.io/lingo/chiilingo)
+
+TFP 完全ガイド👉 [https://youtora-lang.github.io/lingo/tfp_guide](https://youtora-lang.github.io/lingo/tfp_guide)
+
+michilingo（じぶん専用リンゴ FR）👉 [https://youtora-lang.github.io/lingo/michilingo](https://youtora-lang.github.io/lingo/michilingo)
 
 🌈ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
