@@ -22,27 +22,32 @@
   --accent-pink:#F4A3B8;--accent-mustard:#E8C060;
   /* フォントサイズ変数 — scope別に独立制御 */
   /* カード内（フラッシュ＆4択） */
-  --fs-word:34px;--fs-word-jp:28px;--fs-ex:17px;--fs-ex-jp:16px;--fs-ph:14px;
+  --fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;
   /* 4択選択肢 */
-  --fs-choice:16px;
+  --fs-choice:19px;--fs-choice-jp:17px;
   /* 単語一覧 */
-  --fs-wi-en:16px;--fs-wi-jp:13px;--fs-wi-ex:12px;
+  --fs-wi-en:16px;--fs-wi-jp:14px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;
+  /* その他（ダッシュボード・設定ラベルなど） */
+  --fs-other:15px;
   /* アプリ全体ベース */
   --fs-base:15px;
 }
 /* ── カード内サイズ ── */
-body.card-large{--fs-word:40px;--fs-word-jp:34px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:16px;}
-body.card-small{--fs-word:26px;--fs-word-jp:22px;--fs-ex:14px;--fs-ex-jp:13px;--fs-ph:11px;}
+body.card-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;}
+body.card-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--fs-ph:13px;}
 /* ── 4択選択肢サイズ ── */
-body.choice-large{--fs-choice:19px;}
-body.choice-small{--fs-choice:13px;}
+body.choice-large{--fs-choice:22px;--fs-choice-jp:20px;}
+body.choice-small{--fs-choice:16px;--fs-choice-jp:14px;}
 /* ── 単語一覧サイズ ── */
-body.wl-large{--fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:14px;}
-body.wl-small{--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;}
+body.wl-large{--fs-wi-en:19px;--fs-wi-jp:17px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;}
+body.wl-small{--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;}
+/* ── その他サイズ ── */
+body.other-large{--fs-other:18px;--fs-base:18px;}
+body.other-small{--fs-other:13px;--fs-base:13px;}
 /* ── アプリ全体サイズ（他を無効化） ── */
-body.global-large{--fs-word:40px;--fs-word-jp:34px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:16px;--fs-choice:19px;--fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:14px;--fs-base:17px;}
-body.global-small{--fs-word:26px;--fs-word-jp:22px;--fs-ex:14px;--fs-ex-jp:13px;--fs-ph:11px;--fs-choice:13px;--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-base:13px;}
-body.global-medium{--fs-word:34px;--fs-word-jp:28px;--fs-ex:17px;--fs-ex-jp:16px;--fs-ph:14px;--fs-choice:16px;--fs-wi-en:16px;--fs-wi-jp:13px;--fs-wi-ex:12px;--fs-base:15px;}
+body.global-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;--fs-choice:22px;--fs-choice-jp:20px;--fs-wi-en:19px;--fs-wi-jp:17px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;--fs-other:18px;--fs-base:18px;}
+body.global-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--fs-ph:13px;--fs-choice:16px;--fs-choice-jp:14px;--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;--fs-other:13px;--fs-base:13px;}
+body.global-medium{--fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;--fs-choice:19px;--fs-choice-jp:17px;--fs-wi-en:16px;--fs-wi-jp:14px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;--fs-other:15px;--fs-base:15px;}
 /* アプリ全体選択時は個別selector無効 */
 body.global-lock .fs-scope-btn{opacity:0.35;pointer-events:none;}
 /* ベースフォント */
@@ -62,7 +67,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* NAV */
 .nav{display:flex;background:var(--card);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;}
-.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;font-family:inherit;font-size:10px;font-weight:800;color:var(--ink-lt);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;font-family:inherit;font-size:calc(var(--fs-other) - 5px);font-weight:800;color:var(--ink-lt);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
 .nav-btn.active{color:var(--accent-cobalt);}
 .nav-icon{font-size:20px;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
 .nav-btn.active .nav-icon{background:var(--bg);}
@@ -70,36 +75,36 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 /* DASH */
 .dash-body{padding:16px;overflow-y:auto;flex:1;}
 .app-title-wrap{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
-.app-title{background:var(--card-flip);border:2px solid var(--border);border-radius:99px;padding:7px 22px;font-size:17px;font-weight:900;color:var(--white);letter-spacing:0.15em;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:8px;}
+.app-title{background:var(--card-flip);border:2px solid var(--border);border-radius:99px;padding:7px 22px;font-size:calc(var(--fs-other) + 2px);font-weight:900;color:var(--white);letter-spacing:0.15em;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:8px;}
 .title-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-lt);}
 
 /* Phrase of the Day */
 .phrase-card{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:20px;padding:18px 20px 16px;margin-bottom:12px;position:relative;overflow:hidden;}
 .phrase-card::after{display:none;}
 .phrase-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.phrase-label{font-size:10px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.phrase-label{font-size:calc(var(--fs-other) - 5px);font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
 .phrase-actions{display:flex;align-items:center;gap:8px;}
-.phrase-icon-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all 0.2s;}
+.phrase-icon-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-size:var(--fs-other);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all 0.2s;}
 .phrase-icon-btn:active{background:rgba(255,255,255,0.28);}
-.phrase-word{font-size:34px;font-weight:900;color:var(--gold-lt);font-family:'Zen Maru Gothic',sans-serif;line-height:1.2;margin-bottom:3px;text-align:center;}
-.phrase-jp-word{font-size:16px;font-weight:800;color:rgba(255,255,255,0.72);margin-bottom:12px;font-family:'Zen Maru Gothic',sans-serif;text-align:center;}
+.phrase-word{font-size:calc(var(--fs-other) * 2 + 4px);font-weight:900;color:var(--gold-lt);font-family:'Zen Maru Gothic',sans-serif;line-height:1.2;margin-bottom:3px;text-align:center;}
+.phrase-jp-word{font-size:calc(var(--fs-other) + 1px);font-weight:800;color:rgba(255,255,255,0.72);margin-bottom:12px;font-family:'Zen Maru Gothic',sans-serif;text-align:center;}
 .phrase-divider{height:1px;background:rgba(255,255,255,0.15);margin-bottom:12px;}
-.phrase-ex{font-size:17px;font-weight:700;color:rgba(255,255,255,0.95);line-height:1.65;margin-bottom:5px;text-align:center;}
-.phrase-ex-jp{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.6;text-align:center;}
+.phrase-ex{font-size:calc(var(--fs-other) + 2px);font-weight:700;color:rgba(255,255,255,0.95);line-height:1.65;margin-bottom:5px;text-align:center;}
+.phrase-ex-jp{font-size:var(--fs-other);color:rgba(255,255,255,0.55);line-height:1.6;text-align:center;}
 
 /* チケットバナー */
 .ticket-banner{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .ticket-emoji{font-size:26px;}
 .ticket-text{flex:1;}
-.ticket-title{font-size:14px;font-weight:900;color:#fff;}
-.ticket-sub{font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;font-weight:700;}
+.ticket-title{font-size:var(--fs-other);font-weight:900;color:#fff;}
+.ticket-sub{font-size:calc(var(--fs-other) - 2px);color:rgba(255,255,255,0.65);margin-top:2px;font-weight:700;}
 
 /* スタッツ */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .stat-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:13px 14px;}
-.stat-label{font-size:10px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
-.stat-val{font-size:28px;font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
-.stat-unit{font-size:11px;color:var(--ink-lt);margin-top:3px;font-weight:700;}
+.stat-label{font-size:calc(var(--fs-other) - 5px);font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+.stat-val{font-size:calc(var(--fs-other) + 13px);font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
+.stat-unit{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:3px;font-weight:700;}
 .stat-card.hl{background:var(--accent-green);border-color:var(--border);}
 .stat-card.hl .stat-label,.stat-card.hl .stat-unit{color:rgba(255,255,255,0.7);}
 .stat-card.hl .stat-val{color:#fff;}
@@ -109,9 +114,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* 進捗 */
 .section-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;}
-.section-title{font-size:11px;font-weight:900;color:var(--ink-mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-size:calc(var(--fs-other) - 4px);font-weight:900;color:var(--ink-mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;}
 .prog-row{margin-bottom:10px;}
-.prog-header{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:5px;}
+.prog-header{display:flex;justify-content:space-between;font-size:calc(var(--fs-other) - 3px);font-weight:800;margin-bottom:5px;}
 .prog-key{color:var(--ink-mid);}.prog-num{color:var(--ink-lt);}
 .prog-bar{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;border:1.5px solid var(--bg-deep);}
 .prog-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
@@ -119,27 +124,27 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* モード・スタート */
 .mode-row{display:flex;gap:10px;margin-bottom:10px;}
-.mode-btn{flex:1;padding:11px 8px;border:2px solid var(--border);background:var(--card);border-radius:14px;font-family:inherit;font-size:12px;font-weight:800;color:var(--ink-mid);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.15s;}
+.mode-btn{flex:1;padding:11px 8px;border:2px solid var(--border);background:var(--card);border-radius:14px;font-family:inherit;font-size:calc(var(--fs-other) - 3px);font-weight:800;color:var(--ink-mid);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.15s;}
 .mode-btn .mode-icon{font-size:22px;}
 .mode-btn.selected{border-color:var(--card-flip);background:var(--card-flip);color:var(--white);}
-.start-btn{width:100%;padding:16px;background:var(--gold-lt);color:var(--ink);border:2px solid var(--border);border-radius:16px;font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.15s;}
+.start-btn{width:100%;padding:16px;background:var(--gold-lt);color:var(--ink);border:2px solid var(--border);border-radius:16px;font-family:inherit;font-size:calc(var(--fs-other) + 1px);font-weight:900;cursor:pointer;transition:all 0.15s;}
 .start-btn:active{transform:translateY(2px);}
 
 /* FC HEADER */
 .fc-header{background:var(--card);border-bottom:2px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
-.fc-title{font-size:13px;font-weight:900;color:var(--ink);}
-.fc-close{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:13px;cursor:pointer;color:var(--ink-mid);display:flex;align-items:center;justify-content:center;font-weight:900;}
+.fc-title{font-size:var(--fs-other);font-weight:900;color:var(--ink);}
+.fc-close{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:var(--fs-other);cursor:pointer;color:var(--ink-mid);display:flex;align-items:center;justify-content:center;font-weight:900;}
 .prog-wrap{padding:10px 16px 8px;background:var(--card);border-bottom:1.5px solid var(--bg-deep);}
 .prog-bar-thin{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;}
 .prog-bar-fill{height:100%;background:var(--card-flip);border-radius:99px;transition:width 0.4s ease;}
-.prog-nums{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-lt);font-weight:800;margin-top:4px;}
+.prog-nums{display:flex;justify-content:space-between;font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);font-weight:800;margin-top:4px;}
 
 /* CARD AREA — 固定レイアウト */
 .card-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:14px 16px 8px;gap:10px;}
 
 /* カード：フラッシュ・クイズ共通で高さ固定 */
 .flashcard{width:100%;max-width:360px;perspective:1000px;cursor:pointer;flex-shrink:0;}
-.flashcard-inner{position:relative;width:100%;height:300px;transform-style:preserve-3d;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);}
+.flashcard-inner{position:relative;width:100%;height:450px;transform-style:preserve-3d;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);}
 .flashcard-inner.flipped{transform:rotateY(180deg);}
 .fc-face{position:absolute;inset:0;backface-visibility:hidden;border:2px solid var(--border);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:15px 20px 15px;text-align:center;overflow:hidden;}
 .fc-front{background:var(--card);}
@@ -151,14 +156,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .gold-tag{display:inline-block;background:var(--gold-lt);border:2px solid var(--border);border-radius:99px;padding:3px 14px;font-size:11px;font-weight:900;color:var(--ink);flex-shrink:0;}
 .fc-word-block{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:4px;min-height:0;width:100%;}
 .word-en{font-size:var(--fs-word);font-weight:900;color:var(--ink);font-family:'Zen Maru Gothic',sans-serif;line-height:1.25;}
-.word-ph{font-size:var(--fs-ph);color:var(--ink-lt);font-weight:700;}
-.ex-area-front{width:100%;border:2px dashed var(--bg-deep);border-radius:12px;padding:9px 13px;background:var(--bg);flex-shrink:0;}
+.word-ph{font-size:var(--fs-ph);color:var(--accent-green);font-weight:700;}
+.ex-area-front{width:100%;border:2px dashed var(--bg-deep);border-radius:12px;padding:9px 13px;background:var(--bg);flex-shrink:0;height:150px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
 .ex-text{font-size:var(--fs-ex);color:var(--ink);line-height:1.7;font-weight:700;text-align:left;}
 
 /* 背面 */
 .fc-back-top{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:5px;min-height:0;}
 .word-jp{font-size:var(--fs-word-jp);font-weight:900;color:var(--gold-lt);font-family:'Zen Maru Gothic',sans-serif;line-height:1.3;text-align:center;}
-.ex-area-back{width:100%;border:1.5px dashed rgba(255,255,255,0.3);border-radius:12px;padding:9px 13px;flex-shrink:0;}
+.ex-area-back{width:100%;border:1.5px dashed rgba(255,255,255,0.3);border-radius:12px;padding:9px 13px;flex-shrink:0;height:150px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
 .ex-text-back{font-size:var(--fs-ex);color:#fff;line-height:1.7;font-weight:700;text-align:left;}
 .ex-jp-back{font-size:var(--fs-ex-jp);color:rgba(255,255,255,0.65);margin-top:6px;text-align:left;line-height:1.65;}
 .mastery-label{font-size:10px;color:rgba(255,255,255,0.5);margin-top:5px;font-weight:800;flex-shrink:0;}
@@ -187,7 +192,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .btn-ng{background:var(--card);color:var(--ink-mid);}
 
 .counter-row{display:flex;gap:16px;justify-content:center;flex-shrink:0;}
-.counter{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:900;color:var(--ink-mid);}
+.counter{display:flex;align-items:center;gap:5px;font-size:var(--fs-other);font-weight:900;color:var(--ink-mid);}
 .c-dot{width:9px;height:9px;border-radius:50%;}
 .c-ok{background:var(--correct);}.c-ng{background:var(--wrong);}
 
@@ -243,35 +248,35 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* 設定 */
 .set-body{padding:16px;overflow-y:auto;flex:1;}
-.set-section-title{font-size:11px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.set-section-title{font-size:calc(var(--fs-other) - 4px);font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
 .set-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:14px;margin-bottom:16px;}
 .set-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1.5px dashed var(--bg-deep);}
 .set-row:last-child{border-bottom:none;}
-.set-label{font-size:14px;font-weight:800;color:var(--ink);}
-.set-sub{font-size:11px;color:var(--ink-lt);margin-top:2px;font-weight:700;}
-.set-input{padding:6px 10px;border:2px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--bg);width:130px;text-align:right;font-weight:800;}
-.set-note{font-size:12px;color:var(--ink-mid);line-height:1.75;padding:6px 0;font-weight:600;}
-.set-note-hl{background:var(--gold-bg);border:1.5px solid var(--gold-lt);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--ink-mid);line-height:1.8;font-weight:600;margin-bottom:4px;}
-.reset-btn{width:100%;padding:13px;background:none;border:2px solid #C8A8D8;border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;color:var(--wrong);cursor:pointer;}
+.set-label{font-size:var(--fs-other);font-weight:800;color:var(--ink);}
+.set-sub{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:2px;font-weight:700;}
+.set-input{padding:6px 10px;border:2px solid var(--border);border-radius:8px;font-family:inherit;font-size:var(--fs-other);color:var(--ink);background:var(--bg);min-width:100px;max-width:180px;text-align:right;font-weight:800;}
+.set-note{font-size:calc(var(--fs-other) - 3px);color:var(--ink-mid);line-height:1.75;padding:6px 0;font-weight:600;}
+.set-note-hl{background:var(--gold-bg);border:1.5px solid var(--gold-lt);border-radius:12px;padding:12px 14px;font-size:calc(var(--fs-other) - 3px);color:var(--ink-mid);line-height:1.8;font-weight:600;margin-bottom:4px;}
+.reset-btn{width:100%;padding:13px;background:none;border:2px solid #C8A8D8;border-radius:14px;font-family:inherit;font-size:var(--fs-other);font-weight:900;color:var(--wrong);cursor:pointer;}
 .fs-selector{display:flex;gap:6px;}
-.fs-btn{padding:5px 12px;border-radius:99px;border:2px solid var(--border);background:var(--card);font-family:inherit;font-size:12px;font-weight:900;color:var(--ink-mid);cursor:pointer;}
+.fs-btn{padding:5px 12px;border-radius:99px;border:2px solid var(--border);background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-mid);cursor:pointer;}
 .fs-btn.active{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
 .fs-scope-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.fs-scope-label{font-size:13px;font-weight:800;color:var(--ink);min-width:72px;}
+.fs-scope-label{font-size:calc(var(--fs-other) - 2px);font-weight:800;color:var(--ink);min-width:72px;}
 
 /* TOAST */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card-flip);color:white;font-size:13px;font-weight:900;padding:10px 20px;border-radius:99px;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999;border:2px solid var(--card-flip-deep);}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card-flip);color:white;font-size:var(--fs-other);font-weight:900;padding:10px 20px;border-radius:99px;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999;border:2px solid var(--card-flip-deep);}
 .toast.show{opacity:1;}
 
 /* モーダル */
 .modal-overlay{position:fixed;inset:0;background:rgba(42,42,42,0.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.hidden{display:none;}
 .modal-box{background:var(--card);border-radius:20px;padding:24px;width:100%;max-width:360px;border:2px solid var(--border);}
-.modal-title{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:8px;}
-.modal-sub{font-size:13px;color:var(--ink-mid);margin-bottom:16px;line-height:1.6;}
-.modal-textarea{width:100%;height:120px;border:2px solid var(--border);border-radius:10px;padding:10px;font-size:12px;font-family:monospace;resize:none;background:var(--bg);color:var(--ink);box-sizing:border-box;margin-bottom:14px;}
+.modal-title{font-size:calc(var(--fs-other) + 1px);font-weight:900;color:var(--ink);margin-bottom:8px;}
+.modal-sub{font-size:calc(var(--fs-other) - 2px);color:var(--ink-mid);margin-bottom:16px;line-height:1.6;}
+.modal-textarea{width:100%;height:120px;border:2px solid var(--border);border-radius:10px;padding:10px;font-size:calc(var(--fs-other) - 3px);font-family:monospace;resize:none;background:var(--bg);color:var(--ink);box-sizing:border-box;margin-bottom:14px;}
 .modal-btns{display:flex;gap:10px;}
-.modal-btn{flex:1;padding:12px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;border:2px solid var(--border);}
+.modal-btn{flex:1;padding:12px;border-radius:12px;font-family:inherit;font-size:var(--fs-other);font-weight:900;cursor:pointer;border:2px solid var(--border);}
 .modal-btn-primary{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
 .modal-btn-danger{background:#C8A8D8;color:white;border-color:var(--wrong);}
 .modal-btn-cancel{background:var(--bg);color:var(--ink-mid);}
@@ -369,8 +374,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <div class="fc-face fc-front">
           <button class="speak-btn" id="speakBtn" onclick="speakWord(event)">🔊</button>
           <div class="gold-tag" id="fcTag">英語 → 日本語</div>
+          <div class="pip-row" id="masteryPips" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-word-block">
-            <div class="pip-row" id="masteryPips"></div>
             <div class="word-en" id="wordEn">—</div>
             <div class="word-ph" id="wordPh"></div>
           </div>
@@ -378,8 +383,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
         <div class="fc-face fc-back">
           <button class="speak-btn" id="speakBtnBack" onclick="speakWordBack(event)" style="display:none;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);color:white;">🔊</button>
+          <div class="gold-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;" id="fcTagBack">日本語 → 英語</div>
+          <div class="pip-row" id="masteryPipsBack" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-back-top">
-            <div class="pip-row" id="masteryPipsBack"></div>
             <div class="word-jp" id="wordJp">—</div>
           </div>
           <div class="ex-area-back">
@@ -418,12 +424,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="quiz-question" style="position:relative;">
       <button class="speak-btn" id="quizSpeakBtn" onclick="speakQuizWord()" style="position:absolute;top:10px;right:10px;">🔊</button>
       <div class="gold-tag" id="quizTag">英語 → 日本語</div>
+      <div class="pip-row" id="quizMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
       <div class="fc-word-block">
-        <div class="pip-row" id="quizMasteryPips" style="justify-content:center;"></div>
         <div class="word-en" id="quizWordEn">—</div>
         <div class="word-ph" id="quizWordPh"></div>
       </div>
-      <div class="ex-area-front" id="quizExArea" style="display:none;width:100%"><div class="ex-text" id="quizWordEx"></div></div>
+      <div class="ex-area-front" id="quizExArea" style="display:none;width:100%;height:76px;justify-content:center;"><div class="ex-text" id="quizWordEx"></div></div>
     </div>
     <div class="quiz-choices" id="quizChoices"></div>
     <div class="counter-row">
@@ -485,7 +491,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="set-row">
         <div><div class="set-label">アプリ名</div><div class="set-sub">「〇〇lingo」の〇〇部分を入力</div></div>
         <div style="display:flex;align-items:center;gap:2px;">
-          <input class="set-input" type="text" id="appNameInput" placeholder="chii" style="width:80px;text-align:right;" onchange="saveAppName(this.value)">
+          <input class="set-input" type="text" id="appNameInput" placeholder="chii" style="min-width:120px;max-width:160px;text-align:right;" onchange="saveAppName(this.value)">
           <span style="font-size:14px;font-weight:900;color:var(--ink-mid);">lingo</span>
         </div>
       </div>
@@ -517,12 +523,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
               <button class="fs-btn" data-scope="choice" data-fs="large" onclick="setFontSizeScope('choice','large',this)">大</button>
             </div>
           </div>
-          <div class="fs-scope-row fs-scope-btn" id="fs-row-wl">
-            <div class="fs-scope-label">単語一覧</div>
+          <div class="fs-scope-row fs-scope-btn" id="fs-row-other">
+            <div class="fs-scope-label">その他</div>
             <div class="fs-selector">
-              <button class="fs-btn" data-scope="wl" data-fs="small" onclick="setFontSizeScope('wl','small',this)">小</button>
-              <button class="fs-btn active" data-scope="wl" data-fs="medium" onclick="setFontSizeScope('wl','medium',this)">中</button>
-              <button class="fs-btn" data-scope="wl" data-fs="large" onclick="setFontSizeScope('wl','large',this)">大</button>
+              <button class="fs-btn" data-scope="other" data-fs="small" onclick="setFontSizeScope('other','small',this)">小</button>
+              <button class="fs-btn active" data-scope="other" data-fs="medium" onclick="setFontSizeScope('other','medium',this)">中</button>
+              <button class="fs-btn" data-scope="other" data-fs="large" onclick="setFontSizeScope('other','large',this)">大</button>
             </div>
           </div>
         </div>
@@ -533,7 +539,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="set-card">
       <div class="set-row">
         <div><div class="set-label">出題方向</div><div class="set-sub">表面に出す言語</div></div>
-        <select class="set-input" id="directionInput" onchange="saveSetting('direction',this.value)">
+        <select class="set-input" id="directionInput" style="min-width:140px;max-width:180px;" onchange="saveSetting('direction',this.value)">
           <option value="en2jp">英語 → 日本語</option>
           <option value="jp2en">日本語 → 英語</option>
         </select>
@@ -664,20 +670,20 @@ function setFontSizeScope(scope,fs,btn){
 function applyFontSizes(sizes){
   if(!sizes)sizes={};
   const global=sizes.global||'medium';
-  // グローバルが off 以外 → 全体クラス適用、個別ロック
   document.body.classList.remove('global-small','global-medium','global-large','global-lock',
-    'card-small','card-large','choice-small','choice-large','wl-small','wl-large');
+    'card-small','card-large','choice-small','choice-large','wl-small','wl-large','other-small','other-large');
   if(global==='small'){document.body.classList.add('global-small','global-lock');}
   else if(global==='large'){document.body.classList.add('global-large','global-lock');}
   else if(global==='medium'){document.body.classList.add('global-medium','global-lock');}
   else{
-    // 個別適用
     if(sizes.card==='small')document.body.classList.add('card-small');
     if(sizes.card==='large')document.body.classList.add('card-large');
     if(sizes.choice==='small')document.body.classList.add('choice-small');
     if(sizes.choice==='large')document.body.classList.add('choice-large');
     if(sizes.wl==='small')document.body.classList.add('wl-small');
     if(sizes.wl==='large')document.body.classList.add('wl-large');
+    if(sizes.other==='small')document.body.classList.add('other-small');
+    if(sizes.other==='large')document.body.classList.add('other-large');
   }
 }
 
@@ -751,10 +757,12 @@ function buildSessionDeck(prog){
   const early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
   const late=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;});
   const nw=sorted.filter(w=>getStatus(w.id,prog)==='new');
-  const nN=Math.round(goal*0.5),nE=Math.round(goal*0.35),nL=goal-nN-nE;
-  let deck=[...nw.slice(0,nN),...early.slice(0,nE),...late.slice(0,nL)];
-  if(deck.length<goal){const used=new Set(deck.map(w=>w.id));deck.push(...sorted.filter(w=>!used.has(w.id)&&getStatus(w.id,prog)!=='master').slice(0,goal-deck.length));}
-  if(!deck.length)deck=sorted.filter(w=>getStatus(w.id,prog)!=='master').slice(0,goal);
+  const master=sorted.filter(w=>getStatus(w.id,prog)==='master');
+  // 定着済みは約10%をランダムに混入（最低1枚、上限はgoalの10%）
+  const nM=Math.max(1,Math.min(Math.round(goal*0.1),master.length));
+  const nN=Math.round(goal*0.45),nE=Math.round(goal*0.3),nL=goal-nM-Math.round(goal*0.45)-Math.round(goal*0.3);
+  let deck=[...nw.slice(0,nN),...early.slice(0,nE),...late.slice(0,Math.max(0,nL)),...shuffle(master).slice(0,nM)];
+  if(deck.length<goal){const used=new Set(deck.map(w=>w.id));deck.push(...sorted.filter(w=>!used.has(w.id)).slice(0,goal-deck.length));}
   if(!deck.length)deck=sorted.slice(0,goal);
   return shuffle(deck).slice(0,goal);
 }
@@ -886,7 +894,11 @@ function judge(isOk){
   if(!isFlipped)return;
   const q=sessionDeck[sessionCurrent];const prog=loadProgress();
   if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
-  if(isOk){prog[q.id].correct++;sessionOk++;}else{prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);}
+  if(isOk){prog[q.id].correct++;sessionOk++;}else{
+    // 定着済み（5回以上）が不正解なら3回正解にリセット
+    if(prog[q.id].correct>=5)prog[q.id].correct=3;
+    prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);
+  }
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);sessionCurrent++;
   document.getElementById('cardInner').classList.remove('flipped');document.getElementById('actionRow').classList.remove('show');
   if(sessionCurrent>=sessionDeck.length){setTimeout(()=>finishSession(),450);}else{setTimeout(()=>renderFC(),450);}
@@ -917,7 +929,8 @@ function renderQuiz(){
   const qsb=document.getElementById('quizSpeakBtn');qsb.style.display=isJp2En?'none':'block';qsb._word=q.w;
   const ft=isJp2En?(q.exJp||''):(q.ex||'');
   const qa=document.getElementById('quizExArea');
-  if(ft){document.getElementById('quizWordEx').textContent=ft;qa.style.display='';}else{qa.style.display='none';}
+  if(ft){document.getElementById('quizWordEx').textContent=ft;qa.style.visibility='';qa.style.display='';}
+  else{qa.style.display='';qa.style.visibility='hidden';}
   const total=sessionDeck.length;
   document.getElementById('quizProgFill').style.width=`${Math.round(quizCurrent/total*100)}%`;
   document.getElementById('quizProgLabel').textContent=`${quizCurrent+1}/${total}`;
@@ -942,7 +955,11 @@ function renderQuiz(){
 function selectQuizAnswer(btn,isCorrect,q){
   if(quizAnswered)return;quizAnswered=true;
   const prog=loadProgress();if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
-  if(isCorrect){prog[q.id].correct++;quizOk++;}else{prog[q.id].wrong++;quizNg++;quizMissed.push(q);}
+  if(isCorrect){prog[q.id].correct++;quizOk++;}else{
+    // 定着済み（5回以上）が不正解なら3回正解にリセット
+    if(prog[q.id].correct>=5)prog[q.id].correct=3;
+    prog[q.id].wrong++;quizNg++;quizMissed.push(q);
+  }
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);
   document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
   btn.classList.add(isCorrect?'correct':'wrong');
@@ -1034,7 +1051,7 @@ function loadSettingsUI(){
   if(s.appName)document.getElementById('appNameInput').value=s.appName.replace(/lingo$/i,'');
   const sizes=s.fontSizes||{global:'medium'};
   // 各スコープのactiveボタンを反映
-  ['global','card','choice','wl'].forEach(scope=>{
+  ['global','card','choice','wl','other'].forEach(scope=>{
     const val=sizes[scope]||(scope==='global'?'medium':'medium');
     document.querySelectorAll(`[data-scope="${scope}"]`).forEach(b=>b.classList.toggle('active',b.dataset.fs===val));
   });
