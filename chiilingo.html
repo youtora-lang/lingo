@@ -387,6 +387,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <div class="pip-row" id="masteryPipsBack" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-back-top">
             <div class="word-jp" id="wordJp">—</div>
+            <div class="word-ph" id="wordPhBack" style="color:var(--accent-green);opacity:0.85;"></div>
           </div>
           <div class="ex-area-back">
             <div class="ex-text-back" id="wordExBack"></div>
@@ -758,11 +759,22 @@ function buildSessionDeck(prog){
   const late=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;});
   const nw=sorted.filter(w=>getStatus(w.id,prog)==='new');
   const master=sorted.filter(w=>getStatus(w.id,prog)==='master');
-  // 定着済みは約10%をランダムに混入（最低1枚、上限はgoalの10%）
-  const nM=Math.max(1,Math.min(Math.round(goal*0.1),master.length));
-  const nN=Math.round(goal*0.45),nE=Math.round(goal*0.3),nL=goal-nM-Math.round(goal*0.45)-Math.round(goal*0.3);
-  let deck=[...nw.slice(0,nN),...early.slice(0,nE),...late.slice(0,Math.max(0,nL)),...shuffle(master).slice(0,nM)];
-  if(deck.length<goal){const used=new Set(deck.map(w=>w.id));deck.push(...sorted.filter(w=>!used.has(w.id)).slice(0,goal-deck.length));}
+  // 割合計算（1枚未満になるカテゴリは省略）
+  const nN=Math.round(goal*0.5);
+  const nE=Math.round(goal*0.3);
+  const nL=Math.round(goal*0.1);
+  const nM=Math.round(goal*0.1);
+  let deck=[];
+  if(nN>=1)deck.push(...nw.slice(0,nN));
+  if(nE>=1)deck.push(...early.slice(0,nE));
+  if(nL>=1)deck.push(...late.slice(0,nL));
+  if(nM>=1)deck.push(...shuffle(master).slice(0,nM));
+  // 足りない場合は新語→学習中の順で補充
+  if(deck.length<goal){
+    const used=new Set(deck.map(w=>w.id));
+    const fill=[...nw,...early,...late].filter(w=>!used.has(w.id));
+    deck.push(...fill.slice(0,goal-deck.length));
+  }
   if(!deck.length)deck=sorted.slice(0,goal);
   return shuffle(deck).slice(0,goal);
 }
@@ -786,9 +798,18 @@ function speakEn(text){
   if(!text||typeof speechSynthesis==='undefined')return;
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.9;
-  const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
-  if(v){u.voice=v;}
-  speechSynthesis.speak(u);
+  const doSpeak=()=>{
+    const voices=speechSynthesis.getVoices();
+    const v=voices.find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))
+      ||voices.find(v=>v.lang==='en-US')
+      ||voices.find(v=>v.lang.startsWith('en'));
+    if(v){u.voice=v;}
+    speechSynthesis.speak(u);
+  };
+  // Androidはvoicesが非同期で読み込まれるためリトライ
+  const voices=speechSynthesis.getVoices();
+  if(voices.length>0){doSpeak();}
+  else{speechSynthesis.onvoiceschanged=()=>{doSpeak();speechSynthesis.onvoiceschanged=null;};}
 }
 
 // ダッシュボード
@@ -867,6 +888,7 @@ function renderFC(){
   document.getElementById('exAreaFront').style.display=ft?'':'none';
   // 裏面
   document.getElementById('wordJp').textContent=isJp2En?q.w:q.jp;
+  document.getElementById('wordPhBack').textContent=q.ph||'';
   document.getElementById('wordExBack').textContent=q.ex||'';
   document.getElementById('wordExJpBack').textContent=q.exJp||'';
   document.getElementById('masteryLabel').textContent=mastery>=3?'✅ 定着済み':mastery>=1?`学習中（${mastery}回正解）`:'初めて見る単語';
@@ -922,14 +944,16 @@ function speakWord(e){
 
 // クイズ
 function renderQuiz(){
-  quizAnswered=false;document.getElementById('quizChoices').innerHTML='';
+  quizAnswered=false;
+  const container=document.getElementById('quizChoices');
+  container.innerHTML='';
+  container.style.visibility='visible'; // 必ずvisibleに戻す
   const q=sessionDeck[quizCurrent];const prog=loadProgress();const mastery=getMastery(q.id,prog);
   makePips('quizMasteryPips',mastery,false);
   const isJp2En=loadSettings().direction==='jp2en';
   document.getElementById('quizTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
   document.getElementById('quizWordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('quizWordPh').textContent=isJp2En?'':(q.ph||'');
-  // スピークボタン：en2jpのみ
   const qsb=document.getElementById('quizSpeakBtn');qsb.style.display=isJp2En?'none':'block';qsb._word=q.w;
   const ft=isJp2En?(q.exJp||''):(q.ex||'');
   const qa=document.getElementById('quizExArea');
@@ -940,15 +964,11 @@ function renderQuiz(){
   document.getElementById('quizProgLabel').textContent=`${quizCurrent+1}/${total}`;
   document.getElementById('quizProgRemain').textContent=`残り${total-quizCurrent}問`;
   document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
-  // ダミー候補：WORDS → sessionDeck の順で補充し、必ず3択分確保
-  const pool=[];
-  const usedIds=new Set([q.id]);
-  // まず WORDS から
+  // ダミー候補：WORDS → sessionDeck の順で補充
+  const pool=[];const usedIds=new Set([q.id]);
   shuffle(WORDS.filter(w=>w.id!==q.id)).forEach(w=>{if(pool.length<3&&!usedIds.has(w.id)){pool.push(w);usedIds.add(w.id);}});
-  // 足りなければ sessionDeck から補充
   if(pool.length<3){shuffle(sessionDeck.filter(w=>w.id!==q.id)).forEach(w=>{if(pool.length<3&&!usedIds.has(w.id)){pool.push(w);usedIds.add(w.id);}});}
   const choices=shuffle([q,...pool]);
-  const container=document.getElementById('quizChoices');container.innerHTML='';
   choices.forEach((c,i)=>{
     const btn=document.createElement('button');btn.className='quiz-choice';
     btn.innerHTML=`<span class="quiz-num">${i+1}</span>${isJp2En?c.w:c.jp}`;
@@ -960,7 +980,6 @@ function selectQuizAnswer(btn,isCorrect,q){
   if(quizAnswered)return;quizAnswered=true;
   const prog=loadProgress();if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
   if(isCorrect){prog[q.id].correct++;quizOk++;}else{
-    // 定着済み（5回以上）が不正解なら3回正解にリセット
     if(prog[q.id].correct>=5)prog[q.id].correct=3;
     prog[q.id].wrong++;quizNg++;quizMissed.push(q);
   }
@@ -973,13 +992,14 @@ function selectQuizAnswer(btn,isCorrect,q){
   }
   document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
   setTimeout(()=>{
-    document.getElementById('quizChoices').style.visibility='hidden';
-    setTimeout(()=>{
-      quizCurrent++;
-      if(quizCurrent>=sessionDeck.length){addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();}
-      else{renderQuiz();document.getElementById('quizChoices').style.visibility='visible';}
-    },50);
-  },500);
+    quizCurrent++;
+    if(quizCurrent>=sessionDeck.length){
+      addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+      sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
+    }else{
+      renderQuiz(); // visibility はrenderQuiz冒頭で復元
+    }
+  },600);
 }
 function speakQuizWord(){speakEn(document.getElementById('quizSpeakBtn')._word||'');}
 
@@ -1069,6 +1089,20 @@ function importWords(mode){
   if(!raw){showToast('⚠️ テキストが空です');return;}
   let incoming;try{incoming=JSON.parse(raw);}catch(e){showToast('⚠️ JSONの形式が正しくありません');return;}
   if(!Array.isArray(incoming)||!incoming.length){showToast('⚠️ 配列形式で入力してください');return;}
+  if(mode==='reset'){
+    openModal('replaceConfirmModal');
+    document.getElementById('replaceConfirmModal')._pendingData=incoming;
+    return;
+  }
+  _doImportWords(incoming,'add');
+}
+function confirmReplace(){
+  const modal=document.getElementById('replaceConfirmModal');
+  const incoming=modal._pendingData;
+  closeModal('replaceConfirmModal');
+  if(incoming)_doImportWords(incoming,'reset');
+}
+function _doImportWords(incoming,mode){
   const existing=mode==='reset'?[]:[...WORDS];
   const maxNum=existing.length?Math.max(...existing.map(w=>w.num||0)):0;
   let added=0,updated=0;
@@ -1133,6 +1167,18 @@ try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
 (function(){const s=loadSettings();applyFontSizes(s.fontSizes);})();
 updateDash();
 </script>
+
+<!-- 全置換確認 -->
+<div class="modal-overlay hidden" id="replaceConfirmModal">
+  <div class="modal-box">
+    <div class="modal-title">⚠️ 語彙を全置換</div>
+    <div class="modal-sub">現在の全語彙（学習進捗を除く）が削除され、新しいデータに置き換えられます。この操作は取り消せません。</div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('replaceConfirmModal')">キャンセル</button>
+      <button class="modal-btn modal-btn-danger" onclick="confirmReplace()">全置換する</button>
+    </div>
+  </div>
+</div>
 
 <!-- インポートモーダル -->
 <div class="modal-overlay hidden" id="importModal">
