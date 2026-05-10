@@ -524,6 +524,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
               <button class="fs-btn" data-scope="choice" data-fs="large" onclick="setFontSizeScope('choice','large',this)">大</button>
             </div>
           </div>
+          <div class="fs-scope-row fs-scope-btn" id="fs-row-wl">
+            <div class="fs-scope-label">単語一覧</div>
+            <div class="fs-selector">
+              <button class="fs-btn" data-scope="wl" data-fs="small" onclick="setFontSizeScope('wl','small',this)">小</button>
+              <button class="fs-btn active" data-scope="wl" data-fs="medium" onclick="setFontSizeScope('wl','medium',this)">中</button>
+              <button class="fs-btn" data-scope="wl" data-fs="large" onclick="setFontSizeScope('wl','large',this)">大</button>
+            </div>
+          </div>
           <div class="fs-scope-row fs-scope-btn" id="fs-row-other">
             <div class="fs-scope-label">その他</div>
             <div class="fs-selector">
@@ -794,22 +802,33 @@ function renderPhraseOfDay(random=false){
 function speakPhrase(){speakEn(document.getElementById('phraseSpeakBtn')._word||'');}
 
 // TTS
+let _ttsTimeout=null;
 function speakEn(text){
   if(!text||typeof speechSynthesis==='undefined')return;
+  if(_ttsTimeout){clearTimeout(_ttsTimeout);}
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.9;
   const doSpeak=()=>{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';u.rate=0.85;u.pitch=1;u.volume=1;
     const voices=speechSynthesis.getVoices();
     const v=voices.find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))
       ||voices.find(v=>v.lang==='en-US')
-      ||voices.find(v=>v.lang.startsWith('en'));
-    if(v){u.voice=v;}
+      ||voices.find(v=>v.lang.startsWith('en'))
+      ||voices[0];
+    if(v)u.voice=v;
     speechSynthesis.speak(u);
   };
-  // Androidはvoicesが非同期で読み込まれるためリトライ
-  const voices=speechSynthesis.getVoices();
-  if(voices.length>0){doSpeak();}
-  else{speechSynthesis.onvoiceschanged=()=>{doSpeak();speechSynthesis.onvoiceschanged=null;};}
+  // cancel後に少し待ってからspeak（Android対策）
+  _ttsTimeout=setTimeout(()=>{
+    const voices=speechSynthesis.getVoices();
+    if(voices.length>0){doSpeak();}
+    else{
+      speechSynthesis.onvoiceschanged=()=>{
+        speechSynthesis.onvoiceschanged=null;
+        doSpeak();
+      };
+    }
+  },100);
 }
 
 // ダッシュボード
@@ -902,15 +921,10 @@ function renderFC(){
 
 function speakWordBack(e){
   e.stopPropagation();
-  const btn=document.getElementById('speakBtnBack');const word=btn._word||'';
+  const btn=document.getElementById('speakBtnBack');
   btn.classList.add('speaking');btn.textContent='🔉';
-  if(typeof speechSynthesis!=='undefined'){
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=0.9;
-    const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
-    if(v){u.voice=v;}
-    u.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊';};speechSynthesis.speak(u);
-  }
+  speakEn(btn._word||'');
+  setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
 }
 function flipCard(){if(isFlipped)return;isFlipped=true;document.getElementById('cardInner').classList.add('flipped');document.getElementById('flipBtn').classList.add('hidden');document.getElementById('actionRow').classList.add('show');}
 
@@ -930,16 +944,10 @@ function judge(isOk){
 
 function speakWord(e){
   e.stopPropagation();
-  const btn=document.getElementById('speakBtn');const word=btn._word||'';
+  const btn=document.getElementById('speakBtn');
   btn.classList.add('speaking');btn.textContent='🔉';
-  if(typeof speechSynthesis!=='undefined'){
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=0.9;
-    const v=speechSynthesis.getVoices().find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))||speechSynthesis.getVoices().find(v=>v.lang==='en-US');
-    if(v){u.voice=v;}
-    u.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊';};
-    speechSynthesis.speak(u);
-  }
+  speakEn(btn._word||'');
+  setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
 }
 
 // クイズ
