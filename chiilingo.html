@@ -460,6 +460,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
   <div class="card-area">
     <div class="quiz-question" style="position:relative;height:300px;">
+      <button class="speak-btn" id="spellSpeakBtn" onclick="speakSpell()" style="position:absolute;top:10px;right:10px;">🔊</button>
       <div class="gold-tag">日本語 → 英語</div>
       <div class="fc-word-block" style="width:100%">
         <div class="pip-row" id="spellMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
@@ -668,7 +669,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-13 18:34 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-13 23:25 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1052,6 +1053,12 @@ function speakQuizWord(){speakEn(document.getElementById('quizSpeakBtn')._word||
 // ══ スペリング ══
 let spellCurrent=0,spellOk=0,spellNg=0,spellMissed=[],spellAnswered=false;
 
+function speakSpell(){
+  const btn=document.getElementById('spellSpeakBtn');
+  btn.classList.add('speaking');btn.textContent='🔉';
+  speakEn(btn._word||'');
+  setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
+}
 function normalizeSpell(s){
   return s.toLowerCase().replace(/[\s\-''\u2019]/g,'');
 }
@@ -1070,6 +1077,8 @@ function renderSpell(){
   makePips('spellMasteryPips',mastery,false);
 
   document.getElementById('spellWordJp').textContent=q.jp||'—';
+  const spellBtn=document.getElementById('spellSpeakBtn');
+  spellBtn._word=q.w;spellBtn.classList.remove('speaking');spellBtn.textContent='🔊';
   const exJp=q.exJp||'';
   const ea=document.getElementById('spellExArea');
   if(exJp){document.getElementById('spellWordExJp').textContent=exJp;ea.style.display='';}
