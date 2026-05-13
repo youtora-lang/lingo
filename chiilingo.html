@@ -94,6 +94,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .phrase-ex{font-size:calc(var(--fs-other) + 2px);font-weight:700;color:rgba(255,255,255,0.95);line-height:1.65;margin-bottom:5px;text-align:center;}
 .phrase-ex-jp{font-size:var(--fs-other);color:rgba(255,255,255,0.55);line-height:1.6;text-align:center;}
 
+/* スペリング入力 */
+#spellInput:focus{border-color:var(--card-flip);}
+#spellInput.correct{border-color:var(--correct);background:var(--correct-pale);}
+#spellInput.wrong{border-color:var(--wrong);background:var(--wrong-pale);}
+
 /* チケットバナー */
 .ticket-banner{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .ticket-emoji{font-size:26px;}
@@ -355,6 +360,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="mode-row">
       <button class="mode-btn selected" id="modeFlash" onclick="selectMode('flash',this)"><span class="mode-icon">📇</span>フラッシュ</button>
       <button class="mode-btn" id="modeQuiz" onclick="selectMode('quiz',this)"><span class="mode-icon">🔤</span>4択クイズ</button>
+      <button class="mode-btn" id="modeSpell" onclick="selectMode('spell',this)"><span class="mode-icon">✏️</span>スペリング</button>
     </div>
     <button class="start-btn" id="startSessionBtn" onclick="startSession()">セッションを始める →</button>
   </div>
@@ -438,6 +444,54 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="counter-row">
       <div class="counter"><div class="c-dot c-ok"></div><span id="quizOkCount">0</span> OK</div>
       <div class="counter"><div class="c-dot c-ng"></div><span id="quizNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- スペリング -->
+<div id="spellScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="spellTitle">• SPELLING •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="spellProgFill" style="width:0%"></div></div>
+    <div class="prog-nums"><span id="spellProgLabel">1/20</span><span id="spellProgRemain">残り20問</span></div>
+  </div>
+  <div class="card-area">
+    <div class="quiz-question" style="position:relative;height:300px;">
+      <div class="gold-tag">日本語 → 英語</div>
+      <div class="fc-word-block" style="width:100%">
+        <div class="pip-row" id="spellMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
+        <div class="word-jp" id="spellWordJp" style="color:var(--ink);font-size:var(--fs-word-jp);">—</div>
+      </div>
+      <div class="ex-area-front" id="spellExArea" style="display:none;width:100%;height:76px;justify-content:center;">
+        <div class="ex-text" id="spellWordExJp"></div>
+      </div>
+    </div>
+
+    <!-- 入力欄 -->
+    <div style="width:100%;max-width:360px;flex-shrink:0;">
+      <div id="spellFeedback" style="min-height:24px;text-align:center;font-size:calc(var(--fs-other) - 1px);font-weight:800;margin-bottom:6px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input id="spellInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          placeholder="英語でスペルを入力..."
+          style="flex:1;padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;"
+          onkeydown="if(event.key==='Enter')submitSpelling()">
+        <button onclick="submitSpelling()"
+          style="padding:12px 16px;background:var(--gold-lt);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);font-weight:900;cursor:pointer;">
+          →
+        </button>
+      </div>
+      <button id="spellSkipBtn" onclick="skipSpelling()"
+        style="display:none;width:100%;margin-top:8px;padding:10px;background:var(--card);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:calc(var(--fs-other) - 1px);font-weight:800;color:var(--ink-mid);cursor:pointer;">
+        次へ →
+      </button>
+    </div>
+
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="spellOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="spellNgCount">0</span> もう一度</div>
     </div>
   </div>
 </div>
@@ -614,7 +668,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-11 21:54 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-13 18:34 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -852,6 +906,10 @@ function startSession(){
     quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];
     document.getElementById('quizTitle').textContent=`• QUIZ（${sessionDeck.length}問）•`;
     showScreen('quizScreen');renderQuiz();
+  }else if(sessionMode==='spell'){
+    spellCurrent=0;spellOk=0;spellNg=0;spellMissed=[];spellAnswered=false;
+    document.getElementById('spellTitle').textContent=`• SPELLING（${sessionDeck.length}問）•`;
+    showScreen('spellScreen');renderSpell();
   }else{
     document.getElementById('fcTitle').textContent=`• FLASH CARDS（${sessionDeck.length}枚）•`;
     showScreen('fcScreen');renderFC();
@@ -991,6 +1049,91 @@ function selectQuizAnswer(btn,isCorrect,q){
 }
 function speakQuizWord(){speakEn(document.getElementById('quizSpeakBtn')._word||'');}
 
+// ══ スペリング ══
+let spellCurrent=0,spellOk=0,spellNg=0,spellMissed=[],spellAnswered=false;
+
+function normalizeSpell(s){
+  return s.toLowerCase().replace(/[\s\-''\u2019]/g,'');
+}
+
+function renderSpell(){
+  spellAnswered=false;
+  const inp=document.getElementById('spellInput');
+  inp.value='';inp.className='';inp.disabled=false;
+  document.getElementById('spellFeedback').textContent='';
+  document.getElementById('spellFeedback').style.color='';
+  document.getElementById('spellSkipBtn').style.display='none';
+
+  const q=sessionDeck[spellCurrent];
+  const prog=loadProgress();
+  const mastery=getMastery(q.id,prog);
+  makePips('spellMasteryPips',mastery,false);
+
+  document.getElementById('spellWordJp').textContent=q.jp||'—';
+  const exJp=q.exJp||'';
+  const ea=document.getElementById('spellExArea');
+  if(exJp){document.getElementById('spellWordExJp').textContent=exJp;ea.style.display='';}
+  else{ea.style.display='none';}
+
+  const total=sessionDeck.length;
+  document.getElementById('spellProgFill').style.width=`${Math.round(spellCurrent/total*100)}%`;
+  document.getElementById('spellProgLabel').textContent=`${spellCurrent+1}/${total}`;
+  document.getElementById('spellProgRemain').textContent=`残り${total-spellCurrent}問`;
+  document.getElementById('spellOkCount').textContent=spellOk;
+  document.getElementById('spellNgCount').textContent=spellNg;
+
+  setTimeout(()=>inp.focus(),100);
+}
+
+function submitSpelling(){
+  if(spellAnswered)return;
+  const inp=document.getElementById('spellInput');
+  const q=sessionDeck[spellCurrent];
+  const answer=inp.value.trim();
+  if(!answer)return;
+
+  const isCorrect=normalizeSpell(answer)===normalizeSpell(q.w);
+  spellAnswered=true;
+  const prog=loadProgress();
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+
+  if(isCorrect){
+    prog[q.id].correct++;spellOk++;
+    inp.className='correct';
+    document.getElementById('spellFeedback').textContent='✓ 正解！';
+    document.getElementById('spellFeedback').style.color='var(--correct)';
+    saveProgress(prog);
+    document.getElementById('spellOkCount').textContent=spellOk;
+    setTimeout(()=>advanceSpell(),700);
+  }else{
+    if(prog[q.id].correct>=5)prog[q.id].correct=3;
+    prog[q.id].wrong++;spellNg++;spellMissed.push(q);
+    inp.className='wrong';
+    inp.disabled=true;
+    document.getElementById('spellFeedback').textContent=`✕ 正解：${q.w}`;
+    document.getElementById('spellFeedback').style.color='var(--wrong)';
+    document.getElementById('spellSkipBtn').style.display='block';
+    saveProgress(prog);
+    document.getElementById('spellNgCount').textContent=spellNg;
+  }
+  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
+}
+
+function skipSpelling(){
+  advanceSpell();
+}
+
+function advanceSpell(){
+  spellCurrent++;
+  if(spellCurrent>=sessionDeck.length){
+    addHistory({date:localDateStr(),correct:spellOk,wrong:spellNg,total:sessionDeck.length});
+    sessionOk=spellOk;sessionNg=spellNg;sessionMissed=spellMissed;
+    finishSession();
+  }else{
+    renderSpell();
+  }
+}
+
 // 終了
 function finishSession(){
   if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
@@ -1016,7 +1159,11 @@ function retryMissed(){
   sessionDeck=shuffle([...sessionMissed]);sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
   quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];
   if(sessionMode==='quiz'&&WORDS.length>=4){document.getElementById('quizTitle').textContent=`• RETRY QUIZ（${sessionDeck.length}問）•`;showScreen('quizScreen');renderQuiz();}
-  else{document.getElementById('fcTitle').textContent=`• RETRY（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
+  else if(sessionMode==='spell'){
+    spellCurrent=0;spellOk=0;spellNg=0;spellMissed=[];spellAnswered=false;
+    document.getElementById('spellTitle').textContent=`• RETRY SPELLING（${sessionDeck.length}問）•`;
+    showScreen('spellScreen');renderSpell();
+  }else{document.getElementById('fcTitle').textContent=`• RETRY（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
 }
 
 function copyResult(){
