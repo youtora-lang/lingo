@@ -94,6 +94,27 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .phrase-ex{font-size:calc(var(--fs-other) + 2px);font-weight:700;color:rgba(255,255,255,0.95);line-height:1.65;margin-bottom:5px;text-align:center;}
 .phrase-ex-jp{font-size:var(--fs-other);color:rgba(255,255,255,0.55);line-height:1.6;text-align:center;}
 
+/* レポート */
+.report-week-label{font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.report-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.report-stat{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:12px 14px;}
+.report-stat-label{font-size:calc(var(--fs-other) - 4px);font-weight:900;color:var(--ink-lt);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;}
+.report-stat-val{font-size:calc(var(--fs-other) + 11px);font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
+.report-stat-unit{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:3px;font-weight:700;}
+.report-stat.hl{background:var(--card-flip);}.report-stat.hl .report-stat-label,.report-stat.hl .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl .report-stat-val{color:#fff;}
+.report-stat.hl2{background:var(--accent-green);}.report-stat.hl2 .report-stat-label,.report-stat.hl2 .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl2 .report-stat-val{color:#fff;}
+.report-graph-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;}
+.report-graph-title{font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-mid);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
+.report-bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
+.report-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.report-bar-bg{width:100%;background:var(--bg);border-radius:6px;overflow:hidden;flex:1;display:flex;align-items:flex-end;}
+.report-bar-fill{width:100%;border-radius:6px;transition:height 0.5s ease;background:var(--card-flip);}
+.report-bar-fill.today{background:var(--gold-lt);}
+.report-bar-fill.empty{background:transparent;}
+.report-bar-label{font-size:calc(var(--fs-other) - 5px);font-weight:900;color:var(--ink-lt);}
+.report-bar-val{font-size:calc(var(--fs-other) - 5px);font-weight:900;color:var(--ink-mid);}
+.report-no-data{text-align:center;padding:40px 0;color:var(--ink-lt);font-size:var(--fs-other);font-weight:700;}
+
 /* スペリング入力 */
 #spellInput:focus{border-color:var(--card-flip);}
 #spellInput.correct{border-color:var(--correct);background:var(--correct-pale);}
@@ -294,7 +315,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <!-- DASHBOARD -->
 <div id="dashScreen" class="screen active">
   <div class="nav">
-    <button class="nav-btn active" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn active" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
     <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
     <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
   </div>
@@ -517,9 +539,22 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 </div>
 
 <!-- 単語一覧 -->
+<!-- レポート -->
+<div id="reportScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn active" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="dash-body" id="reportBody"></div>
+</div>
+
+<!-- 単語一覧 -->
 <div id="wordlistScreen" class="screen">
   <div class="nav">
-    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
     <button class="nav-btn active" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
     <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
   </div>
@@ -549,7 +584,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <!-- 設定 -->
 <div id="settingsScreen" class="screen">
   <div class="nav">
-    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">📊</span>ダッシュボード</button>
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
     <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
     <button class="nav-btn active" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
   </div>
@@ -680,7 +716,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-14 19:42 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-14 20:10 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1061,7 +1097,86 @@ function selectQuizAnswer(btn,isCorrect,q){
 }
 function speakQuizWord(){speakEn(document.getElementById('quizSpeakBtn')._word||'');}
 
-// ══ スペリング ══
+// ══ レポート ══
+function getWeekDates(weekOffset=0){
+  const today=new Date();today.setHours(0,0,0,0);
+  const dow=today.getDay();
+  const monday=new Date(today);monday.setDate(today.getDate()-(dow===0?6:dow-1)+weekOffset*7);
+  const days=[];
+  for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);days.push(d);}
+  return days;
+}
+function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function renderReport(weekOffset=0){
+  const body=document.getElementById('reportBody');
+  const hist=loadHistory();
+  const prog=loadProgress();
+  const days=getWeekDates(weekOffset);
+  const todayStr=localDateStr();
+  const weekStrs=new Set(days.map(d=>dateStr(d)));
+  const weekHist=hist.filter(e=>weekStrs.has(e.date));
+  // 集計
+  const studiedDays=new Set(weekHist.map(e=>e.date)).size;
+  const totalSessions=weekHist.length;
+  const totalCorrect=weekHist.reduce((s,e)=>s+(e.correct||0),0);
+  const masteredCount=WORDS.filter(w=>getMastery(w.id,prog)>=5).length;
+  // 曜日別正解数
+  const DAY_LABELS=['月','火','水','木','金','土','日'];
+  const dayData=days.map(d=>{
+    const ds=dateStr(d);
+    const entries=weekHist.filter(e=>e.date===ds);
+    return entries.reduce((s,e)=>s+(e.correct||0),0);
+  });
+  const maxVal=Math.max(...dayData,1);
+  const fmt=d=>(d.getMonth()+1)+'/'+d.getDate();
+  const isThisWeek=weekOffset===0;
+  const isLastWeek=weekOffset===-1;
+  const weekLabel=isThisWeek?'今週':isLastWeek?'先週':fmt(days[0])+' 〜 '+fmt(days[6]);
+  const canPrev=weekOffset>=-1;
+  const canNext=weekOffset<0;
+
+  // 棒グラフHTML
+  let barsHtml='';
+  for(let i=0;i<7;i++){
+    const val=dayData[i];
+    const ds=dateStr(days[i]);
+    const isToday=ds===todayStr;
+    const pct=Math.round(val/maxVal*100);
+    const fillClass='report-bar-fill'+(isToday?' today':'')+(val===0?' empty':'');
+    const fillH=val>0?pct+'%':'0';
+    const minH=val>0?'6px':'0';
+    const labelColor=isToday?'var(--accent-cobalt)':'var(--ink-lt)';
+    barsHtml+='<div class="report-bar-wrap">';
+    barsHtml+='<div class="report-bar-val">'+(val||'')+'</div>';
+    barsHtml+='<div class="report-bar-bg"><div class="'+fillClass+'" style="height:'+fillH+';min-height:'+minH+';"></div></div>';
+    barsHtml+='<div class="report-bar-label" style="color:'+labelColor+';">'+DAY_LABELS[i]+'</div>';
+    barsHtml+='</div>';
+  }
+
+  const prevColor=canPrev?'var(--ink-mid)':'var(--ink-lt)';
+  const nextColor=canNext?'var(--ink-mid)':'var(--ink-lt)';
+  const prevCursor=canPrev?'pointer':'default';
+  const nextCursor=canNext?'pointer':'default';
+  const noData=studiedDays===0?'<div class="report-no-data">この週の学習データはありません</div>':'';
+
+  body.innerHTML=
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'+
+      '<button onclick="renderReport('+(weekOffset-1)+')" style="padding:6px 14px;border:2px solid var(--border);border-radius:99px;background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:900;color:'+prevColor+';cursor:'+prevCursor+';">← 前週</button>'+
+      '<div style="font-size:var(--fs-other);font-weight:900;color:var(--ink);">'+weekLabel+'</div>'+
+      '<button onclick="renderReport('+(weekOffset+1)+')" style="padding:6px 14px;border:2px solid var(--border);border-radius:99px;background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:900;color:'+nextColor+';cursor:'+nextCursor+';">次週 →</button>'+
+    '</div>'+
+    '<div class="report-stat-row">'+
+      '<div class="report-stat hl"><div class="report-stat-label">DAYS STUDIED</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
+      '<div class="report-stat"><div class="report-stat-label">SESSIONS</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
+      '<div class="report-stat hl2"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCorrect+'</div><div class="report-stat-unit">語 正解</div></div>'+
+      '<div class="report-stat"><div class="report-stat-label">MASTERED</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
+    '</div>'+
+    '<div class="report-graph-card">'+
+      '<div class="report-graph-title">正解数 / 曜日</div>'+
+      '<div class="report-bars">'+barsHtml+'</div>'+
+    '</div>'+
+    noData;
+}
 let spellCurrent=0,spellOk=0,spellNg=0,spellMissed=[],spellAnswered=false;
 
 function speakSpell(){
@@ -1322,11 +1437,14 @@ function doImport(){
 }
 
 // ナビ
-const tabScreens={dash:'dashScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
+const tabScreens={dash:'dashScreen',report:'reportScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
 function showTab(tab,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick')===btn.getAttribute('onclick')));
   showScreen(tabScreens[tab]);
-  if(tab==='wordlist'){const inp=document.getElementById('wlSearchInput');if(inp)inp.value='';renderWordList();}if(tab==='settings')loadSettingsUI();if(tab==='dash')updateDash();
+  if(tab==='wordlist'){const inp=document.getElementById('wlSearchInput');if(inp)inp.value='';renderWordList();}
+  if(tab==='settings')loadSettingsUI();
+  if(tab==='dash')updateDash();
+  if(tab==='report')renderReport(0);
 }
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
