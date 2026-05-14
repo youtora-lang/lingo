@@ -103,6 +103,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .report-stat-unit{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:3px;font-weight:700;}
 .report-stat.hl{background:var(--card-flip);}.report-stat.hl .report-stat-label,.report-stat.hl .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl .report-stat-val{color:#fff;}
 .report-stat.hl2{background:var(--accent-green);}.report-stat.hl2 .report-stat-label,.report-stat.hl2 .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl2 .report-stat-val{color:#fff;}
+.report-stat.hl3{background:var(--accent-mustard);}.report-stat.hl3 .report-stat-label,.report-stat.hl3 .report-stat-unit{color:rgba(90,58,0,0.65);}.report-stat.hl3 .report-stat-val{color:#5A3A00;}
+.report-stat.hl4{background:var(--wrong);}.report-stat.hl4 .report-stat-label,.report-stat.hl4 .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl4 .report-stat-val{color:#fff;}
 .report-graph-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;}
 .report-graph-title{font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-mid);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
 .report-bars{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:20px;}
@@ -716,7 +718,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-14 20:40 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-14 20:54 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1167,9 +1169,9 @@ function renderReport(weekOffset=0){
     '</div>'+
     '<div class="report-stat-row">'+
       '<div class="report-stat hl"><div class="report-stat-label">DAYS STUDIED</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
-      '<div class="report-stat"><div class="report-stat-label">SESSIONS</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
-      '<div class="report-stat hl2"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCorrect+'</div><div class="report-stat-unit">語 正解</div></div>'+
-      '<div class="report-stat"><div class="report-stat-label">MASTERED</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
+      '<div class="report-stat hl4"><div class="report-stat-label">SESSIONS</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
+      '<div class="report-stat hl3"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCorrect+'</div><div class="report-stat-unit">語 正解</div></div>'+
+      '<div class="report-stat hl2"><div class="report-stat-label">MASTERED</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
     '</div>'+
     '<div class="report-graph-card">'+
       '<div class="report-graph-title">正解数 / 曜日</div>'+
