@@ -524,6 +524,17 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
   </div>
   <div class="wl-body">
+    <!-- 検索窓 -->
+    <div style="position:relative;margin-bottom:10px;">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--ink-lt);pointer-events:none;">🔍</span>
+      <input id="wlSearchInput" type="text" placeholder="英語・日本語で検索..."
+        autocomplete="off" autocorrect="off" autocapitalize="off"
+        style="width:100%;padding:10px 12px 10px 36px;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;box-sizing:border-box;"
+        oninput="renderWordList()"
+        onfocus="this.style.borderColor='var(--card-flip)'"
+        onblur="this.style.borderColor='var(--border)'">
+      <button id="wlSearchClear" onclick="clearSearch()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;font-size:16px;cursor:pointer;color:var(--ink-lt);padding:4px;">✕</button>
+    </div>
     <div class="wl-filters">
       <button class="wl-filter active" data-filter="all" onclick="filterWords(this)">すべて</button>
       <button class="wl-filter" data-filter="master" onclick="filterWords(this)"><span class="wf-dot wf-master"></span>定着済み</button>
@@ -669,7 +680,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-13 23:25 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-14 19:42 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1191,13 +1202,36 @@ function endSession(){if(confirm('セッションを終了しますか？'))goTo
 let currentFilter='all';
 function renderWordList(){
   const prog=loadProgress();
+  const query=(document.getElementById('wlSearchInput')?.value||'').trim().toLowerCase();
+  // クリアボタンの表示制御
+  const clearBtn=document.getElementById('wlSearchClear');
+  if(clearBtn)clearBtn.style.display=query?'block':'none';
+
   const filtered=WORDS.filter(w=>{
+    // ステータスフィルター
     if(currentFilter==='excluded')return prog[w.id]&&prog[w.id].excluded;
-    if(currentFilter==='all')return true;
-    if(prog[w.id]&&prog[w.id].excluded)return false;
-    return getStatus(w.id,prog)===currentFilter;
+    if(currentFilter!=='all'){
+      if(prog[w.id]&&prog[w.id].excluded)return false;
+      if(getStatus(w.id,prog)!==currentFilter)return false;
+    }
+    // 検索フィルター（部分一致、英語・日本語・例文）
+    if(query){
+      const inEn=(w.w||'').toLowerCase().includes(query);
+      const inJp=(w.jp||'').toLowerCase().includes(query);
+      const inEx=(w.ex||'').toLowerCase().includes(query);
+      const inExJp=(w.exJp||'').toLowerCase().includes(query);
+      return inEn||inJp||inEx||inExJp;
+    }
+    return true;
   });
   const container=document.getElementById('wordListItems');container.innerHTML='';
+  if(!filtered.length){
+    const empty=document.createElement('div');
+    empty.style.cssText='text-align:center;padding:32px 0;color:var(--ink-lt);font-size:var(--fs-other);font-weight:700;';
+    empty.textContent=query?`「${query}」に一致する単語はありません`:'単語がありません';
+    container.appendChild(empty);
+    return;
+  }
   filtered.forEach(w=>{
     const st=getStatus(w.id,prog);const m=getMastery(w.id,prog);const isEx=prog[w.id]&&prog[w.id].excluded;
     const dc=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
@@ -1209,6 +1243,7 @@ function renderWordList(){
   });
 }
 function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
+function clearSearch(){const inp=document.getElementById('wlSearchInput');if(inp){inp.value='';inp.focus();}renderWordList();}
 
 // 設定UI
 function loadSettingsUI(){
@@ -1291,7 +1326,7 @@ const tabScreens={dash:'dashScreen',wordlist:'wordlistScreen',settings:'settings
 function showTab(tab,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick')===btn.getAttribute('onclick')));
   showScreen(tabScreens[tab]);
-  if(tab==='wordlist')renderWordList();if(tab==='settings')loadSettingsUI();if(tab==='dash')updateDash();
+  if(tab==='wordlist'){const inp=document.getElementById('wlSearchInput');if(inp)inp.value='';renderWordList();}if(tab==='settings')loadSettingsUI();if(tab==='dash')updateDash();
 }
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
