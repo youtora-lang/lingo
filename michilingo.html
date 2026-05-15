@@ -205,7 +205,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .pip-front{background:var(--bg);border-color:var(--bg-deep);}
 .pip-front.filled{background:var(--gold-lt);border-color:var(--gold-lt);}
 
-/* スピークボタン（英語面のみ） */
+/* スピークボタン（仏語面のみ） */
 .speak-btn{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:2px solid var(--bg-deep);background:var(--bg);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-mid);transition:all 0.2s;}
 .speak-btn.speaking{background:var(--card-flip);color:white;border-color:var(--card-flip);}
 
@@ -405,7 +405,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="flashcard-inner" id="cardInner">
         <div class="fc-face fc-front">
           <button class="speak-btn" id="speakBtn" onclick="speakWord(event)">🔊</button>
-          <div class="gold-tag" id="fcTag">英語 → 日本語</div>
+          <div class="gold-tag" id="fcTag">仏語 → 日本語</div>
           <div class="pip-row" id="masteryPips" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-word-block">
             <div class="word-en" id="wordEn">—</div>
@@ -415,7 +415,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
         <div class="fc-face fc-back">
           <button class="speak-btn" id="speakBtnBack" onclick="speakWordBack(event)" style="display:none;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);color:white;">🔊</button>
-          <div class="gold-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;" id="fcTagBack">日本語 → 英語</div>
+          <div class="gold-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;" id="fcTagBack">日本語 → 仏語</div>
           <div class="pip-row" id="masteryPipsBack" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-back-top">
             <div class="word-jp" id="wordJp">—</div>
@@ -456,7 +456,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="card-area">
     <div class="quiz-question" style="position:relative;">
       <button class="speak-btn" id="quizSpeakBtn" onclick="speakQuizWord()" style="position:absolute;top:10px;right:10px;">🔊</button>
-      <div class="gold-tag" id="quizTag">英語 → 日本語</div>
+      <div class="gold-tag" id="quizTag">仏語 → 日本語</div>
       <div class="pip-row" id="quizMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
       <div class="fc-word-block">
         <div class="word-en" id="quizWordEn">—</div>
@@ -485,7 +485,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="card-area">
     <div class="quiz-question" style="position:relative;height:300px;">
       <button class="speak-btn" id="spellSpeakBtn" onclick="speakSpell()" style="position:absolute;top:10px;right:10px;">🔊</button>
-      <div class="gold-tag">日本語 → 英語</div>
+      <div class="gold-tag">日本語 → 仏語</div>
       <div class="fc-word-block" style="width:100%">
         <div class="pip-row" id="spellMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
         <div class="word-jp" id="spellWordJp" style="color:var(--ink);font-size:var(--fs-word-jp);">—</div>
@@ -500,7 +500,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div id="spellFeedback" style="min-height:24px;text-align:center;font-size:calc(var(--fs-other) - 1px);font-weight:800;margin-bottom:6px;"></div>
       <div style="display:flex;gap:8px;">
         <input id="spellInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-          placeholder="英語でスペルを入力..."
+          placeholder="仏語でスペルを入力..."
           style="flex:1;padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;"
           onkeydown="if(event.key==='Enter')submitSpelling()">
         <button onclick="submitSpelling()"
@@ -564,7 +564,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <!-- 検索窓 -->
     <div style="position:relative;margin-bottom:10px;">
       <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--ink-lt);pointer-events:none;">🔍</span>
-      <input id="wlSearchInput" type="text" placeholder="英語・日本語で検索..."
+      <input id="wlSearchInput" type="text" placeholder="仏語・日本語で検索..."
         autocomplete="off" autocorrect="off" autocapitalize="off"
         style="width:100%;padding:10px 12px 10px 36px;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;box-sizing:border-box;"
         oninput="renderWordList()"
@@ -664,8 +664,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="set-row">
         <div><div class="set-label">出題方向</div><div class="set-sub">表面に出す言語</div></div>
         <select class="set-input" id="directionInput" style="min-width:140px;max-width:180px;" onchange="saveSetting('direction',this.value)">
-          <option value="en2jp">英語 → 日本語</option>
-          <option value="jp2en">日本語 → 英語</option>
+          <option value="en2jp">仏語 → 日本語</option>
+          <option value="jp2en">日本語 → 仏語</option>
         </select>
       </div>
       <div class="set-row">
@@ -752,7 +752,7 @@ let WORDS=loadWords();
 function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'michi',fontSizes:{global:'medium'}};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function saveAppName(v){
-  const prefix=(v.trim()||'chii').replace(/lingo$/i,'');
+  const prefix=(v.trim()||'michi').replace(/lingo$/i,'');
   const n=prefix+'lingo';
   saveSetting('appName',prefix);
   document.getElementById('appTitleLabel').textContent=n;
@@ -940,7 +940,7 @@ function updateDash(){
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
   const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
-  const rawName=s.appName||'chii';
+  const rawName=s.appName||'michi';
   const appName=rawName.replace(/lingo$/i,'')+'lingo';
   document.getElementById('appTitleLabel').textContent=appName;
   document.getElementById('pageTitle').textContent=appName;
@@ -989,10 +989,10 @@ function renderFC(){
   makePips('masteryPips',mastery,false);makePips('masteryPipsBack',mastery,true);
   const isJp2En=loadSettings().direction==='jp2en';
   // 前面
-  document.getElementById('fcTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
+  document.getElementById('fcTag').textContent=isJp2En?'日本語 → 仏語':'仏語 → 日本語';
   document.getElementById('wordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('wordPh').textContent=isJp2En?'':(q.ph||'');
-  // スピークボタン：en2jpのとき前面、jp2enのとき裏面（英語が裏面）
+  // スピークボタン：en2jpのとき前面、jp2enのとき裏面（仏語が裏面）
   const sb=document.getElementById('speakBtn');
   sb.style.display=isJp2En?'none':'flex';sb.classList.remove('speaking');sb.textContent='🔊';sb._word=q.w;
   const sbBack=document.getElementById('speakBtnBack');
@@ -1055,7 +1055,7 @@ function renderQuiz(){
   const q=sessionDeck[quizCurrent];const prog=loadProgress();const mastery=getMastery(q.id,prog);
   makePips('quizMasteryPips',mastery,false);
   const isJp2En=loadSettings().direction==='jp2en';
-  document.getElementById('quizTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
+  document.getElementById('quizTag').textContent=isJp2En?'日本語 → 仏語':'仏語 → 日本語';
   document.getElementById('quizWordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('quizWordPh').textContent=isJp2En?'':(q.ph||'');
   const qsb=document.getElementById('quizSpeakBtn');qsb.style.display=isJp2En?'none':'block';qsb._word=q.w;
@@ -1315,7 +1315,7 @@ function copyResult(){
   const prog=loadProgress();const total=WORDS.length;const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
   const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
   const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
-  const appName=(loadSettings().appName||'chii').replace(/lingo$/i,'')+'lingo';
+  const appName=(loadSettings().appName||'michi').replace(/lingo$/i,'')+'lingo';
   const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
   navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
   showToast('📋 コピーしました！');
@@ -1339,7 +1339,7 @@ function renderWordList(){
       if(prog[w.id]&&prog[w.id].excluded)return false;
       if(getStatus(w.id,prog)!==currentFilter)return false;
     }
-    // 検索フィルター（部分一致、英語・日本語・例文）
+    // 検索フィルター（部分一致、仏語・日本語・例文）
     if(query){
       const inEn=(w.w||'').toLowerCase().includes(query);
       const inJp=(w.jp||'').toLowerCase().includes(query);
