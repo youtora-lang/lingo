@@ -18,7 +18,7 @@
   --border:#2A2A2A;--gold-lt:#F5C518;--gold-bg:#FEF9D0;
   --ink:#2A2A2A;--ink-mid:rgba(42,42,42,0.62);--ink-lt:rgba(42,42,42,0.38);
   --white:#FFFFFF;
-  --CORRECT:#6DB870;--CORRECT-pale:#D8F0D8;
+  --correct:#6DB870;--correct-pale:#D8F0D8;
   --wrong:#E87D4A;--wrong-pale:#FDE8D8;
   --accent-cobalt:#2A4EA6;--accent-green:#6DB870;
   --accent-pink:#F4A3B8;--accent-mustard:#E8C060;
@@ -80,7 +80,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .app-title{background:var(--card-flip);border:2px solid var(--border);border-radius:99px;padding:7px 22px;font-size:calc(var(--fs-other) + 2px);font-weight:900;color:var(--white);letter-spacing:0.15em;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:8px;}
 .title-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-lt);}
 
-/* PHRASE DU JOUR */
+/* Phrase of the Day */
 .phrase-card{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:20px;padding:18px 20px 16px;margin-bottom:12px;position:relative;overflow:hidden;}
 .phrase-card::after{display:none;}
 .phrase-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -119,7 +119,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* スペリング入力 */
 #spellInput:focus{border-color:var(--card-flip);}
-#spellInput.CORRECT{border-color:var(--CORRECT);background:var(--CORRECT-pale);}
+#spellInput.correct{border-color:var(--correct);background:var(--correct-pale);}
 #spellInput.wrong{border-color:var(--wrong);background:var(--wrong-pale);}
 
 /* チケットバナー */
@@ -224,17 +224,17 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .counter-row{display:flex;gap:16px;justify-content:center;flex-shrink:0;}
 .counter{display:flex;align-items:center;gap:5px;font-size:var(--fs-other);font-weight:900;color:var(--ink-mid);}
 .c-dot{width:9px;height:9px;border-radius:50%;}
-.c-ok{background:var(--CORRECT);}.c-ng{background:var(--wrong);}
+.c-ok{background:var(--correct);}.c-ng{background:var(--wrong);}
 
 /* 4択 */
 .quiz-choices{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px;flex-shrink:0;}
 .quiz-choice{width:100%;padding:13px 16px;background:var(--card);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-choice);font-weight:800;color:var(--ink);cursor:pointer;transition:all 0.15s;text-align:left;display:flex;align-items:center;gap:10px;}
 .quiz-choice:hover:not(:disabled){border-color:var(--card-flip);background:var(--bg);transform:translateY(-1px);}
-.quiz-choice.CORRECT{border-color:var(--CORRECT);background:var(--CORRECT-pale);color:#1A5A20;}
+.quiz-choice.correct{border-color:var(--correct);background:var(--correct-pale);color:#1A5A20;}
 .quiz-choice.wrong{border-color:var(--wrong);background:var(--wrong-pale);color:#7A2A00;}
 .quiz-choice:disabled{cursor:default;transform:none;}
 .quiz-num{width:26px;height:26px;border-radius:50%;background:var(--bg);border:2px solid var(--bg-deep);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink-mid);}
-.CORRECT .quiz-num{background:var(--CORRECT);color:white;border-color:var(--CORRECT);}
+.correct .quiz-num{background:var(--correct);color:white;border-color:var(--correct);}
 .wrong .quiz-num{background:var(--wrong);color:white;border-color:var(--wrong);}
 .quiz-speak-btn{background:var(--bg);border:1.5px solid var(--bg-deep);border-radius:99px;padding:4px 14px;font-family:inherit;font-size:12px;font-weight:800;color:var(--ink-mid);cursor:pointer;flex-shrink:0;}
 
@@ -261,12 +261,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .wl-body{padding:14px;overflow-y:auto;flex:1;}
 .wl-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .wf-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
-.wf-master{background:var(--CORRECT);}.wf-learning{background:var(--gold-lt);}.wf-new{background:var(--card-flip);}
+.wf-master{background:var(--correct);}.wf-learning{background:var(--gold-lt);}.wf-new{background:var(--card-flip);}
 .wl-filter{padding:5px 12px;border-radius:99px;border:2px solid var(--border);background:var(--card);font-family:inherit;font-size:12px;font-weight:900;color:var(--ink-mid);cursor:pointer;}
 .wl-filter.active{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
 .word-item{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:12px;}
 .wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.wi-master{background:var(--CORRECT);}.wi-learning{background:var(--gold-lt);}.wi-new{background:var(--card-flip);}
+.wi-master{background:var(--correct);}.wi-learning{background:var(--gold-lt);}.wi-new{background:var(--card-flip);}
 .wi-body{flex:1;}
 .wi-en{font-size:var(--fs-wi-en);font-weight:900;color:var(--ink);}
 .wi-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;font-weight:700;}
@@ -331,7 +331,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div class="phrase-card">
       <div class="phrase-header">
-        <span class="phrase-label">PHRASE DU JOUR</span>
+        <span class="phrase-label">Phrase of the Day</span>
         <div class="phrase-actions">
           <button class="phrase-icon-btn" id="phraseSpeakBtn" onclick="speakPhrase()">🔊</button>
           <button class="phrase-icon-btn" onclick="renderPhraseOfDay(true)">↺</button>
@@ -354,13 +354,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div class="stat-grid">
       <div class="stat-card hl">
-        <div class="stat-label">MAÎTRISÉ ✓</div>
-        <div class="stat-val" id="MAÎTRISÉCount">0</div>
+        <div class="stat-label">MASTERED ✓</div>
+        <div class="stat-val" id="masteredCount">0</div>
         <div class="stat-unit">語 定着済み</div>
       </div>
       <div class="stat-card hl-gold">
-        <div class="stat-label">SÉRIE 🔥</div>
-        <div class="stat-val" id="SÉRIECount">0</div>
+        <div class="stat-label">STREAK 🔥</div>
+        <div class="stat-val" id="streakCount">0</div>
         <div class="stat-unit">日連続</div>
       </div>
     </div>
@@ -499,7 +499,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div style="width:100%;max-width:360px;flex-shrink:0;">
       <div id="spellFeedback" style="min-height:24px;text-align:center;font-size:calc(var(--fs-other) - 1px);font-weight:800;margin-bottom:6px;"></div>
       <div style="display:flex;gap:8px;">
-        <input id="spellInput" type="text" autocomplete="off" autoCORRECT="off" autocapitalize="off" spellcheck="false"
+        <input id="spellInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
           placeholder="英語でスペルを入力..."
           style="flex:1;padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;"
           onkeydown="if(event.key==='Enter')submitSpelling()">
@@ -565,7 +565,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div style="position:relative;margin-bottom:10px;">
       <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--ink-lt);pointer-events:none;">🔍</span>
       <input id="wlSearchInput" type="text" placeholder="英語・日本語で検索..."
-        autocomplete="off" autoCORRECT="off" autocapitalize="off"
+        autocomplete="off" autocorrect="off" autocapitalize="off"
         style="width:100%;padding:10px 12px 10px 36px;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;box-sizing:border-box;"
         oninput="renderWordList()"
         onfocus="this.style.borderColor='var(--card-flip)'"
@@ -674,7 +674,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
       <div class="set-row">
         <div><div class="set-label">1セッションの出題数</div><div class="set-sub">1回に出題される語数</div></div>
-        <input class="set-input" type="number" id="SÉANCESizeInput" min="5" max="100" placeholder="20" onchange="saveSetting('SÉANCESize',this.value)">
+        <input class="set-input" type="number" id="sessionSizeInput" min="5" max="100" placeholder="20" onchange="saveSetting('sessionSize',this.value)">
       </div>
     </div>
 
@@ -749,10 +749,10 @@ function makeId(w){return w.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_
 let WORDS=loadWords();
 
 // 設定
-function loadSettings(){const d={SÉANCESize:20,direction:'en2jp',dailyGoal:10,appName:'michi',fontSizes:{global:'medium'}};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
+function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'michi',fontSizes:{global:'medium'}};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function saveAppName(v){
-  const prefix=(v.trim()||'michi').replace(/lingo$/i,'');
+  const prefix=(v.trim()||'chii').replace(/lingo$/i,'');
   const n=prefix+'lingo';
   saveSetting('appName',prefix);
   document.getElementById('appTitleLabel').textContent=n;
@@ -796,12 +796,12 @@ function saveProgress(p){localStorage.setItem(LS.progress,JSON.stringify(p));}
 function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||[];}catch(e){return [];}}
 function addHistory(e){const h=loadHistory();h.push(e);localStorage.setItem(LS.history,JSON.stringify(h.slice(-400)));}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function getMastery(id,p){return(p[id]&&p[id].CORRECT)||0;}
+function getMastery(id,p){return(p[id]&&p[id].correct)||0;}
 function getStatus(id,p){const m=getMastery(id,p);if(m>=5)return'master';if(m>=1)return'learning';return'new';}
-function calcSÉANCESize(){return parseInt(loadSettings().SÉANCESize)||20;}
+function calcSessionSize(){return parseInt(loadSettings().sessionSize)||20;}
 
 // ストリーク
-function getSÉRIE(){
+function getStreak(){
   const dates=new Set(loadHistory().map(e=>e.date));
   let s=0;const c=new Date();c.setHours(0,0,0,0);
   for(let i=0;i<366;i++){
@@ -853,7 +853,7 @@ function showTicketBanner(){
 
 // デッキ構築
 function buildSessionDeck(prog){
-  const goal=calcSÉANCESize();
+  const goal=calcSessionSize();
   const excl=new Set(Object.keys(prog).filter(id=>prog[id]&&prog[id].excluded));
   const sorted=[...WORDS].filter(w=>!excl.has(w.id)).sort((a,b)=>a.num-b.num);
   const early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
@@ -880,7 +880,7 @@ function buildSessionDeck(prog){
   return shuffle(deck).slice(0,goal);
 }
 
-// PHRASE DU JOUR
+// Phrase of the Day
 function renderPhraseOfDay(random=false){
   if(!WORDS.length){document.getElementById('phraseWord').textContent='add words';document.getElementById('phraseJpWord').textContent='and expressions';['phraseEx','phraseExJp'].forEach(id=>{document.getElementById(id).textContent='';document.getElementById(id).style.display='none';});return;}
   const w=random?WORDS[Math.floor(Math.random()*WORDS.length)]:WORDS[(()=>{const t=new Date();return(t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate())%WORDS.length;})()];
@@ -931,15 +931,15 @@ function updateDash(){
   const lc=WORDS.filter(w=>getStatus(w.id,prog)==='learning').length;
   const nc=WORDS.filter(w=>getStatus(w.id,prog)==='new').length;
   checkAndUseTicket();
-  document.getElementById('MAÎTRISÉCount').textContent=mc;
-  document.getElementById('SÉRIECount').textContent=getSÉRIE();
+  document.getElementById('masteredCount').textContent=mc;
+  document.getElementById('streakCount').textContent=getStreak();
   document.getElementById('progMasterNum').textContent=`${mc}/${total}`;
   document.getElementById('progLearningNum').textContent=`${lc}/${total}`;
   document.getElementById('progNewNum').textContent=`${nc}/${total}`;
   document.getElementById('progMasterFill').style.width=`${total?Math.round(mc/total*100):0}%`;
   document.getElementById('progLearningFill').style.width=`${total?Math.round(lc/total*100):0}%`;
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
-  const sz=calcSÉANCESize();const goal=s.dailyGoal||10;
+  const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
   const rawName=s.appName||'chii';
   const appName=rawName.replace(/lingo$/i,'')+'lingo';
@@ -1028,10 +1028,10 @@ function flipCard(){if(isFlipped)return;isFlipped=true;document.getElementById('
 function judge(isOk){
   if(!isFlipped)return;
   const q=sessionDeck[sessionCurrent];const prog=loadProgress();
-  if(!prog[q.id])prog[q.id]={CORRECT:0,wrong:0,lastSeen:null};
-  if(isOk){prog[q.id].CORRECT++;sessionOk++;}else{
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isOk){prog[q.id].correct++;sessionOk++;}else{
     // 定着済み（5回以上）が不正解なら3回正解にリセット
-    if(prog[q.id].CORRECT>=5)prog[q.id].CORRECT=3;
+    if(prog[q.id].correct>=5)prog[q.id].correct=3;
     prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);
   }
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);sessionCurrent++;
@@ -1081,25 +1081,25 @@ function renderQuiz(){
   });
 }
 
-function selectQuizAnswer(btn,isCORRECT,q){
+function selectQuizAnswer(btn,isCorrect,q){
   if(quizAnswered)return;quizAnswered=true;
-  const prog=loadProgress();if(!prog[q.id])prog[q.id]={CORRECT:0,wrong:0,lastSeen:null};
-  if(isCORRECT){prog[q.id].CORRECT++;quizOk++;}else{
-    if(prog[q.id].CORRECT>=5)prog[q.id].CORRECT=3;
+  const prog=loadProgress();if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isCorrect){prog[q.id].correct++;quizOk++;}else{
+    if(prog[q.id].correct>=5)prog[q.id].correct=3;
     prog[q.id].wrong++;quizNg++;quizMissed.push(q);
   }
   prog[q.id].lastSeen=localDateStr();saveProgress(prog);
   document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
-  btn.classList.add(isCORRECT?'CORRECT':'wrong');
-  if(!isCORRECT){
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){
     const isJp2En=loadSettings().direction==='jp2en';const ans=isJp2En?q.w:q.jp;
-    document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('CORRECT');});
+    document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});
   }
   document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
   setTimeout(()=>{
     quizCurrent++;
     if(quizCurrent>=sessionDeck.length){
-      addHistory({date:localDateStr(),CORRECT:quizOk,wrong:quizNg,total:sessionDeck.length});
+      addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
       sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
     }else{
       renderQuiz(); // visibility はrenderQuiz冒頭で復元
@@ -1128,15 +1128,15 @@ function renderReport(weekOffset=0){
   const weekHist=hist.filter(e=>weekStrs.has(e.date));
   // 集計
   const studiedDays=new Set(weekHist.map(e=>e.date)).size;
-  const totalSÉANCES=weekHist.length;
-  const totalCORRECT=weekHist.reduce((s,e)=>s+(e.CORRECT||0),0);
-  const MAÎTRISÉCount=WORDS.filter(w=>getMastery(w.id,prog)>=5).length;
+  const totalSessions=weekHist.length;
+  const totalCorrect=weekHist.reduce((s,e)=>s+(e.correct||0),0);
+  const masteredCount=WORDS.filter(w=>getMastery(w.id,prog)>=5).length;
   // 曜日別正解数
   const DAY_LABELS=['月','火','水','木','金','土','日'];
   const dayData=days.map(d=>{
     const ds=dateStr(d);
     const entries=weekHist.filter(e=>e.date===ds);
-    return entries.reduce((s,e)=>s+(e.CORRECT||0),0);
+    return entries.reduce((s,e)=>s+(e.correct||0),0);
   });
   const maxVal=Math.max(...dayData,1);
   const fmt=d=>(d.getMonth()+1)+'/'+d.getDate();
@@ -1177,10 +1177,10 @@ function renderReport(weekOffset=0){
       '<button onclick="renderReport('+(weekOffset+1)+')" style="padding:6px 14px;border:2px solid var(--border);border-radius:99px;background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:900;color:'+nextColor+';cursor:'+nextCursor+';">次週 →</button>'+
     '</div>'+
     '<div class="report-stat-row">'+
-      '<div class="report-stat hl"><div class="report-stat-label">JOURS D'ÉTUDE</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
-      '<div class="report-stat hl4"><div class="report-stat-label">SÉANCES</div><div class="report-stat-val">'+totalSÉANCES+'</div><div class="report-stat-unit">セッション</div></div>'+
-      '<div class="report-stat hl3"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCORRECT+'</div><div class="report-stat-unit">語 正解</div></div>'+
-      '<div class="report-stat hl2"><div class="report-stat-label">MAÎTRISÉ</div><div class="report-stat-val">'+MAÎTRISÉCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
+      '<div class="report-stat hl"><div class="report-stat-label">DAYS STUDIED</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
+      '<div class="report-stat hl4"><div class="report-stat-label">SESSIONS</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
+      '<div class="report-stat hl3"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCorrect+'</div><div class="report-stat-unit">語 正解</div></div>'+
+      '<div class="report-stat hl2"><div class="report-stat-label">MASTERED</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
     '</div>'+
     '<div class="report-graph-card">'+
       '<div class="report-graph-title">正解数 / 曜日</div>'+
@@ -1238,21 +1238,21 @@ function submitSpelling(){
   const answer=inp.value.trim();
   if(!answer)return;
 
-  const isCORRECT=normalizeSpell(answer)===normalizeSpell(q.w);
+  const isCorrect=normalizeSpell(answer)===normalizeSpell(q.w);
   spellAnswered=true;
   const prog=loadProgress();
-  if(!prog[q.id])prog[q.id]={CORRECT:0,wrong:0,lastSeen:null};
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
 
-  if(isCORRECT){
-    prog[q.id].CORRECT++;spellOk++;
-    inp.className='CORRECT';
+  if(isCorrect){
+    prog[q.id].correct++;spellOk++;
+    inp.className='correct';
     document.getElementById('spellFeedback').textContent='✓ 正解！';
-    document.getElementById('spellFeedback').style.color='var(--CORRECT)';
+    document.getElementById('spellFeedback').style.color='var(--correct)';
     saveProgress(prog);
     document.getElementById('spellOkCount').textContent=spellOk;
     setTimeout(()=>advanceSpell(),700);
   }else{
-    if(prog[q.id].CORRECT>=5)prog[q.id].CORRECT=3;
+    if(prog[q.id].correct>=5)prog[q.id].correct=3;
     prog[q.id].wrong++;spellNg++;spellMissed.push(q);
     inp.className='wrong';
     inp.disabled=true;
@@ -1272,7 +1272,7 @@ function skipSpelling(){
 function advanceSpell(){
   spellCurrent++;
   if(spellCurrent>=sessionDeck.length){
-    addHistory({date:localDateStr(),CORRECT:spellOk,wrong:spellNg,total:sessionDeck.length});
+    addHistory({date:localDateStr(),correct:spellOk,wrong:spellNg,total:sessionDeck.length});
     sessionOk=spellOk;sessionNg=spellNg;sessionMissed=spellMissed;
     finishSession();
   }else{
@@ -1282,7 +1282,7 @@ function advanceSpell(){
 
 // 終了
 function finishSession(){
-  if(sessionMode==='flash')addHistory({date:localDateStr(),CORRECT:sessionOk,wrong:sessionNg,total:sessionDeck.length});
+  if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
   const total=sessionDeck.length;const pct=total>0?sessionOk/total:0;
   let emoji,title,sub;
   if(pct>=0.85){emoji='🌟';title='すばらしい！';sub='定着が進んできた。この調子で続けよう。';}
@@ -1317,7 +1317,7 @@ function copyResult(){
   const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
   const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
   const appName=(loadSettings().appName||'chii').replace(/lingo$/i,'')+'lingo';
-  const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getSÉRIE()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
+  const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
   navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
   showToast('📋 コピーしました！');
 }
@@ -1391,7 +1391,7 @@ function clearSearch(){const inp=document.getElementById('wlSearchInput');if(inp
 // 設定UI
 function loadSettingsUI(){
   const s=loadSettings();
-  if(s.SÉANCESize)document.getElementById('SÉANCESizeInput').value=s.SÉANCESize;
+  if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;
   if(s.direction)document.getElementById('directionInput').value=s.direction;
   document.getElementById('dailyGoalInput').value=s.dailyGoal||10;
   if(s.appName)document.getElementById('appNameInput').value=s.appName.replace(/lingo$/i,'');
@@ -1481,7 +1481,7 @@ function closeModal(id){document.getElementById(id).classList.add('hidden');}
 function confirmReset(){openModal('resetModal');}
 function doReset(){localStorage.removeItem(LS.progress);localStorage.removeItem(LS.history);closeModal('resetModal');showToast('リセットしました');updateDash();renderWordList();}
 function toggleExclude(id,btn){
-  const prog=loadProgress();if(!prog[id])prog[id]={CORRECT:0,wrong:0,lastSeen:null};
+  const prog=loadProgress();if(!prog[id])prog[id]={correct:0,wrong:0,lastSeen:null};
   prog[id].excluded=!prog[id].excluded;saveProgress(prog);
   const ex=prog[id].excluded;btn.classList.toggle('on',!ex);btn.textContent=ex?'✕':'✓';
   btn.closest('.word-item').classList.toggle('excluded',ex);showToast(ex?'除外しました':'除外を解除しました');
