@@ -80,7 +80,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .app-title{background:var(--card-flip);border:2px solid var(--border);border-radius:99px;padding:7px 22px;font-size:calc(var(--fs-other) + 2px);font-weight:900;color:var(--white);letter-spacing:0.15em;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:8px;}
 .title-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-lt);}
 
-/* PHRASE DU JOUR */
+/* Phrase of the Day */
 .phrase-card{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:20px;padding:18px 20px 16px;margin-bottom:12px;position:relative;overflow:hidden;}
 .phrase-card::after{display:none;}
 .phrase-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -331,7 +331,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div class="phrase-card">
       <div class="phrase-header">
-        <span class="phrase-label">PHRASE DU JOUR</span>
+        <span class="phrase-label">Phrase of the Day</span>
         <div class="phrase-actions">
           <button class="phrase-icon-btn" id="phraseSpeakBtn" onclick="speakPhrase()">🔊</button>
           <button class="phrase-icon-btn" onclick="renderPhraseOfDay(true)">↺</button>
@@ -354,12 +354,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div class="stat-grid">
       <div class="stat-card hl">
-        <div class="stat-label">MAÎTRISÉ ✓</div>
+        <div class="stat-label">MASTERED ✓</div>
         <div class="stat-val" id="masteredCount">0</div>
         <div class="stat-unit">語 定着済み</div>
       </div>
       <div class="stat-card hl-gold">
-        <div class="stat-label">SÉRIE 🔥</div>
+        <div class="stat-label">STREAK 🔥</div>
         <div class="stat-val" id="streakCount">0</div>
         <div class="stat-unit">日連続</div>
       </div>
@@ -680,7 +680,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div class="set-section-title" style="margin-bottom:10px">語彙を追加</div>
     <div class="set-card">
-      <div class="set-note">TFPの出力JSONをそのまま貼り付けてください。<br><span style="color:var(--ink-lt);">id・numは自動生成。同じ単語は上書きされます。</span></div>
+      <div class="set-note">AEPの出力JSONをそのまま貼り付けてください。<br><span style="color:var(--ink-lt);">id・numは自動生成。同じ単語は上書きされます。</span></div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
         <textarea class="modal-textarea" id="wordsImportTextarea" placeholder='[{"w":"catch a cold","jp":"風邪をひく",...}]' style="height:90px;margin-bottom:0;"></textarea>
         <div style="display:flex;gap:8px;">
@@ -752,7 +752,7 @@ let WORDS=loadWords();
 function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'michi',fontSizes:{global:'medium'}};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function saveAppName(v){
-  const prefix=(v.trim()||'michi').replace(/lingo$/i,'');
+  const prefix=(v.trim()||'chii').replace(/lingo$/i,'');
   const n=prefix+'lingo';
   saveSetting('appName',prefix);
   document.getElementById('appTitleLabel').textContent=n;
@@ -880,9 +880,9 @@ function buildSessionDeck(prog){
   return shuffle(deck).slice(0,goal);
 }
 
-// PHRASE DU JOUR
+// Phrase of the Day
 function renderPhraseOfDay(random=false){
-  if(!WORDS.length){document.getElementById('phraseWord').textContent='ajouter des mots';document.getElementById('phraseJpWord').textContent='et expressions';['phraseEx','phraseExJp'].forEach(id=>{document.getElementById(id).textContent='';document.getElementById(id).style.display='none';});return;}
+  if(!WORDS.length){document.getElementById('phraseWord').textContent='add words';document.getElementById('phraseJpWord').textContent='and expressions';['phraseEx','phraseExJp'].forEach(id=>{document.getElementById(id).textContent='';document.getElementById(id).style.display='none';});return;}
   const w=random?WORDS[Math.floor(Math.random()*WORDS.length)]:WORDS[(()=>{const t=new Date();return(t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate())%WORDS.length;})()];
   document.getElementById('phraseWord').textContent=w.w||'—';
   document.getElementById('phraseJpWord').textContent=w.jp||'';
@@ -941,7 +941,7 @@ function updateDash(){
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
   const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
-  const rawName=s.appName||'michi';
+  const rawName=s.appName||'chii';
   const appName=rawName.replace(/lingo$/i,'')+'lingo';
   document.getElementById('appTitleLabel').textContent=appName;
   document.getElementById('pageTitle').textContent=appName;
@@ -1177,10 +1177,10 @@ function renderReport(weekOffset=0){
       '<button onclick="renderReport('+(weekOffset+1)+')" style="padding:6px 14px;border:2px solid var(--border);border-radius:99px;background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:900;color:'+nextColor+';cursor:'+nextCursor+';">次週 →</button>'+
     '</div>'+
     '<div class="report-stat-row">'+
-      '<div class="report-stat hl"><div class="report-stat-label">JOURS D'ÉTUDE</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
-      '<div class="report-stat hl4"><div class="report-stat-label">SÉANCES</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
+      '<div class="report-stat hl"><div class="report-stat-label">DAYS STUDIED</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
+      '<div class="report-stat hl4"><div class="report-stat-label">SESSIONS</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
       '<div class="report-stat hl3"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCorrect+'</div><div class="report-stat-unit">語 正解</div></div>'+
-      '<div class="report-stat hl2"><div class="report-stat-label">MAÎTRISÉ</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
+      '<div class="report-stat hl2"><div class="report-stat-label">MASTERED</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
     '</div>'+
     '<div class="report-graph-card">'+
       '<div class="report-graph-title">正解数 / 曜日</div>'+
@@ -1316,7 +1316,7 @@ function copyResult(){
   const prog=loadProgress();const total=WORDS.length;const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
   const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
   const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
-  const appName=(loadSettings().appName||'michi').replace(/lingo$/i,'')+'lingo';
+  const appName=(loadSettings().appName||'chii').replace(/lingo$/i,'')+'lingo';
   const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
   navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
   showToast('📋 コピーしました！');
