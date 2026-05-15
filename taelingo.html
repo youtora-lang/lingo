@@ -882,7 +882,7 @@ function buildSessionDeck(prog){
 
 // 오늘의 표현
 function renderPhraseOfDay(random=false){
-  if(!WORDS.length){document.getElementById('phraseWord').textContent='add words';document.getElementById('phraseJpWord').textContent='and expressions';['phraseEx','phraseExJp'].forEach(id=>{document.getElementById(id).textContent='';document.getElementById(id).style.display='none';});return;}
+  if(!WORDS.length){document.getElementById('phraseWord').textContent='단어와';document.getElementById('phraseJpWord').textContent='표현 추가';['phraseEx','phraseExJp'].forEach(id=>{document.getElementById(id).textContent='';document.getElementById(id).style.display='none';});return;}
   const w=random?WORDS[Math.floor(Math.random()*WORDS.length)]:WORDS[(()=>{const t=new Date();return(t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate())%WORDS.length;})()];
   document.getElementById('phraseWord').textContent=w.w||'—';
   document.getElementById('phraseJpWord').textContent=w.jp||'';
