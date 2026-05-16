@@ -15,19 +15,31 @@
  
 ## 🦋シリーズと使い方
 
+#### 🌈 ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
+
 ### 🇺🇸 英語版
 
 - AEP 完全ガイド👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
 
 - chiilingo（じぶん専用リンゴ EN）👉 [https://youtora-lang.github.io/lingo/chiilingo](https://youtora-lang.github.io/lingo/chiilingo)
 
-### 🇫🇷 フランス語版
+### 🇫🇷 仏語版
 
 - TFP 完全ガイド👉 [https://youtora-lang.github.io/lingo/tfp_guide](https://youtora-lang.github.io/lingo/tfp_guide)
 
 - michilingo（じぶん専用リンゴ FR）👉 [https://youtora-lang.github.io/lingo/michilingo](https://youtora-lang.github.io/lingo/michilingo)
 
-#### 🌈 ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
+### 🇯🇵 日本語版
+
+- MJP 完全ガイド👉 [https://youtora-lang.github.io/lingo/mjp_guide](https://youtora-lang.github.io/lingo/mjp_guide)
+
+- chiilingo.JP（じぶん専用リンゴ JP）👉 [https://youtora-lang.github.io/lingo/jp](https://youtora-lang.github.io/lingo/jp)
+
+### 🇰🇷 韓国語版
+
+- JKP 完全ガイド👉 準備中
+
+- taelingo（じぶん専用リンゴ KR）👉 [https://youtora-lang.github.io/lingo/taelingo](https://youtora-lang.github.io/lingo/taelingo)
 
 ## 🍏 その他の機能
 
