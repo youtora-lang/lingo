@@ -33,7 +33,7 @@
 
 - MJP 完全ガイド👉 [https://youtora-lang.github.io/lingo/mjp_guide](https://youtora-lang.github.io/lingo/mjp_guide)
 
-- chiilingo.JP（じぶん専用リンゴ JP）👉 [https://youtora-lang.github.io/lingo/jp](https://youtora-lang.github.io/lingo/jp)
+- chiilingo.JP（じぶん専用リンゴ JP）👉 [https://youtora-lang.github.io/lingo/chiilingojp](https://youtora-lang.github.io/lingo/chiilingojp)
 
 ### 🇰🇷 韓国語版
 
