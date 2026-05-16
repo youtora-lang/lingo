@@ -37,7 +37,8 @@
 
 ### 🇰🇷 韓国語版
 
-- JKP 完全ガイド👉 準備中
+- JKP 完全ガイド👉 [https://youtora-lang.github.io/lingo/jkp_guide](https://youtora-lang.github.io/lingo/jkp_guide)
+
 
 - taelingo（じぶん専用リンゴ KR）👉 [https://youtora-lang.github.io/lingo/taelingo](https://youtora-lang.github.io/lingo/taelingo)
 
