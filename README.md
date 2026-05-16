@@ -29,18 +29,17 @@
 
 - michilingo（じぶん専用リンゴ FR）👉 [https://youtora-lang.github.io/lingo/michilingo](https://youtora-lang.github.io/lingo/michilingo)
 
+### 🇰🇷 韓国語版
+
+- JKP 完全ガイド👉 [https://youtora-lang.github.io/lingo/jkp_guide](https://youtora-lang.github.io/lingo/jkp_guide)
+
+- taelingo（じぶん専用リンゴ KR）👉 [https://youtora-lang.github.io/lingo/taelingo](https://youtora-lang.github.io/lingo/taelingo)
+
 ### 🇯🇵 日本語版
 
 - MJP 完全ガイド👉 [https://youtora-lang.github.io/lingo/mjp_guide](https://youtora-lang.github.io/lingo/mjp_guide)
 
 - chiilingo.JP（じぶん専用リンゴ JP）👉 [https://youtora-lang.github.io/lingo/chiilingojp](https://youtora-lang.github.io/lingo/chiilingojp)
-
-### 🇰🇷 韓国語版
-
-- JKP 完全ガイド👉 [https://youtora-lang.github.io/lingo/jkp_guide](https://youtora-lang.github.io/lingo/jkp_guide)
-
-
-- taelingo（じぶん専用リンゴ KR）👉 [https://youtora-lang.github.io/lingo/taelingo](https://youtora-lang.github.io/lingo/taelingo)
 
 ## 🍏 その他の機能
 
