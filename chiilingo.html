@@ -275,6 +275,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .word-item.excluded{opacity:0.4;}
 .wi-toggle{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .wi-toggle.on{background:var(--card-flip);border-color:var(--card-flip-deep);color:white;}
+.wi-speak{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:none;background:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--ink-lt);}
 
 /* 設定 */
 .set-body{padding:16px;overflow-y:auto;flex:1;}
@@ -734,7 +735,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-17 12:43 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-17 13:36 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1033,7 +1034,18 @@ function speakWordBack(e){
   speakEn(btn._word||'');
   setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
 }
-function flipCard(){if(isFlipped)return;isFlipped=true;document.getElementById('cardInner').classList.add('flipped');document.getElementById('flipBtn').classList.add('hidden');document.getElementById('actionRow').classList.add('show');}
+function flipCard(){
+  if(isFlipped)return;isFlipped=true;
+  document.getElementById('cardInner').classList.add('flipped');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('actionRow').classList.add('show');
+  // jp2enかつautoSpeakオンのとき、裏面（英語面）が出たタイミングで読み上げ
+  const s=loadSettings();
+  if(s.direction==='jp2en' && s.autoSpeak==='on'){
+    const word=document.getElementById('speakBtnBack')._word||'';
+    setTimeout(()=>speakEn(word), 300);
+  }
+}
 
 function judge(isOk){
   if(!isFlipped)return;
@@ -1110,6 +1122,11 @@ function selectQuizAnswer(btn,isCorrect,q){
     document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});
   }
   document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
+  // jp2enかつautoSpeakオンのとき、回答後に正解（英語）を読み上げ
+  const s=loadSettings();
+  if(s.direction==='jp2en' && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 200);
+  }
   setTimeout(()=>{
     quizCurrent++;
     if(quizCurrent>=sessionDeck.length){
@@ -1395,7 +1412,7 @@ function renderWordList(){
     const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
     const div=document.createElement('div');div.className='word-item'+(isEx?' excluded':'');
     const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?` (${w.exJp})`:''}</div>`:'';
-    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button>`;
+    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div><button class="wi-speak" onclick="speakEn('${w.w.replace(/'/g,"\\'")}')">🔊</button><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button>`;
     container.appendChild(div);
   });
 }
