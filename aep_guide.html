@@ -429,7 +429,11 @@ body::before {
         <div><span class="cmd">英語</span> → 理想の会話を英語のみで再出力</div>
       </li>
       <li>
-        <span class="step-num" style="background: var(--green);">5</span>
+        <span class="step-num" style="background: var(--lavender);">5</span>
+        <div><span class="cmd">日記</span> → 今日の会話を日記形式で日英出力</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--green);">6</span>
         <div><span class="cmd-apple">りんご</span> → 今日の重要単語をchiilingo用JSONで出力し、アプリで定着練習！</div>
       </li>
       <li>
@@ -564,7 +568,7 @@ body::before {
       <li>
         <span class="step-num" style="background: var(--lavender);">5</span>
         <div>特殊コマンドで、言いたかったことを確認・調整<br>
-          <span style="font-size:11px; color:#888;">（<span class="cmd" style="font-size:10px;">確認</span> → <span class="cmd" style="font-size:10px;">理想</span> → <span class="cmd" style="font-size:10px;">英語</span>）</span>
+          <span style="font-size:11px; color:#888;">（<span class="cmd" style="font-size:10px;">確認</span> → <span class="cmd" style="font-size:10px;">理想</span> → <span class="cmd" style="font-size:10px;">英語</span> → <span class="cmd" style="font-size:10px;">日記</span>）</span>
         </div>
       </li>
       <li>
@@ -818,6 +822,24 @@ ${name}: [English]
 
 ---
 
+## Diary Mode
+
+**Trigger:** ${name} inputs\u300c\u65e5\u8a18\u300d
+
+Based on today\u2019s conversation, write a diary entry in ${name}\u2019s voice.
+
+**Format:** Always output the English entry first, then the Japanese entry. No comments, no labels, no headers \u2014 just the two entries back to back.
+
+**Rules:**
+- This is ${name}\u2019s personal diary \u2014 about her feelings, thoughts, and daily life. The conversation with Alex is only a source of topic material, never the subject of the entry itself.
+- Never frame the entry as a conversation, a recap of a chat, or anything related to English practice. Alex must not appear. The diary must read as if ${name} wrote it entirely on her own, with no awareness of any conversation having taken place.
+- Casual, first-person, spoken-language tone.
+- Always output the English entry first. The Japanese entry follows. No exceptions.
+- English: 100\u2013150 words.
+- Japanese: match the English content naturally. No strict character limit \u2014 not a word-for-word translation.
+
+---
+
 ## Vocabulary Harvest
 
 **Trigger:** ${name} inputs「りんご」
@@ -872,6 +894,7 @@ AEPでできること：
 - 「確認」→ ${name}が言いたかったことを箇条書きで整理（修正可）
 - 「理想」→ 理想の英会話バージョンを日英で出力
 - 「英語」→ 理想の会話を英語のみで再出力
+- 「日記」→ 今日の会話を日記形式で日英出力
 - 「りんご」→ 今日の重要単語をchiilingo用JSONで出力`;
 }
 
