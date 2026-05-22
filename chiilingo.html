@@ -735,7 +735,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-17 13:36 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-22 23:35 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -811,6 +811,10 @@ function calcSessionSize(){return parseInt(loadSettings().sessionSize)||20;}
 // ストリーク
 function getStreak(){
   const dates=new Set(loadHistory().map(e=>e.date));
+  const td=loadTicketData();
+  // チケット使用日（複数）もすべて有効な日として追加
+  if(td.usedDates&&td.usedDates.length)td.usedDates.forEach(d=>dates.add(d));
+  else if(td.lastUsedDate)dates.add(td.lastUsedDate);
   let s=0;const c=new Date();c.setHours(0,0,0,0);
   for(let i=0;i<366;i++){
     const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
@@ -821,7 +825,7 @@ function getStreak(){
 
 // 特別休暇チケット
 function getTotalStudyDays(){return new Set(loadHistory().map(e=>e.date)).size;}
-function loadTicketData(){try{return JSON.parse(localStorage.getItem(LS.tickets))||{used:0,lastUsedDate:null};}catch(e){return{used:0,lastUsedDate:null};}}
+function loadTicketData(){try{return JSON.parse(localStorage.getItem(LS.tickets))||{used:0,lastUsedDate:null,usedDates:[]};}catch(e){return{used:0,lastUsedDate:null,usedDates:[]};}}
 function saveTicketData(d){localStorage.setItem(LS.tickets,JSON.stringify(d));}
 function calcTotalTickets(){return Math.floor(getTotalStudyDays()/3);}
 function calcRemainingTickets(){return Math.max(0,calcTotalTickets()-loadTicketData().used);}
@@ -830,12 +834,23 @@ function checkAndUseTicket(){
   const dates=new Set(loadHistory().map(e=>e.date));
   const today=localDateStr();
   if(dates.has(today))return false; // 今日学習済み
+  const td=loadTicketData();
+  if(!td.usedDates)td.usedDates=[];
+  if(td.usedDates.includes(today))return true; // 今日すでに使用済み
+  // 昨日 or チケット使用日から連続しているか確認
+  const allDates=new Set([...dates,...td.usedDates]);
   const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-1);
   const yest=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  if(dates.has(yest))return false; // 昨日学習済み＝途切れていない
-  const td=loadTicketData();
-  if(td.lastUsedDate===today)return true; // 今日すでに使用
-  if(calcRemainingTickets()>0){td.used++;td.lastUsedDate=today;saveTicketData(td);return true;}
+  if(allDates.has(yest)){
+    // 昨日は学習orチケット使用済み → まだ途切れていないので使用不要
+    return false;
+  }
+  // 途切れた → チケット使用
+  if(calcRemainingTickets()>0){
+    td.used++;td.lastUsedDate=today;
+    if(!td.usedDates.includes(today))td.usedDates.push(today);
+    saveTicketData(td);return true;
+  }
   return false;
 }
 
