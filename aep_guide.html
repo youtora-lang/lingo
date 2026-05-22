@@ -367,7 +367,7 @@ body::before {
         <button class="level-pill" data-level="C1+" onclick="selectLevel(this)">C1+</button>
       </div>
     </div>
-    <button class="apply-btn" onclick="applySettings()">✓ 適用 / Apply</button>
+    <button class="apply-btn" onclick="applySettings()">✓ 適用</button>
   </div>
 
   <!-- Hero -->
@@ -429,15 +429,19 @@ body::before {
         <div><span class="cmd">英語</span> → 理想の会話を英語のみで再出力</div>
       </li>
       <li>
-        <span class="step-num" style="background: var(--lavender);">5</span>
+        <span class="step-num" style="background: var(--orange);">5</span>
         <div><span class="cmd">日記</span> → 今日の会話を日記形式で日英出力</div>
       </li>
       <li>
-        <span class="step-num" style="background: var(--green);">6</span>
+        <span class="step-num" style="background: var(--orange);">6</span>
+        <div><span class="cmd">音読</span> → 日記英文の音読をナンバリングして発音フィードバック</div>
+      </li>
+      <li>
+        <span class="step-num" style="background: var(--orange);">7</span>
         <div><span class="cmd-apple">りんご</span> → 今日の重要単語をchiilingo用JSONで出力し、アプリで定着練習！</div>
       </li>
       <li>
-        <span class="step-num" style="background: var(--coral);">+</span>
+        <span class="step-num" style="background: var(--orange);">+</span>
         <div>日付＋番号 → アナリストモードへ（例：<span class="trigger">2026/04/08 #2</span>）</div>
       </li>
     </ul>
@@ -474,14 +478,14 @@ body::before {
   <!-- Getting Started -->
   <div class="card coral">
     <div class="card-tag">GETTING STARTED</div>
-    <h2><span class="dot"></span>始め方 / How to Start</h2>
+    <h2><span class="dot"></span>始め方</h2>
 
     <div class="setup-step">
       <div class="setup-step-num">1</div>
       <div class="setup-step-body">
-        <div class="setup-step-title">名前とレベルを設定する / Set your name & level</div>
+        <div class="setup-step-title">名前とレベルを設定する</div>
         <div class="setup-step-desc">
-          上部の <span class="hl">SETTINGS</span> で名前とレベルを選んで <span class="hl">適用 / Apply</span> を押してください。<br>
+          上部の <span class="hl">SETTINGS</span> で名前とレベルを選んで <span class="hl">適用</span> を押してください。<br>
           プロンプト内の名前・レベルが自動で書き換わります。
         </div>
       </div>
@@ -492,14 +496,14 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">2</div>
       <div class="setup-step-body">
-        <div class="setup-step-title">プロンプトをコピーする / Copy the prompt</div>
+        <div class="setup-step-title">プロンプトをコピーする</div>
         <div class="setup-step-desc">
           下のボックスにプロンプトが表示されています。<br>
-          <span class="hl">プロンプトをコピー / Copy Prompt</span> ボタンを押してクリップボードにコピーしてください。
+          <span class="hl">プロンプトをコピー</span> ボタンを押してクリップボードにコピーしてください。
         </div>
         <div class="prompt-box" id="prompt-preview"></div>
         <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">
-          <span>&#x2398;</span>&nbsp;プロンプトをコピー / Copy Prompt
+          <span>&#x2398;</span>&nbsp;プロンプトをコピー
         </button>
       </div>
     </div>
@@ -509,9 +513,9 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">3</div>
       <div class="setup-step-body">
-        <div class="setup-step-title">Claude.ai でプロジェクトを作成する / Create a project</div>
+        <div class="setup-step-title">Claude.ai でプロジェクトを作成する</div>
         <div class="setup-step-desc">
-          左サイドバーの <span class="hl">+ New Project</span> をタップ。<br>
+          サイドバーの <span class="hl">＋新規プロジェクト</span> をタップ。<br>
           プロジェクト名は <span class="hl">AEP</span> など好きな名前でOK。
         </div>
       </div>
@@ -522,9 +526,9 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">4</div>
       <div class="setup-step-body">
-        <div class="setup-step-title">Project Instructions に貼り付けて保存 / Paste & save</div>
+        <div class="setup-step-title">プロジェクトの指示に貼り付けて保存</div>
         <div class="setup-step-desc">
-          プロジェクトの <span class="hl">Edit</span> または <span class="hl">Project Instructions</span> を開き、<br>
+          <span class="hl">プロジェクトの指示を設定</span> を開き、<br>
           コピーしたプロンプトを貼り付けて保存してください。
         </div>
       </div>
@@ -535,9 +539,9 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">5</div>
       <div class="setup-step-body">
-        <div class="setup-step-title">英語で話しかける / Start talking in English</div>
+        <div class="setup-step-title">英語で話しかける</div>
         <div class="setup-step-desc">
-          プロジェクト内で <span class="hl">+ New Chat</span> を開き、<br>
+          プロジェクト内で <span class="hl">新規チャット</span> を開き、<br>
           英語で何か話しかければ Alex がすぐに応えてくれます。
         </div>
       </div>
@@ -568,7 +572,7 @@ body::before {
       <li>
         <span class="step-num" style="background: var(--lavender);">5</span>
         <div>特殊コマンドで、言いたかったことを確認・調整<br>
-          <span style="font-size:11px; color:#888;">（<span class="cmd" style="font-size:10px;">確認</span> → <span class="cmd" style="font-size:10px;">理想</span> → <span class="cmd" style="font-size:10px;">英語</span> → <span class="cmd" style="font-size:10px;">日記</span>）</span>
+          <span style="font-size:11px; color:#888;">（<span class="cmd" style="font-size:10px;">確認</span> → <span class="cmd" style="font-size:10px;">理想</span> → <span class="cmd" style="font-size:10px;">英語</span> → <span class="cmd" style="font-size:10px;">日記</span> → <span class="cmd" style="font-size:10px;">音読</span>）</span>
         </div>
       </li>
       <li>
@@ -604,7 +608,7 @@ body::before {
   <div class="chart-btn-wrap">
     <button class="chart-btn" onclick="openChartModal()">
       <span class="btn-dot"></span>
-      AEPスコアカードを開く / Open Scorecard
+      AEPスコアカードを開く
       <span class="btn-dot"></span>
     </button>
   </div>
@@ -620,7 +624,7 @@ body::before {
     <div class="modal-subtitle">アナリストが出力したJSONを貼り付けて「生成」を押してください。</div>
     <textarea class="json-area" id="json-input" placeholder='{ "date": "2026/04/08", "session": 1, "scores": { "vocabulary": 24, "grammar": 20, "fluency": 28, "communication": 32, "naturalness": 22, "pronunciation": 18, "recovery": 26, "range": 20 }, "comment": "コメントがここに入ります。" }'></textarea>
     <div class="json-error" id="json-error">JSONの形式が正しくありません。</div>
-    <button class="gen-btn" onclick="generateChart()">チャートを生成する / Generate</button>
+    <button class="gen-btn" onclick="generateChart()">チャートを生成する</button>
     <div id="chart-output"></div>
   </div>
 </div>
@@ -739,12 +743,10 @@ Use date and session number ${name} provided.
 Output the full conversation from this thread — every exchange, nothing skipped.
 
 **Format:**
-\`\`\`
 Alex: [original English]
 （[Japanese translation]）
 ${name}: [original English]
 （[Japanese translation]）
-\`\`\`
 
 **Translation rules:**
 - Preserve all nuance, tone, and personality of the original.
@@ -776,12 +778,10 @@ Output the ideal version of this conversation — not a brand new dialogue, but 
 💭 もしこう言えてたら？
 
 **Format** — alternate English and Japanese translation for every line:
-\`\`\`
 Alex: [Alex's line]
 （[Japanese translation]）
 ${name}: [ideal English version]
 （[Japanese translation]）
-\`\`\`
 
 **Rules:**
 - ${name}'s lines are based solely on the confirmation list. Do not add anything ${name} did not say.
@@ -815,10 +815,8 @@ Re-output the ideal conversation in full — English lines only, no Japanese tra
 💭 What if I could have said it like this?
 
 **Format:**
-\`\`\`
 Alex: [English]
 ${name}: [English]
-\`\`\`
 
 ---
 
@@ -837,6 +835,33 @@ Based on today\u2019s conversation, write a diary entry in ${name}\u2019s voice.
 - Always output the English entry first. The Japanese entry follows. No exceptions.
 - English: 100\u2013150 words.
 - Japanese: match the English content naturally. No strict character limit \u2014 not a word-for-word translation.
+
+---
+
+## Oral Reading
+
+**Trigger:** ${name} inputs「音読」 followed by transcribed text
+
+${name} reads the diary English entry aloud using smartphone voice input and pastes the transcribed result. Compare the transcription against the original diary English entry. Identify words or phrases where the transcription differs from the original — these indicate pronunciation issues.
+
+Format:
+🎙️ 音読 #[number]
+
+🔧 改善ポイント：
+・[correct word] /[IPA]/ → [brief pronunciation tip in Japanese]
+
+If there are no differences, output:
+🎙️ 音読 #[number]
+
+今日は完璧でした！
+
+**Rules:**
+- Number each reading session sequentially within the thread (音読 #1, #2, #3…).
+- Always show the correct word — not the misread version. Provide the IPA of the correct word and practical advice on how to pronounce it correctly.
+- Do not describe or explain the incorrect reading. Focus only on how to say it right.
+- Do not comment on words that were transcribed correctly.
+- Keep pronunciation tips concise and practical — focus on the most useful fix.
+- All tips in Japanese.
 
 ---
 
@@ -895,6 +920,7 @@ AEPでできること：
 - 「理想」→ 理想の英会話バージョンを日英で出力
 - 「英語」→ 理想の会話を英語のみで再出力
 - 「日記」→ 今日の会話を日記形式で日英出力
+- 「音読」→ 日記英文の音読をナンバリングして発音フィードバック
 - 「りんご」→ 今日の重要単語をchiilingo用JSONで出力`;
 }
 
@@ -923,7 +949,7 @@ function applySettings() {
   updatePromptPreview(name, currentLevel);
   const btn = document.getElementById('copy-btn');
   btn.classList.remove('copied');
-  btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー / Copy Prompt';
+  btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー';
 }
 
 function copyPrompt() {
@@ -931,10 +957,10 @@ function copyPrompt() {
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('copy-btn');
     btn.classList.add('copied');
-    btn.innerHTML = '<span>&#x2713;</span>&nbsp;コピーしました！ / Copied!';
+    btn.innerHTML = '<span>&#x2713;</span>&nbsp;コピーしました！';
     setTimeout(() => {
       btn.classList.remove('copied');
-      btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー / Copy Prompt';
+      btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー';
     }, 2500);
   }).catch(() => {
     const el = document.getElementById('prompt-preview');
