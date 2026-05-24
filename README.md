@@ -2,14 +2,14 @@
 
 ## 🐛メイン機能
 
-- **フラッシュカード** — 英語→日本語をカードをめくって確認
+- **フラッシュカード** — 英語（またはその他の学習言語）→日本語をカードをめくって確認
 - **4択クイズ** — 4つの選択肢から正解を選んで答えたら自動で次の問題へ
-- **スペリング** — 英単語・フレーズをタイピングで実力確認
-- **出題方向の切り替え** — 英語→日本語・日本語→英語を設定で切り替えられる
+- **スペリング** — 単語・フレーズをタイピングで実力確認
+- **出題方向の切り替え** — 学習言語→日本語・日本語→学習言語を設定で切り替えられる
 - **学習ペース設定** — 1日の目標語数と1セッションの出題数を個別に設定可能
 - **学習履歴** — 正解回数で習熟度を管理
 - \ New! / **週間レポート** — 曜日別の正解数グラフと週の学習サマリーを表示
-- \ New! / **単語検索** — 英語・日本語で部分一致リアルタイム検索
+- \ New! / **単語検索** — 学習言語・日本語で部分一致リアルタイム検索
 - **バックアップ** — 学習データのエクスポート・インポートが可能
 - **単語の除外** — 一覧画面で特定の単語をセッションから除外・復活できる
  
@@ -17,29 +17,25 @@
 
 #### 🌈 ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
 
-### 🇺🇸 英語版
+### 🇺🇸🇫🇷🇰🇷🇯🇵 共通ガイド
 
-- AEP 完全ガイド👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
+- あなた専用ガイド / Your Personal Guide👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
+
+### 🇺🇸 英語
 
 - chiilingo（じぶん専用リンゴ EN）👉 [https://youtora-lang.github.io/lingo/chiilingo](https://youtora-lang.github.io/lingo/chiilingo)
 
 ### 🇫🇷 仏語版
 
-- TFP 完全ガイド👉 [https://youtora-lang.github.io/lingo/tfp_guide](https://youtora-lang.github.io/lingo/tfp_guide)
-
 - michilingo（じぶん専用リンゴ FR）👉 [https://youtora-lang.github.io/lingo/michilingo](https://youtora-lang.github.io/lingo/michilingo)
 
 ### 🇰🇷 韓国語版
 
-- JKP 完全ガイド👉 [https://youtora-lang.github.io/lingo/jkp_guide](https://youtora-lang.github.io/lingo/jkp_guide)
-
 - taelingo（じぶん専用リンゴ KR）👉 [https://youtora-lang.github.io/lingo/taelingo](https://youtora-lang.github.io/lingo/taelingo)
 
-### 🇯🇵 日本語版
+### 🇯🇵 Japanese
 
-- MJP 完全ガイド👉 [https://youtora-lang.github.io/lingo/mjp_guide](https://youtora-lang.github.io/lingo/mjp_guide)
-
-- chiilingo.JP（じぶん専用リンゴ JP）👉 [https://youtora-lang.github.io/lingo/chiilingojp](https://youtora-lang.github.io/lingo/chiilingojp)
+- chiilingo.JP（Your Own Lingo JP）👉 [https://youtora-lang.github.io/lingo/chiilingojp](https://youtora-lang.github.io/lingo/chiilingojp)
 
 ## 🍏 その他の機能
 
