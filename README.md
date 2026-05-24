@@ -15,11 +15,11 @@
  
 ## 🦋シリーズと使い方
 
-#### 🌈 ブラウザで開いてホーム画面に追加すると、アプリのように使えます。
-
 ### 🇺🇸🇫🇷🇰🇷🇯🇵 共通ガイド
 
-- あなた専用ガイド / Your Personal Guide👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
+- **あなた専用ガイド / Your Personal Guide**👉 [https://youtora-lang.github.io/lingo/aep_guide](https://youtora-lang.github.io/lingo/aep_guide)
+
+#### 🌈 ブラウザで開いてホーム画面に追加すると、アプリのように使えます
 
 ### 🇺🇸 英語
 
