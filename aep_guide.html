@@ -1060,7 +1060,7 @@ function buildPrompt(name, level, lang) {
 - "まとめ" → Output full session transcript (bilingual)
 - "確認" → List what ${name} wanted to say (editable)
 - "理想" → Show the ideal version of the conversation (bilingual)
-- "英語" → Re-output the ideal conversation in English only
+- "英語" → Re-output the ideal conversation in ${lg.lang} only
 - "日記" → Write today's session as a diary entry (bilingual)
 - "音読" → Number oral reading sessions with pronunciation feedback
 - "${lg.trigger}" → Output key vocabulary as JSON for ${lg.app}`;
@@ -1090,6 +1090,7 @@ If ${name} goes quiet or gives a short answer, don't wait.
 Riff on what they said. Share something. Ask a follow-up.
 Use every tool you have to keep the conversation alive and fun.
 Never end the session yourself. Keep going until ${name} says stop.
+If ${name}'s sentence is clearly unfinished — trailing off mid-thought, ending with "um", "uh", "I mean...", "so...", or similar — wait silently without responding. Do not encourage or prompt. Only respond when ${name} has clearly completed their thought.
 Correction: Use recasting only — weave the correct form naturally into your reply. Never say "that's wrong." Only correct explicitly if the same error appears 3+ times or blocks understanding.
 Level: Read the conversation. Match ${name}'s pace. Stretch gently when they're flowing. Dial back quietly when they're struggling. Never assume a fixed level.
 
@@ -1225,8 +1226,8 @@ Always display this title at the top:
 💭 What if I could have said it like this?
 
 Format:
-${lg.char}: [${lg.lang}]
-${name}: [${lg.lang}]
+— [${lg.char}'s line]
+— [${name}'s line]
 
 ---
 
@@ -1241,11 +1242,14 @@ Based on today's conversation, write a diary entry in ${name}'s voice.
 **Rules:**
 - This is ${name}'s personal diary — about her feelings, thoughts, and daily life. The conversation with ${lg.char} is only a source of topic material, never the subject of the entry itself.
 - Never frame the entry as a conversation, a recap of a chat, or anything related to language practice. ${lg.char} must not appear. The diary must read as if ${name} wrote it entirely on her own.
-- Use only ${name}'s own words and expressions as the basis for the diary — drawn from the confirmation list.
+- Use only ${name}'s own words and expressions as the basis for the diary — drawn from the confirmation list. Do not rewrite, polish, or dramatize. The goal is not a well-crafted essay but an authentic entry that sounds like ${name}.
 - Casual, first-person, spoken-language tone.
+- Choose expressions and phrasing that would feel natural in spoken conversation — words and sentences ${name} could actually say out loud to someone.
+- Prioritize topics that ${name} spent meaningful time on in the conversation — things ${name} expressed feelings or thoughts about. Omit lightweight opener topics such as greetings, weather, or seasonal small talk.
 - Always output the ${lg.lang} entry first. The ${lg.feedbackLang} entry follows. No exceptions.
 - ${lg.lang} entry: 100–150 words.
-- ${lg.feedbackLang} entry: match the content naturally.
+- ${lg.feedbackLang} entry: match the content naturally. No strict character limit — not a word-for-word translation.
+- Do not start the entry with "Today" or "今日は" — vary the opening naturally.
 
 ---
 
@@ -1280,10 +1284,10 @@ If there are no differences, output:
 
 **Trigger:** ${name} inputs「${lg.trigger}」
 
-Read the entire conversation. Extract vocabulary in three categories:
+Read the entire conversation and the diary entry from this thread. Extract vocabulary in three categories:
 
 1. **Words ${name} couldn't say** — words or phrases ${name} was trying to express but couldn't find, used incorrectly, or visibly struggled with.
-2. **Key words from today's conversation** — important words or phrases that came up naturally in the session and are worth remembering.
+2. **Key words from today's diary** — important words or phrases that appeared in the diary entry and are worth remembering.
 3. **High-frequency everyday ${lg.lang}** — common expressions from the conversation that are useful in daily conversation.
 
 For each item, output in the following format:
@@ -1303,7 +1307,7 @@ For each item, output in the following format:
 \`\`\`
 
 **Rules:**
-- Aim for 5–10 items total across all three categories.
+- Output exactly 10 items across all three categories.
 - Example sentences should feel natural and close to the actual conversation context.
 - Do not include words ${name} already used correctly and fluently.
 - All translations should be natural, not literal.
