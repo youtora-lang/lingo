@@ -735,7 +735,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-24 17:03 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-24 17:14 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -832,9 +832,6 @@ function loadTicketData(){
   try{
     const d=JSON.parse(localStorage.getItem(LS.tickets))||{used:0,lastUsedDate:null,usedDates:[]};
     if(!d.usedDates)d.usedDates=[];
-    // 学習日数から正規のチケット数を再計算して used が異常に多い場合はリセット
-    const maxTickets=Math.floor(new Set(loadHistory().map(e=>e.date)).size/3);
-    if(d.used>maxTickets){d.used=0;d.usedDates=[];d.lastUsedDate=null;localStorage.setItem(LS.tickets,JSON.stringify(d));}
     return d;
   }catch(e){return{used:0,lastUsedDate:null,usedDates:[]};}
 }function saveTicketData(d){localStorage.setItem(LS.tickets,JSON.stringify(d));}
@@ -846,29 +843,30 @@ function checkAndUseTicket(){
   const td=loadTicketData();
   if(!td.usedDates)td.usedDates=[];
   const allDates=new Set([...studyDates,...td.usedDates]);
-  const today=localDateStr();
 
-  // 昨日から遡り、連続して途切れている日をチケットで埋める
+  // チケット残数をローカルで管理（loadTicketDataを繰り返し呼ばない）
+  const totalTickets=calcTotalTickets();
+  let localUsed=td.used;
   let changed=false;
   const c=new Date();c.setHours(0,0,0,0);c.setDate(c.getDate()-1);
 
   for(let i=0;i<30;i++){
     const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
     if(allDates.has(ds)){
-      // この日は埋まっている → さらに前の日をチェック
       c.setDate(c.getDate()-1);
       continue;
     }
-    // 穴を発見 → チケットがあれば埋める
-    if(calcRemainingTickets()>0){
-      td.used++;
+    const remaining=Math.max(0,totalTickets-localUsed);
+    if(remaining>0){
+      localUsed++;
+      td.used=localUsed;
       if(!td.usedDates.includes(ds))td.usedDates.push(ds);
       allDates.add(ds);
       td.lastUsedDate=ds;
       changed=true;
       c.setDate(c.getDate()-1);
     }else{
-      break; // チケットなし → 終了
+      break;
     }
   }
   if(changed)saveTicketData(td);
