@@ -735,7 +735,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-24 14:00 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-24 17:03 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -843,31 +843,36 @@ function calcRemainingTickets(){return Math.max(0,calcTotalTickets()-loadTicketD
 
 function checkAndUseTicket(){
   const studyDates=new Set(loadHistory().map(e=>e.date));
-  const today=localDateStr();
   const td=loadTicketData();
   if(!td.usedDates)td.usedDates=[];
-
-  // 今日学習済みなら何もしない
-  if(studyDates.has(today))return false;
-
   const allDates=new Set([...studyDates,...td.usedDates]);
+  const today=localDateStr();
 
-  // 昨日の日付を計算
-  const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-1);
-  const yest=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  // 昨日から遡り、連続して途切れている日をチケットで埋める
+  let changed=false;
+  const c=new Date();c.setHours(0,0,0,0);c.setDate(c.getDate()-1);
 
-  // 昨日が学習済みorチケット使用済み → 途切れていない
-  if(allDates.has(yest))return false;
-
-  // 昨日が穴 → チケット1枚使って埋める
-  if(calcRemainingTickets()>0){
-    td.used++;
-    if(!td.usedDates.includes(yest))td.usedDates.push(yest);
-    td.lastUsedDate=yest;
-    saveTicketData(td);
-    return true;
+  for(let i=0;i<30;i++){
+    const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
+    if(allDates.has(ds)){
+      // この日は埋まっている → さらに前の日をチェック
+      c.setDate(c.getDate()-1);
+      continue;
+    }
+    // 穴を発見 → チケットがあれば埋める
+    if(calcRemainingTickets()>0){
+      td.used++;
+      if(!td.usedDates.includes(ds))td.usedDates.push(ds);
+      allDates.add(ds);
+      td.lastUsedDate=ds;
+      changed=true;
+      c.setDate(c.getDate()-1);
+    }else{
+      break; // チケットなし → 終了
+    }
   }
-  return false;
+  if(changed)saveTicketData(td);
+  return changed;
 }
 
 function getTicketDisplay(){
@@ -1162,6 +1167,7 @@ function selectQuizAnswer(btn,isCorrect,q){
     quizCurrent++;
     if(quizCurrent>=sessionDeck.length){
       addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+      checkAndUseTicket();
       sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
     }else{
       renderQuiz(); // visibility はrenderQuiz冒頭で復元
@@ -1335,6 +1341,7 @@ function advanceSpell(){
   spellCurrent++;
   if(spellCurrent>=sessionDeck.length){
     addHistory({date:localDateStr(),correct:spellOk,wrong:spellNg,total:sessionDeck.length});
+    checkAndUseTicket();
     sessionOk=spellOk;sessionNg=spellNg;sessionMissed=spellMissed;
     finishSession();
   }else{
@@ -1345,6 +1352,8 @@ function advanceSpell(){
 // 終了
 function finishSession(){
   if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
+  // セッション完了時にもチケット処理（今日の記録追加後に実行）
+  checkAndUseTicket();
   const total=sessionDeck.length;const pct=total>0?sessionOk/total:0;
   let emoji,title,sub;
   if(pct>=0.85){emoji='🌟';title='すばらしい！';sub='定着が進んできた。この調子で続けよう。';}
