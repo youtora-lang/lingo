@@ -28,7 +28,7 @@
   /* 4択選択肢 */
   --fs-choice:19px;--fs-choice-jp:17px;
   /* 単語一覧 */
-  --fs-wi-en:16px;--fs-wi-jp:14px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;
+  --fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;
   /* その他（ダッシュボード・設定ラベルなど） */
   --fs-other:15px;
   /* アプリ全体ベース */
@@ -41,15 +41,15 @@ body.card-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--
 body.choice-large{--fs-choice:22px;--fs-choice-jp:20px;}
 body.choice-small{--fs-choice:16px;--fs-choice-jp:14px;}
 /* ── 単語一覧サイズ ── */
-body.wl-large{--fs-wi-en:19px;--fs-wi-jp:17px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;}
+body.wl-large{--fs-wi-en:22px;--fs-wi-jp:19px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;}
 body.wl-small{--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;}
 /* ── その他サイズ ── */
 body.other-large{--fs-other:18px;--fs-base:18px;}
 body.other-small{--fs-other:13px;--fs-base:13px;}
 /* ── アプリ全体サイズ（他を無効化） ── */
-body.global-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;--fs-choice:22px;--fs-choice-jp:20px;--fs-wi-en:19px;--fs-wi-jp:17px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;--fs-other:18px;--fs-base:18px;}
+body.global-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;--fs-choice:22px;--fs-choice-jp:20px;--fs-wi-en:22px;--fs-wi-jp:19px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;--fs-other:18px;--fs-base:18px;}
 body.global-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--fs-ph:13px;--fs-choice:16px;--fs-choice-jp:14px;--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;--fs-other:13px;--fs-base:13px;}
-body.global-medium{--fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;--fs-choice:19px;--fs-choice-jp:17px;--fs-wi-en:16px;--fs-wi-jp:14px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;--fs-other:15px;--fs-base:15px;}
+body.global-medium{--fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;--fs-choice:19px;--fs-choice-jp:17px;--fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;--fs-other:15px;--fs-base:15px;}
 /* アプリ全体選択時は個別selector無効 */
 body.global-lock .fs-scope-btn{opacity:0.35;pointer-events:none;}
 /* ベースフォント */
@@ -271,7 +271,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .wi-en{font-size:var(--fs-wi-en);font-weight:900;color:var(--ink);}
 .wi-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;font-weight:700;}
 .wi-meta{font-size:11px;color:var(--ink-lt);text-align:right;font-weight:800;}
-.wi-ex{font-size:var(--fs-wi-ex);color:var(--ink-lt);margin-top:4px;line-height:1.5;}
+.wi-ex{font-size:var(--fs-wi-en);color:var(--ink);margin-top:6px;line-height:1.6;font-weight:600;}
+.wi-ex-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;line-height:1.5;font-weight:600;}
 .word-item.excluded{opacity:0.4;}
 .wi-toggle{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .wi-toggle.on{background:var(--card-flip);border-color:var(--card-flip-deep);color:white;}
@@ -735,7 +736,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-24 17:58 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-26 19:32 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1469,7 +1470,7 @@ function renderWordList(){
     const dc=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
     const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
     const div=document.createElement('div');div.className='word-item'+(isEx?' excluded':'');
-    const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?` (${w.exJp})`:''}</div>`:'';
+    const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?`<div class="wi-ex-jp">${w.exJp}</div>`:''}</div>`:'';
     div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div><button class="wi-speak" onclick="speakEn('${w.w.replace(/'/g,"\\'")}')">🔊</button><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button>`;
     container.appendChild(div);
   });
