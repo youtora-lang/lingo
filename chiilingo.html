@@ -268,12 +268,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .wi-master{background:var(--correct);}.wi-learning{background:var(--gold-lt);}.wi-new{background:var(--card-flip);}
 .wi-body{flex:1;}
-.wi-en{font-size:var(--fs-wi-en);font-weight:900;color:var(--ink);}
+.wi-en{font-size:calc(var(--fs-wi-en) + 3px);font-weight:900;color:var(--ink);}
 .wi-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;font-weight:700;}
 .wi-meta{font-size:11px;color:var(--ink-lt);text-align:right;font-weight:800;}
 .wi-ex{font-size:var(--fs-wi-en);color:var(--ink);margin-top:6px;line-height:1.6;font-weight:600;}
 .wi-ex-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;line-height:1.5;font-weight:600;}
 .word-item.excluded{opacity:0.4;}
+.wi-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
 .wi-toggle{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .wi-toggle.on{background:var(--card-flip);border-color:var(--card-flip-deep);color:white;}
 .wi-speak{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:none;background:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--ink-lt);}
@@ -736,7 +737,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-26 19:32 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-26 19:48 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -1471,7 +1472,7 @@ function renderWordList(){
     const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
     const div=document.createElement('div');div.className='word-item'+(isEx?' excluded':'');
     const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?`<div class="wi-ex-jp">${w.exJp}</div>`:''}</div>`:'';
-    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div><button class="wi-speak" onclick="speakEn('${w.w.replace(/'/g,"\\'")}')">🔊</button><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button>`;
+    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-btns"><button class="wi-speak" onclick="speakEn('${w.w.replace(/'/g,"\\'")}')">🔊</button><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button></div>`;
     container.appendChild(div);
   });
 }
