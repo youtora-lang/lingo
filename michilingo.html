@@ -28,7 +28,7 @@
   /* 4択選択肢 */
   --fs-choice:19px;--fs-choice-jp:17px;
   /* 単語一覧 */
-  --fs-wi-en:16px;--fs-wi-jp:14px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;
+  --fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;
   /* その他（ダッシュボード・設定ラベルなど） */
   --fs-other:15px;
   /* アプリ全体ベース */
@@ -41,15 +41,15 @@ body.card-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--
 body.choice-large{--fs-choice:22px;--fs-choice-jp:20px;}
 body.choice-small{--fs-choice:16px;--fs-choice-jp:14px;}
 /* ── 単語一覧サイズ ── */
-body.wl-large{--fs-wi-en:19px;--fs-wi-jp:17px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;}
+body.wl-large{--fs-wi-en:22px;--fs-wi-jp:19px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;}
 body.wl-small{--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;}
 /* ── その他サイズ ── */
 body.other-large{--fs-other:18px;--fs-base:18px;}
 body.other-small{--fs-other:13px;--fs-base:13px;}
 /* ── アプリ全体サイズ（他を無効化） ── */
-body.global-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;--fs-choice:22px;--fs-choice-jp:20px;--fs-wi-en:19px;--fs-wi-jp:17px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;--fs-other:18px;--fs-base:18px;}
+body.global-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;--fs-choice:22px;--fs-choice-jp:20px;--fs-wi-en:22px;--fs-wi-jp:19px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;--fs-other:18px;--fs-base:18px;}
 body.global-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--fs-ph:13px;--fs-choice:16px;--fs-choice-jp:14px;--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;--fs-other:13px;--fs-base:13px;}
-body.global-medium{--fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;--fs-choice:19px;--fs-choice-jp:17px;--fs-wi-en:16px;--fs-wi-jp:14px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;--fs-other:15px;--fs-base:15px;}
+body.global-medium{--fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;--fs-choice:19px;--fs-choice-jp:17px;--fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;--fs-other:15px;--fs-base:15px;}
 /* アプリ全体選択時は個別selector無効 */
 body.global-lock .fs-scope-btn{opacity:0.35;pointer-events:none;}
 /* ベースフォント */
@@ -205,7 +205,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .pip-front{background:var(--bg);border-color:var(--bg-deep);}
 .pip-front.filled{background:var(--gold-lt);border-color:var(--gold-lt);}
 
-/* スピークボタン（仏語面のみ） */
+/* スピークボタン（フランス語面のみ） */
 .speak-btn{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:2px solid var(--bg-deep);background:var(--bg);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-mid);transition:all 0.2s;}
 .speak-btn.speaking{background:var(--card-flip);color:white;border-color:var(--card-flip);}
 
@@ -268,13 +268,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .wi-master{background:var(--correct);}.wi-learning{background:var(--gold-lt);}.wi-new{background:var(--card-flip);}
 .wi-body{flex:1;}
-.wi-en{font-size:var(--fs-wi-en);font-weight:900;color:var(--ink);}
+.wi-en{font-size:calc(var(--fs-wi-en) + 3px);font-weight:900;color:var(--ink);}
 .wi-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;font-weight:700;}
 .wi-meta{font-size:11px;color:var(--ink-lt);text-align:right;font-weight:800;}
-.wi-ex{font-size:var(--fs-wi-ex);color:var(--ink-lt);margin-top:4px;line-height:1.5;}
+.wi-ex{font-size:var(--fs-wi-en);color:var(--ink);margin-top:6px;line-height:1.6;font-weight:600;}
+.wi-ex-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;line-height:1.5;font-weight:600;}
 .word-item.excluded{opacity:0.4;}
+.wi-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
 .wi-toggle{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .wi-toggle.on{background:var(--card-flip);border-color:var(--card-flip-deep);color:white;}
+.wi-speak{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:none;background:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--ink-lt);}
 
 /* 設定 */
 .set-body{padding:16px;overflow-y:auto;flex:1;}
@@ -405,7 +408,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="flashcard-inner" id="cardInner">
         <div class="fc-face fc-front">
           <button class="speak-btn" id="speakBtn" onclick="speakWord(event)">🔊</button>
-          <div class="gold-tag" id="fcTag">仏語 → 日本語</div>
+          <div class="gold-tag" id="fcTag">フランス語 → 日本語</div>
           <div class="pip-row" id="masteryPips" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-word-block">
             <div class="word-en" id="wordEn">—</div>
@@ -415,7 +418,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
         <div class="fc-face fc-back">
           <button class="speak-btn" id="speakBtnBack" onclick="speakWordBack(event)" style="display:none;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);color:white;">🔊</button>
-          <div class="gold-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;" id="fcTagBack">日本語 → 仏語</div>
+          <div class="gold-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;" id="fcTagBack">日本語 → フランス語</div>
           <div class="pip-row" id="masteryPipsBack" style="margin-top:8px;margin-bottom:0;"></div>
           <div class="fc-back-top">
             <div class="word-jp" id="wordJp">—</div>
@@ -456,7 +459,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="card-area">
     <div class="quiz-question" style="position:relative;">
       <button class="speak-btn" id="quizSpeakBtn" onclick="speakQuizWord()" style="position:absolute;top:10px;right:10px;">🔊</button>
-      <div class="gold-tag" id="quizTag">仏語 → 日本語</div>
+      <div class="gold-tag" id="quizTag">フランス語 → 日本語</div>
       <div class="pip-row" id="quizMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
       <div class="fc-word-block">
         <div class="word-en" id="quizWordEn">—</div>
@@ -485,7 +488,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="card-area">
     <div class="quiz-question" style="position:relative;height:300px;">
       <button class="speak-btn" id="spellSpeakBtn" onclick="speakSpell()" style="position:absolute;top:10px;right:10px;">🔊</button>
-      <div class="gold-tag">日本語 → 仏語</div>
+      <div class="gold-tag">日本語 → フランス語</div>
       <div class="fc-word-block" style="width:100%">
         <div class="pip-row" id="spellMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
         <div class="word-jp" id="spellWordJp" style="color:var(--ink);font-size:var(--fs-word-jp);">—</div>
@@ -500,7 +503,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div id="spellFeedback" style="min-height:24px;text-align:center;font-size:calc(var(--fs-other) - 1px);font-weight:800;margin-bottom:6px;"></div>
       <div style="display:flex;gap:8px;">
         <input id="spellInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-          placeholder="仏語でスペルを入力..."
+          placeholder="フランス語でスペルを入力..."
           style="flex:1;padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;"
           onkeydown="if(event.key==='Enter')submitSpelling()">
         <button onclick="submitSpelling()"
@@ -564,7 +567,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <!-- 検索窓 -->
     <div style="position:relative;margin-bottom:10px;">
       <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--ink-lt);pointer-events:none;">🔍</span>
-      <input id="wlSearchInput" type="text" placeholder="仏語・日本語で検索..."
+      <input id="wlSearchInput" type="text" placeholder="フランス語・日本語で検索..."
         autocomplete="off" autocorrect="off" autocapitalize="off"
         style="width:100%;padding:10px 12px 10px 36px;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;box-sizing:border-box;"
         oninput="renderWordList()"
@@ -664,8 +667,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="set-row">
         <div><div class="set-label">出題方向</div><div class="set-sub">表面に出す言語</div></div>
         <select class="set-input" id="directionInput" style="min-width:140px;max-width:180px;" onchange="saveSetting('direction',this.value)">
-          <option value="en2jp">仏語 → 日本語</option>
-          <option value="jp2en">日本語 → 仏語</option>
+          <option value="en2jp">フランス語 → 日本語</option>
+          <option value="jp2en">日本語 → フランス語</option>
         </select>
       </div>
       <div class="set-row">
@@ -676,11 +679,18 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <div><div class="set-label">1セッションの出題数</div><div class="set-sub">1回に出題される語数</div></div>
         <input class="set-input" type="number" id="sessionSizeInput" min="5" max="100" placeholder="20" onchange="saveSetting('sessionSize',this.value)">
       </div>
+      <div class="set-row">
+        <div><div class="set-label">カード表示時に読み上げ</div><div class="set-sub">仏→日のフラッシュ・4択のみ</div></div>
+        <select class="set-input" id="autoSpeakInput" onchange="saveSetting('autoSpeak',this.value)">
+          <option value="off">オフ</option>
+          <option value="on">オン</option>
+        </select>
+      </div>
     </div>
 
     <div class="set-section-title" style="margin-bottom:10px">語彙を追加</div>
     <div class="set-card">
-      <div class="set-note">TFPの出力JSONをそのまま貼り付けてください。<br><span style="color:var(--ink-lt);">id・numは自動生成。同じ単語は上書きされます。</span></div>
+      <div class="set-note">AEPの出力JSONをそのまま貼り付けてください。<br><span style="color:var(--ink-lt);">id・numは自動生成。同じ単語は上書きされます。</span></div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
         <textarea class="modal-textarea" id="wordsImportTextarea" placeholder='[{"w":"catch a cold","jp":"風邪をひく",...}]' style="height:90px;margin-bottom:0;"></textarea>
         <div style="display:flex;gap:8px;">
@@ -727,7 +737,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-15 20:38 JST';</script>
+      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-29 20:04 JST';</script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
@@ -749,10 +759,10 @@ function makeId(w){return w.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_
 let WORDS=loadWords();
 
 // 設定
-function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'michi',fontSizes:{global:'medium'}};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
+function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'michi',fontSizes:{global:'medium'},autoSpeak:'off'};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
 function saveAppName(v){
-  const prefix=(v.trim()||'michi').replace(/lingo$/i,'');
+  const prefix=(v.trim()||'chii').replace(/lingo$/i,'');
   const n=prefix+'lingo';
   saveSetting('appName',prefix);
   document.getElementById('appTitleLabel').textContent=n;
@@ -802,33 +812,76 @@ function calcSessionSize(){return parseInt(loadSettings().sessionSize)||20;}
 
 // ストリーク
 function getStreak(){
-  const dates=new Set(loadHistory().map(e=>e.date));
-  let s=0;const c=new Date();c.setHours(0,0,0,0);
+  const studyDates=new Set(loadHistory().map(e=>e.date));
+  const td=loadTicketData();
+  const usedDates=new Set(td.usedDates||[]);
+  // 学習日＋チケット使用日の両方を有効な日として扱う
+  const allDates=new Set([...studyDates,...usedDates]);
+  const today=localDateStr();
+  const c=new Date();c.setHours(0,0,0,0);
+  // 今日未学習なら昨日から遡る
+  if(!allDates.has(today))c.setDate(c.getDate()-1);
+  let s=0;
   for(let i=0;i<366;i++){
     const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
-    if(dates.has(ds)){s++;c.setDate(c.getDate()-1);}else break;
+    if(allDates.has(ds)){s++;c.setDate(c.getDate()-1);}else break;
   }
   return s;
 }
 
 // 特別休暇チケット
 function getTotalStudyDays(){return new Set(loadHistory().map(e=>e.date)).size;}
-function loadTicketData(){try{return JSON.parse(localStorage.getItem(LS.tickets))||{used:0,lastUsedDate:null};}catch(e){return{used:0,lastUsedDate:null};}}
-function saveTicketData(d){localStorage.setItem(LS.tickets,JSON.stringify(d));}
+function loadTicketData(){
+  try{
+    const d=JSON.parse(localStorage.getItem(LS.tickets))||{used:0,lastUsedDate:null,usedDates:[]};
+    if(!d.usedDates)d.usedDates=[];
+    return d;
+  }catch(e){return{used:0,lastUsedDate:null,usedDates:[]};}
+}function saveTicketData(d){localStorage.setItem(LS.tickets,JSON.stringify(d));}
 function calcTotalTickets(){return Math.floor(getTotalStudyDays()/3);}
 function calcRemainingTickets(){return Math.max(0,calcTotalTickets()-loadTicketData().used);}
 
 function checkAndUseTicket(){
-  const dates=new Set(loadHistory().map(e=>e.date));
-  const today=localDateStr();
-  if(dates.has(today))return false; // 今日学習済み
-  const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-1);
-  const yest=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  if(dates.has(yest))return false; // 昨日学習済み＝途切れていない
+  const studyDates=new Set(loadHistory().map(e=>e.date));
   const td=loadTicketData();
-  if(td.lastUsedDate===today)return true; // 今日すでに使用
-  if(calcRemainingTickets()>0){td.used++;td.lastUsedDate=today;saveTicketData(td);return true;}
-  return false;
+  if(!td.usedDates)td.usedDates=[];
+  const allDates=new Set([...studyDates,...td.usedDates]);
+
+  const totalTickets=calcTotalTickets();
+  let localUsed=td.used;
+  let changed=false;
+  const c=new Date();c.setHours(0,0,0,0);c.setDate(c.getDate()-1);
+
+  for(let i=0;i<30;i++){
+    const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
+
+    if(studyDates.has(ds)){
+      // 実際に学習した日に到達 → ここで終了（これより前は触らない）
+      break;
+    }
+
+    if(allDates.has(ds)){
+      // チケット使用済みの日 → スキップして前へ
+      c.setDate(c.getDate()-1);
+      continue;
+    }
+
+    // 穴を発見 → チケットで埋める
+    const remaining=Math.max(0,totalTickets-localUsed);
+    if(remaining>0){
+      localUsed++;
+      td.used=localUsed;
+      if(!td.usedDates.includes(ds))td.usedDates.push(ds);
+      allDates.add(ds);
+      td.lastUsedDate=ds;
+      changed=true;
+      c.setDate(c.getDate()-1);
+    }else{
+      break;
+    }
+  }
+  if(changed)saveTicketData(td);
+  return changed;
 }
 
 function getTicketDisplay(){
@@ -926,6 +979,17 @@ function speakEn(text){
 // ダッシュボード
 function updateDash(){
   const prog=loadProgress();const s=loadSettings();const total=WORDS.length;
+  // チケットデータの整合性チェック：学習開始日より前のusedDatesを除去
+  const td=loadTicketData();
+  if(td.usedDates&&td.usedDates.length>0){
+    const studyDates=new Set(loadHistory().map(e=>e.date));
+    const minStudyDate=loadHistory().reduce((min,e)=>e.date<min?e.date:min,'9999-99-99');
+    const cleaned=td.usedDates.filter(d=>d>=minStudyDate);
+    if(cleaned.length!==td.usedDates.length){
+      td.usedDates=cleaned;td.used=cleaned.length;
+      saveTicketData(td);
+    }
+  }
   const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
   const lc=WORDS.filter(w=>getStatus(w.id,prog)==='learning').length;
   const nc=WORDS.filter(w=>getStatus(w.id,prog)==='new').length;
@@ -940,7 +1004,7 @@ function updateDash(){
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
   const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
-  const rawName=s.appName||'michi';
+  const rawName=s.appName||'chii';
   const appName=rawName.replace(/lingo$/i,'')+'lingo';
   document.getElementById('appTitleLabel').textContent=appName;
   document.getElementById('pageTitle').textContent=appName;
@@ -989,10 +1053,13 @@ function renderFC(){
   makePips('masteryPips',mastery,false);makePips('masteryPipsBack',mastery,true);
   const isJp2En=loadSettings().direction==='jp2en';
   // 前面
-  document.getElementById('fcTag').textContent=isJp2En?'日本語 → 仏語':'仏語 → 日本語';
+  document.getElementById('fcTag').textContent=isJp2En?'日本語 → フランス語':'フランス語 → 日本語';
   document.getElementById('wordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('wordPh').textContent=isJp2En?'':(q.ph||'');
-  // スピークボタン：en2jpのとき前面、jp2enのとき裏面（仏語が裏面）
+  // en2jpかつautoSpeakオンのとき、前面表示と同時に読み上げ
+  if(!isJp2En && loadSettings().autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 300);
+  }
   const sb=document.getElementById('speakBtn');
   sb.style.display=isJp2En?'none':'flex';sb.classList.remove('speaking');sb.textContent='🔊';sb._word=q.w;
   const sbBack=document.getElementById('speakBtnBack');
@@ -1022,7 +1089,18 @@ function speakWordBack(e){
   speakEn(btn._word||'');
   setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
 }
-function flipCard(){if(isFlipped)return;isFlipped=true;document.getElementById('cardInner').classList.add('flipped');document.getElementById('flipBtn').classList.add('hidden');document.getElementById('actionRow').classList.add('show');}
+function flipCard(){
+  if(isFlipped)return;isFlipped=true;
+  document.getElementById('cardInner').classList.add('flipped');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('actionRow').classList.add('show');
+  // jp2enかつautoSpeakオンのとき、裏面（フランス語面）が出たタイミングで読み上げ
+  const s=loadSettings();
+  if(s.direction==='jp2en' && s.autoSpeak==='on'){
+    const word=document.getElementById('speakBtnBack')._word||'';
+    setTimeout(()=>speakEn(word), 300);
+  }
+}
 
 function judge(isOk){
   if(!isFlipped)return;
@@ -1055,10 +1133,14 @@ function renderQuiz(){
   const q=sessionDeck[quizCurrent];const prog=loadProgress();const mastery=getMastery(q.id,prog);
   makePips('quizMasteryPips',mastery,false);
   const isJp2En=loadSettings().direction==='jp2en';
-  document.getElementById('quizTag').textContent=isJp2En?'日本語 → 仏語':'仏語 → 日本語';
+  document.getElementById('quizTag').textContent=isJp2En?'日本語 → フランス語':'フランス語 → 日本語';
   document.getElementById('quizWordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('quizWordPh').textContent=isJp2En?'':(q.ph||'');
   const qsb=document.getElementById('quizSpeakBtn');qsb.style.display=isJp2En?'none':'block';qsb._word=q.w;
+  // en2jpかつautoSpeakオンのとき読み上げ
+  if(!isJp2En && loadSettings().autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 300);
+  }
   const ft=isJp2En?(q.exJp||''):(q.ex||'');
   const qa=document.getElementById('quizExArea');
   if(ft){document.getElementById('quizWordEx').textContent=ft;qa.style.visibility='';qa.style.display='';}
@@ -1095,10 +1177,16 @@ function selectQuizAnswer(btn,isCorrect,q){
     document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});
   }
   document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
+  // jp2enかつautoSpeakオンのとき、回答後に正解（フランス語）を読み上げ
+  const s=loadSettings();
+  if(s.direction==='jp2en' && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 200);
+  }
   setTimeout(()=>{
     quizCurrent++;
     if(quizCurrent>=sessionDeck.length){
       addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+      checkAndUseTicket();
       sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
     }else{
       renderQuiz(); // visibility はrenderQuiz冒頭で復元
@@ -1272,6 +1360,7 @@ function advanceSpell(){
   spellCurrent++;
   if(spellCurrent>=sessionDeck.length){
     addHistory({date:localDateStr(),correct:spellOk,wrong:spellNg,total:sessionDeck.length});
+    checkAndUseTicket();
     sessionOk=spellOk;sessionNg=spellNg;sessionMissed=spellMissed;
     finishSession();
   }else{
@@ -1282,6 +1371,8 @@ function advanceSpell(){
 // 終了
 function finishSession(){
   if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
+  // セッション完了時にもチケット処理（今日の記録追加後に実行）
+  checkAndUseTicket();
   const total=sessionDeck.length;const pct=total>0?sessionOk/total:0;
   let emoji,title,sub;
   if(pct>=0.85){emoji='🌟';title='すばらしい！';sub='定着が進んできた。この調子で続けよう。';}
@@ -1315,7 +1406,7 @@ function copyResult(){
   const prog=loadProgress();const total=WORDS.length;const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
   const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
   const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
-  const appName=(loadSettings().appName||'michi').replace(/lingo$/i,'')+'lingo';
+  const appName=(loadSettings().appName||'chii').replace(/lingo$/i,'')+'lingo';
   const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
   navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
   showToast('📋 コピーしました！');
@@ -1339,7 +1430,7 @@ function renderWordList(){
       if(prog[w.id]&&prog[w.id].excluded)return false;
       if(getStatus(w.id,prog)!==currentFilter)return false;
     }
-    // 検索フィルター（部分一致、仏語・日本語・例文）
+    // 検索フィルター（部分一致、フランス語・日本語・例文）
     if(query){
       const inEn=(w.w||'').toLowerCase().includes(query);
       const inJp=(w.jp||'').toLowerCase().includes(query);
@@ -1379,8 +1470,8 @@ function renderWordList(){
     const dc=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
     const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
     const div=document.createElement('div');div.className='word-item'+(isEx?' excluded':'');
-    const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?` (${w.exJp})`:''}</div>`:'';
-    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-meta">${meta}</div><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button>`;
+    const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?`<div class="wi-ex-jp">${w.exJp}</div>`:''}</div>`:'';
+    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-btns"><button class="wi-speak" onclick="speakEn('${w.w.replace(/'/g,"\\'")}')">🔊</button><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button></div>`;
     container.appendChild(div);
   });
 }
@@ -1393,6 +1484,7 @@ function loadSettingsUI(){
   if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;
   if(s.direction)document.getElementById('directionInput').value=s.direction;
   document.getElementById('dailyGoalInput').value=s.dailyGoal||10;
+  document.getElementById('autoSpeakInput').value=s.autoSpeak||'off';
   if(s.appName)document.getElementById('appNameInput').value=s.appName.replace(/lingo$/i,'');
   const sizes=s.fontSizes||{global:'medium'};
   // 各スコープのactiveボタンを反映
