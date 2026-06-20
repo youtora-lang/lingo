@@ -129,6 +129,38 @@ git -c user.name="youtora-lang" -c user.email="280938766+youtora-lang@users.nore
 
 Before executing any hard-to-reverse operation — including file deletion, `git reset --hard`, `git rebase`, force-push, or any rewrite of git history — present exactly what will be done and ask for explicit confirmation.
 
+## アプリ間の構造方針と sync check（2026-06 確定）
+
+### 正本と複製の関係
+
+- **chiilingo.html が正本（マスター）**。機能追加・修正は原則 chiilingo に対して行う。
+- michilingo.html / taelingo.html / chiilingojp.html / codingo.html（将来追加）は、
+  chiilingo の機能をそのまま継承する複製。違いは学習対象言語（または codingo の学習領域）のみ。
+- **chiilingojp は基準言語が逆転している点に注意**:
+  - chiilingo / michilingo / taelingo: UI言語=日本語、学習対象=英語/フランス語/韓国語
+  - chiilingojp: UI言語=英語、学習対象=日本語
+  - 反映時は単純な文字列置換ではなく、この構造差を踏まえて対応させる。
+- codingo は chiilingo の全機能を継承した上で、固有の自動追記機能を上乗せする5本目。
+
+### SYNC_BASE マーカーと sync check
+
+- 各HTMLファイルの冒頭付近に、以下の形式で最終同期時刻のコメントを置く:
+  `<!-- SYNC_BASE: YYYY-MM-DD HH:MM -->`（24時間表記、分まで）
+- chiilingo を更新したら、chiilingo の SYNC_BASE をその更新時刻に書き換える。
+- 他アプリへ反映したら、そのアプリの SYNC_BASE を chiilingo と同じ値に揃える。
+- **合言葉「sync check」**: CAがこの言葉を打ったら、Claude Code は対象アプリ
+  （chiilingo / michilingo / taelingo / chiilingojp / codingo）の SYNC_BASE を比較し、
+  chiilingo より古い（=反映漏れの）アプリを一覧で報告する。
+  - sync check は「漏れに気づくためのトリガー」であり、検出のみを行う。
+  - 実際の反映（コード書き換え）は、CAが別途指示してから実行する。
+
+### 既存の機能差（正本方針の確定前に生じたズレ。今後解消する対象）
+
+- チケットシステム: taelingo / chiilingojp が旧実装（`{used, lastUsedDate}`）のまま。
+  chiilingo / michilingo は新実装（`{used, lastUsedDate, usedDates[]}`）。
+- autoSpeak機能: chiilingo / michilingo にはあり、taelingo / chiilingojp にはない。
+- chiilingojp の fcProgRemain 表示バグ（「残り N枚」が「Left: N ticket(s)」になっている）。
+
 ## Making changes across multiple apps
 
 The four lingo apps (`chiilingo`, `michilingo`, `taelingo`, `chiilingojp`) share identical structure and logic — only the TTS locale, localStorage prefix, and default word list differ. When fixing a bug or adding a feature in one app, apply the same change to all four.
