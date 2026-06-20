@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- SYNC_BASE: 2026-06-20 23:57 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" id="pwaTitle" content="codingo">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAlmVYSWZNTQAqAAAACAAEARoABQAAAAEAAAA+ARsABQAAAAEAAABGASgAAwAAAAEAAgAAh2kABAAAAAEAAABOAAAAAAAAAJAAAAABAAAAkAAAAAEABJKGAAcAAAASAAAAhKABAAMAAAABAAEAAKACAAQAAAABAAAAwKADAAQAAAABAAAAwAAAAABBU0NJSQAAAFNjcmVlbnNob3RgbHYmAAAACXBIWXMAABYlAAAWJQFJUiTwAAACp2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNi4wLjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgICAgICAgICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iPgogICAgICAgICA8dGlmZjpZUmVzb2x1dGlvbj4xNDQ8L3RpZmY6WVJlc29sdXRpb24+CiAgICAgICAgIDx0aWZmOlhSZXNvbHV0aW9uPjE0NDwvdGlmZjpYUmVzb2x1dGlvbj4KICAgICAgICAgPHRpZmY6UmVzb2x1dGlvblVuaXQ+MjwvdGlmZjpSZXNvbHV0aW9uVW5pdD4KICAgICAgICAgPGV4aWY6UGl4ZWxZRGltZW5zaW9uPjE1NjwvZXhpZjpQaXhlbFlEaW1lbnNpb24+CiAgICAgICAgIDxleGlmOlVzZXJDb21tZW50PlNjcmVlbnNob3Q8L2V4aWY6VXNlckNvbW1lbnQ+CiAgICAgICAgIDxleGlmOlBpeGVsWERpbWVuc2lvbj4xNTQ8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4K5zFCpAAACY9JREFUeAHtncluHFUUhk/PtmPFOHFCJgYTkoiQbEiQGCQWCLbsEQuQkHgJkBCvwI4HCE+AYBEWRCzIAoIYFAURpgwMcSZ37Ha3ezD3QhZR3LfafeLuuj73K6kVp6pO1f2/c79yHN12F+aPnFwTNggkSqCYaG5iQ+A/AgjAREiaAAIk3X7CIwBzIGkCCJB0+wmPAMyBpAkgQNLtJzwCMAeSJoAASbef8AjAHEiaAAIk3X7CIwBzIGkCCJB0+wmPAMyBpAkgQNLtJzwCMAeSJoAASbef8AjAHEiaAAIk3X7CIwBzIGkCCJB0+wmPAMyBpAkgQNLtJzwCMAeSJoAASbef8AjAHEiaAAIk3X7CIwBzIGkCCJB0+wmPAMyBpAkgQNLtJzwCMAeSJoAASbef8AjAHEiaAAIk3X7CIwBzIGkCCJB0+wmPAMyBpAmUY0k/US7IB8/ti2U4jGOEBN4/+6c0O3F8Om80ApQKBTk+NzFC7Fw6FgK+1yJxCMA/gWKZFYwjFwIIkAt2bhoLAQSIpROMIxcCCJALdm4aCwEEiKUTjCMXAgiQC3ZuGgsBBIilE4wjFwIIkAt2bhoLAQSIpROMIxcCCJALdm4aCwEEiKUTjCMXAgiQC3ZuGgsBBIilE4wjFwIIkAt2bhoLAQSIpROMIxcCCJALdm4aCwEEiKUTjCMXAgiQC3ZuGgsBBIilE4wjFwJje0/w64dn5cB0VWZqpb5B/3+faN9Dm77z429+los36tJod/pe279jtVwsyLuvnJCJSv/x9i2McOeae+vtrZWWfPTVeVlsrgZH6PM+/9geefnQfpkcceb3nt0rXT+wwNbqrsl31xvy6e916fTC5wXKh9o9NgHmZ6pyaLYmcxNju2UQxPl/bsvXVxekHpwQBam6CdHp9dw1trgA7s3nTSf62UvXZGFpJcikUirK7ukpeeng3pFnPjZXC47DH1hxvzHi9mpHXAtGvo1tNpZcGv+U8X/mvd1prcrtRivziegnxGifPeOj4J+2iy7vLfcKbT6v/47Yy3gyh2qH3T9oDpTdM8fPlXHMFH4GGLZ7nG+KAAKYaidhhiWAAMMS43xTBBDAVDsJMywBBBiWGOebIoAAptpJmGEJIMCwxDjfFAEEMNVOwgxLAAGGJcb5pggggKl2EmZYAggwLDHON0UAAUy1kzDDEhjbYrjP/6jLuWtlmar0d65aKsgbR3YMO37V+a8de1xOPLpLWu1u/3r3ET4V96r5VVlbfCu4HLOTNXnnhaOy3GoH05SKRXl6z6xbCj36KXHqp5uy6pY8hza/BPpSvT3ypdD+/qNPezfljzebUnEr/EKLQafKxbEJcPKRXXK8s1PWMlY++o+x8uPd6ptPMFUty6uHDmSv9HSBt7n3AfhVoaPevryyJI2OX2ref/NtaTpBMhzpX6jYOzYB7qyGA/txb6uEnwiKXJklMxPVzOPWDhbd5N41Hc8HEN5odmW5nT0fxtWD0es+riTcBwIKAgiggEaJHQIIYKeXJFEQQAAFNErsEEAAO70kiYIAAiigUWKHAALY6SVJFAQQQAGNEjsEEMBOL0miIIAACmiU2CGAAHZ6SRIFAQRQQKPEDgEEsNNLkigIIIACGiV2CCCAnV6SREEAARTQKLFDAAHs9JIkCgIIoIBGiR0CCGCnlyRREEAABTRK7BBAADu9JImCAAIooFFihwAC2OklSRQEEEABjRI7BBDATi9JoiCAAApolNghgAB2ekkSBQEEUECjxA4BBLDTS5IoCCCAAholdggggJ1ekkRBAAEU0CixQwAB7PSSJAoCCKCARokdAghgp5ckURAozB85Ob4P58oYoP9Qul2TY/vIsoyRcGjUBBZWOu4DCkd9l41dP5oZ54Fca3Q2NmrOgsAmEeCfQJsEkstsTQIIsDX7xqg3iQACbBJILrM1CSDA1uwbo94kAtH8ELxJeeTto3MyP5P9SfDnFpblzNUlubHSXXfb6UpR9kxV5K2jO9cdu3fH1aVVuXi7Jacv37l3dy5fP7N7Sl7ct00enqwE79+TNTlzZUm+uLwkXff1/Vu1VJA3n9op+7dVpRx4LPqqW62OfPjtgrj/x5E+l7n/stH/3ZwAT7jJf2xuIhP8QrMttZLv8noBysWCbK8W5fiAa0xWCrLUWV+feeMRHdwxUZLDszV5dDosvhfgwq2m+P9u7jdxXWx58qGqHJypScX/JbD9vdIOXiNQEvVucwKU3ZOs4l5ZW9VN/lCP/f6NXMMLVC0GHpVZNx/BsZKb1X7SZucuSNmdFxLAE/PfBfzLPwRCm88dukaoJub9cXQwZkKMzTQBBDDdXsINIoAAgwhx3DQBBDDdXsINIoAAgwhx3DQBBDDdXsINIoAAgwhx3DQBBDDdXsINIoAAgwhx3DQBBDDdXsINIoAAgwhx3DQBBDDdXsINImBuMdzpS3X5/nojM/evi22pt/qv5Gy0e3Kp3pZTF25mXuNmsyt/LcfxHma/LPuTXxZlxq0KDW3+Pdc/3FiRTm/9Umhf42LLZ7/VZYf7xQShtYS+ctmd2A5cI3TvmPdH81shNgvSTLXkVkVmX63ZXZOVTk+6run3b34hpF8p7a+TtblyWXXXafgvct5qbsb65dl+tWdo85PXZ260+wvgK7fXilLx1whfRlxk956Auw+P/pcKDSHK/ea+Ayyu9n+yb5S+f7j13CWu93mzzEavMe7zWm5W+teDbL56sZW/zA+SQVPLzwAaatSYIYAAZlpJEA0BBNBQo8YMAQQw00qCaAgggIYaNWYIIICZVhJEQwABNNSoMUMAAcy0kiAaAgigoUaNGQIIYKaVBNEQQAANNWrMEEAAM60kiIYAAmioUWOGAAKYaSVBNAQQQEONGjMEEMBMKwmiIYAAGmrUmCGAAGZaSRANAQTQUKPGDAEEMNNKgmgIIICGGjVmCCCAmVYSREMAATTUqDFDAAHMtJIgGgIIoKFGjRkCCGCmlQTREEAADTVqzBBAADOtJIiGAAJoqFFjhgACmGklQTQEEEBDjRozBBDATCsJoiGAABpq1JghgABmWkkQDQEE0FCjxgwBBDDTSoJoCCCAhho1ZggggJlWEkRDAAE01KgxQwABzLSSIBoCCKChRo0ZAghgppUE0RBAAA01aswQQAAzrSSIhgACaKhRY4YAAphpJUE0BBBAQ40aMwQQwEwrCaIhgAAaatSYIYAAZlpJEA0BBNBQo8YMAQQw00qCaAgggIYaNWYIIICZVhJEQwABNNSoMUPgX8Z1S0Gj+iUzAAAAAElFTkSuQmCC">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiY29kaW5nbyIsInNob3J0X25hbWUiOiJjb2RpbmdvIiwic3RhcnRfdXJsIjoiLi8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjRkZGRkZGIiwidGhlbWVfY29sb3IiOiIjRThFMENDIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBTUFBQUFEQUNBWUFBQUJTM0d3SEFBQUFCR2RCVFVFQUFMR1BDL3hoQlFBQUFDQmpTRkpOQUFCNkpnQUFnSVFBQVBvQUFBQ0E2QUFBZFRBQUFPcGdBQUE2bUFBQUYzQ2N1bEU4QUFBQWxtVllTV1pOVFFBcUFBQUFDQUFFQVJvQUJRQUFBQUVBQUFBK0FSc0FCUUFBQUFFQUFBQkdBU2dBQXdBQUFBRUFBZ0FBaDJrQUJBQUFBQUVBQUFCT0FBQUFBQUFBQUpBQUFBQUJBQUFBa0FBQUFBRUFCSktHQUFjQUFBQVNBQUFBaEtBQkFBTUFBQUFCQUFFQUFLQUNBQVFBQUFBQkFBQUF3S0FEQUFRQUFBQUJBQUFBd0FBQUFBQkJVME5KU1FBQUFGTmpjbVZsYm5Ob2IzUmdiSFltQUFBQUNYQklXWE1BQUJZbEFBQVdKUUZKVWlUd0FBQUNwMmxVV0hSWVRVdzZZMjl0TG1Ga2IySmxMbmh0Y0FBQUFBQUFQSGc2ZUcxd2JXVjBZU0I0Yld4dWN6cDRQU0poWkc5aVpUcHVjenB0WlhSaEx5SWdlRHA0YlhCMGF6MGlXRTFRSUVOdmNtVWdOaTR3TGpBaVBnb2dJQ0E4Y21SbU9sSkVSaUI0Yld4dWN6cHlaR1k5SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpFNU9Ua3ZNREl2TWpJdGNtUm1MWE41Ym5SaGVDMXVjeU1pUGdvZ0lDQWdJQ0E4Y21SbU9rUmxjMk55YVhCMGFXOXVJSEprWmpwaFltOTFkRDBpSWdvZ0lDQWdJQ0FnSUNBZ0lDQjRiV3h1Y3pwMGFXWm1QU0pvZEhSd09pOHZibk11WVdSdlltVXVZMjl0TDNScFptWXZNUzR3THlJS0lDQWdJQ0FnSUNBZ0lDQWdlRzFzYm5NNlpYaHBaajBpYUhSMGNEb3ZMMjV6TG1Ga2IySmxMbU52YlM5bGVHbG1MekV1TUM4aVBnb2dJQ0FnSUNBZ0lDQThkR2xtWmpwWlVtVnpiMngxZEdsdmJqNHhORFE4TDNScFptWTZXVkpsYzI5c2RYUnBiMjQrQ2lBZ0lDQWdJQ0FnSUR4MGFXWm1PbGhTWlhOdmJIVjBhVzl1UGpFME5Ed3ZkR2xtWmpwWVVtVnpiMngxZEdsdmJqNEtJQ0FnSUNBZ0lDQWdQSFJwWm1ZNlVtVnpiMngxZEdsdmJsVnVhWFErTWp3dmRHbG1aanBTWlhOdmJIVjBhVzl1Vlc1cGRENEtJQ0FnSUNBZ0lDQWdQR1Y0YVdZNlVHbDRaV3haUkdsdFpXNXphVzl1UGpFMU5qd3ZaWGhwWmpwUWFYaGxiRmxFYVcxbGJuTnBiMjQrQ2lBZ0lDQWdJQ0FnSUR4bGVHbG1PbFZ6WlhKRGIyMXRaVzUwUGxOamNtVmxibk5vYjNROEwyVjRhV1k2VlhObGNrTnZiVzFsYm5RK0NpQWdJQ0FnSUNBZ0lEeGxlR2xtT2xCcGVHVnNXRVJwYldWdWMybHZiajR4TlRROEwyVjRhV1k2VUdsNFpXeFlSR2x0Wlc1emFXOXVQZ29nSUNBZ0lDQThMM0prWmpwRVpYTmpjbWx3ZEdsdmJqNEtJQ0FnUEM5eVpHWTZVa1JHUGdvOEwzZzZlRzF3YldWMFlUNEs1ekZDcEFBQUNZOUpSRUZVZUFIdG5jbHVIRlVVaGsvUHRtUEZPSEZDSmdZVGtvaVFiRWlRR0NRV0NMYnNFUXVRa0hnSmtCQ3Z3STRIQ0UrQVlCRVdSQ3pJQW9JWUZBVVJwZ3dNY1NaMzdIYTNlekQzUWhaUjNMZmFmZUx1dWo3M0s2a1ZwNnBPMWYyL2M3OXlITjEyRithUG5Gd1ROZ2drU3FDWWFHNWlRK0EvQWdqQVJFaWFBQUlrM1g3Q0l3QnpJR2tDQ0pCMCt3bVBBTXlCcEFrZ1FOTHRKendDTUFlU0pvQUFTYmVmOEFqQUhFaWFBQUlrM1g3Q0l3QnpJR2tDQ0pCMCt3bVBBTXlCcEFrZ1FOTHRKendDTUFlU0pvQUFTYmVmOEFqQUhFaWFBQUlrM1g3Q0l3QnpJR2tDQ0pCMCt3bVBBTXlCcEFrZ1FOTHRKendDTUFlU0pvQUFTYmVmOEFqQUhFaWFBQUlrM1g3Q0l3QnpJR2tDQ0pCMCt3bVBBTXlCcEFrZ1FOTHRKendDTUFlU0pvQUFTYmVmOEFqQUhFaWFBQUlrM1g3Q0l3QnpJR2tDQ0pCMCt3bVBBTXlCcEFtVVkway9VUzdJQjgvdGkyVTRqR09FQk40Lys2YzBPM0Y4T204MEFwUUtCVGsrTnpGQzdGdzZGZ0srMXlKeENNQS9nV0taRll3akZ3SUlrQXQyYmhvTEFRU0lwUk9NSXhjQ0NKQUxkbTRhQ3dFRWlLVVRqQ01YQWdpUUMzWnVHZ3NCQklpbEU0d2pGd0lJa0F0MmJob0xBUVNJcFJPTUl4Y0NDSkFMZG00YUN3RUVpS1VUakNNWEFnaVFDM1p1R2dzQkJJaWxFNHdqRndJSWtBdDJiaG9MQVFTSXBST01JeGNDQ0pBTGRtNGFDd0VFaUtVVGpDTVhBZ2lRQzNadUdnc0JCSWlsRTR3akZ3SmplMC93NjRkbjVjQjBWV1pxcGI1Qi8zK2ZhTjlEbTc3ejQyOStsb3MzNnRKb2QvcGUyNzlqdFZ3c3lMdXZuSkNKU3YveDlpMk1jT2VhZSt2dHJaV1dmUFRWZVZsc3JnWkg2UE0rLzlnZWVmblFmcGtjY2ViM250MHJYVCt3d05icXJzbDMxeHZ5NmU5MTZmVEM1d1hLaDlvOU5nSG1aNnB5YUxZbWN4Tmp1MlVReFBsL2JzdlhWeGVrSHB3UUJhbTZDZEhwOWR3MXRyZ0E3czNuVFNmNjJVdlhaR0ZwSmNpa1Vpcks3dWtwZWVuZzNwRm5QalpYQzQ3REgxaHh2ekhpOW1wSFhBdEd2bzF0TnBaY0d2K1U4WC9tdmQxcHJjcnRSaXZ6aWVnbnhHaWZQZU9qNEorMml5N3ZMZmNLYlQ2di80N1l5M2d5aDJxSDNUOW9EcFRkTThmUGxYSE1GSDRHR0xaN25HK0tBQUtZYWlkaGhpV0FBTU1TNDN4VEJCREFWRHNKTXl3QkJCaVdHT2ViSW9BQXB0cEptR0VKSU1Dd3hEamZGQUVFTU5WT3dneExBQUdHSmNiNXBnZ2dnS2wyRW1aWUFnZ3dMREhPTjBVQUFVeTFrekRERWhqYllyalAvNmpMdVd0bG1hcjBkNjVhS3NnYlIzWU1PMzdWK2E4ZGUxeE9QTHBMV3UxdS8zcjNFVDRWOTZyNVZWbGJmQ3U0SExPVE5Ybm5oYU95M0dvSDA1U0tSWGw2ejZ4YkNqMzZLWEhxcDV1eTZwWThoemEvQlBwU3ZUM3lwZEQrL3FOUGV6ZmxqemViVW5Fci9FS0xRYWZLeGJFSmNQS1JYWEs4czFQV01sWSsrbyt4OHVQZDZwdFBNRlV0eTZ1SERtU3Y5SFNCdDduM0FmaFZvYVBldnJ5eUpJMk9YMnJlZi9OdGFUcEJNaHpwWDZqWU96WUI3cXlHQS90eGI2dUVud2lLWEprbE14UFZ6T1BXRGhiZDVONDFIYzhIRU41b2RtVzVuVDBmeHRXRDBlcytyaVRjQndJS0FnaWdnRWFKSFFJSVlLZVhKRkVRUUFBRk5FcnNFRUFBTzcwa2lZSUFBaWlnVVdLSEFBTFk2U1ZKRkFRUVFBR05FanNFRU1CT0wwbWlJSUFBQ21pVTJDR0FBSFo2U1JJRkFRUlFRS1BFRGdFRXNOTkxraWdJSUlBQ0dpVjJDQ0NBblY2U1JFRUFBUlRRS0xGREFBSHM5SklrQ2dJSW9JQkdpUjBDQ0dDbmx5UlJFRUFBQlRSSzdCQkFBRHU5SkltQ0FBSW9vRkZpaHdBQzJPa2xTUlFFRUVBQmpSSTdCQkRBVGk5Sm9pQ0FBQXBvbE5naGdBQjJla2tTQlFFRVVFQ2p4QTRCQkxEVFM1SW9DQ0NBQWhvbGRnZ2dnSjFla2tSQkFBRVUwQ2l4UXdBQjdQU1NKQW9DQ0tDQVJva2RBZ2hncDVja1VSQW96Qjg1T2I0UDU4b1lvUDlRdWwyVFkvdklzb3lSY0dqVUJCWldPdTREQ2tkOWw0MWRQNW9aNTRGY2EzUTJObXJPZ3NBbUVlQ2ZRSnNFa3N0c1RRSUlzRFg3eHFnM2lRQUNiQkpJTHJNMUNTREExdXdibzk0a0F0SDhFTHhKZWVUdG8zTXlQNVA5U2ZEbkZwYmx6TlVsdWJIU1hYZmI2VXBSOWt4VjVLMmpPOWNkdTNmSDFhVlZ1WGk3SmFjdjM3bDNkeTVmUDdON1NsN2N0MDBlbnF3RTc5K1ROVGx6WlVtK3VMd2tYZmYxL1Z1MVZKQTNuOW9wKzdkVnBSeDRMUHFxVzYyT2ZQanRncmoveDVFK2w3bi9zdEgvM1p3QVQ3akpmMnh1SWhQOFFyTXR0Wkx2OG5vQnlzV0NiSzhXNWZpQWEweFdDckxVV1YrZmVlTVJIZHd4VVpMRHN6VjVkRG9zdmhmZ3dxMm0rUDl1N2pkeFhXeDU4cUdxSEp5cFNjWC9KYkQ5dmRJT1hpTlFFdlZ1Y3dLVTNaT3M0bDVaVzlWTi9sQ1AvZjZOWE1NTFZDMEdIcFZaTngvQnNaS2IxWDdTWnVjdVNObWRGeExBRS9QZkJmekxQd1JDbTg4ZHVrYW9KdWI5Y1hRd1prS016VFFCQkREZFhzSU5Jb0FBZ3doeDNEUUJCRERkWHNJTklvQUFnd2h4M0RRQkJERGRYc0lOSW9BQWd3aHgzRFFCQkREZFhzSU5Jb0FBZ3doeDNEUUJCRERkWHNJTklvQUFnd2h4M0RRQkJERGRYc0lOSW1CdU1kenBTM1g1L25vak0vZXZpMjJwdC9xdjVHeTBlM0twM3BaVEYyNW1YdU5tc3l0L0xjZnhIbWEvTFB1VFh4Wmx4cTBLRFczK1BkYy8zRmlSVG0vOVVtaGY0MkxMWjcvVlpZZjd4UVNodFlTK2N0bWQyQTVjSTNUdm1QZEg4MXNoTmd2U1RMWGtWa1ZtWDYzWlhaT1ZUays2cnVuM2IzNGhwRjhwN2ErVHRibHlXWFhYYWZndmN0NXFic2I2NWRsK3RXZG84NVBYWjI2MCt3dmdLN2ZYaWxMeDF3aGZSbHhrOTU2QXV3K1AvcGNLRFNISy9lYStBeXl1OW4reWI1UytmN2oxM0NXdTkzbXp6RWF2TWU3eldtNVcrdGVEYkw1NnNaVy96QStTUVZQTHp3QWFhdFNZSVlBQVpscEpFQTBCQk5CUW84WU1BUVF3MDBxQ2FBZ2dnSVlhTldZSUlJQ1pWaEpFUXdBQk5OU29NVU1BQWN5MGtpQWFBZ2lnb1VhTkdRSUlZS2FWQk5FUVFBQU5OV3JNRUVBQU02MGtpSVlBQW1pb1VXT0dBQUtZYVNWQk5BUVFRRU9OR2pNRUVNQk1Ld21pSVlBQUdtclVtQ0dBQUdaYVNSQU5BUVRRVUtQR0RBRUVNTk5LZ21nSUlJQ0dHalZtQ0NDQW1WWVNSRU1BQVRUVXFERkRBQUhNdEpJZ0dnSUlvS0ZHalJrQ0NHQ21sUVRSRUVBQURUVnF6QkJBQURPdEpJaUdBQUpvcUZGamhnQUNtR2tsUVRRRUVFQkRqUm96QkJEQVRDc0pvaUdBQUJwcTFKZ2hnQUJtV2trUURRRUUwRkNqeGd3QkJERFRTb0pvQ0NDQWhobzFaZ2dnZ0psV0VrUkRBQUUwMUtneFF3QUJ6TFNTSUJvQ0NLQ2hSbzBaQWdoZ3BwVUUwUkJBQUEwMWFzd1FRQUF6clNTSWhnQUNhS2hSWTRZQUFwaHBKVUUwQkJCQVE0MGFNd1FRd0V3ckNhSWhnQUFhYXRTWUlZQUFabHBKRUEwQkJOQlFvOFlNQVFRdzAwcUNhQWdnZ0lZYU5XWUlJSUNaVmhKRVF3QUJOTlNvTVVQZ1g4WjFTMEdqK2lVekFBQUFBRWxGVGtTdVFtQ0MiLCJzaXplcyI6IjEwMjR4MTAyNCIsInR5cGUiOiJpbWFnZS9wbmciLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn0seyJzcmMiOiJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQU1BQUFBREFDQVlBQUFCUzNHd0hBQUFBQkdkQlRVRUFBTEdQQy94aEJRQUFBQ0JqU0ZKTkFBQjZKZ0FBZ0lRQUFQb0FBQUNBNkFBQWRUQUFBT3BnQUFBNm1BQUFGM0NjdWxFOEFBQUFsbVZZU1daTlRRQXFBQUFBQ0FBRUFSb0FCUUFBQUFFQUFBQStBUnNBQlFBQUFBRUFBQUJHQVNnQUF3QUFBQUVBQWdBQWgya0FCQUFBQUFFQUFBQk9BQUFBQUFBQUFKQUFBQUFCQUFBQWtBQUFBQUVBQkpLR0FBY0FBQUFTQUFBQWhLQUJBQU1BQUFBQkFBRUFBS0FDQUFRQUFBQUJBQUFBd0tBREFBUUFBQUFCQUFBQXdBQUFBQUJCVTBOSlNRQUFBRk5qY21WbGJuTm9iM1JnYkhZbUFBQUFDWEJJV1hNQUFCWWxBQUFXSlFGSlVpVHdBQUFDcDJsVVdIUllUVXc2WTI5dExtRmtiMkpsTG5odGNBQUFBQUFBUEhnNmVHMXdiV1YwWVNCNGJXeHVjenA0UFNKaFpHOWlaVHB1Y3pwdFpYUmhMeUlnZURwNGJYQjBhejBpV0UxUUlFTnZjbVVnTmk0d0xqQWlQZ29nSUNBOGNtUm1PbEpFUmlCNGJXeHVjenB5WkdZOUltaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6RTVPVGt2TURJdk1qSXRjbVJtTFhONWJuUmhlQzF1Y3lNaVBnb2dJQ0FnSUNBOGNtUm1Pa1JsYzJOeWFYQjBhVzl1SUhKa1pqcGhZbTkxZEQwaUlnb2dJQ0FnSUNBZ0lDQWdJQ0I0Yld4dWN6cDBhV1ptUFNKb2RIUndPaTh2Ym5NdVlXUnZZbVV1WTI5dEwzUnBabVl2TVM0d0x5SUtJQ0FnSUNBZ0lDQWdJQ0FnZUcxc2JuTTZaWGhwWmowaWFIUjBjRG92TDI1ekxtRmtiMkpsTG1OdmJTOWxlR2xtTHpFdU1DOGlQZ29nSUNBZ0lDQWdJQ0E4ZEdsbVpqcFpVbVZ6YjJ4MWRHbHZiajR4TkRROEwzUnBabVk2V1ZKbGMyOXNkWFJwYjI0K0NpQWdJQ0FnSUNBZ0lEeDBhV1ptT2xoU1pYTnZiSFYwYVc5dVBqRTBORHd2ZEdsbVpqcFlVbVZ6YjJ4MWRHbHZiajRLSUNBZ0lDQWdJQ0FnUEhScFptWTZVbVZ6YjJ4MWRHbHZibFZ1YVhRK01qd3ZkR2xtWmpwU1pYTnZiSFYwYVc5dVZXNXBkRDRLSUNBZ0lDQWdJQ0FnUEdWNGFXWTZVR2w0Wld4WlJHbHRaVzV6YVc5dVBqRTFOand2WlhocFpqcFFhWGhsYkZsRWFXMWxibk5wYjI0K0NpQWdJQ0FnSUNBZ0lEeGxlR2xtT2xWelpYSkRiMjF0Wlc1MFBsTmpjbVZsYm5Ob2IzUThMMlY0YVdZNlZYTmxja052YlcxbGJuUStDaUFnSUNBZ0lDQWdJRHhsZUdsbU9sQnBlR1ZzV0VScGJXVnVjMmx2Ymo0eE5UUThMMlY0YVdZNlVHbDRaV3hZUkdsdFpXNXphVzl1UGdvZ0lDQWdJQ0E4TDNKa1pqcEVaWE5qY21sd2RHbHZiajRLSUNBZ1BDOXlaR1k2VWtSR1BnbzhMM2c2ZUcxd2JXVjBZVDRLNXpGQ3BBQUFDWTlKUkVGVWVBSHRuY2x1SEZVVWhrL1B0bVBGT0hGQ0pnWVRrb2lRYkVpUUdDUVdDTGJzRVF1UWtIZ0prQkN2d0k0SENFK0FZQkVXUkN6SUFvSVlGQVVScGd3TWNTWjM3SGEzZXpEM1FoWlIzTGZhZmVMdXVqNzNLNmtWcDZwTzFmMi9jNzl5SE4xMkYrYVBuRndUTmdna1NxQ1lhRzVpUStBL0FnakFSRWlhQUFJazNYN0NJd0J6SUdrQ0NKQjArd21QQU15QnBBa2dRTkx0Snp3Q01BZVNKb0FBU2JlZjhBakFIRWlhQUFJazNYN0NJd0J6SUdrQ0NKQjArd21QQU15QnBBa2dRTkx0Snp3Q01BZVNKb0FBU2JlZjhBakFIRWlhQUFJazNYN0NJd0J6SUdrQ0NKQjArd21QQU15QnBBa2dRTkx0Snp3Q01BZVNKb0FBU2JlZjhBakFIRWlhQUFJazNYN0NJd0J6SUdrQ0NKQjArd21QQU15QnBBa2dRTkx0Snp3Q01BZVNKb0FBU2JlZjhBakFIRWlhQUFJazNYN0NJd0J6SUdrQ0NKQjArd21QQU15QnBBbVVZMGsvVVM3SUI4L3RpMlU0akdPRUJONC8rNmMwTzNGOE9tODBBcFFLQlRrK056RkM3Rnc2RmdLKzF5SnhDTUEvZ1dLWkZZd2pGd0lJa0F0MmJob0xBUVNJcFJPTUl4Y0NDSkFMZG00YUN3RUVpS1VUakNNWEFnaVFDM1p1R2dzQkJJaWxFNHdqRndJSWtBdDJiaG9MQVFTSXBST01JeGNDQ0pBTGRtNGFDd0VFaUtVVGpDTVhBZ2lRQzNadUdnc0JCSWlsRTR3akZ3SUlrQXQyYmhvTEFRU0lwUk9NSXhjQ0NKQUxkbTRhQ3dFRWlLVVRqQ01YQWdpUUMzWnVHZ3NCQklpbEU0d2pGd0pqZTAvdzY0ZG41Y0IwVldacXBiNUIvMytmYU45RG03N3o0MjkrbG9zMzZ0Sm9kL3BlMjc5anRWd3N5THV2bkpDSlN2L3g5aTJNY09lYWUrdnRyWldXZlBUVmVWbHNyZ1pINlBNKy85Z2VlZm5RZnBrY2NlYjNudDByWFQrd3dOYnFyc2wzMXh2eTZlOTE2ZlRDNXdYS2g5bzlOZ0htWjZweWFMWW1jeE5qdTJVUXhQbC9ic3ZYVnhla0hwd1FCYW02Q2RIcDlkdzF0cmdBN3MzblRTZjYyVXZYWkdGcEpjaWtVaXJLN3VrcGVlbmczcEZuUGpaWEM0N0RIMWh4dnpIaTltcEhYQXRHdm8xdE5wWmNHditVOFgvbXZkMXByY3J0Uml2emllZ254R2lmUGVPajRKKzJpeTd2TGZjS2JUNnYvNDdZeTNneWgycUgzVDlvRHBUZE04ZlBsWEhNRkg0R0dMWjduRytLQUFLWWFpZGhoaVdBQU1NUzQzeFRCQkRBVkRzSk15d0JCQmlXR09lYklvQUFwdHBKbUdFSklNQ3d4RGpmRkFFRU1OVk93Z3hMQUFHR0pjYjVwZ2dnZ0tsMkVtWllBZ2d3TERIT04wVUFBVXkxa3pEREVoamJZcmpQLzZqTHVXdGxtYXIwZDY1YUtzZ2JSM1lNTzM3VithOGRlMXhPUExwTFd1MXUvM3IzRVQ0Vjk2cjVWVmxiZkN1NEhMT1ROWG5uaGFPeTNHb0gwNVNLUlhsNno2eGJDajM2S1hIcXA1dXk2cFk4aHphL0JQcFN2VDN5cGREKy9xTlBlemZsanplYlVuRXIvRUtMUWFmS3hiRUpjUEtSWFhLOHMxUFdNbFkrK28reDh1UGQ2cHRQTUZVdHk2dUhEbVN2OUhTQnQ3bjNBZmhWb2FQZXZyeXlKSTJPWDJyZWYvTnRhVHBCTWh6cFg2allPellCN3F5R0EvdHhiNnVFbndpS1hKa2xNeFBWek9QV0RoYmQ1TjQxSGM4SEVONW9kbVc1blQwZnh0V0QwZXMrcmlUY0J3SUtBZ2lnZ0VhSkhRSUlZS2VYSkZFUVFBQUZORXJzRUVBQU83MGtpWUlBQWlpZ1VXS0hBQUxZNlNWSkZBUVFRQUdORWpzRUVNQk9MMG1pSUlBQUNtaVUyQ0dBQUhaNlNSSUZBUVJRUUtQRURnRUVzTk5Ma2lnSUlJQUNHaVYyQ0NDQW5WNlNSRUVBQVJUUUtMRkRBQUhzOUpJa0NnSUlvSUJHaVIwQ0NHQ25seVJSRUVBQUJUUks3QkJBQUR1OUpJbUNBQUlvb0ZGaWh3QUMyT2tsU1JRRUVFQUJqUkk3QkJEQVRpOUpvaUNBQUFwb2xOZ2hnQUIyZWtrU0JRRUVVRUNqeEE0QkJMRFRTNUlvQ0NDQUFob2xkZ2dnZ0oxZWtrUkJBQUVVMENpeFF3QUI3UFNTSkFvQ0NLQ0FSb2tkQWdoZ3A1Y2tVUkFvekI4NU9iNFA1OG9Zb1A5UXVsMlRZL3ZJc295UmNHalVCQlpXT3U0RENrZDlsNDFkUDVvWjU0RmNhM1EyTm1yT2dzQW1FZUNmUUpzRWtzdHNUUUlJc0RYN3hxZzNpUUFDYkJKSUxyTTFDU0RBMXV3Ym85NGtBdEg4RUx4SmVlVHRvM015UDVQOVNmRG5GcGJsek5VbHViSFNYWGZiNlVwUjlreFY1SzJqTzljZHUzZkgxYVZWdVhpN0phY3YzN2wzZHk1ZlA3TjdTbDdjdDAwZW5xd0U3OStUTlRselpVbSt1THdrWGZmMS9WdTFWSkEzbjlvcCs3ZFZwUng0TFBxcVc2Mk9mUGp0Z3JqL3g1RStsN24vc3RILzNad0FUN2pKZjJ4dUloUDhRck10dFpMdjhub0J5c1dDYks4VzVmaUFhMHhXQ3JMVVdWK2ZlZU1SSGR3eFVaTERzelY1ZERvc3ZoZmd3cTJtK1A5dTdqZHhYV3g1OHFHcUhKeXBTY1gvSmJEOXZkSU9YaU5RRXZWdWN3S1UzWk9zNGw1Wlc5Vk4vbENQL2Y2TlhNTUxWQzBHSHBWWk54L0JzWktiMVg3U1p1Y3VTTm1kRnhMQUUvUGZCZnpMUHdSQ204OGR1a2FvSnViOWNYUXdaa0tNelRRQkJERGRYc0lOSW9BQWd3aHgzRFFCQkREZFhzSU5Jb0FBZ3doeDNEUUJCRERkWHNJTklvQUFnd2h4M0RRQkJERGRYc0lOSW9BQWd3aHgzRFFCQkREZFhzSU5Jb0FBZ3doeDNEUUJCRERkWHNJTkltQnVNZHpwUzNYNS9ub2pNL2V2aTIycHQvcXY1R3kwZTNLcDNwWlRGMjVtWHVObXN5dC9MY2Z4SG1hL0xQdVRYeFpseHEwS0RXMytQZGMvM0ZpUlRtLzlVbWhmNDJMTFo3L1ZaWWY3eFFTaHRZUytjdG1kMkE1Y0kzVHZtUGRIODFzaE5ndlNUTFhrVmtWbVg2M1pYWk9WVGsrNnJ1bjNiMzRocEY4cDdhK1R0Ymx5V1hYWGFmZ3ZjdDVxYnNiNjVkbCt0V2RvODVQWFoyNjArd3ZnSzdmWGlsTHgxd2hmUmx4azk1NkF1dytQL3BjS0RTSEsvZWErQXl5dTluK3liNVMrZjdqMTNDV3U5M216ekVhdk1lN3pXbTVXK3RlRGJMNTZzWlcvekErU1FWUEx6d0FhYXRTWUlZQUFabHBKRUEwQkJOQlFvOFlNQVFRdzAwcUNhQWdnZ0lZYU5XWUlJSUNaVmhKRVF3QUJOTlNvTVVNQUFjeTBraUFhQWdpZ29VYU5HUUlJWUthVkJORVFRQUFOTldyTUVFQUFNNjBraUlZQUFtaW9VV09HQUFLWWFTVkJOQVFRUUVPTkdqTUVFTUJNS3dtaUlZQUFHbXJVbUNHQUFHWmFTUkFOQVFUUVVLUEdEQUVFTU5OS2dtZ0lJSUNHR2pWbUNDQ0FtVllTUkVNQUFUVFVxREZEQUFITXRKSWdHZ0lJb0tGR2pSa0NDR0NtbFFUUkVFQUFEVFZxekJCQUFET3RKSWlHQUFKb3FGRmpoZ0FDbUdrbFFUUUVFRUJEalJvekJCREFUQ3NKb2lHQUFCcHExSmdoZ0FCbVdra1FEUUVFMEZDanhnd0JCRERUU29Kb0NDQ0FoaG8xWmdnZ2dKbFdFa1JEQUFFMDFLZ3hRd0FCekxTU0lCb0NDS0NoUm8wWkFnaGdwcFVFMFJCQUFBMDFhc3dRUUFBenJTU0loZ0FDYUtoUlk0WUFBcGhwSlVFMEJCQkFRNDBhTXdRUXdFd3JDYUloZ0FBYWF0U1lJWUFBWmxwSkVBMEJCTkJRbzhZTUFRUXcwMHFDYUFnZ2dJWWFOV1lJSUlDWlZoSkVRd0FCTk5Tb01VUGdYOFoxUzBHaitpVXpBQUFBQUVsRlRrU3VRbUNDIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+<meta name="theme-color" content="#E8E0CC">
+<title id="pageTitle">codingo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#E8E0CC;--bg-deep:#D4C8B0;--card:#FFFFFF;
+  --card-flip:#5B9DD9;--card-flip-deep:#2A4EA6;
+  --border:#2A2A2A;--gold-lt:#F5C518;--gold-bg:#FEF9D0;
+  --ink:#2A2A2A;--ink-mid:rgba(42,42,42,0.62);--ink-lt:rgba(42,42,42,0.38);
+  --white:#FFFFFF;
+  --correct:#6DB870;--correct-pale:#D8F0D8;
+  --wrong:#E87D4A;--wrong-pale:#FDE8D8;
+  --accent-cobalt:#2A4EA6;--accent-green:#6DB870;
+  --accent-pink:#F4A3B8;--accent-mustard:#E8C060;
+  /* フォントサイズ変数 — scope別に独立制御 */
+  /* カード内（フラッシュ＆4択） */
+  --fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;
+  /* 4択選択肢 */
+  --fs-choice:19px;--fs-choice-jp:17px;
+  /* 単語一覧 */
+  --fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;
+  /* その他（ダッシュボード・設定ラベルなど） */
+  --fs-other:15px;
+  /* アプリ全体ベース */
+  --fs-base:15px;
+}
+/* ── カード内サイズ ── */
+body.card-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;}
+body.card-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--fs-ph:13px;}
+/* ── 4択選択肢サイズ ── */
+body.choice-large{--fs-choice:22px;--fs-choice-jp:20px;}
+body.choice-small{--fs-choice:16px;--fs-choice-jp:14px;}
+/* ── 単語一覧サイズ ── */
+body.wl-large{--fs-wi-en:22px;--fs-wi-jp:19px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;}
+body.wl-small{--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;}
+/* ── その他サイズ ── */
+body.other-large{--fs-other:18px;--fs-base:18px;}
+body.other-small{--fs-other:13px;--fs-base:13px;}
+/* ── アプリ全体サイズ（他を無効化） ── */
+body.global-large{--fs-word:40px;--fs-word-jp:35px;--fs-ex:20px;--fs-ex-jp:18px;--fs-ph:18px;--fs-choice:22px;--fs-choice-jp:20px;--fs-wi-en:22px;--fs-wi-jp:19px;--fs-wi-ex:14px;--fs-wi-ex-jp:13px;--fs-other:18px;--fs-base:18px;}
+body.global-small{--fs-word:26px;--fs-word-jp:23px;--fs-ex:14px;--fs-ex-jp:12px;--fs-ph:13px;--fs-choice:16px;--fs-choice-jp:14px;--fs-wi-en:13px;--fs-wi-jp:11px;--fs-wi-ex:10px;--fs-wi-ex-jp:10px;--fs-other:13px;--fs-base:13px;}
+body.global-medium{--fs-word:34px;--fs-word-jp:30px;--fs-ex:17px;--fs-ex-jp:15px;--fs-ph:14px;--fs-choice:19px;--fs-choice-jp:17px;--fs-wi-en:19px;--fs-wi-jp:16px;--fs-wi-ex:12px;--fs-wi-ex-jp:11px;--fs-other:15px;--fs-base:15px;}
+/* アプリ全体選択時は個別selector無効 */
+body.global-lock .fs-scope-btn{opacity:0.35;pointer-events:none;}
+/* ベースフォント */
+body{font-size:var(--fs-base);}
+:root{
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito','Zen Maru Gothic',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(42,78,166,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(42,78,166,0.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+.screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;}
+@media(min-width:600px){
+  body{display:flex;justify-content:center;background:var(--bg);}
+  .screen{width:560px;min-height:100vh;}
+}
+
+/* NAV */
+.nav{display:flex;background:var(--card);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;font-family:inherit;font-size:calc(var(--fs-other) - 5px);font-weight:800;color:var(--ink-lt);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.nav-btn.active{color:var(--accent-cobalt);}
+.nav-icon{font-size:20px;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.nav-btn.active .nav-icon{background:var(--bg);}
+
+/* DASH */
+.dash-body{padding:16px;overflow-y:auto;flex:1;}
+.app-title-wrap{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
+.app-title{background:var(--card-flip);border:2px solid var(--border);border-radius:99px;padding:7px 22px;font-size:calc(var(--fs-other) + 2px);font-weight:900;color:var(--white);letter-spacing:0.15em;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:8px;}
+.title-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-lt);}
+
+/* Phrase of the Day */
+.phrase-card{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:20px;padding:18px 20px 16px;margin-bottom:12px;position:relative;overflow:hidden;}
+.phrase-card::after{display:none;}
+.phrase-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.phrase-label{font-size:calc(var(--fs-other) - 5px);font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.phrase-actions{display:flex;align-items:center;gap:8px;}
+.phrase-icon-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-size:var(--fs-other);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all 0.2s;}
+.phrase-icon-btn:active{background:rgba(255,255,255,0.28);}
+.phrase-word{font-size:calc(var(--fs-other) * 2 + 4px);font-weight:900;color:var(--gold-lt);font-family:'Zen Maru Gothic',sans-serif;line-height:1.2;margin-bottom:3px;text-align:center;}
+.phrase-jp-word{font-size:calc(var(--fs-other) + 1px);font-weight:800;color:rgba(255,255,255,0.72);margin-bottom:12px;font-family:'Zen Maru Gothic',sans-serif;text-align:center;}
+.phrase-divider{height:1px;background:rgba(255,255,255,0.15);margin-bottom:12px;}
+.phrase-ex{font-size:calc(var(--fs-other) + 2px);font-weight:700;color:rgba(255,255,255,0.95);line-height:1.65;margin-bottom:5px;text-align:center;}
+.phrase-ex-jp{font-size:var(--fs-other);color:rgba(255,255,255,0.55);line-height:1.6;text-align:center;}
+
+/* レポート */
+.report-week-label{font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.report-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.report-stat{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:12px 14px;}
+.report-stat-label{font-size:calc(var(--fs-other) - 4px);font-weight:900;color:var(--ink-lt);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;}
+.report-stat-val{font-size:calc(var(--fs-other) + 11px);font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
+.report-stat-unit{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:3px;font-weight:700;}
+.report-stat.hl{background:var(--card-flip);}.report-stat.hl .report-stat-label,.report-stat.hl .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl .report-stat-val{color:#fff;}
+.report-stat.hl2{background:var(--accent-green);}.report-stat.hl2 .report-stat-label,.report-stat.hl2 .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl2 .report-stat-val{color:#fff;}
+.report-stat.hl3{background:var(--accent-mustard);}.report-stat.hl3 .report-stat-label,.report-stat.hl3 .report-stat-unit{color:rgba(90,58,0,0.65);}.report-stat.hl3 .report-stat-val{color:#5A3A00;}
+.report-stat.hl4{background:var(--wrong);}.report-stat.hl4 .report-stat-label,.report-stat.hl4 .report-stat-unit{color:rgba(255,255,255,0.65);}.report-stat.hl4 .report-stat-val{color:#fff;}
+.report-graph-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;}
+.report-graph-title{font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-mid);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
+.report-bars{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:20px;}
+.report-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;}
+.report-bar-bg{width:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;background:var(--bg);border-radius:6px;overflow:hidden;}
+.report-bar-fill{width:100%;border-radius:6px;transition:height 0.5s ease;background:var(--card-flip);}
+.report-bar-fill.today{background:var(--gold-lt);}
+.report-bar-fill.empty{height:0!important;}
+.report-bar-label{font-size:calc(var(--fs-other) - 5px);font-weight:900;color:var(--ink-lt);}
+.report-bar-val{font-size:calc(var(--fs-other) - 5px);font-weight:900;color:var(--ink-mid);}
+.report-no-data{text-align:center;padding:40px 0;color:var(--ink-lt);font-size:var(--fs-other);font-weight:700;}
+
+/* スペリング入力 */
+#spellInput:focus{border-color:var(--card-flip);}
+#spellInput.correct{border-color:var(--correct);background:var(--correct-pale);}
+#spellInput.wrong{border-color:var(--wrong);background:var(--wrong-pale);}
+
+/* チケットバナー */
+.ticket-banner{background:var(--accent-cobalt);border:2px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.ticket-emoji{font-size:26px;}
+.ticket-text{flex:1;}
+.ticket-title{font-size:var(--fs-other);font-weight:900;color:#fff;}
+.ticket-sub{font-size:calc(var(--fs-other) - 2px);color:rgba(255,255,255,0.65);margin-top:2px;font-weight:700;}
+
+/* スタッツ */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.stat-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:13px 14px;}
+.stat-label{font-size:calc(var(--fs-other) - 5px);font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+.stat-val{font-size:calc(var(--fs-other) + 13px);font-weight:900;color:var(--ink);line-height:1;font-family:'Nunito',sans-serif;}
+.stat-unit{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:3px;font-weight:700;}
+.stat-card.hl{background:var(--accent-green);border-color:var(--border);}
+.stat-card.hl .stat-label,.stat-card.hl .stat-unit{color:rgba(255,255,255,0.7);}
+.stat-card.hl .stat-val{color:#fff;}
+.stat-card.hl-gold{background:var(--accent-mustard);border-color:var(--border);}
+.stat-card.hl-gold .stat-val{color:#5A3A00;}
+.stat-card.hl-gold .stat-label,.stat-card.hl-gold .stat-unit{color:rgba(90,58,0,0.65);}
+
+/* 進捗 */
+.section-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;}
+.section-title{font-size:calc(var(--fs-other) - 4px);font-weight:900;color:var(--ink-mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;}
+.prog-row{margin-bottom:10px;}
+.prog-header{display:flex;justify-content:space-between;font-size:calc(var(--fs-other) - 3px);font-weight:800;margin-bottom:5px;}
+.prog-key{color:var(--ink-mid);}.prog-num{color:var(--ink-lt);}
+.prog-bar{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;border:1.5px solid var(--bg-deep);}
+.prog-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+.fill-master{background:var(--accent-green);}.fill-learning{background:var(--gold-lt);}.fill-new{background:var(--card-flip);}
+
+/* モード・スタート */
+.mode-row{display:flex;gap:10px;margin-bottom:10px;}
+.mode-btn{flex:1;padding:11px 8px;border:2px solid var(--border);background:var(--card);border-radius:14px;font-family:inherit;font-size:calc(var(--fs-other) - 3px);font-weight:800;color:var(--ink-mid);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.15s;}
+.mode-btn .mode-icon{font-size:22px;}
+.mode-btn.selected{border-color:var(--card-flip);background:var(--card-flip);color:var(--white);}
+.start-btn{width:100%;padding:16px;background:var(--gold-lt);color:var(--ink);border:2px solid var(--border);border-radius:16px;font-family:inherit;font-size:calc(var(--fs-other) + 1px);font-weight:900;cursor:pointer;transition:all 0.15s;}
+.start-btn:active{transform:translateY(2px);}
+
+/* FC HEADER */
+.fc-header{background:var(--card);border-bottom:2px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.fc-title{font-size:var(--fs-other);font-weight:900;color:var(--ink);}
+.fc-close{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:var(--fs-other);cursor:pointer;color:var(--ink-mid);display:flex;align-items:center;justify-content:center;font-weight:900;}
+.prog-wrap{padding:10px 16px 8px;background:var(--card);border-bottom:1.5px solid var(--bg-deep);}
+.prog-bar-thin{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:var(--card-flip);border-radius:99px;transition:width 0.4s ease;}
+.prog-nums{display:flex;justify-content:space-between;font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);font-weight:800;margin-top:4px;}
+
+/* CARD AREA — 固定レイアウト */
+.card-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:14px 16px 8px;gap:10px;}
+
+/* カード：フラッシュ・クイズ共通で高さ固定 */
+.flashcard{width:100%;max-width:360px;perspective:1000px;cursor:pointer;flex-shrink:0;}
+.flashcard-inner{position:relative;width:100%;height:450px;transform-style:preserve-3d;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);}
+.flashcard-inner.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border:2px solid var(--border);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:15px 20px 15px;text-align:center;overflow:hidden;}
+.fc-front{background:var(--card);}
+.fc-back{transform:rotateY(180deg);background:var(--card-flip);}
+
+.quiz-question{width:100%;max-width:360px;height:300px;background:var(--card);border:2px solid var(--border);border-radius:22px;padding:15px 20px;text-align:center;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;}
+
+/* カード内共通 */
+.gold-tag{display:inline-block;background:var(--gold-lt);border:2px solid var(--border);border-radius:99px;padding:3px 14px;font-size:11px;font-weight:900;color:var(--ink);flex-shrink:0;}
+.fc-word-block{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:4px;min-height:0;width:100%;}
+.word-en{font-size:var(--fs-word);font-weight:900;color:var(--ink);font-family:'Zen Maru Gothic',sans-serif;line-height:1.25;}
+.word-ph{font-size:var(--fs-ph);color:var(--accent-green);font-weight:700;}
+.ex-area-front{width:100%;border:2px dashed var(--bg-deep);border-radius:12px;padding:9px 13px;background:var(--bg);flex-shrink:0;height:150px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
+.ex-text{font-size:var(--fs-ex);color:var(--ink);line-height:1.7;font-weight:700;text-align:left;}
+
+/* 背面 */
+.fc-back-top{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:5px;min-height:0;}
+.word-jp{font-size:var(--fs-word-jp);font-weight:900;color:var(--gold-lt);font-family:'Zen Maru Gothic',sans-serif;line-height:1.3;text-align:center;}
+.ex-area-back{width:100%;border:1.5px dashed rgba(255,255,255,0.3);border-radius:12px;padding:9px 13px;flex-shrink:0;height:150px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
+.ex-text-back{font-size:var(--fs-ex);color:#fff;line-height:1.7;font-weight:700;text-align:left;}
+.ex-jp-back{font-size:var(--fs-ex-jp);color:rgba(255,255,255,0.65);margin-top:6px;text-align:left;line-height:1.65;}
+.mastery-label{font-size:10px;color:rgba(255,255,255,0.5);margin-top:5px;font-weight:800;flex-shrink:0;}
+
+/* ピップ */
+.pip-row{display:flex;gap:5px;margin-bottom:6px;flex-shrink:0;}
+.pip{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);}
+.pip.filled{background:var(--gold-lt);border-color:var(--gold-lt);}
+.pip-front{background:var(--bg);border-color:var(--bg-deep);}
+.pip-front.filled{background:var(--gold-lt);border-color:var(--gold-lt);}
+
+/* スピークボタン（英語面のみ） */
+.speak-btn{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:2px solid var(--bg-deep);background:var(--bg);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-mid);transition:all 0.2s;}
+.speak-btn.speaking{background:var(--card-flip);color:white;border-color:var(--card-flip);}
+
+/* アクションボタン */
+.btn-stack{position:relative;width:100%;max-width:360px;height:52px;flex-shrink:0;}
+.flip-btn{position:absolute;inset:0;width:100%;background:var(--card);color:var(--ink);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:all 0.15s;visibility:visible;}
+.flip-btn:active{transform:translateY(2px);}
+.flip-btn.hidden{visibility:hidden;}
+.action-row{position:absolute;inset:0;display:flex;gap:12px;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.action-row.show{opacity:1;pointer-events:all;}
+.action-btn{flex:1;padding:0 8px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
+.action-btn:active{transform:scale(0.95);}
+.btn-ok{background:var(--gold-lt);color:var(--ink);}
+.btn-ng{background:var(--card);color:var(--ink-mid);}
+
+.counter-row{display:flex;gap:16px;justify-content:center;flex-shrink:0;}
+.counter{display:flex;align-items:center;gap:5px;font-size:var(--fs-other);font-weight:900;color:var(--ink-mid);}
+.c-dot{width:9px;height:9px;border-radius:50%;}
+.c-ok{background:var(--correct);}.c-ng{background:var(--wrong);}
+
+/* 4択 */
+.quiz-choices{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px;flex-shrink:0;}
+.quiz-choice{width:100%;padding:13px 16px;background:var(--card);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-choice);font-weight:800;color:var(--ink);cursor:pointer;transition:all 0.15s;text-align:left;display:flex;align-items:center;gap:10px;}
+.quiz-choice:hover:not(:disabled){border-color:var(--card-flip);background:var(--bg);transform:translateY(-1px);}
+.quiz-choice.correct{border-color:var(--correct);background:var(--correct-pale);color:#1A5A20;}
+.quiz-choice.wrong{border-color:var(--wrong);background:var(--wrong-pale);color:#7A2A00;}
+.quiz-choice:disabled{cursor:default;transform:none;}
+.quiz-num{width:26px;height:26px;border-radius:50%;background:var(--bg);border:2px solid var(--bg-deep);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink-mid);}
+.correct .quiz-num{background:var(--correct);color:white;border-color:var(--correct);}
+.wrong .quiz-num{background:var(--wrong);color:white;border-color:var(--wrong);}
+.quiz-speak-btn{background:var(--bg);border:1.5px solid var(--bg-deep);border-radius:99px;padding:4px 14px;font-family:inherit;font-size:12px;font-weight:800;color:var(--ink-mid);cursor:pointer;flex-shrink:0;}
+
+/* 結果 */
+.sess-result{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;overflow-y:auto;}
+.sess-emoji{font-size:56px;margin-bottom:10px;text-align:center;}
+.sess-title{font-size:22px;font-weight:900;color:var(--ink);text-align:center;margin-bottom:6px;}
+.sess-score{font-size:48px;font-weight:900;color:var(--card-flip);text-align:center;font-family:'Nunito',sans-serif;}
+.sess-score span{font-size:18px;color:var(--ink-lt);font-weight:700;}
+.sess-sub{font-size:14px;color:var(--ink-mid);text-align:center;line-height:1.7;margin-bottom:24px;max-width:320px;font-weight:700;}
+.missed-box{width:100%;max-width:400px;margin-bottom:16px;}
+.missed-section-title{font-size:11px;font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.missed-item{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:7px;}
+.missed-en{font-size:15px;font-weight:900;color:var(--ink);min-width:110px;}
+.missed-jp{font-size:13px;color:var(--ink-mid);font-weight:700;}
+.copy-btn{width:100%;max-width:400px;padding:13px;background:var(--bg);color:var(--card-flip);border:2px solid var(--card-flip);border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
+.sess-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px;}
+.s-btn{padding:14px;border-radius:14px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;border:2px solid var(--border);transition:all 0.15s;}
+.s-btn:active{transform:translateY(2px);}
+.s-btn-retry{background:var(--card);color:var(--ink-mid);}
+.s-btn-dash{background:var(--gold-lt);color:var(--ink);}
+
+/* 単語一覧 */
+.wl-body{padding:14px;overflow-y:auto;flex:1;}
+.wl-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.wf-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+.wf-master{background:var(--correct);}.wf-learning{background:var(--gold-lt);}.wf-new{background:var(--card-flip);}
+.wl-filter{padding:5px 12px;border-radius:99px;border:2px solid var(--border);background:var(--card);font-family:inherit;font-size:12px;font-weight:900;color:var(--ink-mid);cursor:pointer;}
+.wl-filter.active{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
+.word-item{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:12px;}
+.wi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.wi-master{background:var(--correct);}.wi-learning{background:var(--gold-lt);}.wi-new{background:var(--card-flip);}
+.wi-body{flex:1;}
+.wi-en{font-size:calc(var(--fs-wi-en) + 3px);font-weight:900;color:var(--ink);}
+.wi-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;font-weight:700;}
+.wi-meta{font-size:11px;color:var(--ink-lt);text-align:right;font-weight:800;}
+.wi-ex{font-size:var(--fs-wi-en);color:var(--ink);margin-top:6px;line-height:1.6;font-weight:600;}
+.wi-ex-jp{font-size:var(--fs-wi-jp);color:var(--ink-mid);margin-top:2px;line-height:1.5;font-weight:600;}
+.word-item.excluded{opacity:0.4;}
+.wi-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.wi-toggle{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.wi-toggle.on{background:var(--card-flip);border-color:var(--card-flip-deep);color:white;}
+.wi-speak{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:none;background:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--ink-lt);}
+
+/* 設定 */
+.set-body{padding:16px;overflow-y:auto;flex:1;}
+.set-section-title{font-size:calc(var(--fs-other) - 4px);font-weight:900;color:var(--ink-lt);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.set-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:14px;margin-bottom:16px;}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1.5px dashed var(--bg-deep);}
+.set-row:last-child{border-bottom:none;}
+.set-label{font-size:var(--fs-other);font-weight:800;color:var(--ink);}
+.set-sub{font-size:calc(var(--fs-other) - 4px);color:var(--ink-lt);margin-top:2px;font-weight:700;}
+.set-input{padding:6px 10px;border:2px solid var(--border);border-radius:8px;font-family:inherit;font-size:var(--fs-other);color:var(--ink);background:var(--bg);min-width:100px;max-width:180px;text-align:right;font-weight:800;}
+.set-note{font-size:calc(var(--fs-other) - 3px);color:var(--ink-mid);line-height:1.75;padding:6px 0;font-weight:600;}
+.set-note-hl{background:var(--gold-bg);border:1.5px solid var(--gold-lt);border-radius:12px;padding:12px 14px;font-size:calc(var(--fs-other) - 3px);color:var(--ink-mid);line-height:1.8;font-weight:600;margin-bottom:4px;}
+.reset-btn{width:100%;padding:13px;background:none;border:2px solid #C8A8D8;border-radius:14px;font-family:inherit;font-size:var(--fs-other);font-weight:900;color:var(--wrong);cursor:pointer;}
+.fs-selector{display:flex;gap:6px;}
+.fs-btn{padding:5px 12px;border-radius:99px;border:2px solid var(--border);background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 3px);font-weight:900;color:var(--ink-mid);cursor:pointer;}
+.fs-btn.active{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
+.fs-scope-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.fs-scope-label{font-size:calc(var(--fs-other) - 2px);font-weight:800;color:var(--ink);min-width:72px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card-flip);color:white;font-size:var(--fs-other);font-weight:900;padding:10px 20px;border-radius:99px;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999;border:2px solid var(--card-flip-deep);}
+.toast.show{opacity:1;}
+
+/* モーダル */
+.modal-overlay{position:fixed;inset:0;background:rgba(42,42,42,0.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.hidden{display:none;}
+.modal-box{background:var(--card);border-radius:20px;padding:24px;width:100%;max-width:360px;border:2px solid var(--border);}
+.modal-title{font-size:calc(var(--fs-other) + 1px);font-weight:900;color:var(--ink);margin-bottom:8px;}
+.modal-sub{font-size:calc(var(--fs-other) - 2px);color:var(--ink-mid);margin-bottom:16px;line-height:1.6;}
+.modal-textarea{width:100%;height:120px;border:2px solid var(--border);border-radius:10px;padding:10px;font-size:calc(var(--fs-other) - 3px);font-family:monospace;resize:none;background:var(--bg);color:var(--ink);box-sizing:border-box;margin-bottom:14px;}
+.modal-btns{display:flex;gap:10px;}
+.modal-btn{flex:1;padding:12px;border-radius:12px;font-family:inherit;font-size:var(--fs-other);font-weight:900;cursor:pointer;border:2px solid var(--border);}
+.modal-btn-primary{background:var(--card-flip);color:white;border-color:var(--card-flip-deep);}
+.modal-btn-danger{background:#C8A8D8;color:white;border-color:var(--wrong);}
+.modal-btn-cancel{background:var(--bg);color:var(--ink-mid);}
+</style>
+</head>
+<body>
+
+<!-- DASHBOARD -->
+<div id="dashScreen" class="screen active">
+  <div class="nav">
+    <button class="nav-btn active" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="dash-body">
+    <div class="app-title-wrap">
+      <div class="title-dot"></div>
+      <div class="app-title" id="appTitleLabel">codingo</div>
+      <div class="title-dot"></div>
+    </div>
+
+    <div class="phrase-card">
+      <div class="phrase-header">
+        <span class="phrase-label">Phrase of the Day</span>
+        <div class="phrase-actions">
+          <button class="phrase-icon-btn" id="phraseSpeakBtn" onclick="speakPhrase()">🔊</button>
+          <button class="phrase-icon-btn" onclick="renderPhraseOfDay(true)">↺</button>
+        </div>
+      </div>
+      <div class="phrase-word" id="phraseWord">—</div>
+      <div class="phrase-jp-word" id="phraseJpWord"></div>
+      <div class="phrase-divider"></div>
+      <div class="phrase-ex" id="phraseEx"></div>
+      <div class="phrase-ex-jp" id="phraseExJp"></div>
+    </div>
+
+    <div class="ticket-banner" id="ticketBanner" style="display:none">
+      <div class="ticket-emoji">🎟️</div>
+      <div class="ticket-text">
+        <div class="ticket-title" id="ticketTitle">特別休暇チケット使用！</div>
+        <div class="ticket-sub" id="ticketSub">残り0枚 ／ 再開することに意義がある 🌱</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card hl">
+        <div class="stat-label">MASTERED ✓</div>
+        <div class="stat-val" id="masteredCount">0</div>
+        <div class="stat-unit">語 定着済み</div>
+      </div>
+      <div class="stat-card hl-gold">
+        <div class="stat-label">STREAK 🔥</div>
+        <div class="stat-val" id="streakCount">0</div>
+        <div class="stat-unit">日連続</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">全体進捗</div>
+      <div class="prog-row">
+        <div class="prog-header"><span class="prog-key">✓ 定着済み</span><span class="prog-num" id="progMasterNum">0/0</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-master" id="progMasterFill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-row" style="margin-top:10px">
+        <div class="prog-header"><span class="prog-key">🟡 学習中</span><span class="prog-num" id="progLearningNum">0/0</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-learning" id="progLearningFill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-row" style="margin-top:10px">
+        <div class="prog-header"><span class="prog-key">🔵 未学習</span><span class="prog-num" id="progNewNum">0/0</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-new" id="progNewFill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="mode-row">
+      <button class="mode-btn selected" id="modeFlash" onclick="selectMode('flash',this)"><span class="mode-icon">📇</span>フラッシュ</button>
+      <button class="mode-btn" id="modeQuiz" onclick="selectMode('quiz',this)"><span class="mode-icon">🔤</span>4択クイズ</button>
+      <button class="mode-btn" id="modeSpell" onclick="selectMode('spell',this)"><span class="mode-icon">✏️</span>スペリング</button>
+    </div>
+    <button class="start-btn" id="startSessionBtn" onclick="startSession()">セッションを始める →</button>
+  </div>
+</div>
+
+<!-- FLASHCARD -->
+<div id="fcScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="fcTitle">• FLASH CARDS •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="fcProgFill" style="width:0%"></div></div>
+    <div class="prog-nums"><span id="fcProgLabel">1/20</span><span id="fcProgRemain">残り20枚</span></div>
+  </div>
+  <div class="card-area">
+    <div class="flashcard" onclick="flipCard()">
+      <div class="flashcard-inner" id="cardInner">
+        <div class="fc-face fc-front">
+          <button class="speak-btn" id="speakBtn" onclick="speakWord(event)">🔊</button>
+          <div class="gold-tag" id="fcTag">英語 → 日本語</div>
+          <div class="pip-row" id="masteryPips" style="margin-top:8px;margin-bottom:0;"></div>
+          <div class="fc-word-block">
+            <div class="word-en" id="wordEn">—</div>
+            <div class="word-ph" id="wordPh"></div>
+          </div>
+          <div class="ex-area-front" id="exAreaFront"><div class="ex-text" id="wordEx"></div></div>
+        </div>
+        <div class="fc-face fc-back">
+          <button class="speak-btn" id="speakBtnBack" onclick="speakWordBack(event)" style="display:none;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);color:white;">🔊</button>
+          <div class="gold-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;" id="fcTagBack">日本語 → 英語</div>
+          <div class="pip-row" id="masteryPipsBack" style="margin-top:8px;margin-bottom:0;"></div>
+          <div class="fc-back-top">
+            <div class="word-jp" id="wordJp">—</div>
+            <div class="word-ph" id="wordPhBack" style="color:var(--accent-green);opacity:0.85;"></div>
+          </div>
+          <div class="ex-area-back">
+            <div class="ex-text-back" id="wordExBack"></div>
+            <div class="ex-jp-back" id="wordExJpBack"></div>
+          </div>
+          <div class="mastery-label" id="masteryLabel"></div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-stack">
+      <button class="flip-btn" id="flipBtn" onclick="flipCard()">タップして答えを見る</button>
+      <div class="action-row" id="actionRow">
+        <button class="action-btn btn-ng" onclick="judge(false)">もう一度</button>
+        <button class="action-btn btn-ok" onclick="judge(true)">覚えた！</button>
+      </div>
+    </div>
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="fcOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="fcNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4択クイズ -->
+<div id="quizScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="quizTitle">• QUIZ •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="quizProgFill" style="width:0%"></div></div>
+    <div class="prog-nums"><span id="quizProgLabel">1/20</span><span id="quizProgRemain">残り20問</span></div>
+  </div>
+  <div class="card-area">
+    <div class="quiz-question" style="position:relative;">
+      <button class="speak-btn" id="quizSpeakBtn" onclick="speakQuizWord()" style="position:absolute;top:10px;right:10px;">🔊</button>
+      <div class="gold-tag" id="quizTag">英語 → 日本語</div>
+      <div class="pip-row" id="quizMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
+      <div class="fc-word-block">
+        <div class="word-en" id="quizWordEn">—</div>
+        <div class="word-ph" id="quizWordPh"></div>
+      </div>
+      <div class="ex-area-front" id="quizExArea" style="display:none;width:100%;height:76px;justify-content:center;"><div class="ex-text" id="quizWordEx"></div></div>
+    </div>
+    <div class="quiz-choices" id="quizChoices"></div>
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="quizOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="quizNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- スペリング -->
+<div id="spellScreen" class="screen">
+  <div class="fc-header">
+    <div class="fc-title" id="spellTitle">• SPELLING •</div>
+    <button class="fc-close" onclick="endSession()">✕</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar-thin"><div class="prog-bar-fill" id="spellProgFill" style="width:0%"></div></div>
+    <div class="prog-nums"><span id="spellProgLabel">1/20</span><span id="spellProgRemain">残り20問</span></div>
+  </div>
+  <div class="card-area">
+    <div class="quiz-question" style="position:relative;height:300px;">
+      <button class="speak-btn" id="spellSpeakBtn" onclick="speakSpell()" style="position:absolute;top:10px;right:10px;">🔊</button>
+      <div class="gold-tag">日本語 → 英語</div>
+      <div class="fc-word-block" style="width:100%">
+        <div class="pip-row" id="spellMasteryPips" style="justify-content:center;margin-top:8px;margin-bottom:0;"></div>
+        <div class="word-jp" id="spellWordJp" style="color:var(--ink);font-size:var(--fs-word-jp);">—</div>
+      </div>
+      <div class="ex-area-front" id="spellExArea" style="display:none;width:100%;height:76px;justify-content:center;">
+        <div class="ex-text" id="spellWordExJp"></div>
+      </div>
+    </div>
+
+    <!-- 入力欄 -->
+    <div style="width:100%;max-width:360px;flex-shrink:0;">
+      <div id="spellFeedback" style="min-height:24px;text-align:center;font-size:calc(var(--fs-other) - 1px);font-weight:800;margin-bottom:6px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input id="spellInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          placeholder="英語でスペルを入力..."
+          style="flex:1;padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;"
+          onkeydown="if(event.key==='Enter')submitSpelling()">
+        <button onclick="submitSpelling()"
+          style="padding:12px 16px;background:var(--gold-lt);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:var(--fs-other);font-weight:900;cursor:pointer;">
+          →
+        </button>
+      </div>
+      <button id="spellSkipBtn" onclick="skipSpelling()"
+        style="display:none;width:100%;margin-top:8px;padding:10px;background:var(--card);border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:calc(var(--fs-other) - 1px);font-weight:800;color:var(--ink-mid);cursor:pointer;">
+        次へ →
+      </button>
+    </div>
+
+    <div class="counter-row">
+      <div class="counter"><div class="c-dot c-ok"></div><span id="spellOkCount">0</span> OK</div>
+      <div class="counter"><div class="c-dot c-ng"></div><span id="spellNgCount">0</span> もう一度</div>
+    </div>
+  </div>
+</div>
+
+<!-- 結果 -->
+<div id="sessResultScreen" class="screen">
+  <div class="sess-result">
+    <div class="sess-emoji" id="sessEmoji">🎉</div>
+    <div class="sess-title" id="sessTitle"></div>
+    <div class="sess-score"><span id="sessScoreNum">0</span><span> / <span id="sessScoreTot">0</span></span></div>
+    <div class="sess-sub" id="sessSub"></div>
+    <div class="missed-box" id="missedBox">
+      <div class="missed-section-title">📌 要復習の単語</div>
+      <div id="missedList"></div>
+    </div>
+    <button class="copy-btn" onclick="copyResult()">📋 結果をClaudeに貼り付け用コピー</button>
+    <div class="sess-btns">
+      <button class="s-btn s-btn-retry" id="retryBtn" onclick="retryMissed()">✕ の単語だけもう一度</button>
+      <button class="s-btn s-btn-dash" onclick="goToDash()">ダッシュボードへ戻る</button>
+    </div>
+  </div>
+</div>
+
+<!-- 単語一覧 -->
+<!-- レポート -->
+<div id="reportScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn active" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="dash-body" id="reportBody"></div>
+</div>
+
+<!-- 単語一覧 -->
+<div id="wordlistScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
+    <button class="nav-btn active" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="wl-body">
+    <!-- 検索窓 -->
+    <div style="position:relative;margin-bottom:10px;">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--ink-lt);pointer-events:none;">🔍</span>
+      <input id="wlSearchInput" type="text" placeholder="英語・日本語で検索..."
+        autocomplete="off" autocorrect="off" autocapitalize="off"
+        style="width:100%;padding:10px 12px 10px 36px;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:var(--fs-other);background:var(--card);color:var(--ink);outline:none;box-sizing:border-box;"
+        oninput="renderWordList()"
+        onfocus="this.style.borderColor='var(--card-flip)'"
+        onblur="this.style.borderColor='var(--border)'">
+      <button id="wlSearchClear" onclick="clearSearch()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;font-size:16px;cursor:pointer;color:var(--ink-lt);padding:4px;">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
+      <div class="wl-filters" style="margin-bottom:0;flex:1;">
+        <button class="wl-filter active" data-filter="all" onclick="filterWords(this)">すべて</button>
+        <button class="wl-filter" data-filter="master" onclick="filterWords(this)"><span class="wf-dot wf-master"></span>定着済み</button>
+        <button class="wl-filter" data-filter="learning" onclick="filterWords(this)"><span class="wf-dot wf-learning"></span>学習中</button>
+        <button class="wl-filter" data-filter="new" onclick="filterWords(this)"><span class="wf-dot wf-new"></span>未学習</button>
+        <button class="wl-filter" data-filter="excluded" onclick="filterWords(this)">除外</button>
+      </div>
+      <select id="wlSortSelect" onchange="renderWordList()"
+        style="flex-shrink:0;padding:5px 8px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:800;background:var(--card);color:var(--ink);cursor:pointer;">
+        <option value="num-asc">登録順</option>
+        <option value="num-desc">新しい順</option>
+        <option value="status-master">定着→未学習</option>
+        <option value="status-new">未学習→定着</option>
+      </select>
+    </div>
+    <div id="wordListItems"></div>
+  </div>
+</div>
+
+<!-- 設定 -->
+<div id="settingsScreen" class="screen">
+  <div class="nav">
+    <button class="nav-btn" onclick="showTab('dash',this)"><span class="nav-icon">🍎</span>ホーム</button>
+    <button class="nav-btn" onclick="showTab('report',this)"><span class="nav-icon">📈</span>レポート</button>
+    <button class="nav-btn" onclick="showTab('wordlist',this)"><span class="nav-icon">📖</span>単語一覧</button>
+    <button class="nav-btn active" onclick="showTab('settings',this)"><span class="nav-icon">⚙️</span>設定</button>
+  </div>
+  <div class="set-body">
+
+    <div class="set-section-title" style="margin-bottom:10px">アプリ設定</div>
+    <div class="set-card">
+      <div class="set-row">
+        <div><div class="set-label">アプリ名</div><div class="set-sub">「〇〇dingo」の〇〇部分を入力</div></div>
+        <div style="display:flex;align-items:center;gap:2px;">
+          <input class="set-input" type="text" id="appNameInput" placeholder="co" style="min-width:120px;max-width:160px;text-align:right;" onchange="saveAppName(this.value)">
+          <span style="font-size:14px;font-weight:900;color:var(--ink-mid);">dingo</span>
+        </div>
+      </div>
+      <div class="set-row" style="flex-direction:column;align-items:stretch;gap:10px;border-bottom:none;padding-bottom:4px;">
+        <div><div class="set-label">文字サイズ</div><div class="set-sub">スコープごとに個別設定。「アプリ全体」を選ぶと他は無効になります。</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="fs-scope-row" id="fs-row-global">
+            <div class="fs-scope-label">アプリ全体</div>
+            <div class="fs-selector">
+              <button class="fs-btn fs-global-btn" data-scope="global" data-fs="small" onclick="setFontSizeScope('global','small',this)">小</button>
+              <button class="fs-btn fs-global-btn active" data-scope="global" data-fs="medium" onclick="setFontSizeScope('global','medium',this)">中</button>
+              <button class="fs-btn fs-global-btn" data-scope="global" data-fs="large" onclick="setFontSizeScope('global','large',this)">大</button>
+              <button class="fs-btn fs-global-btn" data-scope="global" data-fs="off" onclick="setFontSizeScope('global','off',this)">個別</button>
+            </div>
+          </div>
+          <div class="fs-scope-row fs-scope-btn" id="fs-row-card">
+            <div class="fs-scope-label">カード内</div>
+            <div class="fs-selector">
+              <button class="fs-btn" data-scope="card" data-fs="small" onclick="setFontSizeScope('card','small',this)">小</button>
+              <button class="fs-btn active" data-scope="card" data-fs="medium" onclick="setFontSizeScope('card','medium',this)">中</button>
+              <button class="fs-btn" data-scope="card" data-fs="large" onclick="setFontSizeScope('card','large',this)">大</button>
+            </div>
+          </div>
+          <div class="fs-scope-row fs-scope-btn" id="fs-row-choice">
+            <div class="fs-scope-label">4択選択肢</div>
+            <div class="fs-selector">
+              <button class="fs-btn" data-scope="choice" data-fs="small" onclick="setFontSizeScope('choice','small',this)">小</button>
+              <button class="fs-btn active" data-scope="choice" data-fs="medium" onclick="setFontSizeScope('choice','medium',this)">中</button>
+              <button class="fs-btn" data-scope="choice" data-fs="large" onclick="setFontSizeScope('choice','large',this)">大</button>
+            </div>
+          </div>
+          <div class="fs-scope-row fs-scope-btn" id="fs-row-wl">
+            <div class="fs-scope-label">単語一覧</div>
+            <div class="fs-selector">
+              <button class="fs-btn" data-scope="wl" data-fs="small" onclick="setFontSizeScope('wl','small',this)">小</button>
+              <button class="fs-btn active" data-scope="wl" data-fs="medium" onclick="setFontSizeScope('wl','medium',this)">中</button>
+              <button class="fs-btn" data-scope="wl" data-fs="large" onclick="setFontSizeScope('wl','large',this)">大</button>
+            </div>
+          </div>
+          <div class="fs-scope-row fs-scope-btn" id="fs-row-other">
+            <div class="fs-scope-label">その他</div>
+            <div class="fs-selector">
+              <button class="fs-btn" data-scope="other" data-fs="small" onclick="setFontSizeScope('other','small',this)">小</button>
+              <button class="fs-btn active" data-scope="other" data-fs="medium" onclick="setFontSizeScope('other','medium',this)">中</button>
+              <button class="fs-btn" data-scope="other" data-fs="large" onclick="setFontSizeScope('other','large',this)">大</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="set-section-title" style="margin-bottom:10px">学習設定</div>
+    <div class="set-card">
+      <div class="set-row">
+        <div><div class="set-label">出題方向</div><div class="set-sub">表面に出す言語</div></div>
+        <select class="set-input" id="directionInput" style="min-width:140px;max-width:180px;" onchange="saveSetting('direction',this.value)">
+          <option value="en2jp">英語 → 日本語</option>
+          <option value="jp2en">日本語 → 英語</option>
+        </select>
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">1日の目標語数</div><div class="set-sub">ダッシュボードのスタートボタンに表示</div></div>
+        <input class="set-input" type="number" id="dailyGoalInput" min="1" max="200" placeholder="10" onchange="saveSetting('dailyGoal',parseInt(this.value)||10)">
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">1セッションの出題数</div><div class="set-sub">1回に出題される語数</div></div>
+        <input class="set-input" type="number" id="sessionSizeInput" min="5" max="100" placeholder="20" onchange="saveSetting('sessionSize',this.value)">
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">カード表示時に読み上げ</div><div class="set-sub">英→日のフラッシュ・4択のみ</div></div>
+        <select class="set-input" id="autoSpeakInput" onchange="saveSetting('autoSpeak',this.value)">
+          <option value="off">オフ</option>
+          <option value="on">オン</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="set-section-title" style="margin-bottom:10px">語彙を追加</div>
+    <div class="set-card">
+      <div class="set-note">AEPの出力JSONをそのまま貼り付けてください。<br><span style="color:var(--ink-lt);">id・numは自動生成。同じ単語は上書きされます。</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+        <textarea class="modal-textarea" id="wordsImportTextarea" placeholder='[{"w":"catch a cold","jp":"風邪をひく",...}]' style="height:90px;margin-bottom:0;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button class="modal-btn modal-btn-primary" style="flex:2;" onclick="importWords('add')">➕ 追加する</button>
+          <button class="modal-btn modal-btn-cancel" style="flex:1;" onclick="importWords('reset')">全置換</button>
+        </div>
+        <div style="font-size:11px;color:var(--ink-lt);font-weight:600;text-align:center;" id="wordsCountLabel"></div>
+      </div>
+    </div>
+
+    <div class="set-section-title" style="margin-bottom:10px">🎟️ 特別休暇チケット</div>
+    <div class="set-card">
+      <div class="set-note-hl">
+        <strong>3日続けると「特別休暇チケット」が1枚もらえます。</strong><br>
+        チケットは持ち越せるので、連休も取れます。<br><br>
+        チケットがあれば、休んだ翌日に自動で使われてストリークが維持されます。<br>
+        <span style="color:var(--ink-lt);">休むまで何枚あるかはわかりません。休んだ日に初めてわかります。</span><br><br>
+        <strong>三日坊主、大歓迎。</strong><br>
+        休んでも「また始める」ことに意義がある。
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">現在のチケット数</div><div class="set-sub">休んだ日に自動使用されます</div></div>
+        <div style="font-size:22px;font-weight:900;color:var(--accent-cobalt);" id="ticketCountDisplay">—</div>
+      </div>
+    </div>
+
+    <div class="set-section-title" style="margin-bottom:10px">バックアップ</div>
+    <div class="set-card">
+      <div class="set-note" style="padding-bottom:10px;border-bottom:1.5px dashed var(--bg-deep);margin-bottom:4px;">① 「書き出す」→ ファイルを保存<br>② 復元は「読み込む」→ テキストを貼り付け</div>
+      <div class="set-row">
+        <div><div class="set-label">エクスポート</div></div>
+        <button class="set-input" style="width:auto;padding:6px 14px;cursor:pointer;font-weight:800;" onclick="exportData()">書き出す</button>
+      </div>
+      <div class="set-row">
+        <div><div class="set-label">インポート</div></div>
+        <button class="set-input" style="width:auto;padding:6px 14px;cursor:pointer;background:var(--bg);border-color:var(--card-flip);color:var(--card-flip);font-weight:800;" onclick="importData()">読み込む</button>
+      </div>
+    </div>
+
+    <div class="set-section-title" style="margin-bottom:10px">リセット</div>
+    <div class="set-card">
+      <button class="reset-btn" onclick="confirmReset()">⚠️ 全学習データをリセット</button>
+    </div>
+
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
+      <span id="lastUpdatedLabel"></span><br>
+      <script>
+        (function(){
+          const m=document.documentElement.innerHTML.match(/<!--\s*SYNC_BASE:\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*-->/);
+          document.getElementById('lastUpdatedLabel').textContent=m?'Last updated: '+m[1]+' JST':'';
+        })();
+      </script>
+      <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+// PWA: manifest & apple-touch-icon injected in <head>
+
+const LS={progress:'codingo_progress',settings:'codingo_settings',history:'codingo_history',words:'codingo_words',tickets:'codingo_tickets'};
+
+// 語彙
+const WORDS_DEFAULT=[
+  {id:"commit_001i",w:"commit",jp:"コミットする",num:1,ph:"kəˈmɪt",ex:"Run git commit to save your changes.",exJp:"git commitで変更を記録する。"},
+  {id:"push_002i",w:"push",jp:"プッシュする",num:2,ph:"pʊʃ",ex:"Push your branch to the remote repository.",exJp:"ブランチをリモートにプッシュする。"},
+  {id:"pull_003i",w:"pull",jp:"プルする",num:3,ph:"pʊl",ex:"Pull the latest changes before you start.",exJp:"作業前に最新の変更をプルする。"},
+  {id:"merge_004i",w:"merge",jp:"マージする",num:4,ph:"mɜːrdʒ",ex:"Merge the feature branch into main.",exJp:"featureブランチをmainにマージする。"},
+  {id:"branch_005i",w:"branch",jp:"ブランチ",num:5,ph:"bræntʃ",ex:"Create a new branch for each feature.",exJp:"機能ごとに新しいブランチを切る。"},
+  {id:"diff_006i",w:"diff",jp:"差分",num:6,ph:"dɪf",ex:"Check the diff before committing.",exJp:"コミット前に差分を確認する。"},
+  {id:"deploy_007i",w:"deploy",jp:"デプロイする",num:7,ph:"dɪˈplɔɪ",ex:"Deploy the app to GitHub Pages.",exJp:"アプリをGitHub Pagesにデプロイする。"},
+  {id:"debug_008i",w:"debug",jp:"デバッグする",num:8,ph:"diːˈbʌg",ex:"Open the console to debug the error.",exJp:"コンソールを開いてエラーをデバッグする。"},
+  {id:"refactor_009i",w:"refactor",jp:"リファクタリングする",num:9,ph:"riːˈfæktər",ex:"Refactor the code without changing behavior.",exJp:"動作を変えずにコードをリファクタリングする。"},
+  {id:"cache_010i",w:"cache",jp:"キャッシュ",num:10,ph:"kæʃ",ex:"The browser cached the old version of the file.",exJp:"ブラウザが古いバージョンのファイルをキャッシュした。"},
+  {id:"fetch_011i",w:"fetch",jp:"フェッチする",num:11,ph:"fɛtʃ",ex:"Fetch the latest data from the API.",exJp:"APIから最新データをフェッチする。"},
+  {id:"hook_012i",w:"hook",jp:"フック",num:12,ph:"hʊk",ex:"The pre-commit hook failed.",exJp:"pre-commitフックが失敗した。"},
+  {id:"fallback_013i",w:"fallback",jp:"フォールバック",num:13,ph:"ˈfɔːlbæk",ex:"Return the cached version as a fallback.",exJp:"フォールバックとしてキャッシュ版を返す。"},
+  {id:"schema_014i",w:"schema",jp:"スキーマ",num:14,ph:"ˈskiːmə",ex:"Define the schema for the word object.",exJp:"単語オブジェクトのスキーマを定義する。"},
+  {id:"override_015i",w:"override",jp:"上書きする",num:15,ph:"ˌoʊvərˈraɪd",ex:"The new setting overrides the default value.",exJp:"新しい設定がデフォルト値を上書きする。"},
+  {id:"initialize_016i",w:"initialize",jp:"初期化する",num:16,ph:"ɪˈnɪʃəˌlaɪz",ex:"Initialize the app on page load.",exJp:"ページ読み込み時にアプリを初期化する。"},
+  {id:"render_017i",w:"render",jp:"描画する",num:17,ph:"ˈrɛndər",ex:"Call render() to update the screen.",exJp:"render()を呼んで画面を更新する。"},
+  {id:"callback_018i",w:"callback",jp:"コールバック",num:18,ph:"ˈkɔːlbæk",ex:"Pass a callback to handle the result.",exJp:"結果を処理するコールバックを渡す。"},
+  {id:"async_019i",w:"async",jp:"非同期の",num:19,ph:"ˈeɪsɪŋk",ex:"Use async/await for asynchronous operations.",exJp:"非同期処理にはasync/awaitを使う。"},
+  {id:"await_020i",w:"await",jp:"待機する",num:20,ph:"əˈweɪt",ex:"Await the promise before proceeding.",exJp:"Promiseの完了をawaitしてから次へ進む。"},
+  {id:"resolve_021i",w:"resolve",jp:"解決する",num:21,ph:"rɪˈzɑːlv",ex:"The promise resolves with the response.",exJp:"Promiseがレスポンスをもってresolveされる。"},
+  {id:"reject_022i",w:"reject",jp:"拒否する",num:22,ph:"rɪˈdʒɛkt",ex:"The fetch rejects when the network fails.",exJp:"ネットワーク障害時にfetchがrejectされる。"},
+  {id:"scope_023i",w:"scope",jp:"スコープ",num:23,ph:"skoʊp",ex:"The variable is out of scope here.",exJp:"この変数はここではスコープ外になる。"},
+  {id:"register_024i",w:"register",jp:"登録する",num:24,ph:"ˈrɛdʒɪstər",ex:"Register the Service Worker on page load.",exJp:"ページ読み込み時にService Workerを登録する。"},
+  {id:"inline_025i",w:"inline",jp:"インラインの",num:25,ph:"ˈɪnlaɪn",ex:"All CSS and JS are inlined in the HTML file.",exJp:"CSSとJSはすべてHTMLファイルにインラインで書かれている。"},
+  {id:"prefix_026i",w:"prefix",jp:"プレフィックス",num:26,ph:"ˈpriːfɪks",ex:"Add a prefix to avoid key collisions.",exJp:"キーの衝突を避けるためプレフィックスを付ける。"},
+  {id:"truncate_027i",w:"truncate",jp:"切り捨てる",num:27,ph:"ˈtrʌŋkeɪt",ex:"Truncate the history array at 400 entries.",exJp:"historyの配列を400件で切り捨てる。"},
+  {id:"stale_028i",w:"stale",jp:"古い(期限切れの)",num:28,ph:"steɪl",ex:"The browser served a stale cached file.",exJp:"ブラウザが古いキャッシュファイルを返した。"},
+  {id:"revalidate_029i",w:"revalidate",jp:"再検証する",num:29,ph:"riːˈvælɪˌdeɪt",ex:"Revalidate the cache in the background.",exJp:"バックグラウンドでキャッシュを再検証する。"},
+  {id:"propagate_030i",w:"propagate",jp:"伝播させる",num:30,ph:"ˈprɒpəˌgeɪt",ex:"Propagate the fix to all four apps.",exJp:"修正を4本のアプリすべてに伝播させる。"}
+];
+function loadWords(){try{const s=localStorage.getItem(LS.words);return s?JSON.parse(s):WORDS_DEFAULT;}catch(e){return WORDS_DEFAULT;}}
+function saveWords(a){localStorage.setItem(LS.words,JSON.stringify(a));}
+function makeId(w){return w.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,40)+'_'+Date.now().toString(36).slice(-4);}
+let WORDS=loadWords();
+
+// 設定
+function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'co',fontSizes:{global:'medium'},autoSpeak:'off'};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
+function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
+function applyAppTitle(name){
+  document.getElementById('appTitleLabel').textContent=name;
+  document.getElementById('pageTitle').textContent=name;
+  const pwa=document.getElementById('pwaTitle');if(pwa)pwa.setAttribute('content',name);
+}
+function saveAppName(v){
+  const prefix=(v.trim()||'co').replace(/dingo$/i,'');
+  saveSetting('appName',prefix);
+  applyAppTitle(prefix+'dingo');
+}
+function setFontSizeScope(scope,fs,btn){
+  const s=loadSettings();
+  if(!s.fontSizes)s.fontSizes={};
+  s.fontSizes[scope]=fs;
+  localStorage.setItem(LS.settings,JSON.stringify(s));
+  applyFontSizes(s.fontSizes);
+  // ボタンのactive更新
+  document.querySelectorAll(`[data-scope="${scope}"]`).forEach(b=>b.classList.toggle('active',b.dataset.fs===fs));
+}
+function applyFontSizes(sizes){
+  if(!sizes)sizes={};
+  const global=sizes.global||'medium';
+  document.body.classList.remove('global-small','global-medium','global-large','global-lock',
+    'card-small','card-large','choice-small','choice-large','wl-small','wl-large','other-small','other-large');
+  if(global==='small'){document.body.classList.add('global-small','global-lock');}
+  else if(global==='large'){document.body.classList.add('global-large','global-lock');}
+  else if(global==='medium'){document.body.classList.add('global-medium','global-lock');}
+  else{
+    if(sizes.card==='small')document.body.classList.add('card-small');
+    if(sizes.card==='large')document.body.classList.add('card-large');
+    if(sizes.choice==='small')document.body.classList.add('choice-small');
+    if(sizes.choice==='large')document.body.classList.add('choice-large');
+    if(sizes.wl==='small')document.body.classList.add('wl-small');
+    if(sizes.wl==='large')document.body.classList.add('wl-large');
+    if(sizes.other==='small')document.body.classList.add('other-small');
+    if(sizes.other==='large')document.body.classList.add('other-large');
+  }
+}
+
+// ユーティリティ
+function localDateStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function loadProgress(){try{return JSON.parse(localStorage.getItem(LS.progress))||{};}catch(e){return {};}}
+function saveProgress(p){localStorage.setItem(LS.progress,JSON.stringify(p));}
+function loadHistory(){try{return JSON.parse(localStorage.getItem(LS.history))||[];}catch(e){return [];}}
+function addHistory(e){const h=loadHistory();h.push(e);localStorage.setItem(LS.history,JSON.stringify(h.slice(-400)));}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function getMastery(id,p){return(p[id]&&p[id].correct)||0;}
+function getStatus(id,p){const m=getMastery(id,p);if(m>=5)return'master';if(m>=1)return'learning';return'new';}
+function calcSessionSize(){return parseInt(loadSettings().sessionSize)||20;}
+function recordResult(q,isCorrect,prog){
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isCorrect){prog[q.id].correct++;}
+  else{if(prog[q.id].correct>=5)prog[q.id].correct=3;prog[q.id].wrong++;}
+  prog[q.id].lastSeen=localDateStr();
+  saveProgress(prog);
+}
+
+// ストリーク
+function getStreak(){
+  const studyDates=new Set(loadHistory().map(e=>e.date));
+  const td=loadTicketData();
+  const usedDates=new Set(td.usedDates||[]);
+  // 学習日＋チケット使用日の両方を有効な日として扱う
+  const allDates=new Set([...studyDates,...usedDates]);
+  const today=localDateStr();
+  const c=new Date();c.setHours(0,0,0,0);
+  // 今日未学習かつ未チケットなら昨日から遡る
+  if(!allDates.has(today))c.setDate(c.getDate()-1);
+  let s=0;
+  for(let i=0;i<366;i++){
+    const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
+    if(allDates.has(ds)){
+      if(studyDates.has(ds))s++;
+      c.setDate(c.getDate()-1);
+    }else break;
+  }
+  return s;
+}
+
+// 特別休暇チケット
+function getTotalStudyDays(){return new Set(loadHistory().map(e=>e.date)).size;}
+function loadTicketData(){
+  try{
+    const d=JSON.parse(localStorage.getItem(LS.tickets))||{used:0,lastUsedDate:null,usedDates:[]};
+    if(!d.usedDates)d.usedDates=[];
+    return d;
+  }catch(e){return{used:0,lastUsedDate:null,usedDates:[]};}
+}function saveTicketData(d){localStorage.setItem(LS.tickets,JSON.stringify(d));}
+function calcTotalTickets(){return Math.floor(getTotalStudyDays()/3);}
+function calcRemainingTickets(){return Math.max(0,calcTotalTickets()-loadTicketData().used);}
+
+function checkAndUseTicket(){
+  const studyDates=new Set(loadHistory().map(e=>e.date));
+  const td=loadTicketData();
+  if(!td.usedDates)td.usedDates=[];
+  const allDates=new Set([...studyDates,...td.usedDates]);
+
+  const totalTickets=calcTotalTickets();
+  let localUsed=td.used;
+  let changed=false;
+  const c=new Date();c.setHours(0,0,0,0);c.setDate(c.getDate()-1);
+
+  for(let i=0;i<30;i++){
+    const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
+
+    if(studyDates.has(ds)){
+      // 実際に学習した日に到達 → ここで終了（これより前は触らない）
+      break;
+    }
+
+    if(allDates.has(ds)){
+      // チケット使用済みの日 → スキップして前へ
+      c.setDate(c.getDate()-1);
+      continue;
+    }
+
+    // 穴を発見 → チケットで埋める
+    const remaining=Math.max(0,totalTickets-localUsed);
+    if(remaining>0){
+      localUsed++;
+      td.used=localUsed;
+      if(!td.usedDates.includes(ds))td.usedDates.push(ds);
+      allDates.add(ds);
+      td.lastUsedDate=ds;
+      changed=true;
+      c.setDate(c.getDate()-1);
+    }else{
+      break;
+    }
+  }
+  if(changed)saveTicketData(td);
+  return changed;
+}
+
+function getTicketDisplay(){
+  const today=localDateStr();
+  const dates=new Set(loadHistory().map(e=>e.date));
+  const td=loadTicketData();
+  // 今日チケット使用中（休んでいる）→ 実数表示
+  if(td.lastUsedDate===today&&!dates.has(today))return `${calcRemainingTickets()}枚`;
+  // それ以外（学習済み or まだ休んでいない）→ ?枚
+  return '？枚';
+}
+
+function showTicketBanner(){
+  const banner=document.getElementById('ticketBanner');
+  const td=loadTicketData();
+  if(td.lastUsedDate===localDateStr()){
+    banner.style.display='flex';
+    document.getElementById('ticketTitle').textContent='🎟️ 特別休暇チケット使用！ストリーク継続中';
+    document.getElementById('ticketSub').textContent=`残り${calcRemainingTickets()}枚 ／ 再開することに意義がある 🌱`;
+  }else{banner.style.display='none';}
+}
+
+// デッキ構築
+function buildSessionDeck(prog){
+  const goal=calcSessionSize();
+  const excl=new Set(Object.keys(prog).filter(id=>prog[id]&&prog[id].excluded));
+  const sorted=[...WORDS].filter(w=>!excl.has(w.id)).sort((a,b)=>a.num-b.num);
+  const early=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=1&&m<=2;});
+  const late=sorted.filter(w=>{const m=getMastery(w.id,prog);return m>=3&&m<=4;});
+  const nw=sorted.filter(w=>getStatus(w.id,prog)==='new');
+  const master=sorted.filter(w=>getStatus(w.id,prog)==='master');
+  // 割合計算（1枚未満になるカテゴリは省略）
+  const nN=Math.round(goal*0.5);
+  const nE=Math.round(goal*0.3);
+  const nL=Math.round(goal*0.1);
+  const nM=Math.round(goal*0.1);
+  let deck=[];
+  if(nN>=1)deck.push(...nw.slice(0,nN));
+  if(nE>=1)deck.push(...early.slice(0,nE));
+  if(nL>=1)deck.push(...late.slice(0,nL));
+  if(nM>=1)deck.push(...shuffle(master).slice(0,nM));
+  // 足りない場合は新語→学習中の順で補充
+  if(deck.length<goal){
+    const used=new Set(deck.map(w=>w.id));
+    const fill=[...nw,...early,...late].filter(w=>!used.has(w.id));
+    deck.push(...fill.slice(0,goal-deck.length));
+  }
+  if(!deck.length)deck=sorted.slice(0,goal);
+  return shuffle(deck).slice(0,goal);
+}
+
+// Phrase of the Day
+function renderPhraseOfDay(random=false){
+  if(!WORDS.length){document.getElementById('phraseWord').textContent='add words';document.getElementById('phraseJpWord').textContent='and expressions';['phraseEx','phraseExJp'].forEach(id=>{document.getElementById(id).textContent='';document.getElementById(id).style.display='none';});return;}
+  const w=random?WORDS[Math.floor(Math.random()*WORDS.length)]:WORDS[(()=>{const t=new Date();return(t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate())%WORDS.length;})()];
+  document.getElementById('phraseWord').textContent=w.w||'—';
+  document.getElementById('phraseJpWord').textContent=w.jp||'';
+  document.getElementById('phraseEx').textContent=w.ex||'';
+  document.getElementById('phraseEx').style.display=w.ex?'':'none';
+  document.getElementById('phraseExJp').textContent=w.exJp||'';
+  document.getElementById('phraseExJp').style.display=w.exJp?'':'none';
+  document.getElementById('phraseSpeakBtn')._word=w.w;
+}
+function speakPhrase(){speakEn(document.getElementById('phraseSpeakBtn')._word||'');}
+
+// TTS
+let _ttsTimeout=null;
+function speakEn(text){
+  if(!text||typeof speechSynthesis==='undefined')return;
+  if(_ttsTimeout){clearTimeout(_ttsTimeout);}
+  speechSynthesis.cancel();
+  const doSpeak=()=>{
+    // C: 直前のキャンセルが完了していない場合に再キャンセル
+    if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';u.rate=0.85;u.pitch=1;u.volume=1;
+    const voices=speechSynthesis.getVoices();
+    const v=voices.find(v=>v.lang==='en-US'&&v.name.includes('Samantha'))
+      ||voices.find(v=>v.lang==='en-US')
+      ||voices.find(v=>v.lang.startsWith('en'))
+      ||voices[0];
+    if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  };
+  // cancel後に少し待ってからspeak（Android対策）
+  _ttsTimeout=setTimeout(()=>{
+    const voices=speechSynthesis.getVoices();
+    if(voices.length>0){doSpeak();}
+    else{
+      // A: addEventListener を使い、初期化側の onvoiceschanged を上書きしない
+      const onVC=()=>{speechSynthesis.removeEventListener('voiceschanged',onVC);doSpeak();};
+      speechSynthesis.addEventListener('voiceschanged',onVC);
+    }
+  },100);
+}
+
+// ダッシュボード
+function updateDash(){
+  const prog=loadProgress();const s=loadSettings();const total=WORDS.length;
+  // チケットデータの整合性チェック：学習開始日より前のusedDatesを除去
+  const td=loadTicketData();
+  if(td.usedDates&&td.usedDates.length>0){
+    const studyDates=new Set(loadHistory().map(e=>e.date));
+    const minStudyDate=loadHistory().reduce((min,e)=>e.date<min?e.date:min,'9999-99-99');
+    const cleaned=td.usedDates.filter(d=>d>=minStudyDate);
+    if(cleaned.length!==td.usedDates.length){
+      td.usedDates=cleaned;td.used=cleaned.length;
+      saveTicketData(td);
+    }
+  }
+  const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
+  const lc=WORDS.filter(w=>getStatus(w.id,prog)==='learning').length;
+  const nc=WORDS.filter(w=>getStatus(w.id,prog)==='new').length;
+  checkAndUseTicket();
+  document.getElementById('masteredCount').textContent=mc;
+  document.getElementById('streakCount').textContent=getStreak();
+  document.getElementById('progMasterNum').textContent=`${mc}/${total}`;
+  document.getElementById('progLearningNum').textContent=`${lc}/${total}`;
+  document.getElementById('progNewNum').textContent=`${nc}/${total}`;
+  document.getElementById('progMasterFill').style.width=`${total?Math.round(mc/total*100):0}%`;
+  document.getElementById('progLearningFill').style.width=`${total?Math.round(lc/total*100):0}%`;
+  document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
+  document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
+  applyAppTitle((s.appName||'co').replace(/dingo$/i,'')+'dingo');
+  showTicketBanner();
+  renderPhraseOfDay();
+}
+
+// セッション
+let sessionMode='flash';
+function selectMode(mode,btn){sessionMode=mode;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+let sessionDeck=[],sessionCurrent=0,sessionOk=0,sessionNg=0,sessionMissed=[];
+let isFlipped=false;
+let quizCurrent=0,quizOk=0,quizNg=0,quizMissed=[],quizAnswered=false;
+
+function startSession(){
+  if(!WORDS.length){showToast('⚠️ 語彙を追加してください');return;}
+  const prog=loadProgress();
+  sessionDeck=buildSessionDeck(prog);
+  sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
+  if(sessionMode==='quiz'){
+    quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];
+    document.getElementById('quizTitle').textContent=`• QUIZ（${sessionDeck.length}問）•`;
+    showScreen('quizScreen');renderQuiz();
+  }else if(sessionMode==='spell'){
+    spellCurrent=0;spellOk=0;spellNg=0;spellMissed=[];spellAnswered=false;
+    document.getElementById('spellTitle').textContent=`• SPELLING（${sessionDeck.length}問）•`;
+    showScreen('spellScreen');renderSpell();
+  }else{
+    document.getElementById('fcTitle').textContent=`• FLASH CARDS（${sessionDeck.length}枚）•`;
+    showScreen('fcScreen');renderFC();
+  }
+}
+
+function makePips(cid,mastery,isBack){
+  const c=document.getElementById(cid);if(!c)return;c.innerHTML='';
+  for(let i=0;i<5;i++){const d=document.createElement('div');d.className='pip'+(i<mastery?' filled':'')+(isBack?'':' pip-front');c.appendChild(d);}
+}
+
+function renderFC(){
+  isFlipped=false;
+  document.getElementById('cardInner').classList.remove('flipped');
+  document.getElementById('flipBtn').classList.remove('hidden');
+  document.getElementById('actionRow').classList.remove('show');
+  const q=sessionDeck[sessionCurrent];
+  const prog=loadProgress();const mastery=getMastery(q.id,prog);
+  makePips('masteryPips',mastery,false);makePips('masteryPipsBack',mastery,true);
+  const s=loadSettings();const isJp2En=s.direction==='jp2en';
+  // 前面
+  document.getElementById('fcTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
+  document.getElementById('wordEn').textContent=isJp2En?q.jp:q.w;
+  document.getElementById('wordPh').textContent=isJp2En?'':(q.ph||'');
+  // en2jpかつautoSpeakオンのとき、前面表示と同時に読み上げ（B: 500ms）
+  if(!isJp2En && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 500);
+  }
+  const sb=document.getElementById('speakBtn');
+  sb.style.display=isJp2En?'none':'flex';sb.classList.remove('speaking');sb.textContent='🔊';sb._word=q.w;
+  const sbBack=document.getElementById('speakBtnBack');
+  sbBack.style.display=isJp2En?'flex':'none';sbBack.classList.remove('speaking');sbBack.textContent='🔊';sbBack._word=q.w;
+  // 前面例文
+  const ft=isJp2En?(q.exJp||''):(q.ex||'');
+  document.getElementById('wordEx').textContent=ft;
+  document.getElementById('exAreaFront').style.display=ft?'':'none';
+  // 裏面
+  document.getElementById('wordJp').textContent=isJp2En?q.w:q.jp;
+  document.getElementById('wordPhBack').textContent=q.ph||'';
+  document.getElementById('wordExBack').textContent=q.ex||'';
+  document.getElementById('wordExJpBack').textContent=q.exJp||'';
+  document.getElementById('masteryLabel').textContent=mastery>=3?'✅ 定着済み':mastery>=1?`学習中（${mastery}回正解）`:'初めて見る単語';
+  const total=sessionDeck.length;
+  document.getElementById('fcProgFill').style.width=`${Math.round(sessionCurrent/total*100)}%`;
+  document.getElementById('fcProgLabel').textContent=`${sessionCurrent+1}/${total}`;
+  document.getElementById('fcProgRemain').textContent=`残り${total-sessionCurrent}枚`;
+  document.getElementById('fcOkCount').textContent=sessionOk;
+  document.getElementById('fcNgCount').textContent=sessionNg;
+}
+
+function speakWordBack(e){
+  e.stopPropagation();
+  const btn=document.getElementById('speakBtnBack');
+  btn.classList.add('speaking');btn.textContent='🔉';
+  speakEn(btn._word||'');
+  setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
+}
+function flipCard(){
+  if(isFlipped)return;isFlipped=true;
+  document.getElementById('cardInner').classList.add('flipped');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('actionRow').classList.add('show');
+  // jp2enかつautoSpeakオンのとき、裏面（英語面）が出たタイミングで読み上げ（B: 500ms）
+  const s=loadSettings();
+  if(s.direction==='jp2en' && s.autoSpeak==='on'){
+    const word=document.getElementById('speakBtnBack')._word||'';
+    setTimeout(()=>speakEn(word), 500);
+  }
+}
+
+function judge(isOk){
+  if(!isFlipped)return;
+  const q=sessionDeck[sessionCurrent];const prog=loadProgress();
+  if(isOk){sessionOk++;}else{sessionNg++;sessionMissed.push(q);}
+  recordResult(q,isOk,prog);sessionCurrent++;
+  document.getElementById('cardInner').classList.remove('flipped');document.getElementById('actionRow').classList.remove('show');
+  if(sessionCurrent>=sessionDeck.length){setTimeout(()=>finishSession(),450);}else{setTimeout(()=>renderFC(),450);}
+}
+
+function speakWord(e){
+  e.stopPropagation();
+  const btn=document.getElementById('speakBtn');
+  btn.classList.add('speaking');btn.textContent='🔉';
+  speakEn(btn._word||'');
+  setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
+}
+
+// クイズ
+function renderQuiz(){
+  quizAnswered=false;
+  const container=document.getElementById('quizChoices');
+  container.innerHTML='';
+  container.style.visibility='visible'; // 必ずvisibleに戻す
+  const q=sessionDeck[quizCurrent];const prog=loadProgress();const mastery=getMastery(q.id,prog);
+  makePips('quizMasteryPips',mastery,false);
+  const s=loadSettings();const isJp2En=s.direction==='jp2en';
+  document.getElementById('quizTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
+  document.getElementById('quizWordEn').textContent=isJp2En?q.jp:q.w;
+  document.getElementById('quizWordPh').textContent=isJp2En?'':(q.ph||'');
+  const qsb=document.getElementById('quizSpeakBtn');qsb.style.display=isJp2En?'none':'block';qsb._word=q.w;
+  // en2jpかつautoSpeakオンのとき読み上げ（B: 500ms）
+  if(!isJp2En && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 500);
+  }
+  const ft=isJp2En?(q.exJp||''):(q.ex||'');
+  const qa=document.getElementById('quizExArea');
+  if(ft){document.getElementById('quizWordEx').textContent=ft;qa.style.visibility='';qa.style.display='';}
+  else{qa.style.display='';qa.style.visibility='hidden';}
+  const total=sessionDeck.length;
+  document.getElementById('quizProgFill').style.width=`${Math.round(quizCurrent/total*100)}%`;
+  document.getElementById('quizProgLabel').textContent=`${quizCurrent+1}/${total}`;
+  document.getElementById('quizProgRemain').textContent=`残り${total-quizCurrent}問`;
+  document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
+  // ダミー候補：WORDS → sessionDeck の順で補充
+  const pool=[];const usedIds=new Set([q.id]);
+  shuffle(WORDS.filter(w=>w.id!==q.id)).forEach(w=>{if(pool.length<3&&!usedIds.has(w.id)){pool.push(w);usedIds.add(w.id);}});
+  if(pool.length<3){shuffle(sessionDeck.filter(w=>w.id!==q.id)).forEach(w=>{if(pool.length<3&&!usedIds.has(w.id)){pool.push(w);usedIds.add(w.id);}});}
+  const choices=shuffle([q,...pool]);
+  choices.forEach((c,i)=>{
+    const btn=document.createElement('button');btn.className='quiz-choice';
+    btn.innerHTML=`<span class="quiz-num">${i+1}</span>${isJp2En?c.w:c.jp}`;
+    btn.onclick=()=>selectQuizAnswer(btn,c.id===q.id,q);container.appendChild(btn);
+  });
+}
+
+function selectQuizAnswer(btn,isCorrect,q){
+  if(quizAnswered)return;quizAnswered=true;
+  const prog=loadProgress();const s=loadSettings();
+  if(isCorrect){quizOk++;}else{quizNg++;quizMissed.push(q);}
+  recordResult(q,isCorrect,prog);
+  document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){
+    const ans=s.direction==='jp2en'?q.w:q.jp;
+    document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});
+  }
+  document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
+  // jp2enかつautoSpeakオンのとき、回答後に正解（英語）を読み上げ
+  if(s.direction==='jp2en' && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 200);
+  }
+  setTimeout(()=>{
+    quizCurrent++;
+    if(quizCurrent>=sessionDeck.length){
+      addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
+      sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
+    }else{
+      renderQuiz(); // visibility はrenderQuiz冒頭で復元
+    }
+  },600);
+}
+function speakQuizWord(){speakEn(document.getElementById('quizSpeakBtn')._word||'');}
+
+// ══ レポート ══
+function getWeekDates(weekOffset=0){
+  const today=new Date();today.setHours(0,0,0,0);
+  const dow=today.getDay();
+  const monday=new Date(today);monday.setDate(today.getDate()-(dow===0?6:dow-1)+weekOffset*7);
+  const days=[];
+  for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);days.push(d);}
+  return days;
+}
+function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function renderReport(weekOffset=0){
+  const body=document.getElementById('reportBody');
+  const hist=loadHistory();
+  const prog=loadProgress();
+  const days=getWeekDates(weekOffset);
+  const todayStr=localDateStr();
+  const weekStrs=new Set(days.map(d=>dateStr(d)));
+  const weekHist=hist.filter(e=>weekStrs.has(e.date));
+  // 集計
+  const studiedDays=new Set(weekHist.map(e=>e.date)).size;
+  const totalSessions=weekHist.length;
+  const totalCorrect=weekHist.reduce((s,e)=>s+(e.correct||0),0);
+  const masteredCount=WORDS.filter(w=>getMastery(w.id,prog)>=5).length;
+  // 曜日別正解数
+  const DAY_LABELS=['月','火','水','木','金','土','日'];
+  const dayData=days.map(d=>{
+    const ds=dateStr(d);
+    const entries=weekHist.filter(e=>e.date===ds);
+    return entries.reduce((s,e)=>s+(e.correct||0),0);
+  });
+  const maxVal=Math.max(...dayData,1);
+  const fmt=d=>(d.getMonth()+1)+'/'+d.getDate();
+  const isThisWeek=weekOffset===0;
+  const isLastWeek=weekOffset===-1;
+  const weekLabel=isThisWeek?'今週':isLastWeek?'先週':fmt(days[0])+' 〜 '+fmt(days[6]);
+  const canPrev=weekOffset>=-1;  // 先々週(-2)まで遡れる。それ以上は表示しない
+  const canNext=weekOffset<0;
+
+  // 棒グラフHTML
+  let barsHtml='';
+  for(let i=0;i<7;i++){
+    const val=dayData[i];
+    const ds=dateStr(days[i]);
+    const isToday=ds===todayStr;
+    const pct=Math.round(val/maxVal*100);
+    const fillClass='report-bar-fill'+(isToday?' today':'')+(val===0?' empty':'');
+    const fillH=val>0?pct+'%':'0%';
+    const minH=val>0?'4px':'0';
+    const labelColor=isToday?'var(--accent-cobalt)':'var(--ink-lt)';
+    barsHtml+='<div class="report-bar-wrap">';
+    barsHtml+='<div class="report-bar-val">'+(val||'')+'</div>';
+    barsHtml+='<div class="report-bar-bg"><div class="'+fillClass+'" style="height:'+fillH+';min-height:'+minH+';"></div></div>';
+    barsHtml+='<div class="report-bar-label" style="color:'+labelColor+';">'+DAY_LABELS[i]+'</div>';
+    barsHtml+='</div>';
+  }
+
+  const prevColor=canPrev?'var(--ink-mid)':'var(--ink-lt)';
+  const nextColor=canNext?'var(--ink-mid)':'var(--ink-lt)';
+  const prevCursor=canPrev?'pointer':'default';
+  const nextCursor=canNext?'pointer':'default';
+  const noData=studiedDays===0?'<div class="report-no-data">この週の学習データはありません</div>':'';
+
+  body.innerHTML=
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'+
+      '<button onclick="renderReport('+(weekOffset-1)+')" style="padding:6px 14px;border:2px solid var(--border);border-radius:99px;background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:900;color:'+prevColor+';cursor:'+prevCursor+';">← 前週</button>'+
+      '<div style="font-size:var(--fs-other);font-weight:900;color:var(--ink);">'+weekLabel+'</div>'+
+      '<button onclick="renderReport('+(weekOffset+1)+')" style="padding:6px 14px;border:2px solid var(--border);border-radius:99px;background:var(--card);font-family:inherit;font-size:calc(var(--fs-other) - 2px);font-weight:900;color:'+nextColor+';cursor:'+nextCursor+';">次週 →</button>'+
+    '</div>'+
+    '<div class="report-stat-row">'+
+      '<div class="report-stat hl"><div class="report-stat-label">DAYS STUDIED</div><div class="report-stat-val">'+studiedDays+'<span style="font-size:calc(var(--fs-other) - 2px);opacity:0.7;"> / 7</span></div><div class="report-stat-unit">日 学習</div></div>'+
+      '<div class="report-stat hl4"><div class="report-stat-label">SESSIONS</div><div class="report-stat-val">'+totalSessions+'</div><div class="report-stat-unit">セッション</div></div>'+
+      '<div class="report-stat hl3"><div class="report-stat-label">CORRECT</div><div class="report-stat-val">'+totalCorrect+'</div><div class="report-stat-unit">語 正解</div></div>'+
+      '<div class="report-stat hl2"><div class="report-stat-label">MASTERED</div><div class="report-stat-val">'+masteredCount+'</div><div class="report-stat-unit">語 定着済み（累計）</div></div>'+
+    '</div>'+
+    '<div class="report-graph-card">'+
+      '<div class="report-graph-title">正解数 / 曜日</div>'+
+      '<div class="report-bars">'+barsHtml+'</div>'+
+    '</div>'+
+    noData;
+}
+let spellCurrent=0,spellOk=0,spellNg=0,spellMissed=[],spellAnswered=false;
+
+function speakSpell(){
+  const btn=document.getElementById('spellSpeakBtn');
+  btn.classList.add('speaking');btn.textContent='🔉';
+  speakEn(btn._word||'');
+  setTimeout(()=>{btn.classList.remove('speaking');btn.textContent='🔊';},1500);
+}
+function normalizeSpell(s){
+  return s.toLowerCase().replace(/[\s\-''\u2019]/g,'');
+}
+
+function renderSpell(){
+  spellAnswered=false;
+  const inp=document.getElementById('spellInput');
+  inp.value='';inp.className='';inp.disabled=false;
+  document.getElementById('spellFeedback').textContent='';
+  document.getElementById('spellFeedback').style.color='';
+  document.getElementById('spellSkipBtn').style.display='none';
+
+  const q=sessionDeck[spellCurrent];
+  const prog=loadProgress();
+  const mastery=getMastery(q.id,prog);
+  makePips('spellMasteryPips',mastery,false);
+
+  document.getElementById('spellWordJp').textContent=q.jp||'—';
+  const spellBtn=document.getElementById('spellSpeakBtn');
+  spellBtn._word=q.w;spellBtn.classList.remove('speaking');spellBtn.textContent='🔊';
+  const exJp=q.exJp||'';
+  const ea=document.getElementById('spellExArea');
+  if(exJp){document.getElementById('spellWordExJp').textContent=exJp;ea.style.display='';}
+  else{ea.style.display='none';}
+
+  const total=sessionDeck.length;
+  document.getElementById('spellProgFill').style.width=`${Math.round(spellCurrent/total*100)}%`;
+  document.getElementById('spellProgLabel').textContent=`${spellCurrent+1}/${total}`;
+  document.getElementById('spellProgRemain').textContent=`残り${total-spellCurrent}問`;
+  document.getElementById('spellOkCount').textContent=spellOk;
+  document.getElementById('spellNgCount').textContent=spellNg;
+
+  setTimeout(()=>inp.focus(),100);
+}
+
+function submitSpelling(){
+  if(spellAnswered)return;
+  const inp=document.getElementById('spellInput');
+  const q=sessionDeck[spellCurrent];
+  const answer=inp.value.trim();
+  if(!answer)return;
+
+  const isCorrect=normalizeSpell(answer)===normalizeSpell(q.w);
+  spellAnswered=true;
+  const prog=loadProgress();
+  if(isCorrect){spellOk++;}else{spellNg++;spellMissed.push(q);}
+  recordResult(q,isCorrect,prog);
+  if(isCorrect){
+    inp.className='correct';
+    document.getElementById('spellFeedback').textContent='✓ 正解！';
+    document.getElementById('spellFeedback').style.color='var(--correct)';
+    document.getElementById('spellOkCount').textContent=spellOk;
+    setTimeout(()=>advanceSpell(),700);
+  }else{
+    inp.className='wrong';
+    inp.disabled=true;
+    document.getElementById('spellFeedback').textContent=`✕ 正解：${q.w}`;
+    document.getElementById('spellFeedback').style.color='var(--wrong)';
+    document.getElementById('spellSkipBtn').style.display='block';
+    document.getElementById('spellNgCount').textContent=spellNg;
+  }
+}
+
+function skipSpelling(){
+  advanceSpell();
+}
+
+function advanceSpell(){
+  spellCurrent++;
+  if(spellCurrent>=sessionDeck.length){
+    addHistory({date:localDateStr(),correct:spellOk,wrong:spellNg,total:sessionDeck.length});
+    sessionOk=spellOk;sessionNg=spellNg;sessionMissed=spellMissed;
+    finishSession();
+  }else{
+    renderSpell();
+  }
+}
+
+// 終了
+function finishSession(){
+  if(sessionMode==='flash')addHistory({date:localDateStr(),correct:sessionOk,wrong:sessionNg,total:sessionDeck.length});
+  // セッション完了時にもチケット処理（今日の記録追加後に実行）
+  checkAndUseTicket();
+  const total=sessionDeck.length;const pct=total>0?sessionOk/total:0;
+  let emoji,title,sub;
+  if(pct>=0.85){emoji='🌟';title='すばらしい！';sub='定着が進んできた。この調子で続けよう。';}
+  else if(pct>=0.6){emoji='📚';title='いい調子！';sub='✕の単語を重点的に回していくと一気に伸びる。';}
+  else{emoji='🌱';title='お疲れさま！';sub='知らない単語に出会えた分だけ前進してる。毎日少しずつ！';}
+  document.getElementById('sessEmoji').textContent=emoji;document.getElementById('sessTitle').textContent=title;
+  document.getElementById('sessScoreNum').textContent=sessionOk;document.getElementById('sessScoreTot').textContent=total;
+  document.getElementById('sessSub').textContent=sub;
+  const ml=document.getElementById('missedList');ml.innerHTML='';const rb=document.getElementById('retryBtn');
+  if(!sessionMissed.length){document.getElementById('missedBox').style.display='none';rb.style.display='none';}
+  else{
+    document.getElementById('missedBox').style.display='block';rb.style.display='block';
+    rb.textContent=`✕ の${sessionMissed.length}語をもう一度`;
+    sessionMissed.forEach(w=>{const d=document.createElement('div');d.className='missed-item';d.innerHTML=`<div class="missed-en">${w.w}</div><div class="missed-jp">${w.jp}</div>`;ml.appendChild(d);});
+  }
+  showScreen('sessResultScreen');
+}
+
+function retryMissed(){
+  sessionDeck=shuffle([...sessionMissed]);sessionCurrent=0;sessionOk=0;sessionNg=0;sessionMissed=[];
+  quizCurrent=0;quizOk=0;quizNg=0;quizMissed=[];
+  if(sessionMode==='quiz'&&WORDS.length>=4){document.getElementById('quizTitle').textContent=`• RETRY QUIZ（${sessionDeck.length}問）•`;showScreen('quizScreen');renderQuiz();}
+  else if(sessionMode==='spell'){
+    spellCurrent=0;spellOk=0;spellNg=0;spellMissed=[];spellAnswered=false;
+    document.getElementById('spellTitle').textContent=`• RETRY SPELLING（${sessionDeck.length}問）•`;
+    showScreen('spellScreen');renderSpell();
+  }else{document.getElementById('fcTitle').textContent=`• RETRY（${sessionDeck.length}枚）•`;showScreen('fcScreen');renderFC();}
+}
+
+function copyResult(){
+  const prog=loadProgress();const total=WORDS.length;const mc=WORDS.filter(w=>getStatus(w.id,prog)==='master').length;
+  const date=new Date().toLocaleDateString('ja-JP',{month:'long',day:'numeric'});
+  const missed=sessionMissed.map(w=>`  ✕ ${w.w}（${w.jp}）`).join('\n');
+  const appName=(loadSettings().appName||'co').replace(/dingo$/i,'')+'dingo';
+  const text=`【${appName} 学習報告】${date}\n─────────────────\nセッション結果：${sessionOk}/${sessionDeck.length}（正答率${sessionDeck.length?Math.round(sessionOk/sessionDeck.length*100):0}%）\n○ わかった：${sessionOk}語　✕ もう一度：${sessionNg}語\n─────────────────\n全体進捗：${mc}/${total}語 定着済み（${total?Math.round(mc/total*100):0}%）\n連続学習：${getStreak()}日🔥\n${sessionMissed.length?'\n要復習の単語：\n'+missed:'\n全問正解！完璧です🎉'}`;
+  navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
+  showToast('📋 コピーしました！');
+}
+function goToDash(){updateDash();showScreen('dashScreen');}
+function endSession(){if(confirm('セッションを終了しますか？'))goToDash();}
+
+// 単語一覧
+let currentFilter='all';
+function renderWordList(){
+  const prog=loadProgress();
+  const query=(document.getElementById('wlSearchInput')?.value||'').trim().toLowerCase();
+  // クリアボタンの表示制御
+  const clearBtn=document.getElementById('wlSearchClear');
+  if(clearBtn)clearBtn.style.display=query?'block':'none';
+
+  const filtered=WORDS.filter(w=>{
+    // ステータスフィルター
+    if(currentFilter==='excluded')return prog[w.id]&&prog[w.id].excluded;
+    if(currentFilter!=='all'){
+      if(prog[w.id]&&prog[w.id].excluded)return false;
+      if(getStatus(w.id,prog)!==currentFilter)return false;
+    }
+    // 検索フィルター（部分一致、英語・日本語・例文）
+    if(query){
+      const inEn=(w.w||'').toLowerCase().includes(query);
+      const inJp=(w.jp||'').toLowerCase().includes(query);
+      const inEx=(w.ex||'').toLowerCase().includes(query);
+      const inExJp=(w.exJp||'').toLowerCase().includes(query);
+      return inEn||inJp||inEx||inExJp;
+    }
+    return true;
+  });
+  const sort=(document.getElementById('wlSortSelect')?.value)||'num-asc';
+  const statusOrder={master:0,learning:1,new:2};
+  const sorted=[...filtered].sort((a,b)=>{
+    if(sort==='num-asc')return (a.num||0)-(b.num||0);
+    if(sort==='num-desc')return (b.num||0)-(a.num||0);
+    if(sort==='status-master'){
+      const sa=statusOrder[getStatus(a.id,prog)]??3;
+      const sb=statusOrder[getStatus(b.id,prog)]??3;
+      return sa!==sb?sa-sb:(a.num||0)-(b.num||0);
+    }
+    if(sort==='status-new'){
+      const sa=statusOrder[getStatus(a.id,prog)]??3;
+      const sb=statusOrder[getStatus(b.id,prog)]??3;
+      return sa!==sb?sb-sa:(a.num||0)-(b.num||0);
+    }
+    return 0;
+  });
+  const container=document.getElementById('wordListItems');container.innerHTML='';
+  if(!sorted.length){
+    const empty=document.createElement('div');
+    empty.style.cssText='text-align:center;padding:32px 0;color:var(--ink-lt);font-size:var(--fs-other);font-weight:700;';
+    empty.textContent=query?`「${query}」に一致する単語はありません`:'単語がありません';
+    container.appendChild(empty);
+    return;
+  }
+  sorted.forEach(w=>{
+    const st=getStatus(w.id,prog);const m=getMastery(w.id,prog);const isEx=prog[w.id]&&prog[w.id].excluded;
+    const dc=st==='master'?'wi-master':st==='learning'?'wi-learning':'wi-new';
+    const meta=st==='master'?'定着済み':st==='learning'?`${m}回正解`:'未学習';
+    const div=document.createElement('div');div.className='word-item'+(isEx?' excluded':'');
+    const exHtml=w.ex?`<div class="wi-ex">${w.ex}${w.exJp?`<div class="wi-ex-jp">${w.exJp}</div>`:''}</div>`:'';
+    div.innerHTML=`<div class="wi-dot ${dc}"></div><div class="wi-body"><div class="wi-en">${w.w}</div><div class="wi-jp">${w.jp}</div>${exHtml}</div><div class="wi-btns"><button class="wi-speak" onclick="speakEn('${w.w.replace(/'/g,"\\'")}')">🔊</button><button class="${isEx?'wi-toggle':'wi-toggle on'}" onclick="toggleExclude('${w.id}',this)">${isEx?'✕':'✓'}</button></div>`;
+    container.appendChild(div);
+  });
+}
+function filterWords(btn){document.querySelectorAll('.wl-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFilter=btn.dataset.filter;renderWordList();}
+function clearSearch(){const inp=document.getElementById('wlSearchInput');if(inp){inp.value='';inp.focus();}renderWordList();}
+
+// 設定UI
+function loadSettingsUI(){
+  const s=loadSettings();
+  document.getElementById('sessionSizeInput').value=s.sessionSize;
+  document.getElementById('directionInput').value=s.direction;
+  document.getElementById('dailyGoalInput').value=s.dailyGoal||10;
+  document.getElementById('autoSpeakInput').value=s.autoSpeak||'off';
+  document.getElementById('appNameInput').value=(s.appName||'').replace(/dingo$/i,'');
+  const sizes=s.fontSizes||{global:'medium'};
+  // 各スコープのactiveボタンを反映
+  ['global','card','choice','wl','other'].forEach(scope=>{
+    const val=sizes[scope]||'medium';
+    document.querySelectorAll(`[data-scope="${scope}"]`).forEach(b=>b.classList.toggle('active',b.dataset.fs===val));
+  });
+  document.getElementById('ticketCountDisplay').textContent=getTicketDisplay();
+  updateWordsCountLabel();
+}
+function updateWordsCountLabel(){const el=document.getElementById('wordsCountLabel');if(el)el.textContent=WORDS.length?`現在 ${WORDS.length}語 登録中`:'（語彙未登録）';}
+
+function importWords(mode){
+  const raw=document.getElementById('wordsImportTextarea').value.trim();
+  if(!raw){showToast('⚠️ テキストが空です');return;}
+  let incoming;try{incoming=JSON.parse(raw);}catch(e){showToast('⚠️ JSONの形式が正しくありません');return;}
+  if(!Array.isArray(incoming)||!incoming.length){showToast('⚠️ 配列形式で入力してください');return;}
+  if(mode==='reset'){
+    openModal('replaceConfirmModal');
+    document.getElementById('replaceConfirmModal')._pendingData=incoming;
+    return;
+  }
+  _doImportWords(incoming,'add');
+}
+function confirmReplace(){
+  const modal=document.getElementById('replaceConfirmModal');
+  const incoming=modal._pendingData;
+  closeModal('replaceConfirmModal');
+  if(incoming)_doImportWords(incoming,'reset');
+}
+function _doImportWords(incoming,mode){
+  const existing=mode==='reset'?[]:[...WORDS];
+  const maxNum=existing.length?Math.max(...existing.map(w=>w.num||0)):0;
+  let added=0,updated=0;
+  incoming.forEach(item=>{
+    if(!item.w||!item.jp)return;
+    const ei=existing.findIndex(w=>w.w===item.w);
+    const id=ei>=0?existing[ei].id:makeId(item.w);
+    const entry={id,w:item.w,jp:item.jp,num:0,ph:item.ph||'',ex:item.ex||'',exJp:item.exJp||''};
+    if(ei>=0){entry.num=existing[ei].num;existing[ei]=entry;updated++;}else{entry.num=maxNum+added+1;existing.push(entry);added++;}
+  });
+  saveWords(existing);WORDS=existing;
+  document.getElementById('wordsImportTextarea').value='';
+  document.getElementById('wordsCountLabel').textContent=`✓ 合計${WORDS.length}語（追加${added}語/更新${updated}語）`;
+  updateDash();renderWordList();
+  showToast(`✅ ${added?added+'語追加 ':''}${updated?updated+'語更新':''}`);
+}
+
+function exportData(){
+  try{
+    const data={progress:localStorage.getItem(LS.progress),history:localStorage.getItem(LS.history),settings:localStorage.getItem(LS.settings),words:localStorage.getItem(LS.words),tickets:localStorage.getItem(LS.tickets)};
+    const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`codingo_backup_${localDateStr()}.json`;a.click();URL.revokeObjectURL(url);
+    showToast('📦 バックアップを保存しました');
+  }catch(e){showToast('⚠️ エクスポートに失敗しました');}
+}
+function importData(){document.getElementById('importTextarea').value='';openModal('importModal');}
+function doImport(){
+  const text=document.getElementById('importTextarea').value.trim();
+  if(!text){showToast('⚠️ テキストが空です');return;}
+  try{
+    const data=JSON.parse(text);
+    if(data.progress)localStorage.setItem(LS.progress,data.progress);
+    if(data.history)localStorage.setItem(LS.history,data.history);
+    if(data.settings)localStorage.setItem(LS.settings,data.settings);
+    if(data.words){localStorage.setItem(LS.words,data.words);WORDS=loadWords();}
+    if(data.tickets)localStorage.setItem(LS.tickets,data.tickets);
+    closeModal('importModal');showToast('✅ データを復元しました！');updateDash();renderWordList();
+  }catch(e){showToast('⚠️ データの読み込みに失敗しました');}
+}
+
+// ナビ
+const tabScreens={dash:'dashScreen',report:'reportScreen',wordlist:'wordlistScreen',settings:'settingsScreen'};
+function showTab(tab,btn){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick')===btn.getAttribute('onclick')));
+  showScreen(tabScreens[tab]);
+  if(tab==='wordlist'){const inp=document.getElementById('wlSearchInput');if(inp)inp.value='';renderWordList();}
+  if(tab==='settings')loadSettingsUI();
+  if(tab==='dash')updateDash();
+  if(tab==='report')renderReport(0);
+}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function openModal(id){document.getElementById(id).classList.remove('hidden');}
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+function confirmReset(){openModal('resetModal');}
+function doReset(){localStorage.removeItem(LS.progress);localStorage.removeItem(LS.history);closeModal('resetModal');showToast('リセットしました');updateDash();renderWordList();}
+function toggleExclude(id,btn){
+  const prog=loadProgress();if(!prog[id])prog[id]={correct:0,wrong:0,lastSeen:null};
+  prog[id].excluded=!prog[id].excluded;saveProgress(prog);
+  const ex=prog[id].excluded;btn.classList.toggle('on',!ex);btn.textContent=ex?'✕':'✓';
+  btn.closest('.word-item').classList.toggle('excluded',ex);showToast(ex?'除外しました':'除外を解除しました');
+}
+
+// 初期化
+try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
+(function(){const s=loadSettings();applyFontSizes(s.fontSizes);})();
+updateDash();
+// Service Worker 登録（iOS PWA キャッシュ対策）
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw-codingo.js',{scope:'./codingo.html'})
+      .catch(e=>console.warn('SW:',e));
+  });
+}
+</script>
+
+<!-- 全置換確認 -->
+<div class="modal-overlay hidden" id="replaceConfirmModal">
+  <div class="modal-box">
+    <div class="modal-title">⚠️ 語彙を全置換</div>
+    <div class="modal-sub">現在の全語彙（学習進捗を除く）が削除され、新しいデータに置き換えられます。この操作は取り消せません。</div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('replaceConfirmModal')">キャンセル</button>
+      <button class="modal-btn modal-btn-danger" onclick="confirmReplace()">全置換する</button>
+    </div>
+  </div>
+</div>
+
+<!-- インポートモーダル -->
+<div class="modal-overlay hidden" id="importModal">
+  <div class="modal-box">
+    <div class="modal-title">データを読み込む</div>
+    <div class="modal-sub">バックアップのテキストを貼り付けてください</div>
+    <textarea class="modal-textarea" id="importTextarea" placeholder="ここに貼り付け..."></textarea>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('importModal')">キャンセル</button>
+      <button class="modal-btn modal-btn-primary" onclick="doImport()">読み込む</button>
+    </div>
+  </div>
+</div>
+
+<!-- リセット確認 -->
+<div class="modal-overlay hidden" id="resetModal">
+  <div class="modal-box">
+    <div class="modal-title">⚠️ 全データをリセット</div>
+    <div class="modal-sub">全ての学習データが削除されます。この操作は取り消せません。</div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('resetModal')">キャンセル</button>
+      <button class="modal-btn modal-btn-danger" onclick="doReset()">リセットする</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
