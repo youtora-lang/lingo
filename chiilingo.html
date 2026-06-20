@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- SYNC_BASE: 2026-06-20 21:38 -->
+<!-- SYNC_BASE: 2026-06-20 22:13 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1581,6 +1581,13 @@ function toggleExclude(id,btn){
 try{speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}catch(e){}
 (function(){const s=loadSettings();applyFontSizes(s.fontSizes);})();
 updateDash();
+// Service Worker 登録（iOS PWA キャッシュ対策）
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw-chiilingo.js',{scope:'./chiilingo.html'})
+      .catch(e=>console.warn('SW:',e));
+  });
+}
 </script>
 
 <!-- 全置換確認 -->
