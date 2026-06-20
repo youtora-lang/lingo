@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- SYNC_BASE: 2026-06-20 23:57 -->
+<!-- SYNC_BASE: 2026-06-21 00:24 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -759,32 +759,32 @@ const LS={progress:'codingo_progress',settings:'codingo_settings',history:'codin
 
 // 語彙
 const WORDS_DEFAULT=[
-  {id:"commit_001i",w:"commit",jp:"コミットする",num:1,ph:"kəˈmɪt",ex:"Run git commit to save your changes.",exJp:"git commitで変更を記録する。"},
-  {id:"push_002i",w:"push",jp:"プッシュする",num:2,ph:"pʊʃ",ex:"Push your branch to the remote repository.",exJp:"ブランチをリモートにプッシュする。"},
-  {id:"pull_003i",w:"pull",jp:"プルする",num:3,ph:"pʊl",ex:"Pull the latest changes before you start.",exJp:"作業前に最新の変更をプルする。"},
-  {id:"merge_004i",w:"merge",jp:"マージする",num:4,ph:"mɜːrdʒ",ex:"Merge the feature branch into main.",exJp:"featureブランチをmainにマージする。"},
-  {id:"branch_005i",w:"branch",jp:"ブランチ",num:5,ph:"bræntʃ",ex:"Create a new branch for each feature.",exJp:"機能ごとに新しいブランチを切る。"},
+  {id:"commit_001i",w:"commit",jp:"確定保存する",num:1,ph:"kəˈmɪt",ex:"Run git commit to save your changes.",exJp:"git commitで変更を記録する。"},
+  {id:"push_002i",w:"push",jp:"送信する",num:2,ph:"pʊʃ",ex:"Push your branch to the remote repository.",exJp:"ブランチをリモートにプッシュする。"},
+  {id:"pull_003i",w:"pull",jp:"取り込む",num:3,ph:"pʊl",ex:"Pull the latest changes before you start.",exJp:"作業前に最新の変更をプルする。"},
+  {id:"merge_004i",w:"merge",jp:"統合する",num:4,ph:"mɜːrdʒ",ex:"Merge the feature branch into main.",exJp:"featureブランチをmainにマージする。"},
+  {id:"branch_005i",w:"branch",jp:"分岐",num:5,ph:"bræntʃ",ex:"Create a new branch for each feature.",exJp:"機能ごとに新しいブランチを切る。"},
   {id:"diff_006i",w:"diff",jp:"差分",num:6,ph:"dɪf",ex:"Check the diff before committing.",exJp:"コミット前に差分を確認する。"},
-  {id:"deploy_007i",w:"deploy",jp:"デプロイする",num:7,ph:"dɪˈplɔɪ",ex:"Deploy the app to GitHub Pages.",exJp:"アプリをGitHub Pagesにデプロイする。"},
-  {id:"debug_008i",w:"debug",jp:"デバッグする",num:8,ph:"diːˈbʌg",ex:"Open the console to debug the error.",exJp:"コンソールを開いてエラーをデバッグする。"},
-  {id:"refactor_009i",w:"refactor",jp:"リファクタリングする",num:9,ph:"riːˈfæktər",ex:"Refactor the code without changing behavior.",exJp:"動作を変えずにコードをリファクタリングする。"},
-  {id:"cache_010i",w:"cache",jp:"キャッシュ",num:10,ph:"kæʃ",ex:"The browser cached the old version of the file.",exJp:"ブラウザが古いバージョンのファイルをキャッシュした。"},
-  {id:"fetch_011i",w:"fetch",jp:"フェッチする",num:11,ph:"fɛtʃ",ex:"Fetch the latest data from the API.",exJp:"APIから最新データをフェッチする。"},
-  {id:"hook_012i",w:"hook",jp:"フック",num:12,ph:"hʊk",ex:"The pre-commit hook failed.",exJp:"pre-commitフックが失敗した。"},
-  {id:"fallback_013i",w:"fallback",jp:"フォールバック",num:13,ph:"ˈfɔːlbæk",ex:"Return the cached version as a fallback.",exJp:"フォールバックとしてキャッシュ版を返す。"},
-  {id:"schema_014i",w:"schema",jp:"スキーマ",num:14,ph:"ˈskiːmə",ex:"Define the schema for the word object.",exJp:"単語オブジェクトのスキーマを定義する。"},
+  {id:"deploy_007i",w:"deploy",jp:"公開する",num:7,ph:"dɪˈplɔɪ",ex:"Deploy the app to GitHub Pages.",exJp:"アプリをGitHub Pagesにデプロイする。"},
+  {id:"debug_008i",w:"debug",jp:"不具合を直す",num:8,ph:"diːˈbʌg",ex:"Open the console to debug the error.",exJp:"コンソールを開いてエラーをデバッグする。"},
+  {id:"refactor_009i",w:"refactor",jp:"整え直す",num:9,ph:"riːˈfæktər",ex:"Refactor the code without changing behavior.",exJp:"動作を変えずにコードをリファクタリングする。"},
+  {id:"cache_010i",w:"cache",jp:"一時保存",num:10,ph:"kæʃ",ex:"The browser cached the old version of the file.",exJp:"ブラウザが古いバージョンのファイルをキャッシュした。"},
+  {id:"fetch_011i",w:"fetch",jp:"取得する",num:11,ph:"fɛtʃ",ex:"Fetch the latest data from the API.",exJp:"APIから最新データをフェッチする。"},
+  {id:"hook_012i",w:"hook",jp:"割り込み処理",num:12,ph:"hʊk",ex:"The pre-commit hook failed.",exJp:"pre-commitフックが失敗した。"},
+  {id:"fallback_013i",w:"fallback",jp:"代替手段",num:13,ph:"ˈfɔːlbæk",ex:"Return the cached version as a fallback.",exJp:"フォールバックとしてキャッシュ版を返す。"},
+  {id:"schema_014i",w:"schema",jp:"構造定義",num:14,ph:"ˈskiːmə",ex:"Define the schema for the word object.",exJp:"単語オブジェクトのスキーマを定義する。"},
   {id:"override_015i",w:"override",jp:"上書きする",num:15,ph:"ˌoʊvərˈraɪd",ex:"The new setting overrides the default value.",exJp:"新しい設定がデフォルト値を上書きする。"},
   {id:"initialize_016i",w:"initialize",jp:"初期化する",num:16,ph:"ɪˈnɪʃəˌlaɪz",ex:"Initialize the app on page load.",exJp:"ページ読み込み時にアプリを初期化する。"},
   {id:"render_017i",w:"render",jp:"描画する",num:17,ph:"ˈrɛndər",ex:"Call render() to update the screen.",exJp:"render()を呼んで画面を更新する。"},
-  {id:"callback_018i",w:"callback",jp:"コールバック",num:18,ph:"ˈkɔːlbæk",ex:"Pass a callback to handle the result.",exJp:"結果を処理するコールバックを渡す。"},
+  {id:"callback_018i",w:"callback",jp:"呼び出し関数",num:18,ph:"ˈkɔːlbæk",ex:"Pass a callback to handle the result.",exJp:"結果を処理するコールバックを渡す。"},
   {id:"async_019i",w:"async",jp:"非同期の",num:19,ph:"ˈeɪsɪŋk",ex:"Use async/await for asynchronous operations.",exJp:"非同期処理にはasync/awaitを使う。"},
   {id:"await_020i",w:"await",jp:"待機する",num:20,ph:"əˈweɪt",ex:"Await the promise before proceeding.",exJp:"Promiseの完了をawaitしてから次へ進む。"},
   {id:"resolve_021i",w:"resolve",jp:"解決する",num:21,ph:"rɪˈzɑːlv",ex:"The promise resolves with the response.",exJp:"Promiseがレスポンスをもってresolveされる。"},
   {id:"reject_022i",w:"reject",jp:"拒否する",num:22,ph:"rɪˈdʒɛkt",ex:"The fetch rejects when the network fails.",exJp:"ネットワーク障害時にfetchがrejectされる。"},
-  {id:"scope_023i",w:"scope",jp:"スコープ",num:23,ph:"skoʊp",ex:"The variable is out of scope here.",exJp:"この変数はここではスコープ外になる。"},
+  {id:"scope_023i",w:"scope",jp:"範囲",num:23,ph:"skoʊp",ex:"The variable is out of scope here.",exJp:"この変数はここではスコープ外になる。"},
   {id:"register_024i",w:"register",jp:"登録する",num:24,ph:"ˈrɛdʒɪstər",ex:"Register the Service Worker on page load.",exJp:"ページ読み込み時にService Workerを登録する。"},
-  {id:"inline_025i",w:"inline",jp:"インラインの",num:25,ph:"ˈɪnlaɪn",ex:"All CSS and JS are inlined in the HTML file.",exJp:"CSSとJSはすべてHTMLファイルにインラインで書かれている。"},
-  {id:"prefix_026i",w:"prefix",jp:"プレフィックス",num:26,ph:"ˈpriːfɪks",ex:"Add a prefix to avoid key collisions.",exJp:"キーの衝突を避けるためプレフィックスを付ける。"},
+  {id:"inline_025i",w:"inline",jp:"埋め込みの",num:25,ph:"ˈɪnlaɪn",ex:"All CSS and JS are inlined in the HTML file.",exJp:"CSSとJSはすべてHTMLファイルにインラインで書かれている。"},
+  {id:"prefix_026i",w:"prefix",jp:"接頭辞",num:26,ph:"ˈpriːfɪks",ex:"Add a prefix to avoid key collisions.",exJp:"キーの衝突を避けるためプレフィックスを付ける。"},
   {id:"truncate_027i",w:"truncate",jp:"切り捨てる",num:27,ph:"ˈtrʌŋkeɪt",ex:"Truncate the history array at 400 entries.",exJp:"historyの配列を400件で切り捨てる。"},
   {id:"stale_028i",w:"stale",jp:"古い(期限切れの)",num:28,ph:"steɪl",ex:"The browser served a stale cached file.",exJp:"ブラウザが古いキャッシュファイルを返した。"},
   {id:"revalidate_029i",w:"revalidate",jp:"再検証する",num:29,ph:"riːˈvælɪˌdeɪt",ex:"Revalidate the cache in the background.",exJp:"バックグラウンドでキャッシュを再検証する。"},
