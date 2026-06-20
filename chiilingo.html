@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- SYNC_BASE: 2026-06-20 16:14 -->
+<!-- SYNC_BASE: 2026-06-20 21:38 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -738,7 +738,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
     <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--ink-lt);font-weight:700;letter-spacing:0.06em;">
       <span id="lastUpdatedLabel"></span><br>
-      <script>document.getElementById('lastUpdatedLabel').textContent='Last updated: 2026-05-26 19:48 JST';</script>
+      <script>
+        (function(){
+          const m=document.documentElement.innerHTML.match(/<!--\s*SYNC_BASE:\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*-->/);
+          document.getElementById('lastUpdatedLabel').textContent=m?'Last updated: '+m[1]+' JST':'';
+        })();
+      </script>
       <span style="margin-top:4px;display:inline-block;">© 2026 CHIi. All rights reserved.</span>
     </div>
   </div>
