@@ -762,14 +762,15 @@ let WORDS=loadWords();
 // 設定
 function loadSettings(){const d={sessionSize:20,direction:'en2jp',dailyGoal:10,appName:'chii',fontSizes:{global:'medium'},autoSpeak:'off'};try{return Object.assign({},d,JSON.parse(localStorage.getItem(LS.settings)));}catch(e){return d;}}
 function saveSetting(k,v){const s=loadSettings();s[k]=v;localStorage.setItem(LS.settings,JSON.stringify(s));}
+function applyAppTitle(name){
+  document.getElementById('appTitleLabel').textContent=name;
+  document.getElementById('pageTitle').textContent=name;
+  const pwa=document.getElementById('pwaTitle');if(pwa)pwa.setAttribute('content',name);
+}
 function saveAppName(v){
   const prefix=(v.trim()||'chii').replace(/lingo$/i,'');
-  const n=prefix+'lingo';
   saveSetting('appName',prefix);
-  document.getElementById('appTitleLabel').textContent=n;
-  document.getElementById('pageTitle').textContent=n;
-  const pwa=document.getElementById('pwaTitle');
-  if(pwa)pwa.setAttribute('content',n);
+  applyAppTitle(prefix+'lingo');
 }
 function setFontSizeScope(scope,fs,btn){
   const s=loadSettings();
@@ -810,6 +811,13 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function getMastery(id,p){return(p[id]&&p[id].correct)||0;}
 function getStatus(id,p){const m=getMastery(id,p);if(m>=5)return'master';if(m>=1)return'learning';return'new';}
 function calcSessionSize(){return parseInt(loadSettings().sessionSize)||20;}
+function recordResult(q,isCorrect,prog){
+  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
+  if(isCorrect){prog[q.id].correct++;}
+  else{if(prog[q.id].correct>=5)prog[q.id].correct=3;prog[q.id].wrong++;}
+  prog[q.id].lastSeen=localDateStr();
+  saveProgress(prog);
+}
 
 // ストリーク
 function getStreak(){
@@ -958,6 +966,8 @@ function speakEn(text){
   if(_ttsTimeout){clearTimeout(_ttsTimeout);}
   speechSynthesis.cancel();
   const doSpeak=()=>{
+    // C: 直前のキャンセルが完了していない場合に再キャンセル
+    if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(text);
     u.lang='en-US';u.rate=0.85;u.pitch=1;u.volume=1;
     const voices=speechSynthesis.getVoices();
@@ -973,10 +983,9 @@ function speakEn(text){
     const voices=speechSynthesis.getVoices();
     if(voices.length>0){doSpeak();}
     else{
-      speechSynthesis.onvoiceschanged=()=>{
-        speechSynthesis.onvoiceschanged=null;
-        doSpeak();
-      };
+      // A: addEventListener を使い、初期化側の onvoiceschanged を上書きしない
+      const onVC=()=>{speechSynthesis.removeEventListener('voiceschanged',onVC);doSpeak();};
+      speechSynthesis.addEventListener('voiceschanged',onVC);
     }
   },100);
 }
@@ -1007,12 +1016,8 @@ function updateDash(){
   document.getElementById('progMasterFill').style.width=`${total?Math.round(mc/total*100):0}%`;
   document.getElementById('progLearningFill').style.width=`${total?Math.round(lc/total*100):0}%`;
   document.getElementById('progNewFill').style.width=`${total?Math.round(nc/total*100):100}%`;
-  const sz=calcSessionSize();const goal=s.dailyGoal||10;
   document.getElementById('startSessionBtn').textContent=`セッションを始める →`;
-  const rawName=s.appName||'chii';
-  const appName=rawName.replace(/lingo$/i,'')+'lingo';
-  document.getElementById('appTitleLabel').textContent=appName;
-  document.getElementById('pageTitle').textContent=appName;
+  applyAppTitle((s.appName||'chii').replace(/lingo$/i,'')+'lingo');
   showTicketBanner();
   renderPhraseOfDay();
 }
@@ -1056,14 +1061,14 @@ function renderFC(){
   const q=sessionDeck[sessionCurrent];
   const prog=loadProgress();const mastery=getMastery(q.id,prog);
   makePips('masteryPips',mastery,false);makePips('masteryPipsBack',mastery,true);
-  const isJp2En=loadSettings().direction==='jp2en';
+  const s=loadSettings();const isJp2En=s.direction==='jp2en';
   // 前面
   document.getElementById('fcTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
   document.getElementById('wordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('wordPh').textContent=isJp2En?'':(q.ph||'');
-  // en2jpかつautoSpeakオンのとき、前面表示と同時に読み上げ
-  if(!isJp2En && loadSettings().autoSpeak==='on'){
-    setTimeout(()=>speakEn(q.w), 300);
+  // en2jpかつautoSpeakオンのとき、前面表示と同時に読み上げ（B: 500ms）
+  if(!isJp2En && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 500);
   }
   const sb=document.getElementById('speakBtn');
   sb.style.display=isJp2En?'none':'flex';sb.classList.remove('speaking');sb.textContent='🔊';sb._word=q.w;
@@ -1099,24 +1104,19 @@ function flipCard(){
   document.getElementById('cardInner').classList.add('flipped');
   document.getElementById('flipBtn').classList.add('hidden');
   document.getElementById('actionRow').classList.add('show');
-  // jp2enかつautoSpeakオンのとき、裏面（英語面）が出たタイミングで読み上げ
+  // jp2enかつautoSpeakオンのとき、裏面（英語面）が出たタイミングで読み上げ（B: 500ms）
   const s=loadSettings();
   if(s.direction==='jp2en' && s.autoSpeak==='on'){
     const word=document.getElementById('speakBtnBack')._word||'';
-    setTimeout(()=>speakEn(word), 300);
+    setTimeout(()=>speakEn(word), 500);
   }
 }
 
 function judge(isOk){
   if(!isFlipped)return;
   const q=sessionDeck[sessionCurrent];const prog=loadProgress();
-  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
-  if(isOk){prog[q.id].correct++;sessionOk++;}else{
-    // 定着済み（5回以上）が不正解なら3回正解にリセット
-    if(prog[q.id].correct>=5)prog[q.id].correct=3;
-    prog[q.id].wrong++;sessionNg++;sessionMissed.push(q);
-  }
-  prog[q.id].lastSeen=localDateStr();saveProgress(prog);sessionCurrent++;
+  if(isOk){sessionOk++;}else{sessionNg++;sessionMissed.push(q);}
+  recordResult(q,isOk,prog);sessionCurrent++;
   document.getElementById('cardInner').classList.remove('flipped');document.getElementById('actionRow').classList.remove('show');
   if(sessionCurrent>=sessionDeck.length){setTimeout(()=>finishSession(),450);}else{setTimeout(()=>renderFC(),450);}
 }
@@ -1137,14 +1137,14 @@ function renderQuiz(){
   container.style.visibility='visible'; // 必ずvisibleに戻す
   const q=sessionDeck[quizCurrent];const prog=loadProgress();const mastery=getMastery(q.id,prog);
   makePips('quizMasteryPips',mastery,false);
-  const isJp2En=loadSettings().direction==='jp2en';
+  const s=loadSettings();const isJp2En=s.direction==='jp2en';
   document.getElementById('quizTag').textContent=isJp2En?'日本語 → 英語':'英語 → 日本語';
   document.getElementById('quizWordEn').textContent=isJp2En?q.jp:q.w;
   document.getElementById('quizWordPh').textContent=isJp2En?'':(q.ph||'');
   const qsb=document.getElementById('quizSpeakBtn');qsb.style.display=isJp2En?'none':'block';qsb._word=q.w;
-  // en2jpかつautoSpeakオンのとき読み上げ
-  if(!isJp2En && loadSettings().autoSpeak==='on'){
-    setTimeout(()=>speakEn(q.w), 300);
+  // en2jpかつautoSpeakオンのとき読み上げ（B: 500ms）
+  if(!isJp2En && s.autoSpeak==='on'){
+    setTimeout(()=>speakEn(q.w), 500);
   }
   const ft=isJp2En?(q.exJp||''):(q.ex||'');
   const qa=document.getElementById('quizExArea');
@@ -1169,21 +1169,17 @@ function renderQuiz(){
 
 function selectQuizAnswer(btn,isCorrect,q){
   if(quizAnswered)return;quizAnswered=true;
-  const prog=loadProgress();if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
-  if(isCorrect){prog[q.id].correct++;quizOk++;}else{
-    if(prog[q.id].correct>=5)prog[q.id].correct=3;
-    prog[q.id].wrong++;quizNg++;quizMissed.push(q);
-  }
-  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
+  const prog=loadProgress();const s=loadSettings();
+  if(isCorrect){quizOk++;}else{quizNg++;quizMissed.push(q);}
+  recordResult(q,isCorrect,prog);
   document.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
   btn.classList.add(isCorrect?'correct':'wrong');
   if(!isCorrect){
-    const isJp2En=loadSettings().direction==='jp2en';const ans=isJp2En?q.w:q.jp;
+    const ans=s.direction==='jp2en'?q.w:q.jp;
     document.querySelectorAll('.quiz-choice').forEach(b=>{if(b.textContent.slice(1).trim()===ans)b.classList.add('correct');});
   }
   document.getElementById('quizOkCount').textContent=quizOk;document.getElementById('quizNgCount').textContent=quizNg;
   // jp2enかつautoSpeakオンのとき、回答後に正解（英語）を読み上げ
-  const s=loadSettings();
   if(s.direction==='jp2en' && s.autoSpeak==='on'){
     setTimeout(()=>speakEn(q.w), 200);
   }
@@ -1191,7 +1187,6 @@ function selectQuizAnswer(btn,isCorrect,q){
     quizCurrent++;
     if(quizCurrent>=sessionDeck.length){
       addHistory({date:localDateStr(),correct:quizOk,wrong:quizNg,total:sessionDeck.length});
-      checkAndUseTicket();
       sessionOk=quizOk;sessionNg=quizNg;sessionMissed=quizMissed;finishSession();
     }else{
       renderQuiz(); // visibility はrenderQuiz冒頭で復元
@@ -1235,7 +1230,7 @@ function renderReport(weekOffset=0){
   const isThisWeek=weekOffset===0;
   const isLastWeek=weekOffset===-1;
   const weekLabel=isThisWeek?'今週':isLastWeek?'先週':fmt(days[0])+' 〜 '+fmt(days[6]);
-  const canPrev=weekOffset>=-1;
+  const canPrev=weekOffset>=-1;  // 先々週(-2)まで遡れる。それ以上は表示しない
   const canNext=weekOffset<0;
 
   // 棒グラフHTML
@@ -1333,28 +1328,22 @@ function submitSpelling(){
   const isCorrect=normalizeSpell(answer)===normalizeSpell(q.w);
   spellAnswered=true;
   const prog=loadProgress();
-  if(!prog[q.id])prog[q.id]={correct:0,wrong:0,lastSeen:null};
-
+  if(isCorrect){spellOk++;}else{spellNg++;spellMissed.push(q);}
+  recordResult(q,isCorrect,prog);
   if(isCorrect){
-    prog[q.id].correct++;spellOk++;
     inp.className='correct';
     document.getElementById('spellFeedback').textContent='✓ 正解！';
     document.getElementById('spellFeedback').style.color='var(--correct)';
-    saveProgress(prog);
     document.getElementById('spellOkCount').textContent=spellOk;
     setTimeout(()=>advanceSpell(),700);
   }else{
-    if(prog[q.id].correct>=5)prog[q.id].correct=3;
-    prog[q.id].wrong++;spellNg++;spellMissed.push(q);
     inp.className='wrong';
     inp.disabled=true;
     document.getElementById('spellFeedback').textContent=`✕ 正解：${q.w}`;
     document.getElementById('spellFeedback').style.color='var(--wrong)';
     document.getElementById('spellSkipBtn').style.display='block';
-    saveProgress(prog);
     document.getElementById('spellNgCount').textContent=spellNg;
   }
-  prog[q.id].lastSeen=localDateStr();saveProgress(prog);
 }
 
 function skipSpelling(){
@@ -1365,7 +1354,6 @@ function advanceSpell(){
   spellCurrent++;
   if(spellCurrent>=sessionDeck.length){
     addHistory({date:localDateStr(),correct:spellOk,wrong:spellNg,total:sessionDeck.length});
-    checkAndUseTicket();
     sessionOk=spellOk;sessionNg=spellNg;sessionMissed=spellMissed;
     finishSession();
   }else{
@@ -1486,15 +1474,15 @@ function clearSearch(){const inp=document.getElementById('wlSearchInput');if(inp
 // 設定UI
 function loadSettingsUI(){
   const s=loadSettings();
-  if(s.sessionSize)document.getElementById('sessionSizeInput').value=s.sessionSize;
-  if(s.direction)document.getElementById('directionInput').value=s.direction;
+  document.getElementById('sessionSizeInput').value=s.sessionSize;
+  document.getElementById('directionInput').value=s.direction;
   document.getElementById('dailyGoalInput').value=s.dailyGoal||10;
   document.getElementById('autoSpeakInput').value=s.autoSpeak||'off';
-  if(s.appName)document.getElementById('appNameInput').value=s.appName.replace(/lingo$/i,'');
+  document.getElementById('appNameInput').value=(s.appName||'').replace(/lingo$/i,'');
   const sizes=s.fontSizes||{global:'medium'};
   // 各スコープのactiveボタンを反映
   ['global','card','choice','wl','other'].forEach(scope=>{
-    const val=sizes[scope]||(scope==='global'?'medium':'medium');
+    const val=sizes[scope]||'medium';
     document.querySelectorAll(`[data-scope="${scope}"]`).forEach(b=>b.classList.toggle('active',b.dataset.fs===val));
   });
   document.getElementById('ticketCountDisplay').textContent=getTicketDisplay();
@@ -1526,7 +1514,8 @@ function _doImportWords(incoming,mode){
   let added=0,updated=0;
   incoming.forEach(item=>{
     if(!item.w||!item.jp)return;
-    const id=makeId(item.w);const ei=existing.findIndex(w=>w.w===item.w);
+    const ei=existing.findIndex(w=>w.w===item.w);
+    const id=ei>=0?existing[ei].id:makeId(item.w);
     const entry={id,w:item.w,jp:item.jp,num:0,ph:item.ph||'',ex:item.ex||'',exJp:item.exJp||''};
     if(ei>=0){entry.num=existing[ei].num;existing[ei]=entry;updated++;}else{entry.num=maxNum+added+1;existing.push(entry);added++;}
   });
