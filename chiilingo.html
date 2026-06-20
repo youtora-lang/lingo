@@ -820,12 +820,15 @@ function getStreak(){
   const allDates=new Set([...studyDates,...usedDates]);
   const today=localDateStr();
   const c=new Date();c.setHours(0,0,0,0);
-  // 今日未学習なら昨日から遡る
+  // 今日未学習かつ未チケットなら昨日から遡る
   if(!allDates.has(today))c.setDate(c.getDate()-1);
   let s=0;
   for(let i=0;i<366;i++){
     const ds=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,'0')}-${String(c.getDate()).padStart(2,'0')}`;
-    if(allDates.has(ds)){s++;c.setDate(c.getDate()-1);}else break;
+    if(allDates.has(ds)){
+      if(studyDates.has(ds))s++;
+      c.setDate(c.getDate()-1);
+    }else break;
   }
   return s;
 }
