@@ -146,7 +146,8 @@ Before executing any hard-to-reverse operation — including file deletion, `git
 
 - 各HTMLファイルの冒頭付近に、以下の形式で最終同期時刻のコメントを置く:
   `<!-- SYNC_BASE: YYYY-MM-DD HH:MM -->`（24時間表記、分まで）
-- chiilingo を更新したら、chiilingo の SYNC_BASE をその更新時刻に書き換える。
+- **chiilingo.html に何らかの変更を加えてコミットする際は、内容の大小を問わず、
+  必ず SYNC_BASE コメントも現在時刻（JST）に更新してコミットに含める。**
 - 他アプリへ反映したら、そのアプリの SYNC_BASE を chiilingo と同じ値に揃える。
 - **合言葉「sync check」**: CAがこの言葉を打ったら、Claude Code は対象アプリ
   （chiilingo / michilingo / taelingo / chiilingojp / codingo）の SYNC_BASE を比較し、
