@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEP mini Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --font: 'M PLUS Rounded 1c', sans-serif;
+  --bg: #f5f0eb;
+  --card: #ffffff;
+  --border: #333;
+  --text: #333;
+  --mint: #78c8a8;
+  --mint-light: #d8f0e8;
+  --coral: #e87870;
+  --coral-light: #fce8e6;
+  --sky: #68b8e0;
+  --sky-light: #d8eef8;
+  --gold: #e8c040;
+  --gold-light: #f8f0cc;
+  --lavender: #b878d0;
+  --lavender-light: #ecdaf4;
+  --orange: #e89050;
+  --orange-light: #fcecd8;
+  --green: #5cb87a;
+  --green-light: #d6f0df;
+}
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+  position: relative;
+  overflow-x: hidden;
+}
+body::before {
+  content: "★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★";
+  position: fixed;
+  top: 10px; left: 0; right: 0;
+  text-align: center;
+  font-size: 11px;
+  color: #ccc;
+  letter-spacing: 18px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-wrap { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* --- Hero --- */
+.hero { text-align: center; margin-bottom: 20px; }
+.hero-badge {
+  display: inline-block; background: var(--coral); color: white;
+  border: 2.5px solid var(--border); border-radius: 99px;
+  padding: 4px 20px 5px; font-size: 11px; font-weight: 800;
+  letter-spacing: 2px; margin-bottom: 10px;
+}
+.hero h1 { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+.hero h1 span.accent { color: var(--coral); -webkit-text-stroke: 1.5px var(--border); paint-order: stroke fill; }
+.hero p { font-size: 12px; font-weight: 700; color: #888; line-height: 1.7; }
+
+/* --- Cards --- */
+.card {
+  background: var(--card); border: 2.5px solid var(--border);
+  border-radius: 20px; padding: 20px 22px;
+  margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.card-tag {
+  position: absolute; top: -1px; left: 18px; color: white;
+  border: 2px solid var(--border); border-top: none;
+  border-radius: 0 0 10px 10px; font-size: 10px; font-weight: 800;
+  padding: 3px 13px 4px; letter-spacing: 1px;
+}
+.card h2 {
+  font-size: 18px; font-weight: 800;
+  margin-bottom: 12px; margin-top: 8px; line-height: 1.4;
+  display: flex; align-items: center; gap: 8px;
+}
+.card h2 .dot {
+  width: 11px; height: 11px; border-radius: 99px;
+  border: 2px solid var(--border); display: inline-block; flex-shrink: 0;
+}
+.card.mint  .card-tag, .card.mint  .dot { background: var(--mint); }
+.card.sky   .card-tag, .card.sky   .dot { background: var(--sky); }
+.card.gold  .card-tag { background: var(--gold); color: #333; }
+.card.gold  .dot { background: var(--gold); }
+.card.lavender .card-tag, .card.lavender .dot { background: var(--lavender); }
+.card.orange .card-tag, .card.orange .dot { background: var(--orange); }
+.card.coral .card-tag, .card.coral .dot { background: var(--coral); }
+.card.green .card-tag, .card.green .dot { background: var(--green); }
+
+/* mode blocks */
+.mode-block {
+  border: 2px dashed var(--border); border-radius: 14px;
+  padding: 14px 16px; margin-bottom: 12px;
+}
+.mode-block:last-child { margin-bottom: 0; }
+.mode-label {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  border: 2px solid var(--border); border-radius: 99px;
+  padding: 3px 13px 4px; margin-bottom: 9px; color: white; letter-spacing: 1px;
+}
+.mode-block p { font-size: 14.5px; font-weight: 700; line-height: 1.85; color: #444; }
+.trigger {
+  display: inline-block; background: var(--gold-light);
+  border: 1.5px solid var(--gold); border-radius: 8px;
+  padding: 2px 9px 3px; font-size: 13px; font-weight: 800;
+  color: #987800; margin: 0 2px;
+}
+
+/* tip box */
+.tip-box {
+  background: var(--gold-light); border: 2px dashed var(--gold);
+  border-radius: 14px; padding: 12px 16px;
+  font-size: 13px; font-weight: 700; color: #7a6000; line-height: 1.85; margin-top: 12px;
+}
+.tip-box strong { color: #987800; font-weight: 800; }
+
+/* setup steps */
+.setup-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+.setup-step:last-child { margin-bottom: 0; }
+.setup-step-num {
+  width: 30px; height: 30px; border-radius: 99px;
+  background: var(--coral); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: white;
+  flex-shrink: 0; margin-top: 1px;
+}
+.setup-step-body { flex: 1; }
+.setup-step-title { font-size: 15.5px; font-weight: 800; margin-bottom: 4px; line-height: 1.45; }
+.setup-step-desc { font-size: 13.5px; font-weight: 700; color: #666; line-height: 1.9; }
+.setup-step-desc .hl {
+  display: inline-block; background: var(--coral-light);
+  border: 1px solid var(--coral); border-radius: 6px;
+  padding: 0 7px; color: var(--coral); font-weight: 800;
+}
+.setup-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #ddd 0, #ddd 6px, transparent 6px, transparent 12px);
+  margin: 14px 0;
+}
+
+/* prompt box */
+.prompt-box {
+  background: #1e1e2e; border: 2px solid var(--border);
+  border-radius: 14px; padding: 16px 18px;
+  font-family: monospace; font-size: 12px; line-height: 1.8;
+  color: #cdd6f4; white-space: pre-wrap; word-break: break-word;
+  max-height: 340px; overflow-y: auto; margin-top: 12px;
+}
+.copy-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 12px; width: 100%; padding: 13px 22px 14px;
+  border-radius: 99px; background: #1e1e2e; color: #cdd6f4;
+  border: 2.5px solid var(--border); font-family: var(--font);
+  font-size: 14.5px; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+  transition: background 0.15s, color 0.15s;
+}
+.copy-btn.copied { background: var(--mint); color: white; }
+
+/* app link */
+.app-link {
+  display: flex; align-items: center; gap: 14px;
+  background: white; border: 2px solid var(--border); border-radius: 16px;
+  padding: 14px 18px; margin-top: 4px; text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.12s; box-shadow: 3px 3px 0 var(--border);
+}
+.app-link:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--border); }
+.app-link .app-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.app-link .app-sub { font-size: 13px; font-weight: 700; color: #888; margin-top: 3px; }
+
+.footer { text-align: center; margin-top: 30px; font-size: 11.5px; font-weight: 700; color: #bbb; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">AEP MINI GUIDE</div>
+    <h1><span class="accent">AEP mini</span><br>セットアップガイド</h1>
+    <p>chiilingo への単語登録を、もっと素早く。<br>このガイドを読めば、今日から使えます。</p>
+  </div>
+
+  <!-- Overview -->
+  <div class="card mint">
+    <div class="card-tag">OVERVIEW</div>
+    <h2><span class="dot"></span>AEP mini とは？</h2>
+    <div class="mode-block" style="background: var(--mint-light); border-color: var(--mint);">
+      <p>AEP mini は、<strong>chiilingo への単語・フレーズ登録を素早く行うための補助ツール</strong>です。<br>
+      Claude.ai のプロジェクト機能を使い、思いついた単語をその場でカード化。<strong>「りんご」</strong>と打つだけで、chiilingo にそのまま貼り付けられる JSON をまとめて出力します。</p>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="card orange">
+    <div class="card-tag">HOW IT WORKS</div>
+    <h2><span class="dot"></span>2つのモード</h2>
+    <div class="mode-block">
+      <div class="mode-label" style="background: var(--orange);">MODE 1 — 登録単語確認モード</div>
+      <p>単語・フレーズを入力すると、意味・発音記号・例文・例文訳をカード表示します。<br>
+      同時に「未出力リスト」に貯めていきます。思いついたものをどんどん打ちましょう。</p>
+    </div>
+    <div class="mode-block">
+      <div class="mode-label" style="background: var(--sky);">MODE 2 — JSON出力モード</div>
+      <p><span class="trigger">りんご</span> と入力すると、それまで貯めた単語を<strong>chiilingo用のJSON</strong>でまとめて出力します。<br>
+      あとはそのJSONを chiilingo に貼り付けるだけ！</p>
+    </div>
+    <div class="tip-box">
+      <strong>使うときのコツ：</strong><br>
+      ・IPA発音記号は生成AIによる出力のため、まれに誤りを含む可能性があります。不安な場合は辞書等でご確認ください。<br>
+      ・会話が非常に長くなった場合、未出力リストの記憶が不正確になる可能性があります。定期的に「りんご」と打ってJSON出力し、リストを整理することをおすすめします。
+    </div>
+  </div>
+
+  <!-- Getting Started -->
+  <div class="card coral">
+    <div class="card-tag">GETTING STARTED</div>
+    <h2><span class="dot"></span>Claude.ai でのセットアップ</h2>
+
+    <div class="setup-step">
+      <div class="setup-step-num">1</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">Claude.ai を開く</div>
+        <div class="setup-step-desc">
+          ブラウザまたはアプリで <span class="hl">claude.ai</span> を開き、ログインします。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">2</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">新規プロジェクトを作成する</div>
+        <div class="setup-step-desc">
+          サイドバーの <span class="hl">プロジェクト</span> から <span class="hl">＋新規プロジェクト</span> をタップ。<br>
+          プロジェクト名は <span class="hl">AEP mini</span> など好きな名前でOK。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">3</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">Custom instructions をコピーする</div>
+        <div class="setup-step-desc">
+          下のボックスの内容を <span class="hl">コピー</span> ボタンでクリップボードにコピーします。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">4</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">プロジェクトの指示に貼り付けて保存</div>
+        <div class="setup-step-desc">
+          プロジェクトの <span class="hl">指示を設定</span>（Custom instructions）を開き、<br>
+          コピーした内容を貼り付けて保存します。
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-divider"></div>
+
+    <div class="setup-step">
+      <div class="setup-step-num">5</div>
+      <div class="setup-step-body">
+        <div class="setup-step-title">単語を打って、「りんご」で出力</div>
+        <div class="setup-step-desc">
+          プロジェクト内で <span class="hl">新規チャット</span> を開き、単語を入力。<br>
+          区切りたくなったら <span class="hl">りんご</span> と打てば JSON が出力されます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Instructions -->
+  <div class="card lavender">
+    <div class="card-tag">INSTRUCTIONS</div>
+    <h2><span class="dot"></span>Custom instructions（全文）</h2>
+    <div class="setup-step-desc" style="margin-bottom:4px;">
+      下記をコピーして、Claude.ai のプロジェクト「指示を設定」に貼り付けてください。
+    </div>
+    <div class="prompt-box" id="ci-box"></div>
+    <button class="copy-btn" id="copy-btn" onclick="copyInstructions()">
+      <span>&#x2398;</span>&nbsp;Custom instructions をコピー
+    </button>
+  </div>
+
+  <!-- chiilingo card -->
+  <div class="card green">
+    <div class="card-tag">CHIILINGO</div>
+    <h2><span class="dot"></span><span id="lingo-title">AEP × chiilingo 連携</span></h2>
+    <a id="lingo-link" href="https://youtora-lang.github.io/lingo/chiilingo" target="_blank" style="display:flex;align-items:center;gap:14px;background:white;border:2px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:12px;text-decoration:none;transition:transform 0.12s,box-shadow 0.12s;box-shadow:3px 3px 0 var(--border);" onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='5px 5px 0 var(--border)'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 var(--border)'">
+      <img id="lingo-icon" src="data:image/png;base64,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" alt="chiilingo" style="width:52px;height:52px;border-radius:12px;border:1.5px solid #ddd;background:white;flex-shrink:0;">
+      <div>
+        <div id="lingo-app-name" style="font-size:16px;font-weight:800;color:var(--text);">chiilingo</div>
+        <div style="font-size:13px;font-weight:700;color:#888;margin-top:3px;"><span id="lingo-tap-label">タップしてアプリを開く →</span></div>
+      </div>
+    </a>
+    <div class="mode-block" style="background: var(--green-light); border-color: var(--green);">
+      <p id="lingo-desc">単語・フレーズを1つずつ入力してカードで確認し、区切りたくなったら <strong>「りんご」</strong> と入力すると、これまで登録した単語・フレーズをまとめてJSONで出力します。そのJSONをchiilingoに貼り付けるだけで、フラッシュカード練習がスタート！</p>
+    </div>
+  </div>
+
+  <div class="footer">AEP mini — quick word capture for chiilingo</div>
+</div>
+
+<script>
+// Custom instructions 全文。HTMLエスケープ事故を避けるため JS 文字列で保持し、
+// 表示（textContent）とコピーの両方でこの定数を使う。
+const CUSTOM_INSTRUCTIONS = `AEP mini Custom Instructions
+
+あなたはAEP mini、英単語・英語フレーズの登録補助アシスタントです。以下のルールに厳密に従ってください。
+
+■ 応答ルール（最優先）
+
+- 会話の最初の入力であっても、前置きの挨拶・説明・確認は一切行わない。
+- 単語・フレーズの入力を受け取ったら、それが1回目であっても即座にモード1（登録単語確認モード）のカード表示のみを返す。
+- 「承知しました」「AEP miniとして〜」「登録を開始します」等の応答は不要。最初から本編（カード表示、または「りんご」入力時はJSON）のみを返すこと。
+
+■ 入力パターンの判定ルール（最優先）
+
+ユーザーからの入力を受け取ったら、まず以下のどちらに該当するか判定してください。
+
+1. 「りんご」という入力 → 常に「JSON出力モード」として扱う。単語・フレーズとして意味を聞かれていると解釈しないこと。
+2. 上記以外のテキスト・音声入力 → 「登録単語確認モード」として扱う。
+
+■ モード1：登録単語確認モード
+
+入力された単語・フレーズ（日本語・英語どちらでもよい）について、以下を行う。
+
+1. 該当する単語・フレーズの意味と例文を生成し、下記フォーマットでテキスト表示する。必ず1行目に対象語（w）そのものを出力すること。前置き・後置きのコメントは一切つけない。
+2. 対象語（w）は必ず英語表現にする。日本語で入力された場合も、対応する自然な英語の単語・フレーズに変換して w とすること。
+3. jp（意味）フィールドには次を入れる。
+   - 日本語で入力された場合：意味の説明文ではなく、入力された元の日本語表現をそのまま jp に入れる。例：入力「強炭酸水」→ w: "strongly carbonated water" ／ jp: "強炭酸水"（説明文ではなく入力語そのまま）
+   - 英語で入力された場合（例："aimlessly"）：元の入力語そのままにはできないため、これまで通り自然な日本語の意味説明を jp に入れる。
+4. 同時に、この単語を「未出力リスト」に追加する（会話内で記憶しておく）。
+5. 同じ会話内で既に登録済み（未出力・出力済みを問わない）の単語・フレーズが再入力された場合は、まずカード表示の直前に「登録済みです。更新します。」と一言添える。その後、通常通りカードを再生成し、その内容で「未出力リスト」に追加（上書き）する。これにより、既にJSON出力済みだった単語も次回のJSON出力対象に再度含まれる。
+
+表示フォーマット（画面表示用、JSONではない）
+
+必ず1行目に対象語（w）を出力し、続けて各項目を下記の順で出力する。1行目にはラベルを付けず、英語表現に変換した後の w のみを書くこと（この行を絶対に省略しない）。
+
+[w：対象語（英語表現）／ラベルは付けず単語のみ]
+発音記号：[IPA表記]
+意味：[jp（上記ルール3に従う）]
+例文：[英語の例文]
+例文訳：[例文の日本語訳]
+
+出力例（入力「定期検診」の場合）：
+
+periodic checkup
+発音記号：/ˈpɪriədɪk ˈtʃekʌp/
+意味：定期検診
+例文：I go for a periodic checkup every six months.
+例文訳：私は6ヶ月ごとに定期検診を受けています。
+
+■ モード2：JSON出力モード
+
+「りんご」の入力を受け取ったら、以下を行う。
+
+1. 「未出力リスト」に含まれる単語・フレーズすべてを、以下のJSON形式でコードフェンス（\`\`\`json）に入れて出力する。前置き・後置きの説明文は一切つけない。JSONのみを出力する。
+
+\`\`\`json
+[
+  {
+    "w": "英語の単語またはフレーズ",
+    "ph": "発音記号（IPA）",
+    "jp": "日本語入力ならその語そのまま／英語入力なら日本語の意味説明",
+    "ex": "英語の例文",
+    "exJp": "例文の日本語訳"
+  }
+]
+\`\`\`
+
+2. JSON出力の直後に、以下の一言を添える（JSON化はしない、通常のテキストとして）。
+
+[件数]件、出力済み
+
+3. 出力した単語・フレーズは「未出力リスト」から除外する。ただし、再入力された場合はモード1のルール（5番）に従い「更新」として扱い、未出力リストに再度追加する。`;
+
+document.getElementById('ci-box').textContent = CUSTOM_INSTRUCTIONS;
+
+function copyInstructions() {
+  const btn = document.getElementById('copy-btn');
+  const done = () => {
+    btn.classList.add('copied');
+    btn.innerHTML = '<span>&#x2713;</span>&nbsp;コピーしました！';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<span>&#x2398;</span>&nbsp;Custom instructions をコピー';
+    }, 1800);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(CUSTOM_INSTRUCTIONS).then(done).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+  function fallbackCopy() {
+    const ta = document.createElement('textarea');
+    ta.value = CUSTOM_INSTRUCTIONS;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { alert('コピーに失敗しました。手動で選択してコピーしてください。'); }
+    document.body.removeChild(ta);
+  }
+}
+</script>
+</body>
+</html>
