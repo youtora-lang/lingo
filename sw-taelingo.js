@@ -1,11 +1,13 @@
 // taelingo専用 Service Worker — Stale-While-Revalidate
-const CACHE = 'taelingo-v1';
+// v2: 共通コア分離（lingo-core.js / lingo.css）に伴い、コアもキャッシュ対象に追加
+const CACHE = 'taelingo-v2';
+const ASSETS = ['./taelingo.html', './lingo-core.js', './lingo.css'];
 
-// インストール: taelingo.html をプリキャッシュ（失敗しても SW 自体は継続）
+// インストール: 本体とコアをプリキャッシュ（失敗しても SW 自体は継続）
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE).then(c => c.add('./taelingo.html')).catch(() => {})
+    caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {})
   );
 });
 
@@ -20,10 +22,10 @@ self.addEventListener('activate', e => {
   );
 });
 
-// フェッチ: taelingo.html のみ対象
+// フェッチ: ASSETS のみ対象
 // stale-while-revalidate: キャッシュを即返しつつ裏でネットワーク取得・更新
 self.addEventListener('fetch', e => {
-  if (!e.request.url.includes('taelingo.html')) return;
+  if (!ASSETS.some(a => e.request.url.includes(a.slice(2)))) return;
   e.respondWith(
     caches.open(CACHE).then(cache =>
       cache.match(e.request).then(cached => {
