@@ -4,33 +4,74 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A collection of self-contained, single-file HTML language-learning apps deployed on GitHub Pages. There is no build step, no package manager, no framework, and no external dependencies. Each app is one `.html` file with all CSS and JS inlined.
+A collection of language-learning web apps deployed on GitHub Pages. There is no build step, no package manager, no framework, and no external dependencies — everything is plain static files edited directly.
+
+Since 2026-07 the four lingo apps share a common core ("共通コア + 言語別設定" 構成):
+
+- **`lingo-core.js`** — all application logic, the full screen HTML (generated into `<body>` at load), and the UI string tables (`ja` / `en`). Edit this file to change behavior, screens, or wording — the change applies to **all four apps at once**.
+- **`lingo.css`** — all styles, shared by the four apps.
+- **`{app}.html`** (one per app) — a thin file holding only: the `<head>` (per-app PWA manifest / icon as base64), a `window.LINGO_CONFIG` object (~10 lines of per-language settings), and a `<script src="./lingo-core.js">` tag. These files rarely need editing.
+- **`sw-{app}.js`** (one per app) — service worker; precaches the app's HTML plus `lingo-core.js` and `lingo.css` (cache name `{app}-v2`).
 
 ## Apps
 
-| File | Language | TTS locale | localStorage prefix |
-|---|---|---|---|
-| `chiilingo.html` | English | `en-US` | `chiilingo_` |
-| `michilingo.html` | French | `fr-FR` | `michilingo_` |
-| `taelingo.html` | Korean | `ko-KR` | `taelingo_` |
-| `chiilingojp.html` | Japanese | `ja-JP` | `chiilingojp_` |
-| `aep_guide.html` | Guide page | — | — |
+| File | Language | UI lang | TTS locale | localStorage prefix |
+|---|---|---|---|---|
+| `chiilingo.html` | English | ja | `en-US` | `chiilingo_` |
+| `michilingo.html` | French | ja | `fr-FR` | `michilingo_` |
+| `taelingo.html` | Korean | ja | `ko-KR` | `taelingo_` |
+| `chiilingojp.html` | Japanese | en | `ja-JP` | `chiilingojp_` |
+| `aep_guide.html` / `aepmini_guide.html` | Guide pages (standalone) | — | — | — |
 
-> **Note:** `yay-job.html` is an unrelated app that does not belong to the lingo series. It is temporarily hosted here pending migration to its own repository. Do not mention or modify `yay-job.html` when working on lingo series tasks.
+> **Note:** `yay-job.html` is an unrelated app temporarily hosted here. `codingo.html` (+ `sw-codingo.js`, png files) is scheduled for deletion and was intentionally **not** migrated to the common core. `EBC2026/` is unrelated. Do not modify these when working on lingo series tasks.
+
+## LINGO_CONFIG (per-app settings)
+
+Each app HTML defines exactly this object; it is the **only** thing that differs between apps:
+
+```js
+window.LINGO_CONFIG={
+  prefix:'chiilingo',      // localStorageキー・SWファイル名の元。変更禁止（保存データが読めなくなる）
+  appNameDefault:'chii',   // アプリ名のデフォルト（appNameDefault+suffix=表示タイトル）
+  suffix:'lingo',          // タイトルの末尾（lingo / lingojp）
+  uiLang:'ja',             // UI言語（lingo-core.js の STRINGS テーブルを選択）
+  targetName:'英語',        // 学習対象言語の表示名（UI言語で書く）
+  nativeName:'日本語',      // 訳語側の言語の表示名
+  ttsLang:'en-US',         // 読み上げ（Web Speech API）のロケール
+  ttsVoice:'Samantha',     // 優先ボイス名（部分一致・省略可）
+  dateLocale:'ja-JP',      // 学習報告の日付表示ロケール
+};
+```
+
+Adding a fifth language = copy one thin HTML, adjust `LINGO_CONFIG` + the base64 manifest/icon in `<head>`, and add a `sw-{app}.js` (copy an existing one and change the app name).
+
+## Structure of lingo-core.js
+
+1. **設定と文字列** — `CFG` (= `LINGO_CONFIG`), `CORE_VERSION`, `STRINGS.ja` / `STRINGS.en` → `T`. All user-visible text lives in these tables; logic refers to `T.xxx`. Dynamic strings are small arrow functions (e.g. ``remainCards:x=>`残り${x}枚` ``).
+2. **画面HTML** — `renderBodyHTML()` returns the entire body as a template literal (screens, modals); it is injected via `document.body.innerHTML` on load. Language-dependent spots use `${T.xxx}` / `${CFG.xxx}`.
+3. **アプリロジック** — the original chiilingo script, unchanged except that app-specific literals were replaced with `CFG`/`T` references.
+
+`CORE_VERSION` (a JST datetime near the top of `lingo-core.js`) is shown in the settings footer as "Last updated". **Update it whenever you edit lingo-core.js.**
 
 ## Development
 
-Open any `.html` file directly in a browser — no server needed for local development. There are no tests, no linting tools, and no CI configuration.
+Open any `.html` file directly in a browser — no server needed (`lingo-core.js` / `lingo.css` load via relative paths; service worker registration fails on `file://` but is caught and ignored). There are no tests, no linting tools, and no CI configuration.
 
 To preview the deployed result, open the file in a browser or use a local file server (e.g., `python3 -m http.server`).
 
-## Architecture of each lingo app
+### Verifying changes
 
-Each file is structured as:
+When changing lingo-core.js, a quick way to verify all four apps still render and run is a headless Chromium dump (a Playwright-cached binary exists on this machine):
 
-1. `<head>` — meta, inlined CSS (`<style>`), inlined favicon as base64
-2. `<body>` — screen `<div>`s (one per view), modal overlays
-3. `<script>` — all application logic
+```bash
+~/Library/Caches/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-mac-arm64/chrome-headless-shell \
+  --headless --no-sandbox --user-data-dir=/tmp/prof --virtual-time-budget=3000 \
+  --dump-dom "file://$PWD/chiilingo.html" | less
+```
+
+plus `node --check lingo-core.js` for syntax.
+
+## App behavior reference
 
 ### Screens
 
@@ -46,12 +87,14 @@ Each app has these screens (toggled by adding/removing `.active` class):
 
 ### localStorage keys
 
-Each app stores five keys, all prefixed with the app name:
+Each app stores five keys, all prefixed with `CFG.prefix`:
 - `{prefix}_words` — JSON array of word objects
 - `{prefix}_progress` — JSON object keyed by word id
 - `{prefix}_history` — JSON array of study events (capped at 400)
 - `{prefix}_settings` — JSON object of user preferences
-- `{prefix}_tickets` — vacation ticket state
+- `{prefix}_tickets` — vacation ticket state (`{used, lastUsedDate, usedDates[]}`)
+
+**Backward compatibility with these keys is a hard requirement** — existing users' data must keep loading after any refactor.
 
 ### Word object schema
 
@@ -59,11 +102,11 @@ Each app stores five keys, all prefixed with the app name:
 { id, w, jp, num, ph, ex, exJp }
 // id: derived from w via makeId()
 // w: target language text
-// jp: Japanese translation
+// jp: Japanese translation (chiilingojp: English translation)
 // num: sort order (1-based, append-only)
 // ph: phonetic reading (optional)
 // ex: example sentence in target language (optional)
-// exJp: example sentence in Japanese (optional)
+// exJp: example sentence in jp-side language (optional)
 ```
 
 Words are imported as a JSON array via the settings screen textarea. Duplicate detection is by `w` field (exact match).
@@ -71,10 +114,7 @@ Words are imported as a JSON array via the settings screen textarea. Duplicate d
 ### Progress / mastery model
 
 - Mastery = `progress[id].correct` count
-- `new`: mastery 0
-- `learning (early)`: mastery 1–2
-- `learning (late)`: mastery 3–4
-- `master`: mastery ≥ 5
+- `new`: mastery 0 / `learning (early)`: 1–2 / `learning (late)`: 3–4 / `master`: ≥ 5
 - Session deck composition: 50% new, 30% early, 10% late, 10% master
 - Wrong answer on a master word resets mastery to 3
 
@@ -86,11 +126,23 @@ Words are imported as a JSON array via the settings screen textarea. Duplicate d
 
 ### TTS
 
-Uses Web Speech API (`speechSynthesis`). The function is named `speakEn(text)` across all apps regardless of the target language. There is an Android-specific workaround: `cancel()` is called before `speak()` with a short `setTimeout` delay.
+Uses Web Speech API (`speechSynthesis`). The function is named `speakEn(text)` regardless of the target language; locale and preferred voice come from `CFG.ttsLang` / `CFG.ttsVoice`. There is an Android-specific workaround: `cancel()` is called before `speak()` with a short `setTimeout` delay.
 
 ### Font sizes
 
-Font sizes are controlled via CSS custom properties (`--fs-*`) applied to `<html>`. Values are stored in `settings.fontSizes` and applied on load via `applyFontSizes()`.
+Font sizes are controlled via CSS custom properties (`--fs-*`). Values are stored in `settings.fontSizes` and applied on load via `applyFontSizes()` (class toggles on `<body>`).
+
+### Known quirks (intentionally preserved)
+
+- `chiilingojp` の一部文言は旧版から日本語のまま（単語一覧の空メッセージ、除外トースト2種）。`STRINGS.en` 内にコメントで明記。直すならそこを書き換えるだけ。
+- 設定画面の「カード表示時に読み上げ」の説明文は ja 版では常に「英→日の…」（フランス語・韓国語でも同文）。旧版からの仕様。
+
+## 旧 SYNC_BASE / sync check について（2026-07 廃止）
+
+かつては chiilingo.html を正本とし、他アプリへ手動で変更を反映して
+`<!-- SYNC_BASE -->` コメントで同期時刻を管理していた（合言葉「sync check」）。
+共通コア化により**この運用は廃止**。ロジック・画面・文言の変更は
+lingo-core.js を1回編集すれば全アプリに反映される。sync check は不要。
 
 ## Git rules
 
@@ -128,40 +180,3 @@ git -c user.name="youtora-lang" -c user.email="280938766+youtora-lang@users.nore
 ### Destructive operations
 
 Before executing any hard-to-reverse operation — including file deletion, `git reset --hard`, `git rebase`, force-push, or any rewrite of git history — present exactly what will be done and ask for explicit confirmation.
-
-## アプリ間の構造方針と sync check（2026-06 確定）
-
-### 正本と複製の関係
-
-- **chiilingo.html が正本（マスター）**。機能追加・修正は原則 chiilingo に対して行う。
-- michilingo.html / taelingo.html / chiilingojp.html / codingo.html（将来追加）は、
-  chiilingo の機能をそのまま継承する複製。違いは学習対象言語（または codingo の学習領域）のみ。
-- **chiilingojp は基準言語が逆転している点に注意**:
-  - chiilingo / michilingo / taelingo: UI言語=日本語、学習対象=英語/フランス語/韓国語
-  - chiilingojp: UI言語=英語、学習対象=日本語
-  - 反映時は単純な文字列置換ではなく、この構造差を踏まえて対応させる。
-- codingo は chiilingo の全機能を継承した上で、固有の自動追記機能を上乗せする5本目。
-
-### SYNC_BASE マーカーと sync check
-
-- 各HTMLファイルの冒頭付近に、以下の形式で最終同期時刻のコメントを置く:
-  `<!-- SYNC_BASE: YYYY-MM-DD HH:MM -->`（24時間表記、分まで）
-- **chiilingo.html に何らかの変更を加えてコミットする際は、内容の大小を問わず、
-  必ず SYNC_BASE コメントも現在時刻（JST）に更新してコミットに含める。**
-- 他アプリへ反映したら、そのアプリの SYNC_BASE を chiilingo と同じ値に揃える。
-- **合言葉「sync check」**: CAがこの言葉を打ったら、Claude Code は対象アプリ
-  （chiilingo / michilingo / taelingo / chiilingojp / codingo）の SYNC_BASE を比較し、
-  chiilingo より古い（=反映漏れの）アプリを一覧で報告する。
-  - sync check は「漏れに気づくためのトリガー」であり、検出のみを行う。
-  - 実際の反映（コード書き換え）は、CAが別途指示してから実行する。
-
-### 既存の機能差（正本方針の確定前に生じたズレ。今後解消する対象）
-
-- チケットシステム: taelingo / chiilingojp が旧実装（`{used, lastUsedDate}`）のまま。
-  chiilingo / michilingo は新実装（`{used, lastUsedDate, usedDates[]}`）。
-- autoSpeak機能: chiilingo / michilingo にはあり、taelingo / chiilingojp にはない。
-- chiilingojp の fcProgRemain 表示バグ（「残り N枚」が「Left: N ticket(s)」になっている）。
-
-## Making changes across multiple apps
-
-The four lingo apps (`chiilingo`, `michilingo`, `taelingo`, `chiilingojp`) share identical structure and logic — only the TTS locale, localStorage prefix, and default word list differ. When fixing a bug or adding a feature in one app, apply the same change to all four.
