@@ -13,6 +13,14 @@ Since 2026-07 the four lingo apps share a common core ("共通コア + 言語別
 - **`{app}.html`** (one per app) — a thin file holding only: the `<head>` (per-app PWA manifest / icon as base64), a `window.LINGO_CONFIG` object (~10 lines of per-language settings), and a `<script src="./lingo-core.js">` tag. These files rarely need editing.
 - **`sw-{app}.js`** (one per app) — service worker; precaches the app's HTML plus `lingo-core.js` and `lingo.css` (cache name `{app}-v2`).
 
+## 重要: lingo-core.js を編集したら必ず CORE_VERSION を更新する
+
+**lingo-core.js に変更を加えた場合は、同ファイル冒頭の `CORE_VERSION` を編集時点の日時（JST）に必ず更新すること。** これは全アプリ共通のバージョン表示（設定画面フッターの「Last updated」）に使われる。更新を忘れると4アプリ全てで古い日時が表示され続ける。
+
+```js
+const CORE_VERSION='2026-07-02 23:26'; // 例: この行を編集時点のJST日時に更新
+```
+
 ## Apps
 
 | File | Language | UI lang | TTS locale | localStorage prefix |
