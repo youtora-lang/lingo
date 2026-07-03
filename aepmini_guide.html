@@ -617,7 +617,7 @@ const T = {
     appTitle: c => `AEP mini × ${c.app} 連携`,
     appTap: 'タップしてアプリを開く →',
     appDesc: c => `単語・フレーズを1つずつ入力してカードで確認し、区切りたくなったら <strong>「${c.harvest}」</strong> と入力すると、これまで登録した単語・フレーズをまとめてJSONで出力します。そのJSONを${c.app}の設定画面から取り込むだけで、フラッシュカード練習がスタート！`,
-    appNote: c => `※ ${c.app} の画面表示は${c.appUiName}です。カードの訳語は日本語で表示されます。`,
+    appNote: c => `※ 仕様上、${c.app} のアプリ画面（メニュー・設定など）は${c.appUiName}のみで、切り替えはできません。カード本体は登録した内容のまま表示され、訳語は${c.nName}になります。`,
   },
   en: {
     title: 'AEP mini Guide',
@@ -654,7 +654,7 @@ const T = {
     appTitle: c => `AEP mini × ${c.app}`,
     appTap: 'Tap to open the app →',
     appDesc: c => `Enter words and phrases one by one and check them as cards. Whenever you like, type <strong>"${c.harvest}"</strong> to export everything registered so far as JSON. Import that JSON in ${c.app}'s settings screen and your flashcard practice is ready to go!`,
-    appNote: c => `Note: ${c.app}'s interface is in ${c.appUiName}, but your cards' translations will be in English.`,
+    appNote: c => `Note: as a built-in limitation, ${c.app}'s interface (menus, settings, etc.) is ${c.appUiName}-only and cannot be switched. Your cards themselves are unaffected — words and translations display in ${c.nName} exactly as you registered them.`,
   },
 };
 
@@ -669,6 +669,7 @@ function ctx() {
     harvest: HARVEST[native],
     sampleInput: native === 'ja' ? 'こんにちは' : 'Hello',
     appUiName,
+    nName: NATIVE_NAMES[guideLang][native],
   };
 }
 
