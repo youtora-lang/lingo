@@ -67,6 +67,9 @@ body::before {
 .glang-pill:active { transform: scale(0.95); }
 .glang-pill.active { background: var(--border); color: white; }
 
+/* --- Language switcher (page top, no scroll needed) --- */
+.top-lang-switch { margin-top: 0; margin-bottom: 18px; }
+
 /* --- Hero --- */
 .hero { text-align: center; margin-bottom: 20px; }
 .hero-badge {
@@ -381,6 +384,18 @@ body::before {
     <button class="glang-pill" data-glang="en">English</button>
   </div>
 
+  <!-- Language switcher (moved to page top: switchable without scrolling) -->
+  <div class="setup-box top-lang-switch">
+    <div class="setup-box-row">
+      <span class="setup-box-label" id="lbl-native"></span>
+      <div class="pill-group" id="native-pills"></div>
+    </div>
+    <div class="setup-box-row">
+      <span class="setup-box-label" id="lbl-target"></span>
+      <div class="pill-group" id="target-pills"></div>
+    </div>
+  </div>
+
   <!-- Hero -->
   <div class="hero">
     <div class="hero-badge"><span id="guide-badge">AEP GUIDE</span></div>
@@ -431,14 +446,6 @@ body::before {
         <div class="setup-step-title" id="st1-title"></div>
         <div class="setup-step-desc" id="st1-desc"></div>
         <div class="setup-box">
-          <div class="setup-box-row">
-            <span class="setup-box-label" id="lbl-native"></span>
-            <div class="pill-group" id="native-pills"></div>
-          </div>
-          <div class="setup-box-row">
-            <span class="setup-box-label" id="lbl-target"></span>
-            <div class="pill-group" id="target-pills"></div>
-          </div>
           <div class="setup-box-row">
             <span class="setup-box-label" id="lbl-name"></span>
             <input type="text" id="username-input" value="CA" maxlength="20">
@@ -975,8 +982,8 @@ const T = {
     lblTarget: '学ぶ言語',
     lblName: '名前',
     lblLevel: 'レベル',
-    st1Title: '言語・名前・レベルを設定する',
-    st1Desc: '母語と学ぶ言語、あなたの名前とレベルを選んでください。<br>下のプロンプトとガイドの内容が自動で切り替わります。',
+    st1Title: '名前・レベルを設定する',
+    st1Desc: '言語はページ上部のセレクターで選べます。ここではあなたの名前とレベルを選んでください。<br>下のプロンプトとガイドの内容が自動で切り替わります。',
     st2Title: 'プロンプトをコピーする',
     st2Desc: '下のボックスにプロンプトが表示されています。<br><span class="hl">プロンプトをコピー</span> ボタンを押してクリップボードにコピーしてください。',
     st3Title: 'Claude.ai でプロジェクトを作成する',
@@ -1043,8 +1050,8 @@ const T = {
     lblTarget: 'Learning',
     lblName: 'Name',
     lblLevel: 'Level',
-    st1Title: 'Choose languages, name & level',
-    st1Desc: 'Pick your native language, the language you\'re learning, your name and level.<br>The prompt and this guide update automatically.',
+    st1Title: 'Choose your name & level',
+    st1Desc: 'Your language pair is set using the selector at the top of the page. Here, pick your name and level.<br>The prompt and this guide update automatically.',
     st2Title: 'Copy the prompt',
     st2Desc: 'The prompt is shown in the box below.<br>Press <span class="hl">Copy prompt</span> to copy it to the clipboard.',
     st3Title: 'Create a project on Claude.ai',

@@ -67,6 +67,9 @@ body::before {
 .glang-pill:active { transform: scale(0.95); }
 .glang-pill.active { background: var(--border); color: white; }
 
+/* --- Language switcher (page top, no scroll needed) --- */
+.top-lang-switch { margin-top: 0; margin-bottom: 18px; }
+
 /* --- Hero --- */
 .hero { text-align: center; margin-bottom: 20px; }
 .hero-badge {
@@ -231,6 +234,18 @@ body::before {
     <button class="glang-pill" data-glang="en">English</button>
   </div>
 
+  <!-- Language switcher (moved to page top: switchable without scrolling) -->
+  <div class="setup-box top-lang-switch">
+    <div class="setup-box-row">
+      <span class="setup-box-label" id="lbl-native"></span>
+      <div class="pill-group" id="native-pills"></div>
+    </div>
+    <div class="setup-box-row">
+      <span class="setup-box-label" id="lbl-target"></span>
+      <div class="pill-group" id="target-pills"></div>
+    </div>
+  </div>
+
   <!-- Hero -->
   <div class="hero">
     <div class="hero-badge"><span id="guide-badge">AEP MINI GUIDE</span></div>
@@ -272,16 +287,6 @@ body::before {
       <div class="setup-step-body">
         <div class="setup-step-title" id="st1-title"></div>
         <div class="setup-step-desc" id="st1-desc"></div>
-        <div class="setup-box">
-          <div class="setup-box-row">
-            <span class="setup-box-label" id="lbl-native"></span>
-            <div class="pill-group" id="native-pills"></div>
-          </div>
-          <div class="setup-box-row">
-            <span class="setup-box-label" id="lbl-target"></span>
-            <div class="pill-group" id="target-pills"></div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -604,7 +609,7 @@ const T = {
     lblNative: '母語',
     lblTarget: '学ぶ言語',
     st1Title: '言語を選ぶ',
-    st1Desc: c => `あなたの<strong>母語</strong>と<strong>学ぶ言語</strong>を選んでください。<br>このガイドの手順と Custom instructions が自動で切り替わります。`,
+    st1Desc: c => `ページ上部のセレクターで、あなたの<strong>母語</strong>と<strong>学ぶ言語</strong>を選んでください。<br>このガイドの手順と Custom instructions が自動で切り替わります。`,
     st2Title: 'Claude.ai を開く',
     st2Desc: c => `ブラウザまたはアプリで <span class="hl">claude.ai</span> を開き、ログインします。`,
     st3Title: '新規プロジェクトを作成する',
@@ -643,7 +648,7 @@ const T = {
     lblNative: 'Native',
     lblTarget: 'Learning',
     st1Title: 'Choose your languages',
-    st1Desc: c => `Pick your <strong>native language</strong> and the <strong>language you're learning</strong>.<br>The steps and Custom instructions below update automatically.`,
+    st1Desc: c => `Use the selector at the top of the page to pick your <strong>native language</strong> and the <strong>language you're learning</strong>.<br>The steps and Custom instructions below update automatically.`,
     st2Title: 'Open Claude.ai',
     st2Desc: c => `Open <span class="hl">claude.ai</span> in your browser or app and log in.`,
     st3Title: 'Create a new project',
