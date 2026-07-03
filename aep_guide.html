@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">AEP Guide</title>
+<title>AEP Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -29,12 +29,13 @@
   --green: #5cb87a;
   --green-light: #d6f0df;
 }
+/* 文字サイズは rem で指定し、端末のフォントサイズ設定に追随させる */
 body {
   font-family: var(--font);
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  padding: 24px 16px 48px;
+  padding: 1.5rem 16px 3rem;
   position: relative;
   overflow-x: hidden;
 }
@@ -43,7 +44,7 @@ body::before {
   position: fixed;
   top: 10px; left: 0; right: 0;
   text-align: center;
-  font-size: 11px;
+  font-size: 0.69rem;
   color: #ccc;
   letter-spacing: 18px;
   pointer-events: none;
@@ -51,91 +52,52 @@ body::before {
 }
 .page-wrap { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
 
-/* --- Setup Panel --- */
-.setup-panel {
-  background: white;
-  border: 2.5px solid var(--border);
-  border-radius: 20px;
-  padding: 18px 20px;
+/* --- Guide language toggle (page top) --- */
+.glang-bar {
+  display: flex; justify-content: center; gap: 8px;
   margin-bottom: 18px;
 }
-.setup-panel-title {
-  font-size: 10px; font-weight: 800; color: #aaa;
-  letter-spacing: 2px; margin-bottom: 12px;
-}
-.setup-row {
-  display: flex; align-items: center; gap: 10px;
-  flex-wrap: wrap; margin-bottom: 12px;
-}
-.setup-row:last-child { margin-bottom: 0; }
-.setup-label {
-  font-size: 12px; font-weight: 800;
-  white-space: nowrap; width: 60px;
-}
-.setup-row input[type="text"] {
-  flex: 1; min-width: 100px;
-  border: 2px solid var(--border);
-  border-radius: 99px; padding: 7px 16px;
-  font-family: var(--font); font-size: 14px; font-weight: 700;
-  outline: none; background: var(--mint-light); color: var(--text);
-}
-.setup-row input[type="text"]:focus { border-color: var(--mint); }
-.level-pills { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
-.level-pill {
+.glang-pill {
   border: 2px solid var(--border); border-radius: 99px;
-  padding: 5px 12px; font-family: var(--font);
-  font-size: 11px; font-weight: 800; cursor: pointer;
+  padding: 0.3em 1.1em; font-family: var(--font);
+  font-size: 0.75rem; font-weight: 800; cursor: pointer;
   background: white; color: var(--text);
   transition: transform 0.1s, background 0.15s, color 0.15s;
 }
-.level-pill:active { transform: scale(0.95); }
-.level-pill.active { color: white; }
-.level-pill[data-level="A1"].active  { background: #e85858; }
-.level-pill[data-level="A2"].active  { background: #e88030; }
-.level-pill[data-level="B1"].active  { background: #d8b028; }
-.level-pill[data-level="B2"].active  { background: #60b050; }
-.level-pill[data-level="C1"].active  { background: #48a0d0; }
-.level-pill[data-level="C1+"].active { background: #b068c8; }
-.apply-btn {
-  background: var(--mint); color: white;
-  border: 2px solid var(--border); border-radius: 99px;
-  padding: 9px 22px; font-family: var(--font);
-  font-size: 13px; font-weight: 800; cursor: pointer;
-  transition: transform 0.1s; width: 100%; margin-top: 4px; letter-spacing: 1px;
-}
-.apply-btn:active { transform: scale(0.97); }
+.glang-pill:active { transform: scale(0.95); }
+.glang-pill.active { background: var(--border); color: white; }
 
 /* --- Hero --- */
 .hero { text-align: center; margin-bottom: 20px; }
 .hero-badge {
   display: inline-block; background: var(--coral); color: white;
   border: 2.5px solid var(--border); border-radius: 99px;
-  padding: 4px 20px 5px; font-size: 11px; font-weight: 800;
+  padding: 0.25em 1.4em; font-size: 0.69rem; font-weight: 800;
   letter-spacing: 2px; margin-bottom: 10px;
 }
-.hero h1 { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+.hero h1 { font-size: 1.75rem; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
 .hero h1 span.username { color: var(--coral); -webkit-text-stroke: 1.5px var(--border); paint-order: stroke fill; }
-.hero p { font-size: 12px; font-weight: 700; color: #888; line-height: 1.7; }
+.hero p { font-size: 0.75rem; font-weight: 700; color: #888; line-height: 1.7; }
 
 /* --- Cards --- */
 .card {
   background: var(--card); border: 2.5px solid var(--border);
-  border-radius: 20px; padding: 18px 20px;
-  margin-bottom: 14px; position: relative; overflow: hidden;
+  border-radius: 20px; padding: 20px 22px;
+  margin-bottom: 16px; position: relative; overflow: hidden;
 }
 .card-tag {
   position: absolute; top: -1px; left: 18px; color: white;
   border: 2px solid var(--border); border-top: none;
-  border-radius: 0 0 10px 10px; font-size: 9px; font-weight: 800;
-  padding: 3px 12px 4px; letter-spacing: 1px;
+  border-radius: 0 0 10px 10px; font-size: 0.63rem; font-weight: 800;
+  padding: 0.25em 1em; letter-spacing: 1px;
 }
 .card h2 {
-  font-size: 15px; font-weight: 800;
-  margin-bottom: 10px; margin-top: 8px;
-  display: flex; align-items: center; gap: 7px;
+  font-size: 1.125rem; font-weight: 800;
+  margin-bottom: 12px; margin-top: 8px; line-height: 1.4;
+  display: flex; align-items: center; gap: 8px;
 }
 .card h2 .dot {
-  width: 10px; height: 10px; border-radius: 99px;
+  width: 11px; height: 11px; border-radius: 99px;
   border: 2px solid var(--border); display: inline-block; flex-shrink: 0;
 }
 .card.mint  .card-tag, .card.mint  .dot { background: var(--mint); }
@@ -147,68 +109,56 @@ body::before {
 .card.coral .card-tag, .card.coral .dot { background: var(--coral); }
 .card.green .card-tag, .card.green .dot { background: var(--green); }
 
-/* language pills - same style as level pills */
-.lang-pill {
-  border: 2px solid var(--border); border-radius: 99px;
-  padding: 6px 10px; font-family: var(--font);
-  font-size: 18px; cursor: pointer;
-  background: white; color: var(--text);
-  transition: transform 0.1s, box-shadow 0.1s;
-  line-height: 1;
-}
-.lang-pill:active { transform: scale(0.95); }
-.lang-pill.active { background: var(--coral-light); border-color: var(--coral); box-shadow: 0 0 0 2px var(--coral); }
-
 /* mode blocks */
 .mode-block {
   border: 2px dashed var(--border); border-radius: 14px;
-  padding: 12px 14px; margin-bottom: 10px;
+  padding: 14px 16px; margin-bottom: 12px;
 }
 .mode-block:last-child { margin-bottom: 0; }
 .mode-label {
-  display: inline-block; font-size: 9px; font-weight: 800;
+  display: inline-block; font-size: 0.63rem; font-weight: 800;
   border: 2px solid var(--border); border-radius: 99px;
-  padding: 2px 12px 3px; margin-bottom: 8px; color: white; letter-spacing: 1px;
+  padding: 0.3em 1.2em; margin-bottom: 9px; color: white; letter-spacing: 1px;
 }
-.mode-block p { font-size: 12px; font-weight: 700; line-height: 1.8; color: #444; }
+.mode-block p { font-size: 0.9rem; font-weight: 700; line-height: 1.85; color: #444; }
 .trigger {
   display: inline-block; background: var(--gold-light);
   border: 1.5px solid var(--gold); border-radius: 8px;
-  padding: 1px 8px 2px; font-size: 11px; font-weight: 800;
+  padding: 0.1em 0.65em; font-size: 0.81rem; font-weight: 800;
   color: #987800; margin: 0 2px;
 }
 
 /* step list */
-.step-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.step-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-top: 4px; }
 .step-list li {
   display: flex; align-items: flex-start; gap: 10px;
-  font-size: 12px; font-weight: 700; line-height: 1.7; color: #444;
+  font-size: 0.84rem; font-weight: 700; line-height: 1.75; color: #444;
 }
 .step-num {
-  width: 22px; height: 22px; border-radius: 99px;
+  width: 24px; height: 24px; border-radius: 99px;
   border: 2px solid var(--border); display: flex;
   align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 800; color: white;
+  font-size: 0.69rem; font-weight: 800; color: white;
   flex-shrink: 0; margin-top: 2px;
 }
 .cmd {
   display: inline-block; background: var(--sky-light);
   border: 1.5px solid var(--sky); border-radius: 8px;
-  padding: 1px 10px 2px; font-size: 11px; font-weight: 800;
+  padding: 0.1em 0.7em; font-size: 0.78rem; font-weight: 800;
   color: #1870a8; white-space: nowrap;
 }
 .cmd-apple {
   display: inline-block; background: var(--green-light);
   border: 1.5px solid var(--green); border-radius: 8px;
-  padding: 1px 10px 2px; font-size: 11px; font-weight: 800;
+  padding: 0.1em 0.7em; font-size: 0.78rem; font-weight: 800;
   color: #2a7a48; white-space: nowrap;
 }
 
 /* tip box */
 .tip-box {
   background: var(--gold-light); border: 2px dashed var(--gold);
-  border-radius: 14px; padding: 10px 14px;
-  font-size: 11px; font-weight: 700; color: #7a6000; line-height: 1.8; margin-top: 10px;
+  border-radius: 14px; padding: 12px 16px;
+  font-size: 0.81rem; font-weight: 700; color: #7a6000; line-height: 1.85; margin-top: 12px;
 }
 .tip-box strong { color: #987800; font-weight: 800; }
 
@@ -216,60 +166,124 @@ body::before {
 .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
 .cat-item {
   border: 2px solid var(--border); border-radius: 12px;
-  padding: 7px 12px; font-size: 11px; font-weight: 700;
+  padding: 0.5em 0.9em; font-size: 0.78rem; font-weight: 700;
   display: flex; align-items: center; gap: 7px;
 }
 .cat-dot { width: 8px; height: 8px; border-radius: 99px; border: 1.5px solid var(--border); flex-shrink: 0; }
 
 /* CEFR grid */
 .cefr-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: 4px; }
-.cefr-cell { border: 2px solid var(--border); border-radius: 10px; padding: 6px 4px; text-align: center; }
-.cefr-cell .level { font-size: 13px; font-weight: 800; }
-.cefr-cell .range { font-size: 8px; font-weight: 700; color: #666; margin-top: 2px; line-height: 1.3; }
+.cefr-cell { border: 2px solid var(--border); border-radius: 10px; padding: 0.4em 0.2em; text-align: center; }
+.cefr-cell .level { font-size: 0.84rem; font-weight: 800; }
+.cefr-cell .range { font-size: 0.56rem; font-weight: 700; color: #666; margin-top: 2px; line-height: 1.3; }
 
 /* setup steps */
-.setup-step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.setup-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
 .setup-step:last-child { margin-bottom: 0; }
 .setup-step-num {
-  width: 26px; height: 26px; border-radius: 99px;
+  width: 30px; height: 30px; border-radius: 99px;
   background: var(--coral); border: 2px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 800; color: white;
+  font-size: 0.88rem; font-weight: 800; color: white;
   flex-shrink: 0; margin-top: 1px;
 }
-.setup-step-body { flex: 1; }
-.setup-step-title { font-size: 13px; font-weight: 800; margin-bottom: 3px; line-height: 1.4; }
-.setup-step-desc { font-size: 11px; font-weight: 700; color: #666; line-height: 1.8; }
+.setup-step-body { flex: 1; min-width: 0; }
+.setup-step-title { font-size: 0.97rem; font-weight: 800; margin-bottom: 4px; line-height: 1.45; }
+.setup-step-desc { font-size: 0.84rem; font-weight: 700; color: #666; line-height: 1.9; }
 .setup-step-desc .hl {
   display: inline-block; background: var(--coral-light);
   border: 1px solid var(--coral); border-radius: 6px;
-  padding: 0 6px; color: var(--coral); font-weight: 800;
+  padding: 0 7px; color: var(--coral); font-weight: 800;
 }
 .setup-divider {
   height: 1px;
   background: repeating-linear-gradient(90deg, #ddd 0, #ddd 6px, transparent 6px, transparent 12px);
-  margin: 12px 0;
+  margin: 14px 0;
 }
+
+/* settings box (inside Getting Started) */
+.setup-box {
+  background: var(--coral-light); border: 2px dashed var(--coral);
+  border-radius: 14px; padding: 12px 14px; margin-top: 10px;
+}
+.setup-box-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.setup-box-row:last-child { margin-bottom: 0; }
+.setup-box-label {
+  font-size: 0.72rem; font-weight: 800; color: var(--coral);
+  white-space: nowrap; min-width: 4.5em;
+}
+.pill-group { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+.lang-pill {
+  border: 2px solid var(--border); border-radius: 99px;
+  padding: 0.35em 0.9em; font-family: var(--font);
+  font-size: 0.75rem; font-weight: 800; cursor: pointer;
+  background: white; color: var(--text);
+  transition: transform 0.1s, background 0.15s, color 0.15s;
+}
+.lang-pill:active { transform: scale(0.95); }
+.lang-pill.active { background: var(--coral); color: white; }
+.lang-pill.disabled { opacity: 0.35; pointer-events: none; }
+.level-pill {
+  border: 2px solid var(--border); border-radius: 99px;
+  padding: 0.35em 0.85em; font-family: var(--font);
+  font-size: 0.72rem; font-weight: 800; cursor: pointer;
+  background: white; color: var(--text);
+  transition: transform 0.1s, background 0.15s, color 0.15s;
+}
+.level-pill:active { transform: scale(0.95); }
+.level-pill.active { color: white; }
+.level-pill[data-level="A1"].active  { background: #e85858; }
+.level-pill[data-level="A2"].active  { background: #e88030; }
+.level-pill[data-level="B1"].active  { background: #d8b028; }
+.level-pill[data-level="B2"].active  { background: #60b050; }
+.level-pill[data-level="C1"].active  { background: #48a0d0; }
+.level-pill[data-level="C1+"].active { background: #b068c8; }
+.setup-box input[type="text"] {
+  flex: 1; min-width: 100px;
+  border: 2px solid var(--border);
+  border-radius: 99px; padding: 0.45em 1em;
+  font-family: var(--font); font-size: 0.88rem; font-weight: 700;
+  outline: none; background: white; color: var(--text);
+}
+.setup-box input[type="text"]:focus { border-color: var(--coral); }
 
 /* prompt box */
 .prompt-box {
   background: #1e1e2e; border: 2px solid var(--border);
   border-radius: 14px; padding: 14px 16px;
-  font-family: monospace; font-size: 10.5px; line-height: 1.75;
+  font-family: monospace; font-size: 0.69rem; line-height: 1.75;
   color: #cdd6f4; white-space: pre-wrap; word-break: break-word;
-  max-height: 220px; overflow-y: auto; margin-top: 10px;
+  max-height: 260px; overflow-y: auto; margin-top: 10px;
 }
 .prompt-name-highlight  { color: #a6e3a1; font-weight: 800; }
 .prompt-level-highlight { color: #f9e2af; font-weight: 800; }
 .copy-btn {
   display: flex; align-items: center; justify-content: center; gap: 6px;
-  margin-top: 10px; width: 100%; padding: 11px 20px 12px;
+  margin-top: 10px; width: 100%; padding: 0.85em 1.4em;
   border-radius: 99px; background: #1e1e2e; color: #cdd6f4;
   border: 2.5px solid var(--border); font-family: var(--font);
-  font-size: 13px; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+  font-size: 0.84rem; font-weight: 800; cursor: pointer; letter-spacing: 1px;
   transition: background 0.15s, color 0.15s;
 }
 .copy-btn.copied { background: var(--mint); color: white; }
+
+/* app link */
+.app-link {
+  display: flex; align-items: center; gap: 14px;
+  background: white; border: 2px solid var(--border); border-radius: 16px;
+  padding: 12px 16px; margin-bottom: 12px; text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.12s; box-shadow: 3px 3px 0 var(--border);
+}
+.app-link:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--border); }
+.app-link img {
+  width: 52px; height: 52px; border-radius: 12px;
+  border: 1.5px solid #ddd; background: white; flex-shrink: 0;
+}
+.app-link .app-name { font-size: 1rem; font-weight: 800; color: var(--text); }
+.app-link .app-sub { font-size: 0.81rem; font-weight: 700; color: #888; margin-top: 3px; }
+.app-note {
+  font-size: 0.75rem; font-weight: 700; color: #888; line-height: 1.8; margin-top: 10px;
+}
 
 /* chart btn */
 .chart-btn-wrap { text-align: center; margin-top: 18px; }
@@ -277,8 +291,8 @@ body::before {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--lavender); color: white;
   border: 2.5px solid var(--border); border-radius: 99px;
-  padding: 12px 28px 13px; font-family: var(--font);
-  font-size: 14px; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+  padding: 0.8em 1.9em; font-family: var(--font);
+  font-size: 0.88rem; font-weight: 800; cursor: pointer; letter-spacing: 1px;
   transition: transform 0.12s, box-shadow 0.12s;
   box-shadow: 4px 4px 0 var(--border);
 }
@@ -286,7 +300,7 @@ body::before {
 .chart-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--border); }
 .chart-btn .btn-dot { width: 8px; height: 8px; background: white; border-radius: 99px; border: 1.5px solid var(--border); flex-shrink: 0; }
 
-.footer { text-align: center; margin-top: 28px; font-size: 10px; font-weight: 700; color: #bbb; letter-spacing: 1px; }
+.footer { text-align: center; margin-top: 28px; font-size: 0.72rem; font-weight: 700; color: #bbb; letter-spacing: 1px; }
 
 /* --- Modal --- */
 .modal-overlay {
@@ -304,27 +318,27 @@ body::before {
   position: absolute; top: 14px; right: 16px;
   background: var(--coral-light); border: 2px solid var(--border);
   border-radius: 99px; width: 30px; height: 30px;
-  font-size: 14px; font-weight: 800; cursor: pointer;
+  font-size: 0.88rem; font-weight: 800; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font); color: var(--border); transition: transform 0.1s;
 }
 .modal-close:hover { transform: scale(1.1); }
-.modal-title { font-size: 14px; font-weight: 800; color: var(--lavender); margin-bottom: 12px; -webkit-text-stroke: 0.5px var(--border); paint-order: stroke fill; }
-.modal-subtitle { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 12px; line-height: 1.7; }
+.modal-title { font-size: 0.88rem; font-weight: 800; color: var(--lavender); margin-bottom: 12px; -webkit-text-stroke: 0.5px var(--border); paint-order: stroke fill; }
+.modal-subtitle { font-size: 0.72rem; font-weight: 700; color: #888; margin-bottom: 12px; line-height: 1.7; }
 .json-area {
   width: 100%; height: 190px;
   border: 2px dashed var(--lavender); border-radius: 14px;
-  padding: 12px 14px; font-family: monospace; font-size: 11px;
+  padding: 12px 14px; font-family: monospace; font-size: 0.72rem;
   resize: vertical; outline: none;
   background: var(--lavender-light); color: var(--text); line-height: 1.6;
 }
-.json-error { font-size: 11px; color: #b83030; margin-top: 6px; background: #fce8e8; border-radius: 8px; padding: 5px 10px; border: 1px dashed var(--coral); font-weight: 700; display: none; }
+.json-error { font-size: 0.72rem; color: #b83030; margin-top: 6px; background: #fce8e8; border-radius: 8px; padding: 5px 10px; border: 1px dashed var(--coral); font-weight: 700; display: none; }
 .json-error.show { display: block; }
 .gen-btn {
-  margin-top: 10px; width: 100%; padding: 12px 24px 13px;
+  margin-top: 10px; width: 100%; padding: 0.85em 1.7em;
   border-radius: 99px; background: var(--lavender); color: white;
   border: 2.5px solid var(--border); font-family: var(--font);
-  font-size: 13px; font-weight: 800; cursor: pointer; letter-spacing: 1px; transition: transform 0.1s;
+  font-size: 0.84rem; font-weight: 800; cursor: pointer; letter-spacing: 1px; transition: transform 0.1s;
 }
 .gen-btn:active { transform: scale(0.98); }
 #chart-output { margin-top: 16px; display: none; }
@@ -333,156 +347,106 @@ body::before {
 /* score card */
 .sc-wrap { font-family: var(--font); border: 2.5px solid var(--border); border-radius: 24px; padding: 10px 18px 18px; }
 .sc-header-badge { display: flex; justify-content: center; margin-bottom: 6px; }
-.sc-badge { display: inline-flex; align-items: center; gap: 5px; color: white; border-radius: 99px; border: 2px solid var(--border); padding: 3px 14px 4px; font-size: 10px; font-weight: 800; letter-spacing: 2px; }
+.sc-badge { display: inline-flex; align-items: center; gap: 5px; color: white; border-radius: 99px; border: 2px solid var(--border); padding: 0.25em 1em; font-size: 0.63rem; font-weight: 800; letter-spacing: 2px; }
 .sc-dot { width: 6px; height: 6px; border-radius: 99px; border: 1px solid var(--border); }
 .sc-score-row { display: flex; align-items: center; margin-bottom: 8px; }
 .sc-cefr-col { width: 44px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; }
 .sc-center { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .sc-score-card { background: white; border-radius: 20px; border: 2.5px solid var(--border); text-align: center; width: 140px; padding: 8px 0 11px; }
-.sc-total { font-size: 44px; font-weight: 800; line-height: 1; -webkit-text-stroke: 3px var(--border); paint-order: stroke fill; }
-.sc-max { font-size: 11px; color: #333; font-weight: 700; }
-.sc-date { font-size: 11px; color: #333; font-weight: 700; text-align: center; }
+.sc-total { font-size: 2.75rem; font-weight: 800; line-height: 1; -webkit-text-stroke: 3px var(--border); paint-order: stroke fill; }
+.sc-max { font-size: 0.69rem; color: #333; font-weight: 700; }
+.sc-date { font-size: 0.69rem; color: #333; font-weight: 700; text-align: center; }
 .sc-bar-col { width: 44px; flex-shrink: 0; display: flex; justify-content: flex-end; }
 .sc-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.sc-bar-pct { font-size: 10px; font-weight: 800; -webkit-text-stroke: 1px var(--border); paint-order: stroke fill; line-height: 1; }
+.sc-bar-pct { font-size: 0.63rem; font-weight: 800; -webkit-text-stroke: 1px var(--border); paint-order: stroke fill; line-height: 1; }
 .sc-bar-track { width: 13px; height: 76px; border-radius: 99px; border: 2px solid var(--border); position: relative; overflow: hidden; }
 .sc-bar-fill { position: absolute; bottom: 0; left: 0; right: 0; border-radius: 99px; }
 .sc-radar-area { background: white; border-radius: 18px; padding: 10px 4px; margin-bottom: 10px; }
-.sc-conversion-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; margin-bottom: 10px; }
+.sc-conversion-grid { display: grid; gap: 7px; margin-bottom: 10px; }
 .sc-conv-card { background: white; border-radius: 14px; border: 2px dashed; padding: 6px 8px 10px; text-align: center; }
-.sc-conv-label { font-size: 9px; color: #333; margin-bottom: 3px; font-weight: 700; }
-.sc-conv-value { font-size: 14px; font-weight: 800; -webkit-text-stroke: 1.5px var(--border); paint-order: stroke fill; }
-.sc-conv-unit { font-size: 9px; font-weight: 700; color: #333; -webkit-text-stroke: 0; }
+.sc-conv-label { font-size: 0.56rem; color: #333; margin-bottom: 3px; font-weight: 700; }
+.sc-conv-value { font-size: 0.88rem; font-weight: 800; -webkit-text-stroke: 1.5px var(--border); paint-order: stroke fill; }
+.sc-conv-unit { font-size: 0.56rem; font-weight: 700; color: #333; -webkit-text-stroke: 0; }
 .sc-comment-box { background: white; border-radius: 14px; border: 2px dashed; padding: 12px 14px 13px; position: relative; }
-.sc-comment-label { position: absolute; top: -10px; left: 12px; color: white; border: 1.5px solid var(--border); font-size: 9px; font-weight: 800; border-radius: 99px; padding: 2px 10px 3px; line-height: 1.4; }
-.sc-comment-text { font-size: 10px; color: #333; line-height: 1.8; padding-top: 2px; font-weight: 700; }
+.sc-comment-label { position: absolute; top: -10px; left: 12px; color: white; border: 1.5px solid var(--border); font-size: 0.56rem; font-weight: 800; border-radius: 99px; padding: 0.2em 1em; line-height: 1.4; }
+.sc-comment-text { font-size: 0.63rem; color: #333; line-height: 1.8; padding-top: 2px; font-weight: 700; }
 </style>
 </head>
 <body>
 <div class="page-wrap">
 
-  <!-- Setup Panel -->
-  <div class="setup-panel">
-    <div class="setup-panel-title">SETTINGS</div>
-    <div class="setup-row">
-      <span class="setup-label" style="color: var(--coral);">Language</span>
-      <div class="level-pills">
-        <button class="lang-pill active" data-lang="AEP" data-icon="data:image/jpeg;base64,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" onclick="selectLang(this)" title="English (AEP)">🇺🇸</button>
-        <button class="lang-pill" data-lang="TFP" data-icon="data:image/jpeg;base64,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" onclick="selectLang(this)" title="Français (TFP)">🇫🇷</button>
-        <button class="lang-pill" data-lang="JKP" data-icon="data:image/jpeg;base64,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" onclick="selectLang(this)" title="한국어 (JKP)">🇰🇷</button>
-      </div>
-    </div>
-    <div class="setup-row">
-      <span class="setup-label" style="color: var(--mint);">Name</span>
-      <input type="text" id="username-input" value="CA" placeholder="Your name" maxlength="20">
-    </div>
-    <div class="setup-row">
-      <span class="setup-label" style="color: var(--lavender);">Level</span>
-      <div class="level-pills">
-        <button class="level-pill" data-level="A1" onclick="selectLevel(this)">A1</button>
-        <button class="level-pill" data-level="A2" onclick="selectLevel(this)">A2</button>
-        <button class="level-pill active" data-level="B1" onclick="selectLevel(this)">B1</button>
-        <button class="level-pill" data-level="B2" onclick="selectLevel(this)">B2</button>
-        <button class="level-pill" data-level="C1" onclick="selectLevel(this)">C1</button>
-        <button class="level-pill" data-level="C1+" onclick="selectLevel(this)">C1+</button>
-      </div>
-    </div>
-    <button class="apply-btn" id="apply-btn" onclick="applySettings()">✓ Apply</button>
+  <!-- Guide language toggle -->
+  <div class="glang-bar">
+    <button class="glang-pill active" data-glang="ja" onclick="setGuideLang('ja')">日本語</button>
+    <button class="glang-pill" data-glang="en" onclick="setGuideLang('en')">English</button>
   </div>
 
   <!-- Hero -->
   <div class="hero">
     <div class="hero-badge"><span id="guide-badge">AEP GUIDE</span></div>
-    <h1><span class="username" id="hero-name">CA</span>'s <span id="hero-lang-title">English</span><br>Practice System</h1>
-    <p id="hero-subtitle">Alex English Project へようこそ。<br>このガイドを読めば、今日から始められます。</p>
+    <h1 id="hero-title"></h1>
+    <p id="hero-sub"></p>
   </div>
 
   <!-- Overview -->
   <div class="card mint">
     <div class="card-tag">OVERVIEW</div>
-    <h2><span class="dot"></span><span id="overview-title">AEP とは？</span></h2>
+    <h2><span class="dot"></span><span id="ov-title"></span></h2>
     <div class="mode-block" style="background: var(--mint-light); border-color: var(--mint);">
-      <p id="overview-desc">AEP（Alex English Project）は、AIの友人「Alex」との英会話を通じて、自然なアメリカ英語を身につけるシステムです。<br>レッスンではなく、<strong>友達との会話</strong>として設計されています。</p>
+      <p id="ov-body"></p>
     </div>
-    <div class="tip-box">
-      <strong id="overview-tip-label">目標：</strong><span id="overview-tip-body">フォーマルな教科書英語ではなく、友達に話しかけるような自然で温かいアメリカ英語を身につけること。</span>
-    </div>
+    <div class="tip-box" id="ov-tip"></div>
   </div>
 
   <!-- Modes -->
   <div class="card sky">
     <div class="card-tag">HOW TO USE</div>
-    <h2><span class="dot"></span><span id="modes-title">2つのモード</span></h2>
+    <h2><span class="dot"></span><span id="modes-title"></span></h2>
     <div class="mode-block">
-      <div class="mode-label" style="background: var(--sky);"><span id="mode1-label">MODE 1 — ALEX（友達モード）</span></div>
-      <p id="mode1-desc">英語で話しかけるだけでスタート。Alexは友達として自然に会話してくれます。<br>
-      あなたが<strong>80%</strong>話す。Alexは<strong>20%</strong>だけ。<br>
-      一度に質問はひとつ。ミスは「リキャスト」で自然に修正されます。</p>
+      <div class="mode-label" style="background: var(--sky);" id="mode1-label"></div>
+      <p id="mode1-body"></p>
     </div>
     <div class="mode-block">
-      <div class="mode-label" style="background: var(--coral);"><span id="mode2-label">MODE 2 — ANALYST（分析モード）</span></div>
-      <p id="mode2-desc">会話が終わったら、日付とセッション番号を入力してください。<br>
-      例：<span class="trigger">2026/04/08 #1</span><br>
-      Alexがコーチとして全体を振り返り、<strong>日本語で</strong>フィードバックします。</p>
+      <div class="mode-label" style="background: var(--coral);" id="mode2-label"></div>
+      <p id="mode2-body"></p>
     </div>
   </div>
 
   <!-- Commands -->
   <div class="card orange">
     <div class="card-tag">COMMANDS</div>
-    <h2><span class="dot"></span><span id="commands-title">特殊コマンド一覧</span></h2>
-    <ul class="step-list">
-      <li>
-        <span class="step-num" style="background: var(--orange);">1</span>
-        <div><span class="cmd" id="cmd1-key">まとめ</span><span id="cmd1-desc"> → 会話の全文書き起こし（英語＋日本語訳）を出力</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">2</span>
-        <div><span class="cmd" id="cmd2-key">確認</span><span id="cmd2-desc"> → あなたが言いたかったことを箇条書きで整理（修正可）</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">3</span>
-        <div><span class="cmd" id="cmd3-key">理想</span><span id="cmd3-desc"> → 「こう言えてたら？」の理想の会話を日英で表示</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">4</span>
-        <div><span class="cmd" id="cmd4-key">英語</span><span id="cmd4-desc"> → 理想の会話を英語のみで再出力</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">5</span>
-        <div><span class="cmd" id="cmd5-key">日記</span><span id="cmd5-desc"> → 今日の会話を日記形式で日英出力</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">6</span>
-        <div><span class="cmd" id="cmd6-key">音読</span><span id="cmd6-desc"> → 日記英文の音読をナンバリングして発音フィードバック</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">7</span>
-        <div><span class="cmd-apple" id="cmd-harvest-label">りんご</span><span id="flow6-desc"> → 今日の重要単語をchiilingo用JSONで出力し、アプリで定着練習！</span></div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--orange);">8</span>
-        <div><span class="cmd" id="cmd7-key">CA / Alex</span><span id="cmd7-desc"> → 「理想」のスクリプトで1行ずつロールプレイ練習。Alexの台詞を入力すると発音フィードバックを受け取れる</span></div>
-      </li>
-
-    </ul>
-    <div class="tip-box" style="margin-top:12px;">
-      <span id="cmd-tip">好きなコマンドを試してみよう。全部やらなくてもオッケー！</span>
-    </div>
+    <h2><span class="dot"></span><span id="commands-title"></span></h2>
+    <ul class="step-list" id="commands-list"></ul>
+    <div class="tip-box" style="margin-top:12px;" id="commands-tip"></div>
   </div>
 
   <!-- Getting Started -->
   <div class="card coral">
     <div class="card-tag">GETTING STARTED</div>
-    <h2><span class="dot"></span><span id="gs-title">始め方</span></h2>
+    <h2><span class="dot"></span><span id="gs-title"></span></h2>
 
     <div class="setup-step">
       <div class="setup-step-num">1</div>
       <div class="setup-step-body">
-        <div class="setup-step-title" id="gs-step1-title">名前とレベルを設定する</div>
-        <div class="setup-step-desc">
-          <span id="gs-step1-prefix">上部の</span> <span class="hl">SETTINGS</span> <span id="gs-step1-mid">で名前とレベルを選んで</span> <span class="hl">Apply</span> <span id="gs-step1-suffix">を押してください。</span><br>
-          <span id="gs-step1-desc">プロンプト内の名前・レベルが自動で書き換わります。</span>
+        <div class="setup-step-title" id="st1-title"></div>
+        <div class="setup-step-desc" id="st1-desc"></div>
+        <div class="setup-box">
+          <div class="setup-box-row">
+            <span class="setup-box-label" id="lbl-native"></span>
+            <div class="pill-group" id="native-pills"></div>
+          </div>
+          <div class="setup-box-row">
+            <span class="setup-box-label" id="lbl-target"></span>
+            <div class="pill-group" id="target-pills"></div>
+          </div>
+          <div class="setup-box-row">
+            <span class="setup-box-label" id="lbl-name"></span>
+            <input type="text" id="username-input" value="CA" maxlength="20">
+          </div>
+          <div class="setup-box-row">
+            <span class="setup-box-label" id="lbl-level"></span>
+            <div class="pill-group" id="level-pills"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -492,15 +456,10 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">2</div>
       <div class="setup-step-body">
-        <div class="setup-step-title" id="gs-step2-title">プロンプトをコピーする</div>
-        <div class="setup-step-desc">
-          <span id="gs-step2-desc1">下のボックスにプロンプトが表示されています。</span><br>
-          <span class="hl" id="gs-copy-btn-label">プロンプトをコピー</span> <span id="gs-step2-desc2">ボタンを押してクリップボードにコピーしてください。</span>
-        </div>
+        <div class="setup-step-title" id="st2-title"></div>
+        <div class="setup-step-desc" id="st2-desc"></div>
         <div class="prompt-box" id="prompt-preview"></div>
-        <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">
-          <span>&#x2398;</span>&nbsp;プロンプトをコピー
-        </button>
+        <button class="copy-btn" id="copy-btn" onclick="copyPrompt()"></button>
       </div>
     </div>
 
@@ -509,11 +468,8 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">3</div>
       <div class="setup-step-body">
-        <div class="setup-step-title" id="gs-step3-title">Claude.ai でプロジェクトを作成する</div>
-        <div class="setup-step-desc">
-          <span id="gs-step3-desc1">サイドバーの</span> <span class="hl" id="gs-new-project-label">＋新規プロジェクト</span> <span id="gs-step3-desc2">をタップ。</span><br>
-          <span id="gs-step3-desc3">プロジェクト名は</span> <span class="hl" id="gs-step3-project">AEP</span> <span id="gs-step3-desc4">など好きな名前でOK。</span>
-        </div>
+        <div class="setup-step-title" id="st3-title"></div>
+        <div class="setup-step-desc" id="st3-desc"></div>
       </div>
     </div>
 
@@ -522,11 +478,8 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">4</div>
       <div class="setup-step-body">
-        <div class="setup-step-title" id="gs-step4-title">プロジェクトの指示に貼り付けて保存</div>
-        <div class="setup-step-desc">
-          <span class="hl" id="gs-instructions-label">プロジェクトの指示を設定</span> <span id="gs-step4-desc1">を開き、</span><br>
-          <span id="gs-step4-desc2">コピーしたプロンプトを貼り付けて保存してください。</span>
-        </div>
+        <div class="setup-step-title" id="st4-title"></div>
+        <div class="setup-step-desc" id="st4-desc"></div>
       </div>
     </div>
 
@@ -535,11 +488,8 @@ body::before {
     <div class="setup-step">
       <div class="setup-step-num">5</div>
       <div class="setup-step-body">
-        <div class="setup-step-title" id="gs-step5-title">英語で話しかける</div>
-        <div class="setup-step-desc">
-          <span id="gs-step5-prefix">プロジェクト内で</span> <span class="hl" id="gs-new-chat-label">新規チャット</span> <span id="gs-step5-mid">を開き、</span><br>
-          <span id="gs-step5-desc">英語で何か話しかければ Alex がすぐに応えてくれます。</span>
-        </div>
+        <div class="setup-step-title" id="st5-title"></div>
+        <div class="setup-step-desc" id="st5-desc"></div>
       </div>
     </div>
   </div>
@@ -547,74 +497,36 @@ body::before {
   <!-- Flow -->
   <div class="card lavender">
     <div class="card-tag">FLOW</div>
-    <h2><span class="dot"></span><span id="flow-title">1回のセッションの流れ</span></h2>
-    <ul class="step-list">
-      <li>
-        <span class="step-num" style="background: var(--lavender);">1</span>
-        <div id="flow1">AEPプロジェクトを開いて、英語で話しかける</div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--lavender);">2</span>
-        <div id="flow2">Alexと自由に会話（テーマは何でもOK）</div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--lavender);">3</span>
-        <div id="flow3">日付＋番号を入力してアナリストモードへ</div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--lavender);">4</span>
-        <div id="flow4">JSONが出力されたら下のボタンからスコアカードを確認</div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--lavender);">5</span>
-        <div id="flow5">特殊コマンドで振り返り（好きなものだけでOK）</div>
-      </li>
-      <li>
-        <span class="step-num" style="background: var(--green);">6</span>
-        <div><span class="cmd-apple" id="flow-harvest-key">りんご</span><span id="flow-harvest-desc"> でlingoアプリと連携して、定着するまで練習！</span></div>
-      </li>
-    </ul>
+    <h2><span class="dot"></span><span id="flow-title"></span></h2>
+    <ul class="step-list" id="flow-list"></ul>
   </div>
 
-  <!-- chiilingo card -->
+  <!-- lingo app card -->
   <div class="card green">
-    <div class="card-tag">CHIILINGO</div>
-    <h2><span class="dot"></span><span id="lingo-title">AEP × chiilingo 連携</span></h2>
-    <a id="lingo-link" href="https://youtora-lang.github.io/lingo/chiilingo" target="_blank" style="display:flex;align-items:center;gap:14px;background:white;border:2px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:12px;text-decoration:none;transition:transform 0.12s,box-shadow 0.12s;box-shadow:3px 3px 0 var(--border);" onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='5px 5px 0 var(--border)'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 var(--border)'">
-      <img id="lingo-icon" src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACAAIADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD7LooooAKKKKACiq+oXtnp9o93f3cFpbxjLzTyBEUe7HgVwV98cPhTZztDN40093U4PkLJMv5opH61cKc5/CrkuSjuz0WiuR8L/EzwD4muBbaJ4s0u7uGOFh87ZI30R8E/gK66lKMou0lYaaewUUUVIwooooAKKKKACiiigAooooAKyfGOv2HhbwvqPiHU2K2lhbtNJjq2Oij3JwB7mtavNP2oNPu9R+B3iOKzV3kiijuGRRkskcqu/wD46CfwrSlFSnGL2bJm2oto+UtV1P4h/HfxybSGOS6bmSGyWTbaWMWcbmJ49AXOWY9Owr07R/2Tr+S1Dax41gt58fctLEyIP+BM6k/kKofsU+LNA0bWda0DVLiG0vdUML2c0pCrLsDAxbj/ABfNuA75PevrnP1/KvUxmKq0J+yp+6kclGlGpHmlqz4x8d/szeMtDspL/Q7608RRQgsYY4zDcYHOVUkhj7Bs+gNdN+yl8V9cfUb7wr4nvJbzS7GwlvBeXLFpLFIsblkY87MHjdyCMew9R+Lvxz8LfD7U4NKaCbWdQY7riCzlT/Rk/wBsk4DHsvXjJxxnsrLTvDHinwlPd2en262PiSx3zyJAsck8cqdXIGS2G75wazqYmpOjavG6ezKjSip/u3t0KPw3+J3g/wCIL3sXhrUXnmsyDLFLA0T7CcK4DDlTjr+eK7OvhH4MXt58O/2hbTS7mUqE1GTRrzJwHR22Bj/wIRtX3cK5sZh1QmlHZq6NaFR1I67hRRRXIbBRRRQAUUUUAFFFFABTZY0ljaORFdGBVlYZBB6ginVw/wAWPif4Z+HGmrNrE7TX0yk2thBgzTY746KuerHj6niqhCU5csVdilJRV2eE/F39mXUV1GfU/h89vPZysX/su4k2PCTziJz8rL6BsEdMmvLNW8MfFvRrcafqx1zTbUDAS51lYose26YDFbvjD42/E74gap/ZehSXWmwzErFp+jqzTOP9qQDe3vjaPaotL+APxC1OL+09f/szQIX5a41m+Ak/EDcc/UivoqcqlKKWIkvnqzzZKMn+7TM7wB4J8GyarFcePviB4f0+wR90tnZ3ZuJ5vVS6AqgPcgsfp1r7Q+H/AIy8EeJbVtP8Ha1p97HYRIht7dsGGMDavykA7eMZ6V8nL8F/CtufK1L42eD4Jh1SJlcD8TKK9H+BWgfDP4beILzW7j4taBqt3PbG1jRLiOFEQsrMT87FiSo9AK5caqdaPNzNtbK2n5GtByg7WVvU8o/ahtTofx+1S8tV2GU2uoJj+/sXJ/76jNfVGn/Gv4W3QRR410mORgCVkkKYJ7ZYAV5j8dPCnw3+JHiG1121+KGh6Tex24tpg0qTJKiklTw6kMNxHcEfSvOX+CPhqY+Xp/xn8KTSnosoCA/iJDWbrYSvSgqk7NKx1fUsZTlJxpOz8mfYei+ItA1td2ja3puojGf9Fukl/wDQSa1K+GNT+APxC05DqXh99L1+KP5hPo98PMH0B2nP0JqTwf8AGz4nfD/VP7L12S71KGE4l0/WFZZkH+zIRvX2zuHtUPL1NXozUjL6w4O1SNj7jorh/hP8UPDHxH01ptHnaC+hUG6sJyBNDnvxwy5/iHHrg8V3FedOEoPlkrM6IyUldBRRRUjCigUUAcR8afiDZfDnwXPrU6pPeyN5NhalsedMRkZ/2QMsx9B6kV8feBvCnib4yeM9R1zXNVMNlEfP1jWLjASBAMhFB4BCg4XooGT77H7T/iW+8b/GVvD+m7p4dMlXTLKFej3DMBIfqXIXPoldb8YobLwD4Y8K/DKVdRtfCTky6/qViqmW+uQAzRjPXBwxB7bB/DXuYen7CnFR+OX4L+vxOCrL2km3sjNHxL0LQby38FfCJLHwzpc8hgufFeoxb5Z9o+Z8kcL05b1GFUEV5rqGr3PjGfTfD3iG/s/NGpSibxJfSySb1PB3FuAigKRgDtnGaLZ75tC0CDxM2qJ4AXUpzbSwJGZSR9/b6seODwOcYxyW7XraDosGvtqi/D1NXm8iWFIzKxH39vqxXHB4HOMYzXXClGGq379evXq/I55Tct/6/wCB5lG0WwvYNP8ACLxaNYouqyCTxC6uAyng7jj/AFYAVumemetVNUu7a30E+Ho9M06d7fUpG/tmFW3zjG3YCeNmMMO/Tsa2YDfHw/pcOsNqi/Dtdal8qWNI/NLY+bHq5XHy9Ac4xjNU9WfxF/wgqwWou28FjWJfsUkyIC0+P4iOc7MZXoCD9Tunr8+/9a+RFv6/r8z6Th/Zj01oUb/hL9QGVB/48o/T608/swaYRg+ML/8A8Ao/8a5SL9n/AOJDxIw1/TMFQR/xMJ//AIml/wCGffiT/wBB/S//AAYT/wDxFfCuK/59n64sXUt/yMl/4CjtdH/Z0GjXS3WkeP8AWdPnU5EltAsbf+Otz+Nd5qnwzsPE3hg6L47vB4kkQYt9Qa0S3uoOOqunf8MHuDXh/wDwz78Sf+g/pf8A4MJ//iKP+GffiT/0H9L/APBhP/8AEVdOc6TvCLXzODGYehjVbEY6Mv8AtxX+/c85+Ivgvxb8EfHdnqOm6hMIt5k0zVI1wJAPvRyL03Y+8vRhyPb68+CvxBsviN4Lh1mFEgvYm8i/tQ2fJmABOO+0j5lPofUGuB8M/CTxTcfDnWvAfjS+06906dfP0u4ineSWzuQSQRuUfLnnr3YdGrxX9mDxJfeCPjMnh/Ud0MOpytpd7CeiTqxEZ+ocFfo9e8p/XsO5SVpx/FHxGJoRwWJdOE1KD2aPuCiiivKNAFV9TuksdNub2T7lvE8rfRVJ/pVisP4hBj4C8QBPvnS7nb9fKanFXaQnsfF/7MVn/wAJJ8edN1C//eCE3Gqys398AkE/8DkB/CsjXtV+0eJYPHurTad4itdS1i7l/sJ7l96AMQm9B9wEYwR129+3T/sckf8ACfasqj96fDlx5X13RV55ot7b+G7PQ/EHh+5vx4ngmka5insg0ES4whXI+cnnIPTI9K+navWl5JL8/u9Tym/cX9diXTxbaZb6L4kuTpmsadLqEu3w8bmQsgH3dyj7obOAwzu2988FiLawt9J8T3B0zVNOk1OXb4dNzIWUDldy9lbJAbknHfOKSy1GHRU0vxRo11f/APCVJezS3MUtkGt4gc7GXI+bv8p6ZHpRZ6jDpUeneKdMur//AIS1NQlnmiksg1vGpyUYZHzHOflPAyPStWm/69f6uZ/1/X+QtottaWum+J520zUNNbVpAPDn2mTcqjkZXsrZK7uScd84qnqtn53hv+3bfUrCC0uNTkji0aO4dpLcdQ+w8beSu7vj8BbtdRh09LLxVYXV9/wlqanJcSxPZA26J1VhkfMd2flPGCOwqpqa6df6KdWln1GTxLc6jI9zb/ZNsAiPIYMB13Z+XsCPSmrp3/r+vMX9f1/ke6xXn7SXlriPxHjAx/o9v/hS/bP2k/8Ann4j/wC/Fv8A4U6L9pHxqkaoPDeiYUAcxT//ABVOH7Sfjb/oXNE/79T/APxVfBuUL/Ez9ljhswt/udH8P8xn2z9pP/nn4j/8B7f/AApPtn7Sf/PPxH/34t/8Kl/4aT8bf9C5on/fqf8A+KpP+GkvG3/Qt6J/36n/APiqOaH8zH9WzD/oDo/h/mTaRqP7RcGrWc13aeIJ7aO4jaaJ4IMOgYblOBnkZrzn9p6zPhn49alf2QMRla31SIjjDkAk/wDfcZP416A37SfjYKSPDmidP+eU/wD8VXJ/toyib4k6fMyqsr6BC0oHYl5TXs5JJOu4pt3XU+P4soYiEKcq1GFPe3J123PtDS7pL7Tba9j+5cQpKv0ZQf61YrD+H4YeBNAD/f8A7Mtt318pa3K5ZKzaPDWqCq+pWyXun3FnJ9yeJom+jAg/zqxQaQz4V/Zfuz4d+Pmm6fcny/MNzpkoP9/aQB/31GBXvWvftD6Lo2t3+kXfhTVvPsrmS3kxJFglGIyOehxn8a8E/aA0678BftAXWq2CNH5l3FrVmcYBJbcwH/bRXH419F+KZPgg9tp3irxPpulq3iGEXcFxLaSSGb5VJyUBG4AjIr0M2UpqFaLsmjqyH6t7WVLEUpT7KO5g/wDDTPh7/oVdX/7+Q/40f8NM+Hv+hV1f/v5D/jS/2n+zL/z7aJ/4L5//AImj+1P2Zf8An20T/wAF8/8A8TXi80/5kfV/VMv/AOgKr+In/DTPh7/oVdX/AO/kP+NL/wANM+Hv+hV1f/v5D/jR/an7Mv8Az7aJ/wCC+f8A+Jo/tT9mX/n20T/wXz//ABNHNP8AnQfVMv8A+gKr+If8NMeHf+hV1f8A7+Q/40n/AA0z4d/6FTV/+/kP+NL/AGp+zL/z7aJ/4L5//iaP7U/Zl/59tE/8F8//AMTRzT/mQfVcv/6Aqv4if8NMeHf+hU1f/v5D/jR/w0x4d/6FTV/+/kP+NL/an7Mv/Pton/gvn/8AiaP7U/Zl/wCfbRP/AAXz/wDxNHNP+dB9Vy//AKAqv4l3Qf2htF1nW7HSLTwpqxnvbiO3jzJFgF2Ayeegzn8K8E/agu/+Ei+Pmp2Fqxl8s22mRgf39oyP++pCK+i/C0nwPW31HxV4Y03S2bw9Cbua4itJIzCArEYLgDJAOBXzr+z/AKdd+Pv2gLXVr5C+y7l1q8OMgENuUH/toyD8K9nKVKCnWk7pI+Uz76t7WNLD05Q7qW/9WPuPTrZLKwt7OP7kESxL9FAH9KnoHSiuA5QooooA8L/bC8BT+JfBcHiTS7ZptR0Ms8iIuWktW/1mPUqQHx6Bq8p+AfiHw14w8NRfCTx1LJDCLjz9DvUlCOjk5MAYggZy23sQxXrtr7KIBBBGQa+Sv2ivgJd6bd3PizwNZPPp7sZbvTYFzJbNnJeJRyUzztHK9sjgelhqlOtSeGq7dGY81XD1ViKLtJdj0O8/Z++GdnIsd3rur27sNyrLfwqSPXBSoP8AhRPwp/6GbUf/AAZwf/E14x4W+MllqeixeGvitoC+KNMi+WDUFwL627feyN+PXIb13Vo/8I98BdT/ANJsPibe6REefs19pxaRPbOwZ/WuDEZbWoysqd15H1WAz/28P3+MnB+l1+f6Hrdr8AfhhdTCG28QarNIQSEj1GFjx7BK4jx34V+APgrUW07V/E3iG5v4z+9s7OZZpI/Z9seFPsSDXO3XxB+H3w70e9s/hbFear4ivIjA+vXkPlrAh6+UpAOe4GAM4JJxis34B/BW8+JQutc1u9vNP0VZCFnRQZbyUn5yrNkYB6vg5JwOhx04fLKap+0xK5V26nBjOI8Yqvs8LiJSXd6fqztPAfhb4A+NdRXTtJ8S+Iba/kOIrS8mWF5PZNyYY+wJNdvc/AD4Y2sxhufEGqwyAAlJNQhUjPTgpXinx8+Cl58NUttd0S9vNQ0VnCvO6gS2cuflLMuBgno4AwRg9RnStfiF8PviJo1lZ/FSK80rxBZRCCPXrKHzBOg6eaoBOe5GCM5IIzijEZZTdNVMMuZduosHxHjXVVPFYiUV3Wv4XR6p/wAKJ+FI/wCZm1H/AMGcH/xNT2n7P3wzvJGjtNe1e4dRuKxX8LED1wEryP8A4R74C6b/AKXf/E281aEci1sdOKyP7Z2HH6Vm+KPjHY6bos3hr4UaAPC+mzDbcag+Df3Pb72Tsz65Lem2ubD5bWqys6dl5noY/P8A2EP3GMnN+ll+d/wNb49+IfDXg7w1N8JfAs0k0TXPn67evIHd3BBEBYAA4wu7HAChepavVf2PfAU/hrwXP4l1S2aHUNcKvEjrho7ZeY8+hYkvj0K159+zt8BLvU7q28WeOrJ4NPRhLaabOuJLk5yHlB5CZ52nlu+B1+tgAAABgCu/E1KdGksPR26s+V56uIqvEVneT7hRRRXmmwUUUUAFFFFAHmnxG+CPgLxtPJe3enPp2pScte6ewidz6uuCr/UjPvXlV5+yWvm/6F46kWInpNpoZh+KuAfyr6gorpp4yvTVoyMpUacndo8E8GfsveDdJukutf1K+8QMhyIXUQQH/eVcsw9i2K92s7a3s7WK1tIIre3iUJHFEgVEUdAAOAPapaKzq16lV3m7lQpxh8KIry2t7y1ltbuCK4t5UKSRSoGR1PUEHgg+leFeM/2X/BurXb3WgajfeH2c5MMaieAf7qthl+gbHtXvVFFKvUpO8HYJ04z+JHy/Z/slr52b3x1I0QPSHTQrH8WcgflXqvw5+CHgLwTcR31npz6jqUfKXmoMJXQ+qLgKn1Az716XRWlTGV6itKRMaNOLukFFFFcxqFFFFAH/2Q==" alt="chiilingo" style="width:52px;height:52px;border-radius:12px;border:1.5px solid #ddd;background:white;flex-shrink:0;">
+    <div class="card-tag">LINGO APP</div>
+    <h2><span class="dot"></span><span id="app-title"></span></h2>
+    <a id="app-link" class="app-link" href="#" target="_blank">
+      <img id="app-icon" src="" alt="lingo app">
       <div>
-        <div id="lingo-app-name" style="font-size:14px;font-weight:800;color:var(--text);">chiilingo</div>
-        <div style="font-size:11px;font-weight:700;color:#888;margin-top:2px;"><span id="lingo-tap-label">タップしてアプリを開く →</span></div>
+        <div class="app-name" id="app-name"></div>
+        <div class="app-sub" id="app-tap"></div>
       </div>
     </a>
     <div class="mode-block" style="background: var(--green-light); border-color: var(--green);">
-      <p id="lingo-desc">会話終了後に <strong>「りんご」</strong> と入力すると、今日の会話から重要単語・フレーズをJSONで出力します。そのJSONをchiilingoに貼り付けるだけで、フラッシュカード練習がスタート！</p>
+      <p id="app-desc"></p>
     </div>
-    <div class="tip-box" style="background: var(--green-light); border-color: var(--green); color: #1a5c33;">
-      <strong id="lingo-tip-title">出力される単語の種類：</strong><br>
-      <span id="lingo-tip-body">🔴 言えなかった・間違えた単語<br>
-      🟡 今日の会話で出てきたキーワード<br>
-      🟢 日常会話でよく使う便利フレーズ</span>
-    </div>
+    <div class="tip-box" style="background: var(--green-light); border-color: var(--green); color: #1a5c33;" id="app-tip"></div>
+    <div class="app-note" id="app-note" style="display:none;"></div>
   </div>
 
   <!-- Score -->
   <div class="card gold">
     <div class="card-tag">SCORE</div>
-    <h2><span class="dot"></span><span id="score-title">AEPスコアについて</span></h2>
-    <p id="score-desc" style="font-size:12px; font-weight:700; color:#444; line-height:1.8; margin-bottom:10px;">アナリストモードでは、会話を8つのカテゴリで採点します。各カテゴリ最大40点、合計320点満点。</p>
-    <div class="cat-grid">
-      <div class="cat-item"><span class="cat-dot" style="background:#e85858;"></span><span id="cat-vocabulary">語彙</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#e88030;"></span><span id="cat-grammar">文法</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#60b050;"></span><span id="cat-fluency">流暢さ</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#48a0d0;"></span><span id="cat-communication">コミュ力</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#b068c8;"></span><span id="cat-naturalness">自然さ</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#d8b028;"></span><span id="cat-pronunciation">発音</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#e85858;"></span><span id="cat-recovery">リカバリー</span></div>
-      <div class="cat-item"><span class="cat-dot" style="background:#48a0d0;"></span><span id="cat-range">表現の幅</span></div>
-    </div>
+    <h2><span class="dot"></span><span id="score-title"></span></h2>
+    <p id="score-desc" style="font-size:0.81rem; font-weight:700; color:#444; line-height:1.8; margin-bottom:10px;"></p>
+    <div class="cat-grid" id="cat-grid"></div>
     <div style="margin-top:12px;">
-      <p style="font-size:11px; font-weight:800; color:#987800; margin-bottom:6px;"><span id="cefr-table-title">CEFRレベル対応表</span></p>
+      <p style="font-size:0.72rem; font-weight:800; color:#987800; margin-bottom:6px;" id="cefr-table-title"></p>
       <div class="cefr-grid">
         <div class="cefr-cell" style="background:#fce8e8; border-color:#e85858;"><div class="level" style="color:#e85858;">A1</div><div class="range">0–63</div></div>
         <div class="cefr-cell" style="background:#fceedd; border-color:#e88030;"><div class="level" style="color:#e88030;">A2</div><div class="range">64–127</div></div>
@@ -630,365 +542,166 @@ body::before {
   <div class="chart-btn-wrap">
     <button class="chart-btn" id="score-btn" onclick="openChartModal()">
       <span class="btn-dot"></span>
-      <span id="score-btn-label">AEPスコアカードを開く</span>
+      <span id="score-btn-label"></span>
       <span class="btn-dot"></span>
     </button>
   </div>
 
-  <div class="footer"><span id="footer-text">AEP — Alex English Project</span></div>
+  <div class="footer"><span id="footer-text"></span></div>
 </div>
 
 <!-- Modal -->
 <div class="modal-overlay" id="chart-modal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeChartModal()">×</button>
-    <div class="modal-title">AEP スコアチャート</div>
-    <div class="modal-subtitle" id="modal-subtitle">アナリストが出力したJSONを貼り付けて「生成」を押してください。</div>
-    <textarea class="json-area" id="json-input" placeholder='{ "date": "2026/04/08", "session": 1, "scores": { "vocabulary": 24, "grammar": 20, "fluency": 28, "communication": 32, "naturalness": 22, "pronunciation": 18, "recovery": 26, "range": 20 }, "comment": "コメントがここに入ります。" }'></textarea>
-    <div class="json-error" id="json-error">JSONの形式が正しくありません。</div>
-    <button class="gen-btn" onclick="generateChart()">チャートを生成する</button>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-subtitle" id="modal-subtitle"></div>
+    <textarea class="json-area" id="json-input" placeholder='{ "date": "2026/07/03", "session": 1, "scores": { "vocabulary": 24, "grammar": 22, "fluency": 20, "communication": 26, "naturalness": 21, "pronunciation": 23, "recovery": 22, "range": 20 }, "comment": "..." }'></textarea>
+    <div class="json-error" id="json-error"></div>
+    <button class="gen-btn" id="gen-btn" onclick="generateChart()"></button>
     <div id="chart-output"></div>
   </div>
 </div>
 
 <script>
-const LEVELS_DATA = {
-  "A1":  { desc: "A1（超初級）", color: "#e85858", tip: "単語レベルでOK。とにかく話すことに慣れる段階。" },
-  "A2":  { desc: "A2（初級）",   color: "#e88030", tip: "短い文で日常的なやりとりができる段階。" },
-  "B1":  { desc: "B1（中級）",   color: "#d8b028", tip: "身近なトピックなら自分の意見を伝えられる段階。" },
-  "B2":  { desc: "B2（中上級）", color: "#60b050", tip: "複雑な話題も流暢に話せる段階。" },
-  "C1":  { desc: "C1（上級）",   color: "#48a0d0", tip: "ほぼネイティブ水準の流暢さと自然さがある段階。" },
-  "C1+": { desc: "C1〜C2（上級〜ネイティブ水準）", color: "#b068c8", tip: "ネイティブレベルの表現力・正確さを目指す段階。" },
-};
+'use strict';
+const F = '```'; // コードフェンス（テンプレートリテラル内のエスケープ回避用）
 
-// ---- Language config ----
-const LANG_DATA = {
-  "AEP": {
-    lang: "English", langJa: "英語", char: "Alex", project: "AEP",
-    app: "chiilingo", appUrl: "https://youtora-lang.github.io/lingo/chiilingo",
-    trigger: "りんご", triggerEn: "ringo",
-    jsonVocab: "jp", jsonVocabEx: "exJp",
-    feedbackLang: "Japanese", guideLang: "ja",
-    subtitle: "Alex English Project へようこそ。<br>このガイドを読めば、今日から始められます。",
-    lingoCardTitle: "AEP × chiilingo 連携",
-    lingoDesc: "会話終了後に <strong>「りんご」</strong> と入力すると、今日の会話から重要単語・フレーズをJSONで出力します。そのJSONをchiilingoに貼り付けるだけで、フラッシュカード練習がスタート！",
-    phonetic: "IPA",
-  },
-  "TFP": {
-    lang: "French", langJa: "フランス語", char: "Théo", project: "TFP",
-    app: "michilingo", appUrl: "https://youtora-lang.github.io/lingo/michilingo",
-    trigger: "りんご", triggerEn: "ringo",
-    jsonVocab: "jp", jsonVocabEx: "exJp",
-    feedbackLang: "Japanese", guideLang: "ja",
-    subtitle: "Théo French Project へようこそ。<br>このガイドを読めば、今日から始められます。",
-    lingoCardTitle: "TFP × michilingo 連携",
-    lingoDesc: "会話終了後に <strong>「りんご」</strong> と入力すると、今日の会話から重要単語・フレーズをJSONで出力します。そのJSONをmichilingoに貼り付けるだけで、フラッシュカード練習がスタート！",
-    phonetic: "IPA",
-  },
-  "JKP": {
-    lang: "Korean", langJa: "韓国語", char: "Jiu（지우）", project: "JKP",
-    app: "taelingo", appUrl: "https://youtora-lang.github.io/lingo/taelingo",
-    trigger: "りんご", triggerEn: "ringo",
-    jsonVocab: "jp", jsonVocabEx: "exJp",
-    feedbackLang: "Japanese", guideLang: "ja",
-    subtitle: "Jiu Korean Project へようこそ。<br>このガイドを読めば、今日から始められます。",
-    lingoCardTitle: "JKP × taelingo 連携",
-    lingoDesc: "会話終了後に <strong>「りんご」</strong> と入力すると、今日の会話から重要単語・フレーズをJSONで出力します。そのJSONをtaelingoに貼り付けるだけで、フラッシュカード練習がスタート！",
-    phonetic: "Romaji",
-  },
+// ---- 言語データ ----
+// hello / play は既定値（例）：「Helloに相当する単語」と「『(学習言語)であそぼう!』のフレーズ」
+const TARGETS = {
+  en: { project: 'AEP', projectFull: 'Alex English Project', char: 'Alex', charNote: '',
+        app: 'chiilingo', appUrl: 'https://youtora-lang.github.io/lingo/chiilingo.html',
+        appUiLang: 'ja', flag: '🇺🇸', langEn: 'English',
+        ph: 'IPA', hello: 'Hello!', play: "Let's play in English!",
+        icon: 'data:image/jpeg;base64,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' },
+  fr: { project: 'TFP', projectFull: 'Théo French Project', char: 'Théo', charNote: '',
+        app: 'michilingo', appUrl: 'https://youtora-lang.github.io/lingo/michilingo.html',
+        appUiLang: 'ja', flag: '🇫🇷', langEn: 'French',
+        ph: 'IPA', hello: 'Bonjour !', play: 'Jouons en français !',
+        icon: 'data:image/jpeg;base64,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' },
+  ko: { project: 'JKP', projectFull: 'Jiu Korean Project', char: 'Jiu', charNote: '지우',
+        app: 'taelingo', appUrl: 'https://youtora-lang.github.io/lingo/taelingo.html',
+        appUiLang: 'ja', flag: '🇰🇷', langEn: 'Korean',
+        ph: 'romanized Korean (Revised Romanization)', hello: '안녕하세요!', play: '한국어로 놀자!',
+        icon: 'data:image/jpeg;base64,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' },
+  ja: { project: 'YJP', projectFull: 'Yui Japanese Project', char: 'Yui', charNote: 'ゆい',
+        app: 'chiilingojp', appUrl: 'https://youtora-lang.github.io/lingo/chiilingojp.html',
+        appUiLang: 'en', flag: '🇯🇵', langEn: 'Japanese',
+        ph: 'kana reading', hello: 'こんにちは！', play: '日本語（にほんご）で遊（あそ）ぼう！',
+        icon: 'data:image/jpeg;base64,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' },
 };
+const LANG_NAMES = {
+  ja: { en: '英語', fr: 'フランス語', ko: '韓国語', ja: '日本語' },
+  en: { en: 'English', fr: 'French', ko: 'Korean', ja: 'Japanese' },
+};
+const NATIVE_NAMES = { ja: { ja: '日本語', en: '英語' }, en: { ja: 'Japanese', en: 'English' } };
+// 特殊コマンドのトリガー語（母語別）
+const COMMANDS = {
+  ja: { recap: 'まとめ', check: '確認', ideal: '理想', diary: '日記', reading: '音読', harvest: 'りんご' },
+  en: { recap: 'recap', check: 'check', ideal: 'ideal', diary: 'diary', reading: 'reading', harvest: 'apple' },
+};
+const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C1+'];
 
+// ---- 状態 ----
+let guideLang = 'ja';
+let native = 'ja';
+let target = 'en';
 let currentName = 'CA';
 let currentLevel = 'B1';
-let currentLang = 'AEP';
 
-// ---- UI Text per language ----
-const UI_TEXT = {
-  "AEP": {
-    badge: "AEP GUIDE",
-    heroLang: "English",
-    overviewDesc: "AEP（Alex English Project）は、AIの友人「Alex」との英会話を通じて、自然なアメリカ英語を身につけるシステムです。<br>レッスンではなく、<strong>友達との会話</strong>として設計されています。",
-    overviewTipLabel: "目標：",
-    overviewTipBody: "フォーマルな教科書英語ではなく、友達に話しかけるような自然で温かいアメリカ英語を身につけること。",
-    mode1Label: "MODE 1 — ALEX（友達モード）",
-    mode2Label: "MODE 2 — ANALYST（分析モード）",
-    mode1Desc: "英語で話しかけるだけでスタート。Alexは友達として自然に会話してくれます。<br>あなたが<strong>80%</strong>話す。Alexは<strong>20%</strong>だけ。<br>一度に質問はひとつ。ミスは「リキャスト」で自然に修正されます。",
-    mode2Desc: "会話が終わったら、日付とセッション番号を入力してください。<br>例：<span class='trigger'>2026/04/08 #1</span><br>Alexがコーチとして全体を振り返り、<strong>日本語で</strong>フィードバックします。",
-    commandsTitle: "特殊コマンド一覧",
-    cmd1Key: "まとめ", cmd1Desc: " → このセッションの会話を全文・時系列順で英語＋日本語訳で出力",
-    cmd2Key: "確認",   cmd2Desc: " → あなたが言いたかったことを箇条書きで整理（修正可）",
-    cmd3Key: "理想",   cmd3Desc: " → 「こう言えてたら？」の理想の会話を日英で表示",
-    cmd4Key: "英語",   cmd4Desc: " → 理想の会話を英語のみで再出力（ストレス・リズム記号付き）",
-    cmd5Key: "日記",   cmd5Desc: " → 今日の会話をもとに、あなた自身の視点で日記を作成（英語＋日本語）",
-    cmd6Key: "音読",   cmd6Desc: " → 日記の音読テキストを貼り付けると、発音の差異を検出してフィードバック",
-    cmd7Desc: " → 「理想」のスクリプトで1行ずつロールプレイ練習。Alexの台詞を入力すると発音フィードバックを受け取れる",
-    cmdTip: "好きなコマンドを試してみよう。全部やらなくてもオッケー！",
-    gsTitle: "始め方",
-    gsStep1: "名前とレベルを設定する", gsStep2: "プロンプトをコピーする",
-    gsStep3: "Claude.ai でプロジェクトを作成する", gsStep4: "プロジェクトの指示に貼り付けて保存",
-    gsStep5: "英語で話しかける",
-    flowTitle: "1回のセッションの流れ",
-    flow1: "AEPプロジェクトを開いて、英語で話しかける",
-    flow2: "Alexと自由に会話（テーマは何でもOK）",
-    flow3: "日付＋番号を入力してアナリストモードへ",
-    flow4: "JSONが出力されたら下のボタンからスコアカードを確認",
-    flow5: "特殊コマンドで振り返り（好きなものだけでOK）",
-    flow6Desc: " → 今日の重要単語をchiilingo用JSONで出力し、アプリで定着練習！",
-    lingoTipTitle: "出力される単語の種類：",
-    lingoTipBody: "🔴 言えなかった・間違えた単語<br>🟡 今日の会話で出てきたキーワード<br>🟢 日常会話でよく使う便利フレーズ",
-    scoreTitle: "AEPスコアについて",
-    scoreDesc: "アナリストモードでは、会話を8つのカテゴリで採点します。各カテゴリ最大40点、合計320点満点。",
-    scoreBtnLabel: "AEPスコアカードを開く",
-    footerText: "AEP — Alex English Project",
-    copyBtn: "プロンプトをコピー",
-    applyBtn: "✓ 適用",
-    settingsLabel: "SETTINGS",
-    namePlaceholder: "あなたの名前",
-    lingoCardTitle: "AEP × chiilingo 連携",
-    overviewTitle: "AEP とは？",
-    gsStep1Desc: "プロンプト内の名前・レベルが自動で書き換わります。",
-    gsStep3Project: "AEP",
-    gsStep5Desc: "英語で何か話しかければ Alex がすぐに応えてくれます。",
-    pageTitle: "AEP Guide",
-    modesTitle: "2つのモード",
-    lingoTapLabel: "タップしてアプリを開く →",
-    catVocabulary: "語彙",
-    catGrammar: "文法",
-    catFluency: "流暢さ",
-    catCommunication: "コミュ力",
-    catNaturalness: "自然さ",
-    catPronunciation: "発音",
-    catRecovery: "リカバリー",
-    catRange: "表現の幅",
-    cefrTableTitle: "CEFRレベル対応表",
-    modalSubtitle: "アナリストが出力したJSONを貼り付けて「生成」を押してください。",
-    gsStep1Prefix: "上部の",
-    gsStep1Mid: "で名前とレベルを選んで",
-    gsStep1Suffix: "を押してください。",
-    gsStep2Desc1: "下のボックスにプロンプトが表示されています。",
-    gsCopyBtnLabel: "プロンプトをコピー",
-    gsStep2Desc2: "ボタンを押してクリップボードにコピーしてください。",
-    gsStep3Desc1: "サイドバーの",
-    gsNewProjectLabel: "＋新規プロジェクト",
-    gsStep3Desc2: "をタップ。",
-    gsStep3Desc3: "プロジェクト名は",
-    gsStep3Desc4: "など好きな名前でOK。",
-    gsInstructionsLabel: "プロジェクトの指示を設定",
-    gsStep4Desc1: "を開き、",
-    gsStep4Desc2: "コピーしたプロンプトを貼り付けて保存してください。",
-    gsStep5Prefix: "プロジェクト内で",
-    gsNewChatLabel: "新規チャット",
-    gsStep5Mid: "を開き、",
-    flowHarvestKey: "りんご",
-    flowHarvestDesc: " でlingoアプリと連携して、定着するまで練習！",
-  },
-  "TFP": {
-    badge: "TFP GUIDE",
-    heroLang: "French",
-    overviewDesc: "TFP（Théo French Project）は、AIの友人「Théo」とのフランス語会話を通じて、自然なフランス語を身につけるシステムです。<br>レッスンではなく、<strong>友達との会話</strong>として設計されています。",
-    overviewTipLabel: "目標：",
-    overviewTipBody: "教科書フランス語ではなく、友達に話しかけるような自然で温かいフランス語を身につけること。",
-    mode1Label: "MODE 1 — THÉO（友達モード）",
-    mode2Label: "MODE 2 — ANALYST（分析モード）",
-    mode1Desc: "フランス語で話しかけるだけでスタート。Théoは友達として自然に会話してくれます。<br>あなたが<strong>80%</strong>話す。Théoは<strong>20%</strong>だけ。<br>一度に質問はひとつ。ミスは「リキャスト」で自然に修正されます。",
-    mode2Desc: "会話が終わったら、日付とセッション番号を入力してください。<br>例：<span class='trigger'>2026/04/08 #1</span><br>Théoがコーチとして全体を振り返り、<strong>日本語で</strong>フィードバックします。",
-    commandsTitle: "特殊コマンド一覧",
-    cmd1Key: "まとめ", cmd1Desc: " → このセッションの会話を全文・時系列順でフランス語＋日本語訳で出力",
-    cmd2Key: "確認",   cmd2Desc: " → あなたが言いたかったことを箇条書きで整理（修正可）",
-    cmd3Key: "理想",   cmd3Desc: " → 「こう言えてたら？」の理想の会話を日仏で表示",
-    cmd4Key: "フランス語", cmd4Desc: " → 理想の会話をフランス語のみで再出力",
-    cmd5Key: "日記",   cmd5Desc: " → 今日の会話をもとに、あなた自身の視点で日記を作成（フランス語＋日本語）",
-    cmd6Key: "音読",   cmd6Desc: " → 日記の音読テキストを貼り付けると、発音の差異を検出してフィードバック",
-    cmd7Desc: " → 「理想」のスクリプトで1行ずつロールプレイ練習。Théoの台詞を入力すると発音フィードバックを受け取れる",
-    cmdTip: "好きなコマンドを試してみよう。全部やらなくてもオッケー！",
-    gsTitle: "始め方",
-    gsStep1: "名前とレベルを設定する", gsStep2: "プロンプトをコピーする",
-    gsStep3: "Claude.ai でプロジェクトを作成する", gsStep4: "プロジェクトの指示に貼り付けて保存",
-    gsStep5: "フランス語で話しかける",
-    flowTitle: "1回のセッションの流れ",
-    flow1: "TFPプロジェクトを開いて、フランス語で話しかける",
-    flow2: "Théoと自由に会話（テーマは何でもOK）",
-    flow3: "日付＋番号を入力してアナリストモードへ",
-    flow4: "JSONが出力されたら下のボタンからスコアカードを確認",
-    flow5: "特殊コマンドで振り返り（好きなものだけでOK）",
-    flow6Desc: " → 今日の重要単語をmichilingo用JSONで出力し、アプリで定着練習！",
-    lingoTipTitle: "出力される単語の種類：",
-    lingoTipBody: "🔴 言えなかった・間違えた単語<br>🟡 今日の会話で出てきたキーワード<br>🟢 日常会話でよく使う便利フレーズ",
-    scoreTitle: "TFPスコアについて",
-    scoreDesc: "アナリストモードでは、会話を8つのカテゴリで採点します。各カテゴリ最大40点、合計320点満点。",
-    scoreBtnLabel: "TFPスコアカードを開く",
-    footerText: "TFP — Théo French Project",
-    copyBtn: "プロンプトをコピー",
-    applyBtn: "✓ 適用",
-    settingsLabel: "SETTINGS",
-    namePlaceholder: "あなたの名前",
-    lingoCardTitle: "TFP × michilingo 連携",
-    overviewTitle: "TFP とは？",
-    gsStep1Desc: "プロンプト内の名前・レベルが自動で書き換わります。",
-    gsStep3Project: "TFP",
-    gsStep5Desc: "フランス語で何か話しかければ Théo がすぐに応えてくれます。",
-    pageTitle: "TFP Guide",
-    modesTitle: "2つのモード",
-    lingoTapLabel: "タップしてアプリを開く →",
-    catVocabulary: "語彙",
-    catGrammar: "文法",
-    catFluency: "流暢さ",
-    catCommunication: "コミュ力",
-    catNaturalness: "自然さ",
-    catPronunciation: "発音",
-    catRecovery: "リカバリー",
-    catRange: "表現の幅",
-    cefrTableTitle: "CEFRレベル対応表",
-    modalSubtitle: "アナリストが出力したJSONを貼り付けて「生成」を押してください。",
-    gsStep1Prefix: "上部の",
-    gsStep1Mid: "で名前とレベルを選んで",
-    gsStep1Suffix: "を押してください。",
-    gsStep2Desc1: "下のボックスにプロンプトが表示されています。",
-    gsCopyBtnLabel: "プロンプトをコピー",
-    gsStep2Desc2: "ボタンを押してクリップボードにコピーしてください。",
-    gsStep3Desc1: "サイドバーの",
-    gsNewProjectLabel: "＋新規プロジェクト",
-    gsStep3Desc2: "をタップ。",
-    gsStep3Desc3: "プロジェクト名は",
-    gsStep3Desc4: "など好きな名前でOK。",
-    gsInstructionsLabel: "プロジェクトの指示を設定",
-    gsStep4Desc1: "を開き、",
-    gsStep4Desc2: "コピーしたプロンプトを貼り付けて保存してください。",
-    gsStep5Prefix: "プロジェクト内で",
-    gsNewChatLabel: "新規チャット",
-    gsStep5Mid: "を開き、",
-    flowHarvestKey: "りんご",
-    flowHarvestDesc: " でlingoアプリと連携して、定着するまで練習！",
-  },
-  "JKP": {
-    badge: "JKP GUIDE",
-    heroLang: "Korean",
-    overviewDesc: "JKP（Jiu Korean Project）は、AIの友人「Jiu（지우）」との韓国語会話を通じて、自然な韓国語を身につけるシステムです。<br>レッスンではなく、<strong>友達との会話</strong>として設計されています。",
-    overviewTipLabel: "目標：",
-    overviewTipBody: "教科書韓国語ではなく、友達に話しかけるような自然で温かい韓国語を身につけること。",
-    mode1Label: "MODE 1 — JIU（友達モード）",
-    mode2Label: "MODE 2 — ANALYST（分析モード）",
-    mode1Desc: "韓国語で話しかけるだけでスタート。Jiuは友達として自然に会話してくれます。<br>あなたが<strong>80%</strong>話す。Jiuは<strong>20%</strong>だけ。<br>一度に質問はひとつ。ミスは「リキャスト」で自然に修正されます。",
-    mode2Desc: "会話が終わったら、日付とセッション番号を入力してください。<br>例：<span class='trigger'>2026/04/08 #1</span><br>Jiuがコーチとして全体を振り返り、<strong>日本語で</strong>フィードバックします。",
-    commandsTitle: "特殊コマンド一覧",
-    cmd1Key: "まとめ", cmd1Desc: " → このセッションの会話を全文・時系列順で韓国語＋日本語訳で出力",
-    cmd2Key: "確認",   cmd2Desc: " → あなたが言いたかったことを箇条書きで整理（修正可）",
-    cmd3Key: "理想",   cmd3Desc: " → 「こう言えてたら？」の理想の会話を日韓で表示",
-    cmd4Key: "韓国語", cmd4Desc: " → 理想の会話を韓国語のみで再出力",
-    cmd5Key: "日記",   cmd5Desc: " → 今日の会話をもとに、あなた自身の視点で日記を作成（韓国語＋日本語）",
-    cmd6Key: "音読",   cmd6Desc: " → 日記の音読テキストを貼り付けると、発音の差異を検出してフィードバック",
-    cmd7Desc: " → 「理想」のスクリプトで1行ずつロールプレイ練習。Jiuの台詞を入力すると発音フィードバックを受け取れる",
-    cmdTip: "好きなコマンドを試してみよう。全部やらなくてもオッケー！",
-    gsTitle: "始め方",
-    gsStep1: "名前とレベルを設定する", gsStep2: "プロンプトをコピーする",
-    gsStep3: "Claude.ai でプロジェクトを作成する", gsStep4: "プロジェクトの指示に貼り付けて保存",
-    gsStep5: "韓国語で話しかける",
-    flowTitle: "1回のセッションの流れ",
-    flow1: "JKPプロジェクトを開いて、韓国語で話しかける",
-    flow2: "Jiuと自由に会話（テーマは何でもOK）",
-    flow3: "日付＋番号を入力してアナリストモードへ",
-    flow4: "JSONが出力されたら下のボタンからスコアカードを確認",
-    flow5: "特殊コマンドで振り返り（好きなものだけでOK）",
-    flow6Desc: " → 今日の重要単語をtaelingo用JSONで出力し、アプリで定着練習！",
-    lingoTipTitle: "出力される単語の種類：",
-    lingoTipBody: "🔴 言えなかった・間違えた単語<br>🟡 今日の会話で出てきたキーワード<br>🟢 日常会話でよく使う便利フレーズ",
-    scoreTitle: "JKPスコアについて",
-    scoreDesc: "アナリストモードでは、会話を8つのカテゴリで採点します。各カテゴリ最大40点、合計320点満点。",
-    scoreBtnLabel: "JKPスコアカードを開く",
-    footerText: "JKP — Jiu Korean Project",
-    copyBtn: "プロンプトをコピー",
-    applyBtn: "✓ 適用",
-    settingsLabel: "SETTINGS",
-    namePlaceholder: "あなたの名前",
-    lingoCardTitle: "JKP × taelingo 連携",
-    overviewTitle: "JKP とは？",
-    gsStep1Desc: "プロンプト内の名前・レベルが自動で書き換わります。",
-    gsStep3Project: "JKP",
-    gsStep5Desc: "韓国語で何か話しかければ Jiu がすぐに応えてくれます。",
-    pageTitle: "JKP Guide",
-    modesTitle: "2つのモード",
-    lingoTapLabel: "タップしてアプリを開く →",
-    catVocabulary: "語彙",
-    catGrammar: "文法",
-    catFluency: "流暢さ",
-    catCommunication: "コミュ力",
-    catNaturalness: "自然さ",
-    catPronunciation: "発音",
-    catRecovery: "リカバリー",
-    catRange: "表現の幅",
-    cefrTableTitle: "CEFRレベル対応表",
-    modalSubtitle: "アナリストが出力したJSONを貼り付けて「生成」を押してください。",
-    gsStep1Prefix: "上部の",
-    gsStep1Mid: "で名前とレベルを選んで",
-    gsStep1Suffix: "を押してください。",
-    gsStep2Desc1: "下のボックスにプロンプトが表示されています。",
-    gsCopyBtnLabel: "プロンプトをコピー",
-    gsStep2Desc2: "ボタンを押してクリップボードにコピーしてください。",
-    gsStep3Desc1: "サイドバーの",
-    gsNewProjectLabel: "＋新規プロジェクト",
-    gsStep3Desc2: "をタップ。",
-    gsStep3Desc3: "プロジェクト名は",
-    gsStep3Desc4: "など好きな名前でOK。",
-    gsInstructionsLabel: "プロジェクトの指示を設定",
-    gsStep4Desc1: "を開き、",
-    gsStep4Desc2: "コピーしたプロンプトを貼り付けて保存してください。",
-    gsStep5Prefix: "プロジェクト内で",
-    gsNewChatLabel: "新規チャット",
-    gsStep5Mid: "を開き、",
-    flowHarvestKey: "りんご",
-    flowHarvestDesc: " でlingoアプリと連携して、定着するまで練習！",
-  },
-};
+// ---- プロンプト生成（母語 × 学習言語） ----
+function buildPrompt(name, level, native, target) {
+  const t = TARGETS[target];
+  const cmd = COMMANDS[native];
+  const reOut = LANG_NAMES[native][target];
+  const N = native === 'ja' ? 'Japanese' : 'English';
+  const L = t.langEn;
+  const char = t.char;
+  const isJaNative = native === 'ja';
+  const menu = `${cmd.check} ・ ${cmd.ideal} ・ ${reOut} ・ ${cmd.diary} ・ ${cmd.harvest} ・ ${cmd.reading} ・ ${name} ・ ${char}`;
 
-
-function selectLang(el) {
-  document.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  currentLang = el.dataset.lang;
-  // アイコンをすぐ切り替え（適用前でも反映）
-  if (el.dataset.icon) {
-    document.getElementById('lingo-icon').src = el.dataset.icon;
-  }
-}
-
-function selectLevel(el) {
-  document.querySelectorAll('.level-pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  currentLevel = el.dataset.level;
-}
-
-function buildPrompt(name, level, lang) {
-  const ld = LEVELS_DATA[level] || LEVELS_DATA['B1'];
-  const lg = LANG_DATA[lang] || LANG_DATA['AEP'];
-  const isAEP = lg.project === 'AEP';
-
-  const stressRhythmRules = `Mark stress and rhythm in each of ${name}'s lines:
+  const stressRules = target === 'en' ? `Mark stress and rhythm in each of ${name}'s lines:
 - **Bold** the most important word or syllable in each phrase
 - Use / to mark natural pause points between phrases
 - Prioritize content words (nouns, verbs, adjectives, adverbs); de-emphasize function words (articles, prepositions, pronouns)
 - Reflect actual spoken rhythm, not grammatical rules
-`;
+` : '';
+
+  const furiganaSection = target === 'ja' ? `
+---
+
+## Furigana Rule (all Japanese output)
+
+In every Japanese line you write for ${name} — Mode 1 replies, transcripts, the ideal script, the diary, and vocabulary output — add the reading in full-width parentheses immediately after each word that contains kanji. Example: 今日（きょう）は公園（こうえん）に行（い）った。
+- Readings are hiragana as a rule. Use katakana only where katakana is the conventional notation (e.g. loanwords written in kanji, such as 珈琲（コーヒー）).
+- Words written only in kana need no reading.
+- Exception: never put readings inside JSON fields (「${cmd.harvest}」output). There, "w" and "ex" stay plain and the kana reading of "w" goes into "ph".
+` : '';
+
+  const analystBlock = isJaNative ? `📋 セッション概要
+✅ うまくできていたこと（3–5件、引用＋理由）
+🔬 ミスとアップグレード
+　❌ ${name}が言ったこと："…"
+　✅ より自然な表現："…"
+　💡 理由：…
+🎯 次回の意識ポイント（1件）
+💬 表現バンク（3–5件）
+　・"[expression]" → [one-line explanation]` : `📋 Session Summary
+✅ What went well (3–5 items, quote + why)
+🔬 Mistakes & upgrades
+　❌ What ${name} said: "…"
+　✅ More natural: "…"
+　💡 Why: …
+🎯 Focus for next time (1 item)
+💬 Expression bank (3–5 items)
+　・"[expression]" → [one-line explanation]`;
+
+  const chartLead = isJaNative
+    ? '「以下のJSONをコピーして、チャートスレッドに貼り付けてください👇」'
+    : '"Copy the JSON below and paste it into the score-chart page 👇"';
+  const harvestLead = isJaNative
+    ? `「以下のJSONをコピーして、${t.app}に貼り付けてください👇」`
+    : `"Copy the JSON below and paste it into ${t.app} 👇"`;
+  const checkTail = isJaNative
+    ? '最後に：「修正があればどうぞ。」'
+    : 'End with: "Let me know if anything needs fixing."';
+  const idealTitle = isJaNative ? '💭 もしこう言えてたら？' : '💭 What if I could have said it like this?';
+  const readingHead = isJaNative ? '🎙️ 音読' : '🎙️ Reading';
+  const readingFix = isJaNative ? '🔧 改善ポイント：' : '🔧 Points to improve:';
+  const readingPerfect = isJaNative ? '今日は完璧でした！' : 'Perfect today!';
+  const rpHead = isJaNative ? '🎭 ロールプレイ' : '🎭 Role-Play';
+  const diaryLen = (target === 'en' || target === 'fr')
+    ? `${L} entry: 100–150 words.`
+    : `${L} entry: 150–250 characters.`;
+  const todayWords = { en: '"Today"', fr: '"Aujourd\'hui"', ko: '"오늘은"', ja: '"今日（きょう）は"' };
+  const todayList = `${todayWords[target]} / ${isJaNative ? '"今日は"' : '"Today"'}`;
+  const jpLim = isJaNative ? 10 : 20;
+  const exJpLim = isJaNative ? 30 : 60;
+  const jaJsonNote = target === 'ja'
+    ? '\n- No furigana inside JSON fields: "w" and "ex" stay plain; the kana reading of "w" goes into "ph".'
+    : '';
 
   return `## Triggers
 
-- ${name} says or types anything in ${lg.lang} or casually → **${lg.char} mode**
+- ${name} says or types anything in ${L} or casually → **${char} mode**
 - ${name} inputs a date + session number (e.g. "2026/03/28 #4") → **Analyst mode**
-- 「まとめ」→ Session transcript
-- 「確認」→ Confirmation
-- 「理想」→ Ideal conversation
-- 「${lg.langJa}」→ ${lg.lang}-only re-output
-- 「日記」→ Diary
-- 「音読」→ Oral reading
-- 「${lg.trigger}」→ Vocabulary harvest
-- 「${name}」or「${lg.char}」→ Role-Play
-- **Other Japanese input** → output only:
-確認 ・ 理想 ・ ${lg.langJa} ・ 日記 ・ ${lg.trigger} ・ 音読 ・ ${name} ・ ${lg.char}
+- 「${cmd.recap}」→ Session transcript
+- 「${cmd.check}」→ Confirmation
+- 「${cmd.ideal}」→ Ideal conversation
+- 「${reOut}」→ ${L}-only re-output
+- 「${cmd.diary}」→ Diary
+- 「${cmd.reading}」→ Oral reading
+- 「${cmd.harvest}」→ Vocabulary harvest
+- 「${name}」or「${char}」→ Role-Play
+- **Other ${N} input** → output only:
+${menu}
 
 ---
 
-## Mode 1: ${lg.char}
+## Mode 1: ${char}
 
-You are ${lg.char} — warm, playful, and genuinely good at helping people open up in ${lg.lang}. You are ${name}'s friend. Not a teacher. Not a coach. A friend who happens to speak great ${lg.lang}.
+You are ${char} — warm, playful, and genuinely good at helping people open up in ${L}. You are ${name}'s friend. Not a teacher. Not a coach. A friend who happens to speak great ${L}.
 
 - Keep your turns short. ${name} talks 80%, you 20%.
 - Ask ONE question at a time. Never stack questions.
@@ -997,32 +710,25 @@ You are ${lg.char} — warm, playful, and genuinely good at helping people open 
 - If ${name}'s sentence is **clearly unfinished** — trailing off, "um", "uh", "I mean…", "so…" — wait silently. Do not prompt or encourage. Only respond when ${name} has clearly finished.
 - Never end the session yourself. Keep going until ${name} says stop.
 - Correction: Use recasting only. Weave the correct form into your reply naturally. Never say "that's wrong." Only correct explicitly if the same error appears 3+ times or blocks understanding.
-- Level: Match ${name}'s pace. Stretch gently when they're flowing. Dial back when they're struggling. Never assume a fixed level.
-
+- Level: ${name}'s reference level is ${level} (CEFR) — treat it only as a starting calibration. Match ${name}'s actual pace. Stretch gently when they're flowing. Dial back when they're struggling.
+- If ${name} seems unsure how to start, open with something like:「${t.hello} ${t.play}」
+${furiganaSection}
 ---
 
 ## Mode 2: Analyst
 
 Triggered when ${name} inputs a date + session number (e.g. "2026/03/28 #4").
 Analyze the conversation from this thread.
-All output in ${lg.feedbackLang}.
+All output in ${N}.
 
-📋 セッション概要
-✅ うまくできていたこと（3–5件、引用＋理由）
-🔬 ミスとアップグレード
-　❌ ${name}が言ったこと："…"
-　✅ より自然な表現："…"
-　💡 理由：…
-🎯 次回の意識ポイント（1件）
-💬 表現バンク（3–5件）
-　・"[expression]" → [one-line explanation]
+${analystBlock}
 
-### ${lg.project} Score JSON
+### ${t.project} Score JSON
 
 Then, preceded by:
-「以下のJSONをコピーして、チャートスレッドに貼り付けてください👇」
+${chartLead}
 
-\`\`\`json
+${F}json
 {
   "date": "YYYY/MM/DD",
   "session": [number],
@@ -1036,424 +742,573 @@ Then, preceded by:
     "recovery":      [0–40],
     "range":         [0–40]
   },
-  "comment": "[1–2 sentences in ${lg.feedbackLang}]"
+  "comment": "[1–2 sentences in ${N}]"
 }
-\`\`\`
+${F}
 
 Score actual output only. Not effort, personality, or topic knowledge.
 1–8 (A1): isolated words. 9–16 (A2): simple exchanges, frequent errors. 17–24 (B1): main ideas, some fluency, errors present. 25–32 (B2): fluent, mostly accurate. 33–40 (C1/C2): near-native.
 Pronunciation: if correctly transcribed → correctly pronounced → score high. Deduct only if mispronunciation broke meaning.
-All 8 fields required. Integers 0–40. Comment in ${lg.feedbackLang}, 1–2 sentences. Use ${name}'s date and session number.
+All 8 fields required. Integers 0–40. Comment in ${N}, 1–2 sentences. Use ${name}'s date and session number.
 
 ---
 
-## まとめ
+## ${cmd.recap}
 
-**Trigger:** ${name} inputs「まとめ」
+**Trigger:** ${name} inputs「${cmd.recap}」
 
-Output the full conversation from this thread — every exchange, nothing skipped — in strict chronological order starting with ${lg.char}'s first message, ${lg.char} and ${name} alternating.
+Output the full conversation from this thread — every exchange, nothing skipped — in strict chronological order starting with ${char}'s first message, ${char} and ${name} alternating.
 
 Format:
-${lg.char}: [original ${lg.lang}]
-（[Japanese translation]）
-${name}: [original ${lg.lang}]
-（[Japanese translation]）
+${char}: [original ${L}]
+（[${N} translation]）
+${name}: [original ${L}]
+（[${N} translation]）
 
 **Translation rules:**
 - Preserve all nuance, tone, and personality of the original.
 - Keep fillers, hesitations, and incomplete sentences exactly as they are.
-- Do not clean up or polish ${name}'s ${lg.lang} — translate it as spoken.
+- Do not clean up or polish ${name}'s ${L} — translate it as spoken.
 - Do not summarize. Output every single line.
 
 ---
 
-## 確認
+## ${cmd.check}
 
-**Trigger:** ${name} inputs「確認」
+**Trigger:** ${name} inputs「${cmd.check}」
 
-Read the entire conversation carefully. Use ${lg.char}'s lines only as context — not as content. Extract what ${name} was trying to say, based solely on ${name}'s own lines.
+Read the entire conversation carefully. Use ${char}'s lines only as context — not as content. Extract what ${name} was trying to say, based solely on ${name}'s own lines.
 
-Output as a bullet list in ${lg.feedbackLang} — one point per thing ${name} wanted to express. Keep each point concise and true to ${name}'s intent. Do not interpret, expand, or add anything ${name} did not say.
+Output as a bullet list in ${N} — one point per thing ${name} wanted to express. Keep each point concise and true to ${name}'s intent. Do not interpret, expand, or add anything ${name} did not say.
 
-最後に：「修正があればどうぞ。」
+${checkTail}
 
 ---
 
-## 理想
+## ${cmd.ideal}
 
-**Trigger:** ${name} inputs「理想」
+**Trigger:** ${name} inputs「${cmd.ideal}」
 
 Output the ideal version of this conversation — not a brand new dialogue, but the same conversation as it would have flowed if ${name} had spoken naturally and fluently from the start.
 
 Always display this title at the top:
-💭 もしこう言えてたら？
+${idealTitle}
 
-Format — strict chronological order starting with ${lg.char}'s first line. Alternate ${lg.lang} and translation for every line:
-${lg.char}: [${lg.char}'s line]
+Format — strict chronological order starting with ${char}'s first line. Alternate ${L} and translation for every line:
+${char}: [${char}'s line]
 （[translation]）
-${name}: [ideal ${lg.lang} version]
+${name}: [ideal ${L} version]
 （[translation]）
 
 **Rules:**
 - ${name}'s lines are based solely on the confirmation list. Do not add anything ${name} did not say.
-- Topics ${lg.char} introduced stay ${lg.char}'s; ${name}'s questions stay ${name}'s.
+- Topics ${char} introduced stay ${char}'s; ${name}'s questions stay ${name}'s.
 - Fix all grammatical errors in ${name}'s lines. Complete any incomplete sentences. Fix unnatural phrasing.
 - Keep ${name}'s original word choices where possible. Never change what ${name} meant to say.
-- ${lg.char} responds naturally, doesn't lead. Off word choices get recast, not corrected.
+- ${char} responds naturally, doesn't lead. Off word choices get recast, not corrected.
 - Reflect real pauses; don't fill unfilled gaps. Two friends talking, just fluent.
 - Follow the original conversation's flow, order, and initiative exactly.
 - Translations should preserve nuance and tone.
 
 ---
 
-## ${lg.langJa}
+## ${reOut}
 
-**Trigger:** ${name} inputs「${lg.langJa}」
+**Trigger:** ${name} inputs「${reOut}」
 
-Re-output the ideal conversation in full — ${lg.lang} lines only, no translations.
-${isAEP ? stressRhythmRules : ''}
+Re-output the ideal conversation in full — ${L} lines only, no translations.
+${stressRules}
 Always display this title at the top:
 💭 What if I could have said it like this?
 
 Format:
-— [${name}'s line]${isAEP ? ' ← stress + rhythm marked' : ''}
-— [${lg.char}'s line]
+— [${name}'s line]${target === 'en' ? ' ← stress + rhythm marked' : ''}
+— [${char}'s line]
 
 ---
 
-## 日記
+## ${cmd.diary}
 
-**Trigger:** ${name} inputs「日記」
+**Trigger:** ${name} inputs「${cmd.diary}」
 
 Based on today's conversation, write a diary entry in ${name}'s voice.
 
-**Format:** ${lg.lang} entry first, then ${lg.feedbackLang} entry. No comments, no labels, no headers — just the two entries back to back.
+**Format:** ${L} entry first, then ${N} entry. No comments, no labels, no headers — just the two entries back to back.
 
 **Rules:**
-- This is ${name}'s personal diary — about her feelings, thoughts, and daily life. The conversation is only a source of topic material.
-- Never frame it as a conversation recap or anything related to language practice. As a rule ${lg.char} doesn't appear; mention him sparingly only if the entry would feel unnatural otherwise.
+- This is ${name}'s personal diary — about their feelings, thoughts, and daily life. The conversation is only a source of topic material.
+- Never frame it as a conversation recap or anything related to language practice. As a rule ${char} doesn't appear; mention them sparingly only if the entry would feel unnatural otherwise.
 - Use only ${name}'s own words and expressions as the basis — drawn from the confirmation list. Do not rewrite, polish, or dramatize.
 - Prioritize natural, everyday spoken phrasing above variety or richness of expression. When in doubt, choose the way someone would actually say it in casual conversation.
 - Casual, first-person, spoken-language tone.
 - Prioritize topics ${name} spent meaningful time on. Omit lightweight openers such as greetings, weather, or seasonal small talk.
-- ${lg.lang} entry: 100–150 words.
-- ${lg.feedbackLang} entry: match the content naturally. No strict word limit — not a word-for-word translation.
-- Do not start the entry with "Today" or "今日は" — vary the opening naturally.
+- ${diaryLen}
+- ${N} entry: match the content naturally. No strict length limit — not a word-for-word translation.
+- Do not start either entry with a "today" opener (${todayList}) — vary the opening naturally.
 
 ---
 
-## 音読（+ transcribed text）
+## ${cmd.reading}（+ transcribed text）
 
-**Trigger:** ${name} inputs「音読」followed by transcribed text
+**Trigger:** ${name} inputs「${cmd.reading}」followed by transcribed text
 
-${name} reads the diary ${lg.lang} entry aloud using smartphone voice input and pastes the transcribed result. Compare the transcription against the original diary ${lg.lang} entry. Identify words or phrases where the transcription differs from the original.
+${name} reads the diary ${L} entry aloud using smartphone voice input and pastes the transcribed result. Compare the transcription against the original diary ${L} entry. Identify words or phrases where the transcription differs from the original.
 
 Format:
-🎙️ 音読 #[number]
+${readingHead} #[number]
 
-🔧 改善ポイント：
-・[correct word] /[${lg.phonetic}]/ → [brief pronunciation tip in ${lg.feedbackLang}]
+${readingFix}
+・[correct word] [${t.ph}] → [brief pronunciation tip in ${N}]
 
 If there are no differences, output:
-🎙️ 音読 #[number]
+${readingHead} #[number]
 
-今日は完璧でした！
+${readingPerfect}
 
 **Rules:**
-- Number each reading session sequentially within the thread (音読 #1, #2, #3…). Separate count from Role-Play.
+- Number each reading session sequentially within the thread (${readingHead} #1, #2, #3…). Separate count from Role-Play.
 - Compare by sound only — ignore homophones, alternate spellings, hyphens, brackets, punctuation, capitalization. Flag only when the actual sound differs.
-- Always show the correct word — not the misread version. Provide the ${lg.phonetic} of the correct word and practical advice on how to pronounce it correctly.
+- Always show the correct word — not the misread version. Provide the ${t.ph} of the correct word and practical advice on how to pronounce it correctly.
 - Do not describe or explain the incorrect reading.
 - Do not comment on words that were transcribed correctly.
-- Tips concise, in ${lg.feedbackLang}.
+- Tips concise, in ${N}.
 
 ---
 
-## Role-Play（${name} / ${lg.char}）
+## Role-Play（${name} / ${char}）
 
-**Trigger:** ${name} types「${name}」or「${lg.char}」
+**Trigger:** ${name} types「${name}」or「${char}」
 
-Replay the 「理想」script line by line as a role-play.
+Replay the「${cmd.ideal}」script line by line as a role-play.
 
 Format:
-🎭 ロールプレイ #[number]
+${rpHead} #[number]
 
 **Rules:**
-- Number sequentially within the thread (separate count from 音読).
+- Number sequentially within the thread (separate count from ${cmd.reading}).
 - ${name} delivers one line at a time. After each line, give brief pronunciation feedback.
 - Stay in order — do not skip lines.
-- If ${name} types「${name}」: ${name} speaks as herself; ${lg.char} listens and feeds back.
-- If ${name} types「${lg.char}」: ${name} speaks ${lg.char}'s line; ${lg.char} confirms delivery and feeds back.
+- If ${name} types「${name}」: ${name} speaks as themselves; ${char} listens and feeds back.
+- If ${name} types「${char}」: ${name} speaks ${char}'s line; ${char} confirms delivery and feeds back.
 - Keep feedback concise — one or two points per turn.
 
 ---
 
-## ${lg.trigger}
+## ${cmd.harvest}
 
-**Trigger:** ${name} inputs「${lg.trigger}」
+**Trigger:** ${name} inputs「${cmd.harvest}」
 
 Read the entire conversation and the diary entry from this thread. Extract vocabulary in three categories:
 
 1. **Words ${name} couldn't say** — words or phrases ${name} was trying to express but couldn't find, used incorrectly, or visibly struggled with.
 2. **Key words from today's diary** — important words or phrases that appeared in the diary entry and are worth remembering.
-3. **High-frequency everyday ${lg.lang}** — common expressions from the conversation that are useful in daily conversation.
+3. **High-frequency everyday ${L}** — common expressions from the conversation that are useful in daily conversation.
 
-For each item, output in the following format:
+Output, preceded by:
+${harvestLead}
 
-「以下のJSONをコピーして、${lg.app}に貼り付けてください👇」
-
-\`\`\`json
+${F}json
 [
   {
-    "w": "[word or phrase in ${lg.lang}]",
-    "ph": "[pronunciation in ${lg.phonetic}]",
-    "${lg.jsonVocab}": "[translation]",
-    "ex": "[example sentence]",
-    "${lg.jsonVocabEx}": "[translation of the example sentence]"
+    "w": "[word or phrase in ${L}]",
+    "ph": "[${t.ph}]",
+    "jp": "[${N} translation]",
+    "ex": "[example sentence in ${L}]",
+    "exJp": "[${N} translation of the example sentence]"
   }
 ]
-\`\`\`
+${F}
 
 **Rules:**
 - Output exactly 10 items across all three categories.
-- Example sentences from ${name}'s own lines only — the corrected 「理想」versions or diary expressions. Never ${lg.char}'s lines or uncorrected speech.
-- \`${lg.jsonVocabEx}\` in ${lg.feedbackLang} only — no ${lg.lang}, including the target word itself.
+- Example sentences from ${name}'s own lines only — the corrected「${cmd.ideal}」versions or diary expressions. Never ${char}'s lines or uncorrected speech.
+- "jp" and "exJp" in ${N} only — no ${L}, including the target word itself.
 - Do not include words ${name} already used correctly and fluently.
-- All translations should be natural, not literal.
+- All translations should be natural, not literal.${jaJsonNote}
 - **Character limits (including spaces):**
-  - \`w\` (word/phrase): 20 characters or fewer
-  - \`${lg.jsonVocab}\` (translation): 10 characters or fewer
-  - \`ex\` (example sentence): 60 characters or fewer
-  - \`${lg.jsonVocabEx}\` (example translation): 30 characters or fewer
+  - "w" (word/phrase): 20 characters or fewer
+  - "jp" (translation): ${jpLim} characters or fewer
+  - "ex" (example sentence): 60 characters or fewer
+  - "exJp" (example translation): ${exJpLim} characters or fewer
   - If a natural output exceeds these limits, shorten it without changing the meaning.
 
 ---
 
 ## Guide Display
 
-At the end of every response — **except during ${lg.char} mode (Mode 1) and Role-Play** — display the following exactly as written:
+At the end of every response — **except during ${char} mode (Mode 1) and Role-Play** — display the following exactly as written:
 
 ---
 
-確認 ・ 理想 ・ ${lg.langJa} ・ 日記 ・ ${lg.trigger} ・ 音読 ・ ${name} ・ ${lg.char}`;
+${menu}`;
 }
 
+// ---- ガイドUI文言 ----
+const T = {
+  ja: {
+    title: c => `${c.project} Guide`,
+    badge: c => `${c.project} GUIDE`,
+    heroTitle: c => `<span class="username">${esc(c.name)}</span>'s ${c.tNameEn}<br>Practice System`,
+    heroSub: c => `${c.projectFull} へようこそ。<br>このガイドを読めば、今日から始められます。`,
+    ovTitle: c => `${c.project} とは？`,
+    ovBody: c => `${c.project}（${c.projectFull}）は、AIの友人「${c.charDisp}」との${c.tName}会話を通じて、自然な${c.tName}を身につけるシステムです。<br>レッスンではなく、<strong>友達との会話</strong>として設計されています。`,
+    ovTip: c => `<strong>目標：</strong>フォーマルな教科書${c.tName}ではなく、友達に話しかけるような自然で温かい${c.tName}を身につけること。`,
+    modesTitle: '2つのモード',
+    mode1Label: c => `MODE 1 — ${c.char.toUpperCase()}（友達モード）`,
+    mode1Body: c => `${c.tName}で話しかけるだけでスタート。${c.char}は友達として自然に会話してくれます。<br>あなたが<strong>80%</strong>話す。${c.char}は<strong>20%</strong>だけ。<br>一度に質問はひとつ。ミスは「リキャスト」で自然に修正されます。`,
+    mode2Label: 'MODE 2 — ANALYST（分析モード）',
+    mode2Body: c => `会話が終わったら、日付とセッション番号を入力してください。<br>例：<span class='trigger'>2026/07/03 #1</span><br>${c.char}がコーチとして全体を振り返り、<strong>${c.nName}で</strong>フィードバックします。`,
+    commandsTitle: '特殊コマンド一覧',
+    commands: c => [
+      [c.cmd.recap, `→ このセッションの会話を全文・時系列順で${c.tName}＋${c.nName}訳で出力`],
+      [c.cmd.check, '→ あなたが言いたかったことを箇条書きで整理（修正可）'],
+      [c.cmd.ideal, `→ 「こう言えてたら？」の理想の会話を${c.tName}・${c.nName}で表示`],
+      [c.reOut, `→ 理想の会話を${c.tName}のみで再出力${c.target === 'en' ? '（ストレス・リズム記号付き）' : ''}`],
+      [c.cmd.diary, `→ 今日の会話をもとに、あなた自身の視点で日記を作成（${c.tName}＋${c.nName}）`],
+      [c.cmd.reading, '→ 日記の音読テキストを貼り付けると、発音の差異を検出してフィードバック'],
+      [c.cmd.harvest, `→ 今日の重要単語を${c.app}用JSONで出力し、アプリで定着練習！`, 'apple'],
+      [`${esc(c.name)} / ${c.char}`, `→ 「${c.cmd.ideal}」のスクリプトで1行ずつロールプレイ練習。${c.char}の台詞を入力すると発音フィードバックを受け取れる`],
+    ],
+    commandsTip: '好きなコマンドを試してみよう。全部やらなくてもオッケー！',
+    gsTitle: '始め方',
+    lblNative: '母語',
+    lblTarget: '学ぶ言語',
+    lblName: '名前',
+    lblLevel: 'レベル',
+    st1Title: '言語・名前・レベルを設定する',
+    st1Desc: '母語と学ぶ言語、あなたの名前とレベルを選んでください。<br>下のプロンプトとガイドの内容が自動で切り替わります。',
+    st2Title: 'プロンプトをコピーする',
+    st2Desc: '下のボックスにプロンプトが表示されています。<br><span class="hl">プロンプトをコピー</span> ボタンを押してクリップボードにコピーしてください。',
+    st3Title: 'Claude.ai でプロジェクトを作成する',
+    st3Desc: c => `サイドバーの <span class="hl">＋新規プロジェクト</span> をタップ。<br>プロジェクト名は <span class="hl">${c.project}</span> など好きな名前でOK。`,
+    st4Title: 'プロジェクトの指示に貼り付けて保存',
+    st4Desc: '<span class="hl">プロジェクトの指示を設定</span> を開き、<br>コピーしたプロンプトを貼り付けて保存してください。',
+    st5Title: c => `${c.tName}で話しかける`,
+    st5Desc: c => `プロジェクト内で <span class="hl">新規チャット</span> を開き、${c.tName}で話しかければ ${c.char} がすぐに応えてくれます。<br>最初のひとことに迷ったら：<span class="hl">${c.hello} ${c.play}</span>`,
+    copyBtn: 'プロンプトをコピー',
+    copied: 'コピーしました！',
+    flowTitle: '1回のセッションの流れ',
+    flow: c => [
+      `${c.project}プロジェクトを開いて、${c.tName}で話しかける`,
+      `${c.char}と自由に会話（テーマは何でもOK）`,
+      '日付＋番号を入力してアナリストモードへ',
+      'JSONが出力されたら下のボタンからスコアカードを確認',
+      '特殊コマンドで振り返り（好きなものだけでOK）',
+      `<span class="cmd-apple">${c.cmd.harvest}</span> でlingoアプリと連携して、定着するまで練習！`,
+    ],
+    appTitle: c => `${c.project} × ${c.app} 連携`,
+    appTap: 'タップしてアプリを開く →',
+    appDesc: c => `会話終了後に <strong>「${c.cmd.harvest}」</strong> と入力すると、今日の会話から重要単語・フレーズをJSONで出力します。そのJSONを${c.app}に貼り付けるだけで、フラッシュカード練習がスタート！`,
+    appTip: '<strong>出力される単語の種類：</strong><br>🔴 言えなかった・間違えた単語<br>🟡 今日の会話で出てきたキーワード<br>🟢 日常会話でよく使う便利フレーズ',
+    appNote: c => `※ ${c.app} の画面表示は${c.appUiName}です。カードの訳語は日本語で表示されます。`,
+    scoreTitle: c => `${c.project}スコアについて`,
+    scoreDesc: 'アナリストモードでは、会話を8つのカテゴリで採点します。各カテゴリ最大40点、合計320点満点。',
+    cats: ['語彙', '文法', '流暢さ', 'コミュ力', '自然さ', '発音', 'リカバリー', '表現の幅'],
+    cefrTableTitle: 'CEFRレベル対応表',
+    scoreBtn: c => `${c.project}スコアカードを開く`,
+    modalTitle: c => `${c.project} スコアチャート`,
+    modalSubtitle: 'アナリストが出力したJSONを貼り付けて「生成」を押してください。',
+    jsonError: 'JSONの形式が正しくありません。',
+    genBtn: 'チャートを生成する',
+    commentLabel: 'コメント',
+    footer: c => `${c.project} — ${c.projectFull}`,
+  },
+  en: {
+    title: c => `${c.project} Guide`,
+    badge: c => `${c.project} GUIDE`,
+    heroTitle: c => `<span class="username">${esc(c.name)}</span>'s ${c.tNameEn}<br>Practice System`,
+    heroSub: c => `Welcome to the ${c.projectFull}.<br>Read this guide and start today.`,
+    ovTitle: c => `What is ${c.project}?`,
+    ovBody: c => `${c.project} (${c.projectFull}) is a system for picking up natural ${c.tName} through conversations with your AI friend, ${c.charDisp}.<br>It's designed not as a lesson, but as <strong>a chat with a friend</strong>.`,
+    ovTip: c => `<strong>Goal:</strong> not formal textbook ${c.tName} — warm, natural ${c.tName}, the way you'd talk to a friend.`,
+    modesTitle: 'Two modes',
+    mode1Label: c => `MODE 1 — ${c.char.toUpperCase()} (FRIEND MODE)`,
+    mode1Body: c => `Just start talking in ${c.tName} — ${c.char} chats with you naturally, as a friend.<br>You talk <strong>80%</strong>. ${c.char} only <strong>20%</strong>.<br>One question at a time. Mistakes are corrected naturally through "recasting".`,
+    mode2Label: 'MODE 2 — ANALYST',
+    mode2Body: c => `When the conversation is over, enter the date and a session number.<br>e.g. <span class='trigger'>2026/07/03 #1</span><br>${c.char} switches to coach mode and gives you feedback <strong>in ${c.nName}</strong>.`,
+    commandsTitle: 'Special commands',
+    commands: c => [
+      [c.cmd.recap, `→ Full transcript of this session, in order, in ${c.tName} + ${c.nName} translation`],
+      [c.cmd.check, '→ Bullet-point list of what you were trying to say (correctable)'],
+      [c.cmd.ideal, `→ The "what if I could have said it like this?" conversation, in ${c.tName} and ${c.nName}`],
+      [c.reOut, `→ Re-output the ideal conversation in ${c.tName} only${c.target === 'en' ? ' (with stress & rhythm marks)' : ''}`],
+      [c.cmd.diary, `→ A diary entry in your own voice based on today's conversation (${c.tName} + ${c.nName})`],
+      [c.cmd.reading, '→ Paste your read-aloud transcription to get pronunciation feedback'],
+      [c.cmd.harvest, `→ Export today's key words as JSON for ${c.app} and drill them in the app!`, 'apple'],
+      [`${esc(c.name)} / ${c.char}`, `→ Role-play the "${c.cmd.ideal}" script line by line. Type ${c.char}'s lines to get pronunciation feedback`],
+    ],
+    commandsTip: "Try whichever commands you like — you don't have to use them all!",
+    gsTitle: 'Getting started',
+    lblNative: 'Native',
+    lblTarget: 'Learning',
+    lblName: 'Name',
+    lblLevel: 'Level',
+    st1Title: 'Choose languages, name & level',
+    st1Desc: 'Pick your native language, the language you\'re learning, your name and level.<br>The prompt and this guide update automatically.',
+    st2Title: 'Copy the prompt',
+    st2Desc: 'The prompt is shown in the box below.<br>Press <span class="hl">Copy prompt</span> to copy it to the clipboard.',
+    st3Title: 'Create a project on Claude.ai',
+    st3Desc: c => `In the sidebar, tap <span class="hl">+ New project</span>.<br>Any name works — <span class="hl">${c.project}</span>, for example.`,
+    st4Title: 'Paste into the project instructions and save',
+    st4Desc: 'Open <span class="hl">Set project instructions</span>,<br>paste the copied prompt, and save.',
+    st5Title: c => `Talk in ${c.tName}`,
+    st5Desc: c => `Open a <span class="hl">new chat</span> inside the project and say something in ${c.tName} — ${c.char} will answer right away.<br>Not sure how to start? Try: <span class="hl">${c.hello} ${c.play}</span>`,
+    copyBtn: 'Copy prompt',
+    copied: 'Copied!',
+    flowTitle: 'One session, start to finish',
+    flow: c => [
+      `Open the ${c.project} project and start talking in ${c.tName}`,
+      `Chat freely with ${c.char} (any topic is fine)`,
+      'Enter the date + session number to switch to Analyst mode',
+      'When the JSON appears, check your score card via the button below',
+      'Review with the special commands (only the ones you like)',
+      `<span class="cmd-apple">${c.cmd.harvest}</span> connects to your lingo app — practice until it sticks!`,
+    ],
+    appTitle: c => `${c.project} × ${c.app}`,
+    appTap: 'Tap to open the app →',
+    appDesc: c => `After the conversation, type <strong>"${c.cmd.harvest}"</strong> to export today's key words and phrases as JSON. Paste that JSON into ${c.app} and your flashcard practice is ready to go!`,
+    appTip: '<strong>What gets exported:</strong><br>🔴 Words you couldn\'t say or got wrong<br>🟡 Key words from today\'s conversation<br>🟢 Handy high-frequency everyday phrases',
+    appNote: c => `Note: ${c.app}'s interface is in ${c.appUiName}, but your cards' translations will be in English.`,
+    scoreTitle: c => `About the ${c.project} score`,
+    scoreDesc: 'In Analyst mode, the conversation is scored across 8 categories — up to 40 points each, 320 in total.',
+    cats: ['Vocabulary', 'Grammar', 'Fluency', 'Communication', 'Naturalness', 'Pronunciation', 'Recovery', 'Range'],
+    cefrTableTitle: 'CEFR level table',
+    scoreBtn: c => `Open the ${c.project} score card`,
+    modalTitle: c => `${c.project} score chart`,
+    modalSubtitle: 'Paste the JSON output by the Analyst and press "Generate".',
+    jsonError: 'Invalid JSON format.',
+    genBtn: 'Generate chart',
+    commentLabel: 'COMMENT',
+    footer: c => `${c.project} — ${c.projectFull}`,
+  },
+};
 
-function updatePromptPreview(name, level) {
+const CAT_COLORS = ['#e85858', '#e88030', '#60b050', '#48a0d0', '#b068c8', '#d8b028', '#e85858', '#48a0d0'];
+const CAT_KEYS = ['vocabulary', 'grammar', 'fluency', 'communication', 'naturalness', 'pronunciation', 'recovery', 'range'];
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ---- 描画 ----
+function ctx() {
+  const t = TARGETS[target];
+  const charDisp = t.charNote
+    ? (guideLang === 'ja' ? `${t.char}（${t.charNote}）` : `${t.char} (${t.charNote})`)
+    : t.char;
+  const appUiName = guideLang === 'ja'
+    ? (t.appUiLang === 'ja' ? '日本語' : '英語')
+    : (t.appUiLang === 'ja' ? 'Japanese' : 'English');
+  return {
+    name: currentName, level: currentLevel, target, native,
+    project: t.project, projectFull: t.projectFull, char: t.char, charDisp,
+    app: t.app, appUrl: t.appUrl, hello: t.hello, play: t.play,
+    tName: LANG_NAMES[guideLang][target], tNameEn: LANG_NAMES.en[target],
+    nName: NATIVE_NAMES[guideLang][native],
+    cmd: COMMANDS[native], reOut: LANG_NAMES[native][target],
+    appUiName,
+  };
+}
+
+function buildPills() {
+  const np = document.getElementById('native-pills');
+  np.innerHTML = ['ja', 'en'].map(n =>
+    `<button class="lang-pill${n === native ? ' active' : ''}" onclick="setNative('${n}')">${n === 'ja' ? '🇯🇵' : '🇺🇸'} ${NATIVE_NAMES[guideLang][n === 'ja' ? 'ja' : 'en']}</button>`
+  ).join('');
+  const tp = document.getElementById('target-pills');
+  tp.innerHTML = Object.keys(TARGETS).map(k => {
+    const dis = k === native ? ' disabled' : '';
+    return `<button class="lang-pill${k === target ? ' active' : ''}${dis}" onclick="setTarget('${k}')">${TARGETS[k].flag} ${LANG_NAMES[guideLang][k]}</button>`;
+  }).join('');
+  const lp = document.getElementById('level-pills');
+  lp.innerHTML = LEVELS.map(l =>
+    `<button class="level-pill${l === currentLevel ? ' active' : ''}" data-level="${l}" onclick="setLevel('${l}')">${l}</button>`
+  ).join('');
+}
+
+function updatePromptPreview() {
   const el = document.getElementById('prompt-preview');
-  if (!el) return;
-  const text = buildPrompt(name, level, currentLang);
-  const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const ld = LEVELS_DATA[level] || LEVELS_DATA['B1'];
-  const safeDesc = ld.desc.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  let highlighted = escaped.replace(
-    new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g'),
-    `<span class="prompt-name-highlight">${name}</span>`
-  );
+  const text = buildPrompt(currentName, currentLevel, native, target);
+  let highlighted = esc(text);
+  if (currentName) {
+    highlighted = highlighted.replace(
+      new RegExp(esc(currentName).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+      `<span class="prompt-name-highlight">${esc(currentName)}</span>`
+    );
+  }
   highlighted = highlighted.replace(
-    new RegExp(safeDesc, 'g'),
-    `<span class="prompt-level-highlight">${ld.desc}</span>`
+    new RegExp(`${currentLevel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\(CEFR\\)`, 'g'),
+    `<span class="prompt-level-highlight">${currentLevel} (CEFR)</span>`
   );
   el.innerHTML = highlighted;
 }
 
-function applySettings() {
-  const name = document.getElementById('username-input').value.trim() || 'CA';
-  currentName = name;
-  const ld = LANG_DATA[currentLang];
-  const tx = UI_TEXT[currentLang];
+function render() {
+  const tx = T[guideLang];
+  const c = ctx();
+  const get = v => (typeof v === 'function' ? v(c) : v);
+  document.documentElement.lang = guideLang;
+  document.title = get(tx.title);
+  document.querySelectorAll('.glang-pill').forEach(p => p.classList.toggle('active', p.dataset.glang === guideLang));
+  buildPills();
 
-  const sections = [
-    ['Hero', () => {
-      document.getElementById('hero-name').textContent = name;
-      document.getElementById('guide-badge').textContent = tx.badge;
-      document.getElementById('hero-lang-title').textContent = tx.heroLang;
-      document.getElementById('hero-subtitle').innerHTML = ld.subtitle;
-    }],
-    ['Overview', () => {
-      document.getElementById('overview-title').textContent = tx.overviewTitle;
-      document.getElementById('overview-desc').innerHTML = tx.overviewDesc;
-      document.getElementById('overview-tip-label').textContent = tx.overviewTipLabel;
-      document.getElementById('overview-tip-body').textContent = tx.overviewTipBody;
-    }],
-    ['Modes', () => {
-      document.getElementById('modes-title').textContent = tx.modesTitle;
-      document.getElementById('mode1-label').textContent = tx.mode1Label;
-      document.getElementById('mode2-label').textContent = tx.mode2Label;
-      document.getElementById('mode1-desc').innerHTML = tx.mode1Desc;
-      document.getElementById('mode2-desc').innerHTML = tx.mode2Desc;
-    }],
-    ['Commands', () => {
-      document.getElementById('commands-title').textContent = tx.commandsTitle;
-      document.getElementById('cmd1-key').textContent = tx.cmd1Key;
-      document.getElementById('cmd1-desc').textContent = tx.cmd1Desc;
-      document.getElementById('cmd2-key').textContent = tx.cmd2Key;
-      document.getElementById('cmd2-desc').textContent = tx.cmd2Desc;
-      document.getElementById('cmd3-key').textContent = tx.cmd3Key;
-      document.getElementById('cmd3-desc').textContent = tx.cmd3Desc;
-      document.getElementById('cmd4-key').textContent = tx.cmd4Key;
-      document.getElementById('cmd4-desc').textContent = tx.cmd4Desc;
-      document.getElementById('cmd5-key').textContent = tx.cmd5Key;
-      document.getElementById('cmd5-desc').textContent = tx.cmd5Desc;
-      document.getElementById('cmd6-key').textContent = tx.cmd6Key;
-      document.getElementById('cmd6-desc').textContent = tx.cmd6Desc;
-      document.getElementById('cmd7-key').textContent = `${name} / ${ld.char}`;
-      document.getElementById('cmd7-desc').textContent = tx.cmd7Desc;
-      document.getElementById('cmd-tip').textContent = tx.cmdTip;
-      document.getElementById('cmd-harvest-label').textContent = ld.trigger;
-      document.getElementById('flow6-desc').innerHTML = tx.flow6Desc;
-    }],
-    ['GettingStarted', () => {
-      document.getElementById('gs-title').textContent = tx.gsTitle;
-      document.getElementById('gs-step1-title').textContent = tx.gsStep1;
-      document.getElementById('gs-step2-title').textContent = tx.gsStep2;
-      document.getElementById('gs-step3-title').textContent = tx.gsStep3;
-      document.getElementById('gs-step4-title').textContent = tx.gsStep4;
-      document.getElementById('gs-step5-title').textContent = tx.gsStep5;
-      document.getElementById('gs-step1-desc').textContent = tx.gsStep1Desc;
-      document.getElementById('gs-step3-project').textContent = tx.gsStep3Project;
-      document.getElementById('gs-step5-prefix').textContent = tx.gsStep5Prefix;
-      document.getElementById('gs-new-chat-label').textContent = tx.gsNewChatLabel;
-      document.getElementById('gs-step5-mid').textContent = tx.gsStep5Mid;
-      document.getElementById('gs-step5-desc').textContent = tx.gsStep5Desc;
-      document.getElementById('gs-step1-prefix').textContent = tx.gsStep1Prefix;
-      document.getElementById('gs-step1-mid').textContent = tx.gsStep1Mid;
-      document.getElementById('gs-step1-suffix').textContent = tx.gsStep1Suffix;
-      document.getElementById('gs-step2-desc1').textContent = tx.gsStep2Desc1;
-      document.getElementById('gs-copy-btn-label').textContent = tx.gsCopyBtnLabel;
-      document.getElementById('gs-step2-desc2').textContent = tx.gsStep2Desc2;
-      document.getElementById('gs-step3-desc1').textContent = tx.gsStep3Desc1;
-      document.getElementById('gs-new-project-label').textContent = tx.gsNewProjectLabel;
-      document.getElementById('gs-step3-desc2').textContent = tx.gsStep3Desc2;
-      document.getElementById('gs-step3-desc3').textContent = tx.gsStep3Desc3;
-      document.getElementById('gs-step3-desc4').textContent = tx.gsStep3Desc4;
-      document.getElementById('gs-instructions-label').textContent = tx.gsInstructionsLabel;
-      document.getElementById('gs-step4-desc1').textContent = tx.gsStep4Desc1;
-      document.getElementById('gs-step4-desc2').textContent = tx.gsStep4Desc2;
-    }],
-    ['Flow', () => {
-      document.getElementById('flow-title').textContent = tx.flowTitle;
-      document.getElementById('flow1').textContent = tx.flow1;
-      document.getElementById('flow2').textContent = tx.flow2;
-      document.getElementById('flow3').textContent = tx.flow3;
-      document.getElementById('flow4').textContent = tx.flow4;
-      document.getElementById('flow5').textContent = tx.flow5;
-      document.getElementById('flow-harvest-key').textContent = tx.flowHarvestKey;
-      document.getElementById('flow-harvest-desc').textContent = tx.flowHarvestDesc;
-    }],
-    ['Lingo', () => {
-      const activePill = document.querySelector('.lang-pill.active');
-      if (activePill && activePill.dataset.icon) { document.getElementById('lingo-icon').src = activePill.dataset.icon; }
-      document.getElementById('lingo-tap-label').textContent = tx.lingoTapLabel;
-      document.getElementById('lingo-title').textContent = tx.lingoCardTitle;
-      document.getElementById('lingo-link').href = ld.appUrl;
-      document.getElementById('lingo-app-name').textContent = ld.app;
-      document.getElementById('lingo-desc').innerHTML = ld.lingoDesc;
-      document.getElementById('lingo-tip-title').textContent = tx.lingoTipTitle;
-      document.getElementById('lingo-tip-body').innerHTML = tx.lingoTipBody;
-    }],
-    ['Score', () => {
-      document.getElementById('cat-vocabulary').textContent = tx.catVocabulary;
-      document.getElementById('cat-grammar').textContent = tx.catGrammar;
-      document.getElementById('cat-fluency').textContent = tx.catFluency;
-      document.getElementById('cat-communication').textContent = tx.catCommunication;
-      document.getElementById('cat-naturalness').textContent = tx.catNaturalness;
-      document.getElementById('cat-pronunciation').textContent = tx.catPronunciation;
-      document.getElementById('cat-recovery').textContent = tx.catRecovery;
-      document.getElementById('cat-range').textContent = tx.catRange;
-      document.getElementById('cefr-table-title').textContent = tx.cefrTableTitle;
-      document.getElementById('modal-subtitle').textContent = tx.modalSubtitle;
-      document.getElementById('score-title').textContent = tx.scoreTitle;
-      document.getElementById('score-desc').textContent = tx.scoreDesc;
-      document.getElementById('score-btn-label').textContent = tx.scoreBtnLabel;
-    }],
-    ['Footer', () => {
-      document.getElementById('footer-text').textContent = tx.footerText;
-      document.title = tx.pageTitle;
-    }],
-    ['Buttons', () => {
-      document.getElementById('copy-btn').innerHTML = '<span>&#x2398;</span>&nbsp;' + tx.copyBtn;
-    }],
-    ['Prompt', () => {
-      updatePromptPreview(name, currentLevel);
-    }],
-  ];
-
-  for (const [name_s, fn] of sections) {
-    try {
-      fn();
-    } catch(e) {
-      console.error('applySettings error in section [' + name_s + ']:', e.message);
-    }
+  const map = {
+    'guide-badge': tx.badge, 'hero-title': tx.heroTitle, 'hero-sub': tx.heroSub,
+    'ov-title': tx.ovTitle, 'ov-body': tx.ovBody, 'ov-tip': tx.ovTip,
+    'modes-title': tx.modesTitle,
+    'mode1-label': tx.mode1Label, 'mode1-body': tx.mode1Body,
+    'mode2-label': tx.mode2Label, 'mode2-body': tx.mode2Body,
+    'commands-title': tx.commandsTitle, 'commands-tip': tx.commandsTip,
+    'gs-title': tx.gsTitle,
+    'lbl-native': tx.lblNative, 'lbl-target': tx.lblTarget,
+    'lbl-name': tx.lblName, 'lbl-level': tx.lblLevel,
+    'st1-title': tx.st1Title, 'st1-desc': tx.st1Desc,
+    'st2-title': tx.st2Title, 'st2-desc': tx.st2Desc,
+    'st3-title': tx.st3Title, 'st3-desc': tx.st3Desc,
+    'st4-title': tx.st4Title, 'st4-desc': tx.st4Desc,
+    'st5-title': tx.st5Title, 'st5-desc': tx.st5Desc,
+    'flow-title': tx.flowTitle,
+    'app-title': tx.appTitle, 'app-tap': tx.appTap,
+    'app-desc': tx.appDesc, 'app-tip': tx.appTip,
+    'score-title': tx.scoreTitle, 'score-desc': tx.scoreDesc,
+    'cefr-table-title': tx.cefrTableTitle, 'score-btn-label': tx.scoreBtn,
+    'modal-title': tx.modalTitle, 'modal-subtitle': tx.modalSubtitle,
+    'json-error': tx.jsonError, 'gen-btn': tx.genBtn,
+    'footer-text': tx.footer,
+  };
+  for (const [id, v] of Object.entries(map)) {
+    try { document.getElementById(id).innerHTML = get(v); } catch (e) { console.error('render:', id, e.message); }
   }
+
+  // コマンド一覧
+  document.getElementById('commands-list').innerHTML = tx.commands(c).map(([key, desc, style], i) =>
+    `<li><span class="step-num" style="background: var(--orange);">${i + 1}</span><div><span class="${style === 'apple' ? 'cmd-apple' : 'cmd'}">${key}</span><span> ${desc}</span></div></li>`
+  ).join('');
+
+  // フロー
+  document.getElementById('flow-list').innerHTML = tx.flow(c).map((item, i) =>
+    `<li><span class="step-num" style="background: var(--${i === 5 ? 'green' : 'lavender'});">${i + 1}</span><div>${item}</div></li>`
+  ).join('');
+
+  // スコアカテゴリ
+  document.getElementById('cat-grid').innerHTML = tx.cats.map((label, i) =>
+    `<div class="cat-item"><span class="cat-dot" style="background:${CAT_COLORS[i]};"></span><span>${label}</span></div>`
+  ).join('');
+
+  // アプリカード
+  const t = TARGETS[target];
+  document.getElementById('app-link').href = t.appUrl;
+  document.getElementById('app-icon').src = t.icon;
+  document.getElementById('app-name').textContent = t.app;
+  const noteEl = document.getElementById('app-note');
+  if (t.appUiLang !== native) {
+    noteEl.style.display = '';
+    noteEl.innerHTML = get(tx.appNote);
+  } else {
+    noteEl.style.display = 'none';
+  }
+
+  // プロンプト
+  updatePromptPreview();
+  const btn = document.getElementById('copy-btn');
+  btn.classList.remove('copied');
+  btn.innerHTML = '<span>&#x2398;</span>&nbsp;' + tx.copyBtn;
+}
+
+// ---- 操作 ----
+function setGuideLang(g) { guideLang = g; persist(); render(); }
+function setNative(n) {
+  native = n;
+  if (target === native) target = native === 'ja' ? 'en' : 'ja'; // 母語=学習言語は無効
+  persist(); render();
+}
+function setTarget(k) { if (k !== native) { target = k; persist(); render(); } }
+function setLevel(l) { currentLevel = l; persist(); render(); }
+function persist() {
+  try {
+    localStorage.setItem('aep_guide_state', JSON.stringify({ guideLang, native, target, name: currentName, level: currentLevel }));
+  } catch (e) {}
 }
 
 function copyPrompt() {
-  const text = buildPrompt(currentName, currentLevel, currentLang);
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-btn');
+  const tx = T[guideLang];
+  const text = buildPrompt(currentName, currentLevel, native, target);
+  const btn = document.getElementById('copy-btn');
+  const done = () => {
     btn.classList.add('copied');
-    btn.innerHTML = '<span>&#x2713;</span>&nbsp;コピーしました！';
+    btn.innerHTML = '<span>&#x2713;</span>&nbsp;' + tx.copied;
     setTimeout(() => {
       btn.classList.remove('copied');
-      btn.innerHTML = '<span>&#x2398;</span>&nbsp;プロンプトをコピー';
+      btn.innerHTML = '<span>&#x2398;</span>&nbsp;' + tx.copyBtn;
     }, 2500);
-  }).catch(() => {
-    const el = document.getElementById('prompt-preview');
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-  });
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => {
+      const el = document.getElementById('prompt-preview');
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    });
+  }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  applySettings();
-});
-
-function openChartModal()  { document.getElementById('chart-modal').classList.add('open'); }
-function closeChartModal() { document.getElementById('chart-modal').classList.remove('open'); }
-document.getElementById('chart-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeChartModal();
-});
-
-// --- Score Chart ---
+// ---- スコアチャート ----
 const SCORE_LEVELS = [
-  { label:"C2", min:288, max:320, stroke:"#b068c8", light:"#ecdaf4", accent:"#e85858" },
-  { label:"C1", min:240, max:287, stroke:"#48a0d0", light:"#d8eef8", accent:"#d8b028" },
-  { label:"B2", min:192, max:239, stroke:"#60b050", light:"#dff0d8", accent:"#e08030" },
-  { label:"B1", min:128, max:191, stroke:"#d8b028", light:"#f8f0cc", accent:"#48a8d8" },
-  { label:"A2", min:64,  max:127, stroke:"#e88030", light:"#fcecd8", accent:"#68b858" },
-  { label:"A1", min:0,   max:63,  stroke:"#e85858", light:"#fce4e4", accent:"#b070c8" },
-];
-const CATS = [
-  {key:"vocabulary",    label:"語彙"},
-  {key:"grammar",       label:"文法"},
-  {key:"fluency",       label:"流暢さ"},
-  {key:"communication", label:"コミュ力"},
-  {key:"naturalness",   label:"自然さ"},
-  {key:"pronunciation", label:"発音"},
-  {key:"recovery",      label:"リカバリー"},
-  {key:"range",         label:"表現の幅"},
+  { label: 'C2', min: 288, max: 320, stroke: '#b068c8', light: '#ecdaf4', accent: '#e85858' },
+  { label: 'C1', min: 240, max: 287, stroke: '#48a0d0', light: '#d8eef8', accent: '#d8b028' },
+  { label: 'B2', min: 192, max: 239, stroke: '#60b050', light: '#dff0d8', accent: '#e08030' },
+  { label: 'B1', min: 128, max: 191, stroke: '#d8b028', light: '#f8f0cc', accent: '#48a8d8' },
+  { label: 'A2', min: 64,  max: 127, stroke: '#e88030', light: '#fcecd8', accent: '#68b858' },
+  { label: 'A1', min: 0,   max: 63,  stroke: '#e85858', light: '#fce4e4', accent: '#b070c8' },
 ];
 const MAX_CAT = 40, MAX_TOTAL = 320;
 
-function getScoreLevel(total) { return SCORE_LEVELS.find(l => total >= l.min && total <= l.max) || SCORE_LEVELS[SCORE_LEVELS.length-1]; }
+function getScoreLevel(total) { return SCORE_LEVELS.find(l => total >= l.min && total <= l.max) || SCORE_LEVELS[SCORE_LEVELS.length - 1]; }
+
+// 学習言語別の資格試験換算（目安）
 function getConversions(total) {
   const pct = total / MAX_TOTAL;
-  const toeic = Math.round(pct * 990 / 5) * 5;
-  const ielts = Math.round((1.0 + pct * 8.0) * 2) / 2;
-  let eiken = "5級";
-  if (pct >= 0.90) eiken = "1級";
-  else if (pct >= 0.75) eiken = "準1級";
-  else if (pct >= 0.60) eiken = "2級";
-  else if (pct >= 0.45) eiken = "準2級";
-  else if (pct >= 0.30) eiken = "3級";
-  else if (pct >= 0.15) eiken = "4級";
-  return { toeic, ielts, eiken };
+  const ja = guideLang === 'ja';
+  if (target === 'en') {
+    const toeic = Math.round(pct * 990 / 5) * 5;
+    const ielts = (Math.round((1.0 + pct * 8.0) * 2) / 2).toFixed(1);
+    const eikenMap = [[0.90, '1級'], [0.75, '準1級'], [0.60, '2級'], [0.45, '準2級'], [0.30, '3級'], [0.15, '4級']];
+    let eiken = '5級';
+    for (const [th, g] of eikenMap) { if (pct >= th) { eiken = g; break; } }
+    return [
+      { label: ja ? 'TOEIC換算' : 'TOEIC (est.)', value: toeic, unit: ja ? '点' : 'pts' },
+      { label: ja ? 'IELTS換算' : 'IELTS (est.)', value: ielts, unit: '/ 9.0' },
+      { label: ja ? '英検換算' : 'Eiken (est.)', value: eiken, unit: '' },
+    ];
+  }
+  if (target === 'fr') {
+    const tcf = Math.round(pct * 699);
+    const lvl = getScoreLevel(total).label;
+    const dip = (lvl === 'C1' || lvl === 'C2') ? `DALF ${lvl}` : `DELF ${lvl}`;
+    return [
+      { label: ja ? 'TCF換算' : 'TCF (est.)', value: tcf, unit: ja ? '点' : 'pts' },
+      { label: ja ? 'DELF/DALF目安' : 'DELF/DALF (est.)', value: dip, unit: '' },
+    ];
+  }
+  if (target === 'ko') {
+    const map = [[0.90, 6], [0.75, 5], [0.60, 4], [0.45, 3], [0.30, 2], [0.15, 1]];
+    let lv = '—';
+    for (const [th, l] of map) { if (pct >= th) { lv = ja ? `${l}級` : `Level ${l}`; break; } }
+    return [{ label: ja ? 'TOPIK換算' : 'TOPIK (est.)', value: lv, unit: '' }];
+  }
+  const map = [[0.85, 'N1'], [0.65, 'N2'], [0.45, 'N3'], [0.25, 'N4'], [0.10, 'N5']];
+  let lv = '—';
+  for (const [th, l] of map) { if (pct >= th) { lv = l; break; } }
+  return [{ label: ja ? 'JLPT換算' : 'JLPT (est.)', value: lv, unit: '' }];
 }
 
+function openChartModal()  { document.getElementById('chart-modal').classList.add('open'); }
+function closeChartModal() { document.getElementById('chart-modal').classList.remove('open'); }
+
 function generateChart() {
+  const tx = T[guideLang];
+  const cats = tx.cats;
   const raw = document.getElementById('json-input').value.trim();
   const errEl = document.getElementById('json-error');
   const outEl = document.getElementById('chart-output');
@@ -1463,62 +1318,93 @@ function generateChart() {
   let parsed;
   try { parsed = JSON.parse(raw); } catch { errEl.classList.add('show'); return; }
   const scores = parsed.scores || {};
-  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const total = CAT_KEYS.reduce((a, k) => a + (Number(scores[k]) || 0), 0);
   const pal = getScoreLevel(total);
   const pct = total / MAX_TOTAL;
-  const { toeic, ielts, eiken } = getConversions(total);
 
-  const cx = 110, cy = 100, r = 70, n = CATS.length;
-  const toXY  = (i,v) => { const a=(Math.PI*2*i/n)-Math.PI/2; return {x:cx+r*(v/MAX_CAT)*Math.cos(a),y:cy+r*(v/MAX_CAT)*Math.sin(a)}; };
-  const toXYF = (i,f) => { const a=(Math.PI*2*i/n)-Math.PI/2; return {x:cx+r*f*Math.cos(a),y:cy+r*f*Math.sin(a)}; };
-  const gridLines = [0.25,0.5,0.75,1.0].map(f => {
-    const pts = CATS.map((_,i) => toXYF(i,f));
-    return pts.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')+'Z';
+  const cx = 110, cy = 100, r = 70, n = CAT_KEYS.length;
+  const toXY  = (i, v) => { const a = (Math.PI * 2 * i / n) - Math.PI / 2; return { x: cx + r * (v / MAX_CAT) * Math.cos(a), y: cy + r * (v / MAX_CAT) * Math.sin(a) }; };
+  const toXYF = (i, f) => { const a = (Math.PI * 2 * i / n) - Math.PI / 2; return { x: cx + r * f * Math.cos(a), y: cy + r * f * Math.sin(a) }; };
+  const gridLines = [0.25, 0.5, 0.75, 1.0].map(f => {
+    const pts = CAT_KEYS.map((_, i) => toXYF(i, f));
+    return pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ') + 'Z';
   });
-  const axisLines = CATS.map((_,i) => { const e=toXYF(i,1); return `<line x1="${cx}" y1="${cy}" x2="${e.x.toFixed(1)}" y2="${e.y.toFixed(1)}" stroke="#e0e0e0" stroke-width="1"/>`; }).join('');
-  const dataPoints = CATS.map((c,i) => toXY(i, scores[c.key]||0));
-  const dataPath = dataPoints.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')+'Z';
-  const labelEls = CATS.map((c,i) => {
-    const a=(Math.PI*2*i/n)-Math.PI/2;
-    const lx=cx+(r+18)*Math.cos(a), ly=cy+(r+18)*Math.sin(a);
-    return `<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="#333" font-family="'M PLUS Rounded 1c',sans-serif">${c.label}</text>`;
+  const axisLines = CAT_KEYS.map((_, i) => { const e = toXYF(i, 1); return `<line x1="${cx}" y1="${cy}" x2="${e.x.toFixed(1)}" y2="${e.y.toFixed(1)}" stroke="#e0e0e0" stroke-width="1"/>`; }).join('');
+  const dataPoints = CAT_KEYS.map((k, i) => toXY(i, scores[k] || 0));
+  const dataPath = dataPoints.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ') + 'Z';
+  const labelEls = CAT_KEYS.map((_, i) => {
+    const a = (Math.PI * 2 * i / n) - Math.PI / 2;
+    const lx = cx + (r + 18) * Math.cos(a), ly = cy + (r + 18) * Math.sin(a);
+    return `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="#333" font-family="'M PLUS Rounded 1c',sans-serif">${cats[i]}</text>`;
   }).join('');
   const radarSVG = `<svg width="220" height="200" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
-    ${gridLines.map(d=>`<path d="${d}" fill="none" stroke="#e0e0e0" stroke-width="1"/>`).join('')}
+    ${gridLines.map(d => `<path d="${d}" fill="none" stroke="#e0e0e0" stroke-width="1"/>`).join('')}
     ${axisLines}
     <path d="${dataPath}" fill="${pal.stroke}" fill-opacity="0.35" stroke="#333" stroke-width="2"/>
     ${labelEls}
   </svg>`;
   const cefrRows = SCORE_LEVELS.map(l => {
-    const act = l.label===pal.label;
-    return `<div style="font-size:${act?14:10}px;font-weight:${act?800:700};color:${act?'white':'#333'};background:${act?pal.stroke:'transparent'};border-radius:6px;padding:${act?'2px 8px':'1px 4px'};line-height:1.3;white-space:nowrap;">${l.label}</div>`;
+    const act = l.label === pal.label;
+    return `<div style="font-size:${act ? '0.88rem' : '0.63rem'};font-weight:${act ? 800 : 700};color:${act ? 'white' : '#333'};background:${act ? pal.stroke : 'transparent'};border-radius:6px;padding:${act ? '2px 8px' : '1px 4px'};line-height:1.3;white-space:nowrap;">${l.label}</div>`;
   }).join('');
-  const convCards = [
-    {label:'TOEIC換算',value:toeic,unit:'点'},
-    {label:'IELTS換算',value:ielts,unit:'/ 9.0'},
-    {label:'英検換算', value:eiken,unit:''},
-  ].map(c=>`<div class="sc-conv-card" style="border-color:${pal.stroke};"><div class="sc-conv-label">${c.label}</div><div class="sc-conv-value" style="color:${pal.stroke};">${c.value}${c.unit?`<span class="sc-conv-unit"> ${c.unit}</span>`:''}</div></div>`).join('');
-  const commentHTML = parsed.comment ? `<div class="sc-comment-box" style="border-color:${pal.stroke};"><div class="sc-comment-label" style="background:${pal.accent};">コメント</div><div class="sc-comment-text">${parsed.comment}</div></div>` : '';
+  const convs = getConversions(total);
+  const convCards = convs.map(cv =>
+    `<div class="sc-conv-card" style="border-color:${pal.stroke};"><div class="sc-conv-label">${cv.label}</div><div class="sc-conv-value" style="color:${pal.stroke};">${cv.value}${cv.unit ? `<span class="sc-conv-unit"> ${cv.unit}</span>` : ''}</div></div>`
+  ).join('');
+  const commentHTML = parsed.comment ? `<div class="sc-comment-box" style="border-color:${pal.stroke};"><div class="sc-comment-label" style="background:${pal.accent};">${tx.commentLabel}</div><div class="sc-comment-text">${esc(parsed.comment)}</div></div>` : '';
   outEl.innerHTML = `
     <div class="sc-wrap" style="background:${pal.light};">
-      <div class="sc-header-badge"><div class="sc-badge" style="background:${pal.stroke};"><span class="sc-dot" style="background:${pal.accent};"></span>AEP SCORE<span class="sc-dot" style="background:${pal.accent};"></span></div></div>
+      <div class="sc-header-badge"><div class="sc-badge" style="background:${pal.stroke};"><span class="sc-dot" style="background:${pal.accent};"></span>${TARGETS[target].project} SCORE<span class="sc-dot" style="background:${pal.accent};"></span></div></div>
       <div class="sc-score-row">
         <div class="sc-cefr-col">${cefrRows}</div>
         <div class="sc-center">
           <div class="sc-score-card"><div class="sc-total" style="color:${pal.stroke};">${total}</div><div style="height:6px;"></div><div class="sc-max">/ ${MAX_TOTAL}</div></div>
-          <div class="sc-date">${parsed.date||''} · Session #${parsed.session||''}</div>
+          <div class="sc-date">${esc(parsed.date || '')} · Session #${esc(parsed.session || '')}</div>
         </div>
         <div class="sc-bar-col"><div class="sc-bar-wrap">
-          <div class="sc-bar-pct" style="color:${pal.accent};">${Math.round(pct*100)}<span style="font-size:8px;">%</span></div>
-          <div class="sc-bar-track" style="background:white;"><div class="sc-bar-fill" style="height:${Math.round(76*pct)}px;background:${pal.accent};"></div></div>
+          <div class="sc-bar-pct" style="color:${pal.accent};">${Math.round(pct * 100)}<span style="font-size:0.5rem;">%</span></div>
+          <div class="sc-bar-track" style="background:white;"><div class="sc-bar-fill" style="height:${Math.round(76 * pct)}px;background:${pal.accent};"></div></div>
         </div></div>
       </div>
       <div class="sc-radar-area">${radarSVG}</div>
-      <div class="sc-conversion-grid">${convCards}</div>
+      <div class="sc-conversion-grid" style="grid-template-columns:repeat(${convs.length},1fr);">${convCards}</div>
       ${commentHTML}
     </div>`;
   outEl.classList.add('show');
 }
+
+// ---- 初期化（URLパラメータ > localStorage > 既定値） ----
+(function init() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('aep_guide_state') || 'null');
+    if (saved) {
+      if (saved.guideLang in T) guideLang = saved.guideLang;
+      if (saved.native === 'ja' || saved.native === 'en') native = saved.native;
+      if (saved.target in TARGETS) target = saved.target;
+      if (typeof saved.name === 'string' && saved.name) currentName = saved.name.slice(0, 20);
+      if (LEVELS.includes(saved.level)) currentLevel = saved.level;
+    }
+  } catch (e) {}
+  const q = new URLSearchParams(location.search);
+  if (q.get('ui') in T) guideLang = q.get('ui');
+  if (q.get('native') === 'ja' || q.get('native') === 'en') native = q.get('native');
+  if (q.get('target') in TARGETS) target = q.get('target');
+  if (target === native) target = native === 'ja' ? 'en' : 'ja';
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('username-input');
+    input.value = currentName;
+    input.addEventListener('input', () => {
+      currentName = input.value.trim() || 'CA';
+      persist();
+      render();
+    });
+    document.getElementById('chart-modal').addEventListener('click', function (e) {
+      if (e.target === this) closeChartModal();
+    });
+    render();
+  });
+})();
 </script>
 </body>
 </html>
