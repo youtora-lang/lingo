@@ -1,0 +1,35 @@
+{
+  "name": "taelingo",
+  "short_name": "taelingo",
+  "start_url": "./taelingo.html",
+  "scope": "./taelingo.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#E8E0CC",
+  "icons": [
+    {
+      "src": "./taelingo-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./taelingo-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./taelingo-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./taelingo-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
