@@ -27,7 +27,7 @@ Claude.ai のプロジェクト機能を使って、AIの友人と会話しな�
 - **AEP mini ガイド**（単語登録だけを素早く）
   👉 <https://youtora-lang.github.io/lingo/aepmini_guide.html>
 
-会話の締めに「りんご」（英語UIでは "apple"）と打つと、その日の重要単語が
+会話の締めに「りんご」（英語UIでは "lingo"）と打つと、その日の重要単語が
 lingo アプリ用の JSON で出力され、貼り付けるだけでフラッシュカード練習が始まります。
 
 ## 🐛 主な機能
@@ -53,7 +53,9 @@ GitHub Pages にそのまま配信しています。
 
 - **`lingo-core.js`** — 全アプリ共通のロジック・画面HTML・UI文言（共通コア）
 - **`lingo.css`** — 共通スタイル
-- **`{app}.html`** — アプリごとの薄いHTML（PWAマニフェスト + `LINGO_CONFIG` 約10行）
+- **`{app}.html`** — アプリごとの薄いHTML（`LINGO_CONFIG` 約10行 + manifest/アイコンへの参照）
+- **`{app}.manifest.json`** — アプリごとのPWAマニフェスト（独立ファイル）
+- **`{app}-icon-1024.png` / `{app}-icon-512.png`** — アプリごとのアイコン（独立PNGファイル）
 - **`sw-{app}.js`** — アプリごとの Service Worker（オフラインキャッシュ）
 
 機能・画面・文言の変更は `lingo-core.js` を1回編集すれば4アプリ全てに反映されます。
