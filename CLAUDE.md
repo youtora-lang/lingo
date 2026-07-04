@@ -10,7 +10,9 @@ Since 2026-07 the four lingo apps share a common core ("共通コア + 言語別
 
 - **`lingo-core.js`** — all application logic, the full screen HTML (generated into `<body>` at load), and the UI string tables (`ja` / `en`). Edit this file to change behavior, screens, or wording — the change applies to **all four apps at once**.
 - **`lingo.css`** — all styles, shared by the four apps.
-- **`{app}.html`** (one per app) — a thin file holding only: the `<head>` (per-app PWA manifest / icon as base64), a `window.LINGO_CONFIG` object (~10 lines of per-language settings), and a `<script src="./lingo-core.js">` tag. These files rarely need editing.
+- **`{app}.html`** (one per app) — a thin file holding only: the `<head>` (`<link rel="manifest">` / `<link rel="apple-touch-icon">` pointing to the app's external manifest/icon files), a `window.LINGO_CONFIG` object (~10 lines of per-language settings), and a `<script src="./lingo-core.js">` tag. These files rarely need editing.
+- **`{app}.manifest.json`** (one per app) — the PWA manifest as a standalone JSON file (not embedded in the HTML).
+- **`{app}-icon-1024.png` / `{app}-icon-512.png`** (one pair per app) — the app icon as standalone PNG files (not embedded as a data URI).
 - **`sw-{app}.js`** (one per app) — service worker; precaches the app's HTML plus `lingo-core.js` and `lingo.css` (cache name `{app}-v2`).
 
 ## 重要: lingo-core.js を編集したら必ず CORE_VERSION を更新する
@@ -51,7 +53,7 @@ window.LINGO_CONFIG={
 };
 ```
 
-Adding a fifth language = copy one thin HTML, adjust `LINGO_CONFIG` + the base64 manifest/icon in `<head>`, and add a `sw-{app}.js` (copy an existing one and change the app name).
+Adding a fifth language = copy one thin HTML, adjust `LINGO_CONFIG`, copy/adjust the app's `{app}.manifest.json` and `{app}-icon-1024.png` / `{app}-icon-512.png`, and add a `sw-{app}.js` (copy an existing one and change the app name).
 
 ## Structure of lingo-core.js
 
