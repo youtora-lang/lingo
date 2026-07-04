@@ -27,8 +27,8 @@ lingo アプリ用の JSON で出力され、貼り付けるだけでフラッ�
 | 🇰🇷 **taelingo** | 韓国語 | 日本語 | <https://youtora-lang.github.io/lingo/taelingo.html> |
 | 🇯🇵 **chiilingo.JP** | Japanese | English | <https://youtora-lang.github.io/lingo/chiilingojp.html> |
 
-> リンクは拡張子付き（`.html`）で統一しています。拡張子なしのURLで開くと
-> Service Worker（オフラインキャッシュ）の管理外になるためです。
+> ブラウザで開けばそのまま使えます。「ホーム画面に追加」すると、
+> アプリのようにインストールして使うこともできます。
 
 ## 🐛 主な機能
 
