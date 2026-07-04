@@ -3,18 +3,6 @@
 スマホでもPCでも、ブラウザだけで動く語学学習アプリのシリーズです。
 インストール・アカウント登録は不要。学習データはすべて端末内（localStorage）に保存されます。
 
-## 📱 アプリ一覧
-
-| アプリ | 学習言語 | UI言語 | リンク |
-|---|---|---|---|
-| 🇺🇸 **chiilingo** | 英語 | 日本語 | <https://youtora-lang.github.io/lingo/chiilingo.html> |
-| 🇫🇷 **michilingo** | フランス語 | 日本語 | <https://youtora-lang.github.io/lingo/michilingo.html> |
-| 🇰🇷 **taelingo** | 韓国語 | 日本語 | <https://youtora-lang.github.io/lingo/taelingo.html> |
-| 🇯🇵 **chiilingo.JP** | Japanese | English | <https://youtora-lang.github.io/lingo/chiilingojp.html> |
-
-> リンクは拡張子付き（`.html`）で統一しています。拡張子なしのURLで開くと
-> Service Worker（オフラインキャッシュ）の管理外になるためです。
-
 ## 🦋 AEP シリーズ（Claude.ai 連携ガイド）
 
 Claude.ai のプロジェクト機能を使って、AIの友人と会話しながら学び、
@@ -29,6 +17,18 @@ Claude.ai のプロジェクト機能を使って、AIの友人と会話しな�
 
 会話の締めに「りんご」（英語UIでは "lingo"）と打つと、その日の重要単語が
 lingo アプリ用の JSON で出力され、貼り付けるだけでフラッシュカード練習が始まります。
+
+## 📱 アプリ一覧
+
+| アプリ | 学習言語 | UI言語 | リンク |
+|---|---|---|---|
+| 🇺🇸 **chiilingo** | 英語 | 日本語 | <https://youtora-lang.github.io/lingo/chiilingo.html> |
+| 🇫🇷 **michilingo** | フランス語 | 日本語 | <https://youtora-lang.github.io/lingo/michilingo.html> |
+| 🇰🇷 **taelingo** | 韓国語 | 日本語 | <https://youtora-lang.github.io/lingo/taelingo.html> |
+| 🇯🇵 **chiilingo.JP** | Japanese | English | <https://youtora-lang.github.io/lingo/chiilingojp.html> |
+
+> リンクは拡張子付き（`.html`）で統一しています。拡張子なしのURLで開くと
+> Service Worker（オフラインキャッシュ）の管理外になるためです。
 
 ## 🐛 主な機能
 
