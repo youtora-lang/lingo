@@ -1,0 +1,35 @@
+{
+  "name": "chiilingo.JP",
+  "short_name": "chiilingo.JP",
+  "start_url": "./chiilingojp.html",
+  "scope": "./chiilingojp.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#E8E0CC",
+  "icons": [
+    {
+      "src": "./chiilingojp-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./chiilingojp-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./chiilingojp-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./chiilingojp-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
