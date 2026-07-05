@@ -15,7 +15,7 @@
 // ============================================================
 
 const CFG=window.LINGO_CONFIG;
-const CORE_VERSION='2026-07-02 23:26';
+const CORE_VERSION='2026-07-05 18:57';
 // 表示名から suffix（lingo / lingojp）を取り除くための正規表現
 const SUFFIX_RE=new RegExp(CFG.suffix+'$','i');
 
@@ -136,6 +136,8 @@ ja:cfg=>{const t=cfg.targetName,n=cfg.nativeName;return{
   mImportSub:'バックアップのテキストを貼り付けてください',
   mImportPlaceholder:'ここに貼り付け...',
   mImportOk:'読み込む',
+  mImportOrLabel:'または',
+  btnImportFile:'📁 ファイルを選択',
   mResetTitle:'⚠️ 全データをリセット',
   mResetSub:'全ての学習データが削除されます。この操作は取り消せません。',
   mResetOk:'リセットする',
@@ -254,6 +256,8 @@ en:cfg=>{const t=cfg.targetName,n=cfg.nativeName;return{
   mImportSub:'Paste your backup text here',
   mImportPlaceholder:'Paste here...',
   mImportOk:'Import',
+  mImportOrLabel:'or',
+  btnImportFile:'📁 Choose File',
   mResetTitle:'⚠️ Reset All Data',
   mResetSub:'All learning data will be permanently deleted. This cannot be undone.',
   mResetOk:'Reset',
@@ -704,6 +708,9 @@ function renderBodyHTML(){return `
     <div class="modal-title">${T.mImportTitle}</div>
     <div class="modal-sub">${T.mImportSub}</div>
     <textarea class="modal-textarea" id="importTextarea" placeholder="${T.mImportPlaceholder}"></textarea>
+    <div style="text-align:center;font-size:11px;color:var(--ink-lt);font-weight:700;margin-bottom:10px;">${T.mImportOrLabel}</div>
+    <input type="file" id="importFileInput" accept="application/json,.json" style="display:none" onchange="handleImportFile(event)">
+    <button class="modal-btn modal-btn-cancel" style="width:100%;margin-bottom:10px;" onclick="document.getElementById('importFileInput').click()">${T.btnImportFile}</button>
     <div class="modal-btns">
       <button class="modal-btn modal-btn-cancel" onclick="closeModal('importModal')">${T.btnCancel}</button>
       <button class="modal-btn modal-btn-primary" onclick="doImport()">${T.mImportOk}</button>
@@ -1528,6 +1535,27 @@ function doImport(){
     if(data.tickets)localStorage.setItem(LS.tickets,data.tickets);
     closeModal('importModal');showToast(T.toastRestored);updateDash();renderWordList();
   }catch(e){showToast(T.toastRestoreFailed);}
+}
+function handleImportFile(event){
+  const input=event.target;const file=input.files&&input.files[0];
+  if(!file){return;}
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const text=String(reader.result||'').trim();
+    input.value='';
+    if(!text){showToast(T.toastEmptyText);return;}
+    try{
+      const data=JSON.parse(text);
+      if(data.progress)localStorage.setItem(LS.progress,data.progress);
+      if(data.history)localStorage.setItem(LS.history,data.history);
+      if(data.settings)localStorage.setItem(LS.settings,data.settings);
+      if(data.words){localStorage.setItem(LS.words,data.words);WORDS=loadWords();}
+      if(data.tickets)localStorage.setItem(LS.tickets,data.tickets);
+      closeModal('importModal');showToast(T.toastRestored);updateDash();renderWordList();
+    }catch(e){showToast(T.toastRestoreFailed);}
+  };
+  reader.onerror=()=>{input.value='';showToast(T.toastRestoreFailed);};
+  reader.readAsText(file);
 }
 
 // ナビ
