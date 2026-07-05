@@ -15,7 +15,7 @@
 // ============================================================
 
 const CFG=window.LINGO_CONFIG;
-const CORE_VERSION='2026-07-05 18:57';
+const CORE_VERSION='2026-07-05 19:23';
 // 表示名から suffix（lingo / lingojp）を取り除くための正規表現
 const SUFFIX_RE=new RegExp(CFG.suffix+'$','i');
 
@@ -117,7 +117,6 @@ ja:cfg=>{const t=cfg.targetName,n=cfg.nativeName;return{
         休んでも「また始める」ことに意義がある。`,
   ticketCountLabel:'現在のチケット数',ticketCountSub:'休んだ日に自動使用されます',
   secBackup:'バックアップ',
-  backupNote:'① 「書き出す」→ ファイルを保存<br>② 復元は「読み込む」→ テキストを貼り付け',
   exportLabel:'エクスポート',btnExport:'書き出す',
   importLabel:'インポート',btnImport:'読み込む',
   toastBackupSaved:'📦 バックアップを保存しました',
@@ -237,7 +236,6 @@ en:cfg=>{const t=cfg.targetName,n=cfg.nativeName;return{
         Starting again is what counts.`,
   ticketCountLabel:'Current Tickets',ticketCountSub:'Used automatically on rest days',
   secBackup:'Backup',
-  backupNote:'① Export → Save the file<br>② Restore → Import → Paste text',
   exportLabel:'Export',btnExport:'Export',
   importLabel:'Import',btnImport:'Import',
   toastBackupSaved:'📦 Backup saved',
@@ -666,7 +664,6 @@ function renderBodyHTML(){return `
 
     <div class="set-section-title" style="margin-bottom:10px">${T.secBackup}</div>
     <div class="set-card">
-      <div class="set-note" style="padding-bottom:10px;border-bottom:1.5px dashed var(--bg-deep);margin-bottom:4px;">${T.backupNote}</div>
       <div class="set-row">
         <div><div class="set-label">${T.exportLabel}</div></div>
         <button class="set-input" style="width:auto;padding:6px 14px;cursor:pointer;font-weight:800;" onclick="exportData()">${T.btnExport}</button>
