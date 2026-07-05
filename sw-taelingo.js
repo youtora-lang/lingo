@@ -1,6 +1,7 @@
 // taelingo専用 Service Worker — Stale-While-Revalidate
 // v2: 共通コア分離（lingo-core.js / lingo.css）に伴い、コアもキャッシュ対象に追加
-const CACHE = 'taelingo-v2';
+// v3: アイコン退行修正（星条旗→韓国国旗）に伴い、既存ユーザーへの再配信のためキャッシュ名を更新
+const CACHE = 'taelingo-v3';
 const ASSETS = ['./taelingo.html', './lingo-core.js', './lingo.css'];
 
 // インストール: 本体とコアをプリキャッシュ（失敗しても SW 自体は継続）
