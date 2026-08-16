@@ -33,7 +33,7 @@ const CORE_VERSION='2026-07-02 23:26'; // 例: この行を編集時点のJST日
 | `chiilingojp.html` | Japanese | en | `ja-JP` | `chiilingojp_` |
 | `aep_guide.html` / `aepmini_guide.html` | Guide pages (standalone) | — | — | — |
 
-> **Note:** `yay-job.html` is an unrelated app temporarily hosted here. `codingo.html` (+ `sw-codingo.js`, png files) is scheduled for deletion and was intentionally **not** migrated to the common core. `EBC2026/` is unrelated. Do not modify these when working on lingo series tasks.
+> **Note:** `codingo.html` (+ `sw-codingo.js`, png files) is scheduled for deletion and was intentionally **not** migrated to the common core. `EBC2026/` is unrelated. Do not modify these when working on lingo series tasks.
 
 ## LINGO_CONFIG (per-app settings)
 
