@@ -54,9 +54,42 @@
     if(e.target.closest&&e.target.closest('.nav-btn'))scrollPageTop();
   });
 
+  // 設定画面フッターの「Last updated」を自動で最新にする
+  // GitHub 上で chiilingo に関係するファイルが最後に更新（push）された日時を取得して表示する。
+  // 取得できないとき（オフライン・API制限など）は、共通コアの CORE_VERSION 表示のまま。
+  // 結果はタブを閉じるまで sessionStorage に保存し、毎回は問い合わせない（学習データの localStorage には触れない）。
+  const REPO='youtora-lang/lingo';
+  const WATCH=['chiilingo.html','chiilingo-theme.css','chiilingo-theme.js','lingo-core.js','lingo.css'];
+  const CACHE_KEY='chiilingoTheme.lastUpdated';
+  function fmtJST(iso){
+    const p={};
+    new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',
+      hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(iso)).forEach(x=>{p[x.type]=x.value;});
+    return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}`;
+  }
+  function showLastUpdated(iso){
+    const el=document.getElementById('lastUpdatedLabel');
+    if(el&&iso)el.textContent='Last updated: '+fmtJST(iso)+' JST';
+  }
+  async function loadLastUpdated(){
+    try{const c=sessionStorage.getItem(CACHE_KEY);if(c){showLastUpdated(c);return;}}catch(e){}
+    try{
+      const dates=await Promise.all(WATCH.map(path=>
+        fetch(`https://api.github.com/repos/${REPO}/commits?sha=main&per_page=1&path=${encodeURIComponent(path)}`,{cache:'no-store'})
+          .then(r=>r.ok?r.json():[])
+          .then(a=>(a[0]&&a[0].commit&&a[0].commit.committer&&a[0].commit.committer.date)||null)
+          .catch(()=>null)));
+      const latest=dates.filter(Boolean).sort().pop();
+      if(!latest)return;
+      showLastUpdated(latest);
+      try{sessionStorage.setItem(CACHE_KEY,latest);}catch(e){}
+    }catch(e){}
+  }
+
   function start(){
     cleanTree(document.body);
     syncThemeColor();
+    loadLastUpdated();
     new MutationObserver(list=>{
       let screenChanged=false;
       for(const r of list){
