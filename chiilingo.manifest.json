@@ -5,7 +5,7 @@
   "scope": "./chiilingo.html",
   "display": "standalone",
   "background_color": "#FFFFFF",
-  "theme_color": "#E8E0CC",
+  "theme_color": "#DCE9F4",
   "icons": [
     {
       "src": "./chiilingo-icon-1024.png",

@@ -35,6 +35,15 @@ const CORE_VERSION='2026-07-02 23:26'; // 例: この行を編集時点のJST日
 
 > **Note:** `codingo.html` (+ `sw-codingo.js`, png files) is scheduled for deletion and was intentionally **not** migrated to the common core. `EBC2026/` is unrelated. Do not modify these when working on lingo series tasks.
 
+## chiilingo 専用テーマ（2026-10 追加）
+
+chiilingo だけは見た目を独自にしている。共通コアには手を入れず、chiilingo.html から次の2ファイルを追加で読み込む（他アプリには影響しない）:
+
+- **`chiilingo-theme.css`** — lingo.css の後に読み込む上書きスタイル。AEP Score Chart 風（太い墨色の枠、ドット付きピル、袋文字の数字、下部タブバー）。ページごとに1色のテーマ（ホーム=青 / レポート=緑 / 単語一覧=黄 / 設定=赤 / フラッシュ=オレンジ / 4択=紫 / スペリング=青緑、結果画面は直前のモードの色）を `:root:has(#xxxScreen.active)` で切り替える。lingo.css が `:root{` の入れ子で書かれているため、こちらも同じ入れ子で後勝ちにしている。
+- **`chiilingo-theme.js`** — 画面に出る絵文字を MutationObserver で取り除く（コアの文言・HTMLはそのまま）。アイコンが必要な所（ナビ、モード、読み上げ、検索）は CSS の線画アイコンで置き換え。ステータスバーの theme-color も表示中ページの色に合わせる。
+
+sw-chiilingo.js はこの2ファイルもキャッシュする（cache `chiilingo-v3`）。コアの画面HTMLのクラス名や構造を変えるときは、このテーマが崩れないか chiilingo も確認すること。
+
 ## LINGO_CONFIG (per-app settings)
 
 Each app HTML defines exactly this object; it is the **only** thing that differs between apps:
