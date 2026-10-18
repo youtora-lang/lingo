@@ -31,7 +31,7 @@
    ホーム=水色/黄  レポート=オレンジ/緑  単語一覧=黄/青  設定=緑/オレンジ
    フラッシュ=紫/赤  4択=黄/青  スペリング=ピンク/紫
    差し色の使い所：ピルのドット・進捗バー・メインのボタン・今日の棒・習熟ドット・選択中のトグル
-   結果画面は、直前に選んでいたモードの色を引き継ぐ */
+   結果画面（いい調子！など）=青/黄 */
 :root:has(#reportScreen.active){
   --bg:#F8E9DA;--tint:#F1D3B5;--tint-deep:#E8B485;--accent:#E08A3C;--accent-deep:#A35A17;--on-accent:#FFFFFF;
   --pop:#5FA05A;--pop-deep:#3D7139;--on-pop:#FFFFFF;}
@@ -41,18 +41,18 @@
 :root:has(#settingsScreen.active){
   --bg:#E1EEDC;--tint:#CCE3C4;--tint-deep:#A6CD98;--accent:#5FA05A;--accent-deep:#3D7139;--on-accent:#FFFFFF;
   --pop:#E08A3C;--pop-deep:#A35A17;--on-pop:#FFFFFF;}
-:root:has(#fcScreen.active),
-:root:has(#sessResultScreen.active):has(#modeFlash.selected){
+:root:has(#fcScreen.active){
   --bg:#E9E1F1;--tint:#D7C8E8;--tint-deep:#BCA3D9;--accent:#9468C2;--accent-deep:#64408F;--on-accent:#FFFFFF;
   --pop:#D95F5B;--pop-deep:#9C3A38;--on-pop:#FFFFFF;}
-:root:has(#quizScreen.active),
-:root:has(#sessResultScreen.active):has(#modeQuiz.selected){
+:root:has(#quizScreen.active){
   --bg:#F6EED2;--tint:#EEDFA8;--tint-deep:#E2C977;--accent:#E0B53F;--accent-deep:#8A6A12;--on-accent:#2B2B2B;
   --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;}
-:root:has(#spellScreen.active),
-:root:has(#sessResultScreen.active):has(#modeSpell.selected){
+:root:has(#spellScreen.active){
   --bg:#F8E2E6;--tint:#F0C9D0;--tint-deep:#E3A0AC;--accent:#D9607A;--accent-deep:#9C3A4F;--on-accent:#FFFFFF;
   --pop:#9468C2;--pop-deep:#64408F;--on-pop:#FFFFFF;}
+:root:has(#sessResultScreen.active){
+  --bg:#DCE8F5;--tint:#C3D8EF;--tint-deep:#97BCE3;--accent:#3F7FC4;--accent-deep:#24578F;--on-accent:#FFFFFF;
+  --pop:#E0B53F;--pop-deep:#8A6A12;--on-pop:#2B2B2B;}
 
 /* lingo.css は :root{ ... } の中に入れ子で書かれているため、同じ詳細度で後勝ちにする */
 :root{
