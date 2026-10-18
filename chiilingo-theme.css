@@ -22,28 +22,37 @@
   --wrong:#DE7356;--wrong-pale:#FBE6DE;
   --line:2.5px;--radius-lg:24px;--radius-md:16px;
   --num-font:'Fredoka','Nunito',sans-serif;
-  /* 既定（ホーム）＝青 */
-  --bg:#DCE9F4;--tint:#C6DCEF;--tint-deep:#9FC3E3;--accent:#4A8BC7;--accent-deep:#2D6098;--on-accent:#FFFFFF;
+  /* 既定（ホーム）＝水色、差し色＝黄 */
+  --bg:#DDEEF8;--tint:#C3E0F2;--tint-deep:#96C8E8;--accent:#4FA0D6;--accent-deep:#2A6E9E;--on-accent:#FFFFFF;
+  --pop:#E0B53F;--pop-deep:#8A6A12;--on-pop:#2B2B2B;
 }
 
-/* ── ページごとのテーマ色 ──
-   ホーム=青 / レポート=緑 / 単語一覧=黄 / 設定=赤 / フラッシュ=オレンジ / 4択=紫 / スペリング=青緑
+/* ── ページごとのテーマ色と差し色（AEPスコアチャートと同じく、補色寄りの1色を差し色に） ──
+   ホーム=水色/黄  レポート=オレンジ/緑  単語一覧=黄/青  設定=緑/オレンジ
+   フラッシュ=紫/赤  4択=黄/青  スペリング=ピンク/紫
+   差し色の使い所：ピルのドット・進捗バー・メインのボタン・今日の棒・習熟ドット・選択中のトグル
    結果画面は、直前に選んでいたモードの色を引き継ぐ */
 :root:has(#reportScreen.active){
-  --bg:#E1EEDC;--tint:#CCE3C4;--tint-deep:#A6CD98;--accent:#5FA05A;--accent-deep:#3D7139;--on-accent:#FFFFFF;}
+  --bg:#F8E9DA;--tint:#F1D3B5;--tint-deep:#E8B485;--accent:#E08A3C;--accent-deep:#A35A17;--on-accent:#FFFFFF;
+  --pop:#5FA05A;--pop-deep:#3D7139;--on-pop:#FFFFFF;}
 :root:has(#wordlistScreen.active){
-  --bg:#F6EED2;--tint:#EEDFA8;--tint-deep:#E2C977;--accent:#E0B53F;--accent-deep:#8A6A12;--on-accent:#2B2B2B;}
+  --bg:#F6EED2;--tint:#EEDFA8;--tint-deep:#E2C977;--accent:#E0B53F;--accent-deep:#8A6A12;--on-accent:#2B2B2B;
+  --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;}
 :root:has(#settingsScreen.active){
-  --bg:#F7E3E2;--tint:#EFCBCA;--tint-deep:#E3A3A1;--accent:#D45E5B;--accent-deep:#9C3A38;--on-accent:#FFFFFF;}
+  --bg:#E1EEDC;--tint:#CCE3C4;--tint-deep:#A6CD98;--accent:#5FA05A;--accent-deep:#3D7139;--on-accent:#FFFFFF;
+  --pop:#E08A3C;--pop-deep:#A35A17;--on-pop:#FFFFFF;}
 :root:has(#fcScreen.active),
 :root:has(#sessResultScreen.active):has(#modeFlash.selected){
-  --bg:#F8E9DA;--tint:#F1D3B5;--tint-deep:#E8B485;--accent:#E08A3C;--accent-deep:#A35A17;--on-accent:#FFFFFF;}
+  --bg:#E9E1F1;--tint:#D7C8E8;--tint-deep:#BCA3D9;--accent:#9468C2;--accent-deep:#64408F;--on-accent:#FFFFFF;
+  --pop:#D95F5B;--pop-deep:#9C3A38;--on-pop:#FFFFFF;}
 :root:has(#quizScreen.active),
 :root:has(#sessResultScreen.active):has(#modeQuiz.selected){
-  --bg:#E9E1F1;--tint:#D7C8E8;--tint-deep:#BCA3D9;--accent:#9468C2;--accent-deep:#64408F;--on-accent:#FFFFFF;}
+  --bg:#F6EED2;--tint:#EEDFA8;--tint-deep:#E2C977;--accent:#E0B53F;--accent-deep:#8A6A12;--on-accent:#2B2B2B;
+  --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;}
 :root:has(#spellScreen.active),
 :root:has(#sessResultScreen.active):has(#modeSpell.selected){
-  --bg:#DCEEEC;--tint:#C2E2DE;--tint-deep:#93CBC4;--accent:#3E9C93;--accent-deep:#23685F;--on-accent:#FFFFFF;}
+  --bg:#F8E2E6;--tint:#F0C9D0;--tint-deep:#E3A0AC;--accent:#D9607A;--accent-deep:#9C3A4F;--on-accent:#FFFFFF;
+  --pop:#9468C2;--pop-deep:#64408F;--on-pop:#FFFFFF;}
 
 /* lingo.css は :root{ ... } の中に入れ子で書かれているため、同じ詳細度で後勝ちにする */
 :root{
@@ -74,12 +83,12 @@ body::before{display:none;}
 .app-title{background:var(--accent);border:var(--line) solid var(--border);color:var(--on-accent);
   padding:6px 18px;letter-spacing:0.12em;gap:10px;}
 .app-title::before,.app-title::after,.gold-tag::before,.gold-tag::after,.phrase-label::before,.phrase-label::after{
-  content:'';width:8px;height:8px;border-radius:50%;border:2px solid var(--border);background:var(--tint);flex-shrink:0;}
+  content:'';width:8px;height:8px;border-radius:50%;border:2px solid var(--border);background:var(--pop);flex-shrink:0;}
 
 /* ── ラベルのピル（カード上のタグ） ── */
 .gold-tag{display:inline-flex;align-items:center;gap:7px;background:var(--tint);border:2px solid var(--border);
   color:var(--ink);font-size:11px;padding:3px 10px;letter-spacing:0.04em;}
-.gold-tag::before,.gold-tag::after{width:6px;height:6px;border-width:1.5px;background:#fff;}
+.gold-tag::before,.gold-tag::after{width:6px;height:6px;border-width:1.5px;background:var(--pop);}
 #fcTagBack{background:#fff!important;border-color:var(--border)!important;color:var(--ink)!important;}
 
 /* ── Phrase of the Day ── */
@@ -89,7 +98,7 @@ body::before{display:none;}
 .phrase-label{position:absolute;top:-15px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;
   background:var(--card);border:var(--line) solid var(--border);border-radius:99px;padding:4px 14px;
   color:var(--ink);font-size:10px;letter-spacing:0.14em;white-space:nowrap;}
-.phrase-label::before,.phrase-label::after{width:6px;height:6px;border-width:1.5px;background:var(--accent);}
+.phrase-label::before,.phrase-label::after{width:6px;height:6px;border-width:1.5px;background:var(--pop);}
 .phrase-actions{position:absolute;top:10px;right:12px;}
 .phrase-icon-btn{width:32px;height:32px;border:2px solid var(--border);background:var(--card);color:var(--ink);}
 .phrase-icon-btn:active{background:var(--tint-deep);}
@@ -131,7 +140,7 @@ body::before{display:none;}
 .mode-row{gap:10px;margin:4px 0 12px;}
 .mode-btn{border:var(--line) solid var(--border);border-radius:var(--radius-md);background:var(--card);color:var(--ink-mid);}
 .mode-btn.selected{background:var(--tint);border-color:var(--border);color:var(--accent-deep);}
-.start-btn{background:var(--accent);color:var(--on-accent);border:var(--line) solid var(--border);border-radius:18px;letter-spacing:0.04em;}
+.start-btn{background:var(--pop);color:var(--on-pop);border:var(--line) solid var(--border);border-radius:18px;letter-spacing:0.04em;}
 
 /* ── セッション画面のヘッダー ── */
 .fc-header{background:var(--bg);border-bottom:none;padding:14px 16px 6px;}
@@ -139,7 +148,7 @@ body::before{display:none;}
 .fc-close{border:2px solid var(--border);background:var(--card);color:var(--ink);}
 .prog-wrap{background:var(--bg);border-bottom:none;padding:6px 16px 4px;}
 .prog-bar-thin{height:12px;background:var(--card);border:2px solid var(--border);}
-.prog-bar-fill{background:var(--accent);}
+.prog-bar-fill{background:var(--pop);}
 .prog-nums{color:var(--ink-mid);}
 
 /* ── カード ── */
@@ -155,14 +164,14 @@ body::before{display:none;}
 .word-ph,#wordPhBack{color:var(--accent)!important;opacity:1!important;}
 .mastery-label{color:var(--ink-mid);}
 .pip,.pip-front{background:var(--card);border:1.5px solid var(--border);}
-.pip.filled,.pip-front.filled{background:var(--accent);border-color:var(--border);}
+.pip.filled,.pip-front.filled{background:var(--pop);border-color:var(--border);}
 .speak-btn,#speakBtnBack{border:2px solid var(--border)!important;background:var(--card)!important;color:var(--ink)!important;}
 .speak-btn.speaking,#speakBtnBack.speaking{background:var(--accent)!important;color:var(--on-accent)!important;}
 
 /* ── ボタン ── */
 .flip-btn{border:var(--line) solid var(--border);border-radius:var(--radius-md);background:var(--card);}
 .action-btn{border:var(--line) solid var(--border);border-radius:var(--radius-md);}
-.btn-ok{background:var(--accent);color:var(--on-accent);}
+.btn-ok{background:var(--pop);color:var(--on-pop);}
 .btn-ng{background:var(--card);color:var(--ink-mid);}
 
 /* ── 4択 ── */
@@ -179,7 +188,7 @@ body::before{display:none;}
 #spellInput:focus{border-color:var(--accent)!important;}
 #spellInput.correct{border-color:var(--correct)!important;}
 #spellInput.wrong{border-color:var(--wrong)!important;}
-#spellScreen .card-area button[onclick="submitSpelling()"]{background:var(--accent)!important;color:var(--on-accent);border-width:var(--line)!important;}
+#spellScreen .card-area button[onclick="submitSpelling()"]{background:var(--pop)!important;color:var(--on-pop);border-width:var(--line)!important;}
 #spellSkipBtn{border-width:var(--line)!important;}
 
 /* ── 結果画面：AEPの「20 / 320」の枠風 ── */
@@ -193,27 +202,27 @@ body::before{display:none;}
 .missed-item{border:2px solid var(--border);border-radius:14px;}
 .copy-btn{background:var(--card);color:var(--accent-deep);border:var(--line) solid var(--border);border-radius:var(--radius-md);}
 .s-btn{border:var(--line) solid var(--border);border-radius:var(--radius-md);}
-.s-btn-dash{background:var(--accent);color:var(--on-accent);}
+.s-btn-dash{background:var(--pop);color:var(--on-pop);}
 .s-btn-retry{background:var(--card);}
 
 /* ── 単語一覧 ── */
 #wlSearchInput,#wlSortSelect{border-width:var(--line)!important;border-radius:14px!important;}
 .wl-filter{border:2px solid var(--border);}
-.wl-filter.active{background:var(--accent);color:var(--on-accent);border-color:var(--border);}
+.wl-filter.active{background:var(--pop);color:var(--on-pop);border-color:var(--border);}
 .wf-master,.wi-master{background:var(--accent-deep);}
 .wf-learning,.wi-learning{background:var(--accent);}
 .wf-new,.wi-new{background:var(--tint-deep);border:1.5px solid var(--accent);}
 .wl-filter.active .wf-dot{border:1.5px solid var(--card);}
 .word-item{border:2px solid var(--border);border-radius:var(--radius-md);}
 .wi-toggle{border:2px solid var(--border);background:var(--card);}
-.wi-toggle.on{background:var(--accent);border-color:var(--border);}
+.wi-toggle.on{background:var(--pop);color:var(--on-pop);border-color:var(--border);}
 
 /* ── レポート ── */
 #reportBody > div:first-child button{border-width:var(--line)!important;}
 .report-stat-row{gap:12px;}
 .report-bar-bg{background:var(--bg);border-radius:8px;}
 .report-bar-fill{background:var(--accent);border-radius:8px 8px 0 0;}
-.report-bar-fill.today{background:var(--accent-deep);}
+.report-bar-fill.today{background:var(--pop);}
 
 /* ── 設定 ── */
 .set-section-title{color:var(--ink);opacity:0.7;padding-left:4px;}
@@ -221,7 +230,7 @@ body::before{display:none;}
 .set-input{border:2px solid var(--border);background:var(--bg);border-radius:10px;}
 .set-note-hl{background:var(--tint);border:2px dashed var(--accent);border-radius:14px;}
 .fs-btn{border:2px solid var(--border);}
-.fs-btn.active{background:var(--accent);color:var(--on-accent);border-color:var(--border);}
+.fs-btn.active{background:var(--pop);color:var(--on-pop);border-color:var(--border);}
 .reset-btn{border:var(--line) solid var(--wrong);color:var(--wrong);border-radius:var(--radius-md);}
 
 /* ── トースト・モーダル ── */
@@ -229,7 +238,7 @@ body::before{display:none;}
 .modal-box{border:3px solid var(--border);border-radius:24px;}
 .modal-textarea{border:2px solid var(--border);background:var(--bg);}
 .modal-btn{border:var(--line) solid var(--border);border-radius:14px;}
-.modal-btn-primary{background:var(--accent);border-color:var(--border);color:var(--on-accent);}
+.modal-btn-primary{background:var(--pop);border-color:var(--border);color:var(--on-pop);}
 .modal-btn-danger{background:var(--wrong);border-color:var(--border);}
 .modal-btn-cancel{background:var(--card);}
 
