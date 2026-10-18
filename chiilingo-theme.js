@@ -43,6 +43,17 @@
     if(c&&m.content!==c)m.content=c;
   }
 
+  // 下のタブでページを切り替えたら、そのページのいちばん上から表示する
+  // （インラインの onclick=showTab(...) が先に動き、その後にここが動く）
+  function scrollPageTop(){
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+    document.querySelectorAll('.screen.active .dash-body,.screen.active .wl-body,.screen.active .set-body')
+      .forEach(el=>{el.scrollTop=0;});
+  }
+  document.addEventListener('click',e=>{
+    if(e.target.closest&&e.target.closest('.nav-btn'))scrollPageTop();
+  });
+
   function start(){
     cleanTree(document.body);
     syncThemeColor();

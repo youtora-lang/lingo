@@ -1,7 +1,8 @@
 // chiilingo専用 Service Worker — Stale-While-Revalidate
 // v2: 共通コア分離（lingo-core.js / lingo.css）に伴い、コアもキャッシュ対象に追加
 // v3: chiilingo 専用テーマ（chiilingo-theme.css / chiilingo-theme.js）を追加
-const CACHE = 'chiilingo-v3';
+// v4: タブ切り替え時にページ先頭へスクロール（chiilingo-theme.js）
+const CACHE = 'chiilingo-v4';
 const ASSETS = ['./chiilingo.html', './lingo-core.js', './lingo.css', './chiilingo-theme.css', './chiilingo-theme.js'];
 
 // インストール: 本体とコアをプリキャッシュ（失敗しても SW 自体は継続）
