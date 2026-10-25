@@ -86,7 +86,19 @@
     }catch(e){}
   }
 
+  // 単語一覧の検索窓と絞り込みボタンを1つの箱にまとめ、CSS でスクロール時に上へ固定する
+  // （中の要素・id はそのまま。単語リスト #wordListItems は箱の外に残す）
+  function wrapWordlistControls(){
+    const body=document.querySelector('#wordlistScreen .wl-body');
+    if(!body||body.querySelector('.wl-sticky'))return;
+    const list=document.getElementById('wordListItems');
+    const box=document.createElement('div');box.className='wl-sticky';
+    [...body.children].filter(el=>el!==list).forEach(el=>box.appendChild(el));
+    body.insertBefore(box,list);
+  }
+
   function start(){
+    wrapWordlistControls();
     cleanTree(document.body);
     syncThemeColor();
     loadLastUpdated();

@@ -263,7 +263,7 @@ body::before{display:none;}
 .wi-speak::before{width:18px;height:18px;}
 .phrase-icon-btn{font-size:15px;font-weight:900;}
 /* 検索窓の虫めがね（絵文字を消した span に線画を入れる） */
-.wl-body > div:first-child > span:first-child{--ico:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><circle cx='10.5' cy='10.5' r='6'/><path d='M15 15l5 5'/></svg>");width:17px;height:17px;background:var(--ink-lt);
+.wl-body > div:first-child > span:first-child,.wl-sticky > div:first-child > span:first-child{--ico:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><circle cx='10.5' cy='10.5' r='6'/><path d='M15 15l5 5'/></svg>");width:17px;height:17px;background:var(--ink-lt);
   -webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat;}
 /* 絵文字だけだった飾りは非表示 */
 .sess-emoji,.ticket-emoji{display:none;}
@@ -292,5 +292,15 @@ body::before{display:none;}
 .ex-area-front{background:var(--pop-lt);}
 /* 結果：上=見出し */
 .sess-title{background:var(--pop-lt);border:2px solid var(--border);border-radius:99px;padding:6px 22px;}
+
+
+/* ── スクロールしても上に固定する部分 ──
+   ホーム：一番上の「chiilingo」/ 単語一覧：検索窓と絞り込みボタン（.wl-sticky は chiilingo-theme.js で作る）
+   本文の箱（.dash-body / .wl-body）が overflow を持つと固定が効かないため、ページ全体のスクロールに任せる */
+.dash-body,.wl-body{overflow:visible;}
+#dashScreen .app-title-wrap{position:sticky;top:0;z-index:6;background:var(--bg);
+  margin:-18px -16px 22px;padding:14px 16px 10px;}
+.wl-sticky{position:sticky;top:0;z-index:6;background:var(--bg);
+  margin:-18px -16px 12px;padding:14px 16px 2px;}
 
 }
