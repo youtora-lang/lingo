@@ -278,11 +278,9 @@ body::before{display:none;}
 
 /* ── 差し色の薄い色（--pop-lt）を、各ページに1〜2か所だけ置く ──
    メインの色・デザインは変えず、面の一部だけを差し色の薄い色にする（入れすぎない） */
-/* ホーム：上=今日のフレーズの例文 / 中=STREAK */
+/* ホーム：今日のフレーズの例文（左右対称の場所だけに置く） */
 .phrase-ex,.phrase-ex-jp{background:var(--pop-lt);}
-.stat-grid .stat-card:nth-child(2){background:var(--pop-lt);}
-/* レポート：上=DAYS STUDIED / 中=グラフの空き部分 */
-.report-stat-row .report-stat:nth-child(1){background:var(--pop-lt);}
+/* レポート：グラフの空き部分 */
 .report-bar-bg{background:var(--pop-lt);}
 /* 単語一覧：上=検索窓 */
 #wlSearchInput{background:var(--pop-lt)!important;}
