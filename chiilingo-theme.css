@@ -24,35 +24,36 @@
   --num-font:'Fredoka','Nunito',sans-serif;
   /* 既定（ホーム）＝水色、差し色＝黄 */
   --bg:#DDEEF8;--tint:#C3E0F2;--tint-deep:#96C8E8;--accent:#4FA0D6;--accent-deep:#2A6E9E;--on-accent:#FFFFFF;
-  --pop:#E0B53F;--pop-deep:#8A6A12;--on-pop:#2B2B2B;
+  --pop:#E0B53F;--pop-deep:#8A6A12;--on-pop:#2B2B2B;--pop-lt:#F6EED2;
 }
 
 /* ── ページごとのテーマ色と差し色（AEPスコアチャートと同じく、補色寄りの1色を差し色に） ──
    ホーム=水色/黄  レポート=オレンジ/緑  単語一覧=黄/青  設定=緑/オレンジ
    フラッシュ=紫/赤  4択=黄/青  スペリング=ピンク/紫
    差し色の使い所：ピルのドット・進捗バー・メインのボタン・今日の棒・習熟ドット・選択中のトグル
+   差し色の薄い色（--pop-lt）：各ページの上・中・下に散らして置く（下の「差し色の薄い色」の節）
    結果画面（いい調子！など）=青/黄 */
 :root:has(#reportScreen.active){
   --bg:#F8E9DA;--tint:#F1D3B5;--tint-deep:#E8B485;--accent:#E08A3C;--accent-deep:#A35A17;--on-accent:#FFFFFF;
-  --pop:#5FA05A;--pop-deep:#3D7139;--on-pop:#FFFFFF;}
+  --pop:#5FA05A;--pop-deep:#3D7139;--on-pop:#FFFFFF;--pop-lt:#E1EEDC;}
 :root:has(#wordlistScreen.active){
   --bg:#F6EED2;--tint:#EEDFA8;--tint-deep:#E2C977;--accent:#E0B53F;--accent-deep:#8A6A12;--on-accent:#2B2B2B;
-  --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;}
+  --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;--pop-lt:#DCE8F5;}
 :root:has(#settingsScreen.active){
   --bg:#E1EEDC;--tint:#CCE3C4;--tint-deep:#A6CD98;--accent:#5FA05A;--accent-deep:#3D7139;--on-accent:#FFFFFF;
-  --pop:#E08A3C;--pop-deep:#A35A17;--on-pop:#FFFFFF;}
+  --pop:#E08A3C;--pop-deep:#A35A17;--on-pop:#FFFFFF;--pop-lt:#F8E9DA;}
 :root:has(#fcScreen.active){
   --bg:#E9E1F1;--tint:#D7C8E8;--tint-deep:#BCA3D9;--accent:#9468C2;--accent-deep:#64408F;--on-accent:#FFFFFF;
-  --pop:#D95F5B;--pop-deep:#9C3A38;--on-pop:#FFFFFF;}
+  --pop:#D95F5B;--pop-deep:#9C3A38;--on-pop:#FFFFFF;--pop-lt:#F9E3E1;}
 :root:has(#quizScreen.active){
   --bg:#F6EED2;--tint:#EEDFA8;--tint-deep:#E2C977;--accent:#E0B53F;--accent-deep:#8A6A12;--on-accent:#2B2B2B;
-  --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;}
+  --pop:#4A8BC7;--pop-deep:#2D6098;--on-pop:#FFFFFF;--pop-lt:#DCE8F5;}
 :root:has(#spellScreen.active){
   --bg:#F8E2E6;--tint:#F0C9D0;--tint-deep:#E3A0AC;--accent:#D9607A;--accent-deep:#9C3A4F;--on-accent:#FFFFFF;
-  --pop:#9468C2;--pop-deep:#64408F;--on-pop:#FFFFFF;}
+  --pop:#9468C2;--pop-deep:#64408F;--on-pop:#FFFFFF;--pop-lt:#E9E1F1;}
 :root:has(#sessResultScreen.active){
   --bg:#DCE8F5;--tint:#C3D8EF;--tint-deep:#97BCE3;--accent:#3F7FC4;--accent-deep:#24578F;--on-accent:#FFFFFF;
-  --pop:#E0B53F;--pop-deep:#8A6A12;--on-pop:#2B2B2B;}
+  --pop:#E0B53F;--pop-deep:#8A6A12;--on-pop:#2B2B2B;--pop-lt:#F6EED2;}
 
 /* lingo.css は :root{ ... } の中に入れ子で書かれているため、同じ詳細度で後勝ちにする */
 :root{
@@ -273,5 +274,31 @@ body::before{display:none;}
 .prog-row:nth-child(2) .prog-key::before{background:var(--accent-deep);}
 .prog-row:nth-child(3) .prog-key::before{background:var(--accent);}
 .prog-row:nth-child(4) .prog-key::before{background:var(--tint-deep);}
+
+
+/* ── 差し色の薄い色（--pop-lt）を、各ページの上・中・下にバランスよく置く ──
+   メインの色・デザインは変えず、面の一部だけを差し色の薄い色にする */
+/* ホーム：上=今日のフレーズの例文 / 中=STREAK / 下=選択中のモード */
+.phrase-ex,.phrase-ex-jp{background:var(--pop-lt);}
+.stat-grid .stat-card:nth-child(2){background:var(--pop-lt);}
+.mode-btn.selected{background:var(--pop-lt);color:var(--ink);}
+.ticket-banner{background:var(--pop-lt);}
+/* レポート：上=4つの数字を市松（左上・右下）/ 中=グラフの空き部分 */
+.report-stat-row .report-stat:nth-child(1),.report-stat-row .report-stat:nth-child(4){background:var(--pop-lt);}
+.report-bar-bg{background:var(--pop-lt);}
+/* 単語一覧：上=検索窓 / リスト=1つおき */
+#wlSearchInput{background:var(--pop-lt)!important;}
+#wordListItems .word-item:nth-child(even){background:var(--pop-lt);}
+/* 設定：右側の入力欄（ページ全体に均等に並ぶ）と、チケットの説明 */
+.set-input,.modal-textarea{background:var(--pop-lt);}
+.set-note-hl{background:var(--pop-lt);border-color:var(--pop);}
+/* 学習画面（フラッシュ・4択・スペリング）：上=タイトル / 中=例文 / 下=正解数 */
+.fc-header .fc-title{background:var(--pop-lt);border:2px solid var(--border);border-radius:99px;padding:4px 14px;}
+.ex-area-front{background:var(--pop-lt);}
+.counter-row{align-self:center;background:var(--pop-lt);border:2px solid var(--border);border-radius:99px;padding:6px 18px;}
+.quiz-choice:not(.correct):not(.wrong) .quiz-num{background:var(--pop-lt);}
+/* 結果：上=見出し / 中=要復習の単語 */
+.sess-title{background:var(--pop-lt);border:2px solid var(--border);border-radius:99px;padding:6px 22px;}
+.missed-item{background:var(--pop-lt);}
 
 }

@@ -3,7 +3,8 @@
 // v3: chiilingo 専用テーマ（chiilingo-theme.css / chiilingo-theme.js）を追加
 // v4: タブ切り替え時にページ先頭へスクロール（chiilingo-theme.js）
 // v5: 設定画面の更新日時を GitHub の最終更新日時から自動表示（chiilingo-theme.js）
-const CACHE = 'chiilingo-v5';
+// v6: 差し色の薄い色を各ページに配置（chiilingo-theme.css）
+const CACHE = 'chiilingo-v6';
 const ASSETS = ['./chiilingo.html', './lingo-core.js', './lingo.css', './chiilingo-theme.css', './chiilingo-theme.js'];
 
 // インストール: 本体とコアをプリキャッシュ（失敗しても SW 自体は継続）
